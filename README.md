@@ -43,6 +43,19 @@ For example, adding a new Folder as the third `item` in the collection:
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
+### Write your edited collections to a JSON file
 
+JPostman allows you to generate JSON for your collections.  At the moment this is only to the standard output (e.g., `System.out.println`), but support for writing to files and updating a Postman collection directly via the Postman API will be implemented shortly.  
+
+```java
+
+  // Combine collections, inserting the source collection as a Folder in the 2d position from the root of the target collection
+  // Then set the value of a String variable to the JSON for the new, combined collection.  
+  PostmanCollection pmcTarget = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
+  PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
+  pmcTest.addItem(pmcSource, 2);
+  String strCombinedJSON = pmcTest.toJson();
+ ```
+  
 
 
