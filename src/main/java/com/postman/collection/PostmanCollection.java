@@ -39,8 +39,8 @@ public enumPostmanItemType getItemType() {
 public static void main( String[] args ) throws Exception
     {
         String filePath = new File("").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/JPostman/src/main/resources/com/postman/collection/catfact-complete-coll.json");
-        PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/JPostman/src/main/resources/com/postman/collection/weather-coll.json");
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/catfact-complete-coll.json");
+        PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/weather-coll.json");
         
         //System.out.println(pmcTest.toJson(false, enumVariableResolution.NONE));
         //PostmanItem item = pmcTest.getItem("Breeds", false);
