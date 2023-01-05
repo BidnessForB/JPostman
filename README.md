@@ -43,6 +43,8 @@ For example, adding a new Folder as the third `item` in the collection:
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
+  At the moment only folders and requests are copied over.  Copying scripts and variables to the new folder will be implemented shortly.  
+  
 ### Write your edited collections to a JSON file
 
 JPostman allows you to generate JSON for your collections.  At the moment this is only to the standard output (e.g., `System.out.println`), but support for writing to files and updating a Postman collection directly via the Postman API will be implemented shortly.  
