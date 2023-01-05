@@ -47,7 +47,7 @@ For example, adding a new Folder as the third `item` in the collection:
   
 ### Write your edited collections to a JSON file
 
-JPostman allows you to generate JSON for your collections.  At the moment this is only to the standard output (e.g., `System.out.println`), but support for writing to files and updating a Postman collection directly via the Postman API will be implemented shortly.  
+JPostman allows you to generate JSON for your collections.  You can also write your collections to a file which can then be imported into Postman.
 
 ```java
 
@@ -56,7 +56,7 @@ JPostman allows you to generate JSON for your collections.  At the moment this i
   PostmanCollection pmcTarget = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
-  String strCombinedJSON = pmcTest.toJson();
+  pmcTest.writeToFile("new-collection.json");
  ```
   
 
