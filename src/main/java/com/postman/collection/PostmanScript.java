@@ -6,10 +6,18 @@ public class PostmanScript implements IPostmanCollectionElement {
     private String[] exec;
 
     
-    public PostmanScript(String Type, String[] Exec) {
-            type = Type;
+    public PostmanScript(String scriptType, String[] Exec) {
+            this.type = scriptType;
             exec = Exec;
     }
+
+    public PostmanScript(String scriptType, String srcCode)  {
+        this.exec = new String[1];
+        this.exec[0] = srcCode;
+        this.type = scriptType;
+
+    }
+
 
 
     public String getType() {

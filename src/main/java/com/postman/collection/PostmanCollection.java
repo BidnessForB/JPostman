@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.lang.reflect.Array;
 
 import com.google.gson.Gson;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -60,6 +59,7 @@ public static void main( String[] args ) throws Exception
         }
         
         PostmanEvent evt = PostmanEvent.pmcEventFactory(strRawItem);
+        PostmanEvent evt2 = PostmanEvent.pmcEventFactory();
     
 
         PostmanItem newItem = new PostmanItem("new Folder");
@@ -77,14 +77,27 @@ public static void main( String[] args ) throws Exception
        
        PostmanItem item = pmcTest.getItem("Weather");
        item.setEvent(evt);
+       item.setEvent(evt2);
        pmcTest.writeToFile("new-coll.json");
     }
 public void setVariables(PostmanVariable[] vars)
 {
     this.variable = vars;
 }
+
 public void addCollection(PostmanCollection newColl, PostmanItem parent) throws Exception {
+    this.addCollection(newColl, parent, true, true);
+}
+public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws Exception {
+    if(!copyScripts)
+    {
+        newColl.setEvents(new PostmanEvent[0]);
+    }
     parent.addItem(newColl);
+    if (!copyVariables) {
+        return;
+    }
+
     List<PostmanVariable> resultList = new ArrayList<PostmanVariable>(this.getVariables().length + newColl.getVariables().length);
     Collections.addAll(resultList, this.getVariables());
     Collections.addAll(resultList, newColl.getVariables());

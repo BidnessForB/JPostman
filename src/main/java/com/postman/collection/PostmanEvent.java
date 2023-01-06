@@ -7,13 +7,30 @@ public class PostmanEvent implements IPostmanCollectionElement {
 private String listen = ""; // basically the name
 private PostmanScript script = null;
 
-public PostmanEvent(String listen, PostmanScript script) {
-    this.listen = listen;
+public PostmanEvent(enumEventType evtType, PostmanScript script) throws Exception {
+    this.setEventType(evtType);
     this.script = script;
 }
 
 public static PostmanEvent pmcEventFactory(String eventCode) {
     PostmanEvent retVal = new Gson().fromJson(eventCode,PostmanEvent.class);
+    return retVal;
+}
+
+public static PostmanEvent pmcEventFactory() {
+    PostmanEvent retVal = null;
+    PostmanScript script = new PostmanScript("text/javascript", "//Your code here");
+    
+    try {
+        retVal = new PostmanEvent(enumEventType.TEST, script);
+    }
+    catch(Exception e)
+    {
+        System.out.println("This should not happen here.");
+    }
+    
+    
+    retVal.setScript(new PostmanScript("text/javascript","//Your code here" ));
     return retVal;
 }
 

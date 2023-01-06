@@ -162,10 +162,16 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
     */
     public void addItem(PostmanItem newItem) throws Exception {
+        if(this.getItemType() == enumPostmanItemType.REQUEST)
+        {
+            throw new Exception("Cannot add items to Requests");
+        }
+        
         if(item == null)
         {
             item = new PostmanItem[0];
         }
+
         this.addItem(newItem, item.length);
     }
 
