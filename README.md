@@ -86,5 +86,17 @@ GSON does not link parents to their child objects, so deriving parent objects is
 
 GSON also works with arrays by default rather than more convenient Java collections mechanisms like Collections, Maps, etc.  This has the advantage of simplicity but does make adding, removing, or re-ordering collection elements somewhat more complex and onerous.  
 
+## Postman Collection File Structure
 
+You can review the schema for the Postman Collection v2.1 formet [here](https://schema.getpostman.com/json/collection/v2.1.0/collection.json). 
+
+In a nutshell, a Postman collection file consists of the following elements
+1. An `info` section containing collection metadata, including it's name, description, and Postman UID
+2. Zero or more `item` elements, which can themselves contain an array if `item` elements.  There are two types of `item` objects
+ - A *Request* is an item that contains a `request` key.  These are rendered in Postman as Requests.  Request items do not contain sub-items, they are always leaf elements. 
+ - A *folder* is an item that contains zero or more sub-items, but which does NOT contain a `request` key.  
+3. Pre-Request and Test scripts are stored in an `event` key.  Any item can have an `event` key.
+4. Collection variables are stored under the `variables` key.  
+
+Thus, a collection is `info`, `variables`, `events`, and an arry if `item`s, each of which can contain any number of sub-items.  
 
