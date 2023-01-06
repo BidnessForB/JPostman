@@ -78,6 +78,13 @@ JPostman allows you to generate JSON for your collections.  You can also write y
   pmcTest.addItem(pmcSource, 2);
   pmcTest.writeToFile("new-collection.json");
  ```
-  
+ ## Implementation 
+ 
+Java does not natively support JSON llike NodeJS does.  Object models based on JSON must be manually constructed.  Forutnately the brilliant folks at Google came up with [GSON](https://github.com/google/gson) a library that does this automatically.  Basically you create Java classes with member variables that match the keys in the JSON file.  GSON then parses the file and builds out the object model.  GSON also allows for an object model to be written out to JSON.  
+
+GSON does not link parents to their child objects, so deriving parent objects is not straightforward.  In this implementation we recurse the object tree until we find the object which contains the target object, and return that as the parent.  
+
+GSON also works with arrays by default rather than more convenient Java collections mechanisms like Collections, Maps, etc.  This has the advantage of simplicity but does make adding, removing, or re-ordering collection elements somewhat more complex and onerous.  
+
 
 
