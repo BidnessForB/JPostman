@@ -43,7 +43,9 @@ For example, adding a new Folder as the third `item` in the collection:
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
-  All folders, requests, pre-request and test scripts are copied over.  Collection variables are appended to the target collections array of variables.
+ You can add a collection in this way either to the top level Collection itself or to any folder in the collection.  
+ 
+ All folders, requests, pre-request and test scripts are copied over.  Collection variables are appended to the target collections array of variables.
   
   **CAUTION** Currently there is no check for duplicate variables names between the two collections.
   
