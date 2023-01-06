@@ -44,7 +44,7 @@ public static void main( String[] args ) throws Exception
         String filePath = new File("").getAbsolutePath();
         PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
         PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
-        PostmanCollection pmcFolders = PostmanCollection.PMCFactory(filePath +  "/folders-coll.json");
+        
         String strRawItem = "";
         String strChunk;
         
@@ -89,7 +89,7 @@ public static void main( String[] args ) throws Exception
        item.setEvent(evt2);
        pmcTest.moveItem(item, pmcTest);
        pmcTest.writeToFile("new-coll.json");
-       pmcFolders.writeToFile("folders-coll-2.json");
+       
     }
 
 public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
