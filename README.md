@@ -19,7 +19,7 @@ PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported
 Java is common in Enterprise software development environments.  JPostman enables you to create a complete Java object model of a Postman collection from an exported collection JSON file.  This provides a bridge for integrating 
 with Java based applications and platforms such as JMeter.  
 
-### Edit and combine collections
+### Edit collections: add, remove, edit and move Collection elements
 
 JPostman allows you to add new Folders and Requests to your Postman Collections.  You can also add variables, Pre-Request and Test Scripts, requests, and responses.  In fact, 
 you can add, edit, or remove any element in a Postman collection.  All `add` operations allow you to specify a position in the array of items on the object, meaning 
@@ -34,6 +34,22 @@ For example, adding a new Folder as the third `item` in the collection:
   pmcTest.addItem(newFolder, 2);
   
   ```
+  ### Move collection elements
+  
+You can easily move elements from one parent to another.  For example, move a request to a new folder, or a folder to another folder or to the top level in the collection.
+
+```java
+  PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
+  PostmanItem newFolder1 = new PostmanItem("new Folder One");
+  PostmanItem newFolder2 = new PostmanItem("new Folder Two");
+  pmcTest.addItem(newFolder1);
+  pmcTest.addItem(newFolder2);
+  pmcTest.moveItem(newFolder2, newFolder1);
+ ```
+
+
+  
+  ### Combining collections
   
   You can combine collections as well.  
   
