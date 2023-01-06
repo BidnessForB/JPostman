@@ -1,0 +1,10 @@
+
+{
+    "listen": "prerequest",
+    "script": {
+        "type": "text/javascript",
+        "exec": [
+            "//This is TEST PR script"
+        ]
+    }
+}

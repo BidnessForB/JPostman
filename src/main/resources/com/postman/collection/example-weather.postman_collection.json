@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "76f1b1a9-27e0-4353-9e0f-f1752ba4a483",
+		"_postman_id": "a55a4f78-ce48-40ce-8cd5-cd462591befc",
 		"name": "Weather",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23889826"
@@ -130,7 +130,7 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"//This is WEATHERs pre request script"
 				]
 			}
 		},
@@ -139,7 +139,7 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"//This is WEATHERs pre request script"
 				]
 			}
 		}

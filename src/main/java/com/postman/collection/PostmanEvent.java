@@ -12,11 +12,44 @@ public PostmanEvent(String listen, PostmanScript script) {
     this.script = script;
 }
 
-public String getListen() {
+public static PostmanEvent pmcEventFactory(String eventCode) {
+    PostmanEvent retVal = new Gson().fromJson(eventCode,PostmanEvent.class);
+    return retVal;
+}
+
+public enumEventType getEventType() {
+    if(this.getListen().equals("test"))
+    {
+        return enumEventType.TEST;
+    }
+    else if (this.getListen().equals("prerequest"))
+    {
+        return enumEventType.PRE_REQUEST;
+    }
+    else
+    {
+        return enumEventType.UNKNOWN;
+    }
+}
+
+public void setEventType(enumEventType eventType) throws Exception {
+    if(eventType == enumEventType.PRE_REQUEST )
+    {
+        this.setListen("prerequest");
+    }
+    else if (eventType == enumEventType.TEST) {
+        this.setListen("test");
+    }
+    else {
+        throw new Exception("Only Pre-Request and Test Scripts supported at this time");
+    }
+}
+
+private String getListen() {
     return listen;
 }
 
-public void setListen(String listen) {
+private void setListen(String listen) {
     this.listen = listen;
 }
 public PostmanScript getScript() {

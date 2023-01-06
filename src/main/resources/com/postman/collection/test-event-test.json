@@ -1,0 +1,10 @@
+
+{
+    "listen": "test",
+    "script": {
+        "type": "text/javascript",
+        "exec": [
+            "//This is TEST TEST script"
+        ]
+    }
+}

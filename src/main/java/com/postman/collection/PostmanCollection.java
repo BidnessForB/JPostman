@@ -3,9 +3,13 @@ package com.postman.collection;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Collections;
+import java.lang.reflect.Array;
 
 import com.google.gson.Gson;
 import java.util.Arrays;
@@ -41,28 +45,60 @@ public static void main( String[] args ) throws Exception
         String filePath = new File("").getAbsolutePath();
         PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
         PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+        String strRawItem = "";
+        String strChunk;
         
-        //System.out.println(pmcTest.toJson(false, enumVariableResolution.NONE));
-        //PostmanItem item = pmcTest.getItem("Breeds", false);
-         /* item = pmcTest.getItem("Facts", false);
-         item = pmcTest.getItem("get Random Fact", false);
-         item = pmcTest.getItem("Get a list of facts", false);
-         item = pmcTest.getItem("Add Breed", false);
-         item = pmcTest.getItem("Get a Specific Fact", false);
-         item = pmcTest.getItem("get Breeds", false);
-         */
-
+        BufferedReader brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/test-event-test.json")));
+        while((strChunk = brItem.readLine()) != null)
+            strRawItem = strRawItem + strChunk;
+        try {
+            brItem.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        PostmanEvent evt = PostmanEvent.pmcEventFactory(strRawItem);
+    
 
         PostmanItem newItem = new PostmanItem("new Folder");
-        //pmcTest.addItem(newItem);
-        pmcTest.addItem(pmcWeather, 2);
+        pmcTest.addItem(newItem);
+        pmcTest.addCollection(pmcWeather, newItem);
+        
+        //pmcTest.addItem(pmcWeather, 2);
+        
         System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
         //pmcTest.removeItem(newItem);
         //System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
-        System.out.println(pmcTest.toJson(false, null));
+       // System.out.println(pmcTest.toJson(false, null));
+       pmcTest.setName("Cat-Weather"); 
+       System.out.println("NAME: " + pmcTest.getName());
+       
+       PostmanItem item = pmcTest.getItem("Weather");
+       item.setEvent(evt);
+       pmcTest.writeToFile("new-coll.json");
     }
+public void setVariables(PostmanVariable[] vars)
+{
+    this.variable = vars;
+}
+public void addCollection(PostmanCollection newColl, PostmanItem parent) throws Exception {
+    parent.addItem(newColl);
+    List<PostmanVariable> resultList = new ArrayList<PostmanVariable>(this.getVariables().length + newColl.getVariables().length);
+    Collections.addAll(resultList, this.getVariables());
+    Collections.addAll(resultList, newColl.getVariables());
 
+    @SuppressWarnings("unchecked")
+    //the type cast is safe as the array1 has the type T[]
+    PostmanVariable[] resultArray = (PostmanVariable[]) Array.newInstance(this.getVariables().getClass().getComponentType(), 0);
+    this.setVariables(resultList.toArray(resultArray));
+}
 
+public void addCollection(PostmanCollection newColl) throws Exception
+{
+    this.addCollection(newColl, this);
+}
 
 public PostmanInfo getInfo() {
     return info;
@@ -78,6 +114,10 @@ public PostmanAuth getAuth() {
 
 public String getName() {
     return this.getInfo().getName() + "";
+}
+
+public void setName(String name) {
+    this.getInfo().setName(name);
 }
 
 public String getDescription() {
@@ -112,6 +152,15 @@ public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoun
 
     return pmcRetVal;
 }
+
+public void writeToFile(String path) throws IOException {
+
+    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    writer.write(this.toJson(false, null));   
+    writer.close();
+}
+
+
 
 public PostmanItem getItemParent(String key) {
     return this.getItem(key, true);

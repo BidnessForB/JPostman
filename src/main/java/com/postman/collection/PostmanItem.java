@@ -1,4 +1,6 @@
 package com.postman.collection;
+import javax.lang.model.util.ElementScanner14;
+
 import com.google.gson.Gson;
 
 public class PostmanItem implements IPostmanCollectionElement  {
@@ -38,13 +40,6 @@ public class PostmanItem implements IPostmanCollectionElement  {
         
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getDescription() {
         return description;
     }
@@ -52,8 +47,26 @@ public class PostmanItem implements IPostmanCollectionElement  {
         this.description = description;
     }
     public PostmanEvent[] getEvents() {
+        if (event == null) {
+            event = new PostmanEvent[0];
+        }
         return event;
     }
+
+    public PostmanEvent getEvent(enumEventType evtType) {
+        PostmanEvent event;
+        PostmanEvent[] events = this.getEvents();
+        for(int i = 0; i < events.length; i++)
+        {
+            event = events[i];
+            if (event.getEventType() == evtType)
+            {
+                return event;
+            }
+        }
+        return null;
+    }
+
     public void setEvents(PostmanEvent[] event) {
         this.event = event;
     }
@@ -156,6 +169,28 @@ public class PostmanItem implements IPostmanCollectionElement  {
         this.addItem(newItem, item.length);
     }
 
+    public void setEvent(PostmanEvent newEvent) {
+        //will replace the script if it already exists. 
+        
+        
+
+        if(this.getEvent(newEvent.getEventType()) == null)
+        {
+            PostmanEvent[] newArr = new PostmanEvent[1 + event.length]; 
+            newArr[newArr.length - 1] = newEvent;
+            event = newArr;
+        }
+        else {
+            for(int i = 0; i < event.length; i++)
+            {
+                if(event[i].getEventType() == newEvent.getEventType()) {
+                    event[i] = newEvent;
+                }
+            }
+        }
+
+    }
+
     public void addItem(PostmanItem newItem, int position) throws Exception {
         if(item == null)
         {
@@ -169,6 +204,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
             PostmanItem newFolder = new PostmanItem(newItem.getName());
             newFolder.setDescription(newItem.getDescription() + " IMPORTED Collection");
             this.addItem(newFolder, position);
+            newFolder.setEvents(newItem.getEvents());
             for(int i = 0; i < newItems.length; i++)
             {
                 newFolder.addItem(newItems[i]);
@@ -224,6 +260,14 @@ public class PostmanItem implements IPostmanCollectionElement  {
             i++;
         }
         this.item = newArr;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name){ 
+        this.name = name;
     }
 
 
