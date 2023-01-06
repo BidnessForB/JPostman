@@ -43,7 +43,9 @@ For example, adding a new Folder as the third `item` in the collection:
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
-  At the moment only folders and requests are copied over.  Copying scripts and variables to the new folder will be implemented shortly.  
+  All folders, requests, pre-request and test scripts are copied over.  Collection variables are appended to the target collections array of variables.
+  
+  **CAUTION** Currently there is no check for duplicate variables names between the two collections.
   
 ### Write your edited collections to a JSON file
 
