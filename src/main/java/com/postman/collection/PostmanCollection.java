@@ -62,13 +62,21 @@ public static void main( String[] args ) throws Exception
         PostmanEvent evt2 = PostmanEvent.pmcEventFactory();
     
 
-        PostmanItem newItem = new PostmanItem("new Folder");
-        pmcTest.addItem(newItem);
-        pmcTest.addCollection(pmcWeather, newItem);
+        PostmanItem newFolder1 = new PostmanItem("new Folder One");
+        PostmanItem newFolder2 = new PostmanItem("new Folder Two");
+        PostmanItem newFolder3 = new PostmanItem("new Folder Three");
+        pmcTest.addItem(newFolder1);
+        pmcTest.addItem(newFolder2);
+        pmcTest.addItem(newFolder3);
+        pmcTest.moveItem(newFolder2, newFolder1);
+        pmcTest.moveItem(newFolder3, newFolder2);
+//        pmcTest.moveItem(newFolder2, newFolder1);
+      
+        pmcTest.addCollection(pmcWeather, newFolder1);
         
         //pmcTest.addItem(pmcWeather, 2);
         
-        System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
+        
         //pmcTest.removeItem(newItem);
         //System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
        // System.out.println(pmcTest.toJson(false, null));
@@ -78,8 +86,33 @@ public static void main( String[] args ) throws Exception
        PostmanItem item = pmcTest.getItem("Weather");
        item.setEvent(evt);
        item.setEvent(evt2);
+       pmcTest.moveItem(item, pmcTest);
        pmcTest.writeToFile("new-coll.json");
     }
+
+public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
+    PostmanItem itemToMove = this.getItem(itemToMoveKey);
+    PostmanItem parent = this.getItem(parentKey);
+    
+    if(itemToMove == null || parent == null)
+    {
+        throw new Exception("Couldn't find item to move and/or parent");
+    }
+
+}
+
+public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
+    PostmanItem curParent = this.getItem(itemToMove.getKey(), true);
+    
+    if(curParent == null) {
+        throw new Exception("Item parent not found");
+    }
+    curParent.removeItem(itemToMove);
+    newParent.addItem(itemToMove);
+
+
+
+}    
 public void setVariables(PostmanVariable[] vars)
 {
     this.variable = vars;

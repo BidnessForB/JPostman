@@ -34,6 +34,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public PostmanItem(String name)
     {
         this.setName(name);
+        this.item = new PostmanItem[0];
     }
 
     public PostmanItem() {
@@ -97,6 +98,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         }
     }
     public void setItems(PostmanItem[] item) {
+        if(item != null && item.length != 0)
         this.item = item;
     }
 
@@ -162,17 +164,13 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
     */
     public void addItem(PostmanItem newItem) throws Exception {
+        
         if(this.getItemType() == enumPostmanItemType.REQUEST)
         {
             throw new Exception("Cannot add items to Requests");
         }
-        
-        if(item == null)
-        {
-            item = new PostmanItem[0];
-        }
 
-        this.addItem(newItem, item.length);
+        this.addItem(newItem, item == null ? 0 : item.length);
     }
 
     public void setEvent(PostmanEvent newEvent) {
