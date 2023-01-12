@@ -46,7 +46,7 @@
         <plugin>
       <artifactId>maven-assembly-plugin</artifactId>
       <configuration>
-      <finalName>JPostman-complete-${version}</finalName>   
+      <finalName>JPostman-complete-${project.version}</finalName>   
           <appendAssemblyId>false</appendAssemblyId>  
 
           <descriptorRefs>
