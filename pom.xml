@@ -52,7 +52,7 @@
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
-            <finalName>JPostman-complete-${project.version}-r${buildNumber}</finalName>
+            <finalName>JPostman-complete-${project.version}</finalName>
             <tasks>
                     <echo>used version: ${jgitver.used_version}</echo>
                     <echo>version calculated: ${jgitver.calculated_version}</echo>

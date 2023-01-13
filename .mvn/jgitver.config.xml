@@ -1,0 +1,38 @@
+<configuration xmlns="http://jgitver.github.io/maven/configuration/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jgitver.github.io/maven/configuration/1.1.0 https://jgitver.github.io/maven/configuration/jgitver-configuration-v1_1_0.xsd">
+    <mavenLike>true/false</mavenLike>   <!-- deprecated, use 'strategy' instead -->
+    <strategy>MAVEN</strategy>
+    <policy>NEAREST</policy>    <!-- LookupPolicy to select the base tag/commit for the version computation -->
+    <autoIncrementPatch>true</autoIncrementPatch>
+    <useCommitDistance>false</useCommitDistance>
+    <useDirty>false</useDirty>
+    <useGitCommitId>false</useGitCommitId>
+    <useSnapshot>false</useSnapshot> <!-- use -SNAPSHOT in CONFIGURABLE strategy -->
+    <gitCommitIdLength>8</gitCommitIdLength>  <!-- between [8,40] -->
+    <!--<maxSearchDepth>integer</maxSearchDepth> -->  <!-- upper or equal to 1, ommited otherwise, default to infinite -->
+    <nonQualifierBranches>main</nonQualifierBranches> <!-- comma separated, example "master,integration" -->
+    <regexVersionTag>r([0-9]+)</regexVersionTag>  <!-- a java regular expression with a capture group matching only 
+                                                       tags of the form r0, r1, ..., r34-->
+   <!--
+    <exclusions>    
+      <exclusion>relative directory path</exclusion> 
+    </exclusions>
+    -->
+    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>   <!-- uses jgitver#BranchingPolicy#DEFAULT_FALLBACK as fallback branch policy-->
+    <!--
+    <branchPolicies>
+        <branchPolicy>
+            <pattern>pattern</pattern>                  
+            
+            
+            <transformations>                           
+                <transformation>NAME</transformation> 
+                
+            </transformations>
+            
+        </branchPolicy>
+        
+    </branchPolicies>
+    -->
+</configuration>
