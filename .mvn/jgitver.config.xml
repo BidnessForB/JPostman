@@ -6,19 +6,19 @@
     <policy>NEAREST</policy>    <!-- LookupPolicy to select the base tag/commit for the version computation -->
     <autoIncrementPatch>true</autoIncrementPatch>
     <useCommitDistance>false</useCommitDistance>
-    <useDirty>false</useDirty>
-    <useGitCommitId>false</useGitCommitId>
+    <useDirty>true</useDirty>
+    <useGitCommitId>true</useGitCommitId>
     <useSnapshot>false</useSnapshot> <!-- use -SNAPSHOT in CONFIGURABLE strategy -->
     <gitCommitIdLength>8</gitCommitIdLength>  <!-- between [8,40] -->
     <!--<maxSearchDepth>integer</maxSearchDepth> -->  <!-- upper or equal to 1, ommited otherwise, default to infinite -->
     <nonQualifierBranches>main</nonQualifierBranches> <!-- comma separated, example "master,integration" -->
-    <regexVersionTag>r([0-9]+)</regexVersionTag>  <!-- a java regular expression with a capture group matching only 
+    <regexVersionTag>([0-9].[0-9].[0-9])</regexVersionTag>  <!-- a java regular expression with a capture group matching only 
                                                        tags of the form r0, r1, ..., r34-->
-   <!--
+   
     <exclusions>    
-      <exclusion>relative directory path</exclusion> 
+      <exclusion>.mvn</exclusion> 
     </exclusions>
-    -->
+   
     <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>   <!-- uses jgitver#BranchingPolicy#DEFAULT_FALLBACK as fallback branch policy-->
     <!--
     <branchPolicies>
