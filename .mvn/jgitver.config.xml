@@ -1,12 +1,12 @@
 <configuration xmlns="http://jgitver.github.io/maven/configuration/1.1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jgitver.github.io/maven/configuration/1.1.0 https://jgitver.github.io/maven/configuration/jgitver-configuration-v1_1_0.xsd">
-    <mavenLike>true/false</mavenLike>   <!-- deprecated, use 'strategy' instead -->
-    <strategy>MAVEN</strategy>
+    <!--<mavenLike>true/false</mavenLike>  -->
+    <strategy>CONFIGURABLE</strategy>
     <policy>NEAREST</policy>    <!-- LookupPolicy to select the base tag/commit for the version computation -->
     <autoIncrementPatch>true</autoIncrementPatch>
     <useCommitDistance>false</useCommitDistance>
-    <useDirty>true</useDirty>
+    <useDirty>false</useDirty>
     <useGitCommitId>true</useGitCommitId>
     <useSnapshot>false</useSnapshot> <!-- use -SNAPSHOT in CONFIGURABLE strategy -->
     <gitCommitIdLength>8</gitCommitIdLength>  <!-- between [8,40] -->
@@ -19,7 +19,7 @@
       <exclusion>.mvn</exclusion> 
     </exclusions>
    
-    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>   <!-- uses jgitver#BranchingPolicy#DEFAULT_FALLBACK as fallback branch policy-->
+    <useDefaultBranchingPolicy>false</useDefaultBranchingPolicy>   <!-- uses jgitver#BranchingPolicy#DEFAULT_FALLBACK as fallback branch policy-->
     <!--
     <branchPolicies>
         <branchPolicy>
