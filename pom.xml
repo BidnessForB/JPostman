@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <scm>
+    <connection>scm:svn:http://127.0.0.1/dummy</connection>
+    <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
+    <tag>HEAD</tag>
+    <url>http://127.0.0.1/dummy</url>
+  </scm>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.postman.collection</groupId>
   <artifactId>jpostman</artifactId>
-  <version>0.9.1</version>
+  <version>0.9</version>
 
   <name>jpostman</name>
   <!-- FIXME change it to the project's website -->
@@ -35,8 +41,8 @@
   </dependencies>
 
   <build>
-   
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+
+    <pluginManagement>      <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
@@ -44,31 +50,52 @@
           <version>3.1.0</version>
         </plugin>
         <plugin>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <configuration>
-      <finalName>JPostman-complete-${project.version}</finalName>   
-          <appendAssemblyId>false</appendAssemblyId>  
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+            <finalName>JPostman-complete-${project.version}-r${buildNumber}</finalName>
+            <tasks>
+                    <echo>used version: ${jgitver.used_version}</echo>
+                    <echo>version calculated: ${jgitver.calculated_version}</echo>
+                    <echo>dirty: ${jgitver.dirty}</echo>
+                    <echo>head_committer_name: ${jgitver.head_committer_name}</echo>
+                    <echo>head_commiter_email: ${jgitver.head_commiter_email}</echo>
+                    <echo>head_commit_datetime: ${jgitver.head_commit_datetime}</echo>
+                    <echo>git_sha1_full: ${jgitver.git_sha1_full}</echo>
+                    <echo>git_sha1_8: ${jgitver.git_sha1_8}</echo>
+                    <echo>branch_name: ${jgitver.branch_name}</echo>
+                    <echo>head_tags: ${jgitver.head_tags}</echo>
+                    <echo>head_annotated_tags: ${jgitver.head_annotated_tags}</echo>
+                    <echo>head_lightweight_tags: ${jgitver.head_lightweight_tags}</echo>
+                    <echo>base_tag: ${jgitver.base_tag}</echo>
+                    <echo>all_tags: ${jgitver.all_tags}</echo>
+                    <echo>all_annotated_tags: ${jgitver.all_annotated_tags}</echo>
+                    <echo>all_lightweight_tags: ${jgitver.all_lightweight_tags}</echo>
+                    <echo>all_version_tags: ${jgitver.all_version_tags}</echo>
+                    <echo>all_version_annotated_tags: ${jgitver.all_version_annotated_tags}</echo>
+                    <echo>all_version_lightweight_tags: ${jgitver.all_version_lightweight_tags}</echo>
+                </tasks>
+            <appendAssemblyId>false</appendAssemblyId>
 
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        <archive>
-          <manifest>
-            <mainClass>com.postman.collection.PostmanCollection</mainClass>
-          </manifest>
-        </archive>
-       
-      </configuration>
-      <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-    </plugin>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <archive>
+              <manifest>
+                <mainClass>com.postman.collection.PostmanCollection</mainClass>
+              </manifest>
+            </archive>
+
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
@@ -100,10 +127,52 @@
           <version>3.7.1</version>
         </plugin>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.2.0</version>
+          <executions>
+            <execution>
+              <id>parse-version</id>
+              <goals>
+                <goal>parse-version</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <configuration>
+            <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
+          </configuration>
+          <executions>
+            <execution>
+              <id>buildnumber</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+              <configuration>
+            <format>{0,number}</format>
+            <items>
+              <item>buildNumber</item>
+            </items>
+            <doCheck>true</doCheck>
+            <doUpdate>true</doUpdate>
+            
+          </configuration>
+            </execution>
+          </executions>
+          
+        </plugin>
       </plugins>
+
     </pluginManagement>
   </build>
+
 </project>

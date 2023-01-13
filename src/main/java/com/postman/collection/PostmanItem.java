@@ -2,7 +2,7 @@ package com.postman.collection;
 
 
 import com.google.gson.Gson;
-
+// foo
 public class PostmanItem implements IPostmanCollectionElement  {
     private String description;
     private PostmanEvent[] event = null;
