@@ -13,7 +13,9 @@ public class PostmanAPIKey implements IPostmanCollectionElement {
         this.key = key;
     }
 
-    
+    public boolean isValid() {
+        return true;
+    }
     
     public String getType() {
         return type;

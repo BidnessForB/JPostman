@@ -15,6 +15,11 @@ public class PostmanQuery implements IPostmanCollectionElement {
         return key;
     }
 
+    public boolean isValid() {
+        return true;
+    }
+
+
     public void setKey(String key) {
         this.key = key;
     }
@@ -37,7 +42,7 @@ public class PostmanQuery implements IPostmanCollectionElement {
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
 

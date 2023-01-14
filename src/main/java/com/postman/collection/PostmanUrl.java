@@ -18,6 +18,13 @@ public class PostmanUrl implements IPostmanCollectionElement {
     public String[] getHosts() {
         return host;
     }
+
+    public boolean isValid() {
+        return true;
+    }
+
+
+
     public void setHosts(String[] host) {
         this.host = host;
     }
@@ -41,17 +48,17 @@ public class PostmanUrl implements IPostmanCollectionElement {
     }
     @Override
     public String getKey() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
     @Override
     public void setKey(String key) {
-        // TODO Auto-generated method stub
+        
         
     }
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
     

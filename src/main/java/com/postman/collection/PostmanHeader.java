@@ -24,9 +24,14 @@ public class PostmanHeader implements IPostmanCollectionElement {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public boolean isValid() {
+        return true;
+    }
+
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
     

@@ -34,6 +34,10 @@ public static PostmanEvent pmcEventFactory() {
     return retVal;
 }
 
+public boolean isValid() {
+    return true;
+}
+
 public enumEventType getEventType() {
     if(this.getListen().equals("test"))
     {
@@ -78,19 +82,19 @@ public void setScript(PostmanScript script) {
 
 @Override
 public String getKey() {
-    // TODO Auto-generated method stub
+    
     return listen;
 }
 
 @Override
 public void setKey(String key) {
-    // TODO Auto-generated method stub
+    
     
 }
 
 @Override
 public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-    // TODO Auto-generated method stub
+    
     return new Gson().toJson(this);
 }
 

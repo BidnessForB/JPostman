@@ -14,19 +14,19 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private String name;
     @Override
     public String getKey() {
-        // TODO Auto-generated method stub
+        
         return this.getName();
     }
 
     @Override
     public void setKey(String key) {
-        // TODO Auto-generated method stub
+        
         this.setName(key);
     }
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
 
@@ -173,6 +173,11 @@ public class PostmanItem implements IPostmanCollectionElement  {
         this.addItem(newItem, item == null ? 0 : item.length);
     }
 
+    public boolean isValid() {
+        return true;
+    }
+
+
     public void setEvent(PostmanEvent newEvent) {
         //will replace the script if it already exists. 
         
@@ -248,7 +253,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
 
     public void removeItem(String key) throws Exception {
-        // TODO Auto-generated method stub
+        
         PostmanItem curItem;
         if(this.getItem(key) == null) {
             throw new Exception("Item " + key + " not found.");

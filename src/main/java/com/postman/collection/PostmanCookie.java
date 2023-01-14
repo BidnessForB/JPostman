@@ -23,6 +23,10 @@ public class PostmanCookie implements IPostmanCollectionElement {
     public String getDomain() {
         return domain;
     }
+
+    public boolean isValid() {
+        return true;
+    }
     public void setDomain(String domain) {
         this.domain = domain;
     }
@@ -88,17 +92,17 @@ public class PostmanCookie implements IPostmanCollectionElement {
     }
     @Override
     public String getKey() {
-        // TODO Auto-generated method stub
+        
         return name;
     }
     @Override
     public void setKey(String key) {
-        // TODO Auto-generated method stub
+        
         
     }
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
     

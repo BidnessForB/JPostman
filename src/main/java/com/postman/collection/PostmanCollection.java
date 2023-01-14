@@ -14,41 +14,30 @@ import java.lang.reflect.Array;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import com.google.gson.Gson;
 
 
 public class PostmanCollection extends PostmanItem 
 {
 
 
-//private PostmanItem[] item = null;
+
 private PostmanInfo info = null;
-//private PostmanEvent[] event = null;
 private PostmanVariable[] variable = null;
 private PostmanAuth auth = null;
-//private PostmanItem parent = null;
 
-/*public PostmanItem[] getItems() {
-    return item;
-}
-
-public enumPostmanItemType getItemType() {
-    return enumPostmanItemType.COLLECTION;
-}
-*/
 public static void main( String[] args ) throws Exception
     {
-        String filePath = new File("").getAbsolutePath();
+        //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
+        //Thus, fully qualified class names and no imports
+
+        String filePath = new java.io.File("").getAbsolutePath();
         PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
         PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
         
         String strRawItem = "";
         String strChunk;
         
-        BufferedReader brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/test-event-test.json")));
+        BufferedReader brItem = new java.io.BufferedReader(new java.io.FileReader(new java.io.File(filePath + "/src/main/resources/com/postman/collection/test-event-test.json")));
         while((strChunk = brItem.readLine()) != null)
             strRawItem = strRawItem + strChunk;
         try {
@@ -103,6 +92,30 @@ public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
 
 }
 
+
+public boolean isValid() {
+    return true;
+}
+
+public void addFolder(PostmanItem newFolder) throws Exception {
+    if(newFolder.getItemType() != enumPostmanItemType.FOLDER) {
+        throw new Exception("Item is not a folder");
+    }
+
+    this.addItem(newFolder);
+
+}
+
+
+
+public void addRequest(PostmanItem newRequest) throws Exception {
+    if(newRequest.getItemType() != enumPostmanItemType.REQUEST) {
+        throw new Exception("Item is not a request");
+    }
+
+    this.addItem(newRequest);
+}
+
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
     PostmanItem curParent = this.getItem(itemToMove.getKey(), true);
     
@@ -137,8 +150,7 @@ public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean
     Collections.addAll(resultList, this.getVariables());
     Collections.addAll(resultList, newColl.getVariables());
 
-    @SuppressWarnings("unchecked")
-    //the type cast is safe as the array1 has the type T[]
+    
     PostmanVariable[] resultArray = (PostmanVariable[]) Array.newInstance(this.getVariables().getClass().getComponentType(), 0);
     this.setVariables(resultList.toArray(resultArray));
 }
@@ -177,7 +189,7 @@ public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoun
     String strChunk = "";
     BufferedReader brItem = null;
     String strRawItem = "";
-    Gson gson = null;
+    com.google.gson.Gson gson = null;
     
 
     brItem = new BufferedReader(new FileReader(new File(pathToJson)));
@@ -256,13 +268,13 @@ public Hashtable<String, PostmanRequest> getRequests() {
 
 @Override
 public String getKey() {
-    // TODO Auto-generated method stub
+    
     return null;
 }
 
 @Override
 public void setKey(String key) {
-    // TODO Auto-generated method stub
+    
     
 }
 

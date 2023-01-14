@@ -20,6 +20,11 @@ public class PostmanInfo implements IPostmanCollectionElement {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean isValid() {
+        return true;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -40,17 +45,17 @@ public class PostmanInfo implements IPostmanCollectionElement {
     }
     @Override
     public String getKey() {
-        // TODO Auto-generated method stub
+        
         return name;
     }
     @Override
     public void setKey(String key) {
-        // TODO Auto-generated method stub
+        
         name = key;
     }
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
 

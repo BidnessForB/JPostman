@@ -20,6 +20,11 @@ public class PostmanResponse implements IPostmanCollectionElement {
         this.body = body;
     }
 
+    public boolean isValid() {
+        return true;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -78,19 +83,19 @@ public class PostmanResponse implements IPostmanCollectionElement {
 
     @Override
     public String getKey() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
     @Override
     public void setKey(String key) {
-        // TODO Auto-generated method stub
+        
         
     }
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        // TODO Auto-generated method stub
+        
         return new Gson().toJson(this);
     }
 
