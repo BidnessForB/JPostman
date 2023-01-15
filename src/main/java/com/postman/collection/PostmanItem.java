@@ -2,16 +2,16 @@ package com.postman.collection;
 
 
 import com.google.gson.Gson;
+import java.util.List;
+import java.util.ArrayList;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
-    private String description;
+    private String description; 
     private PostmanEvent[] event = null;
     private PostmanRequest request = null;
     private PostmanResponse[] response = null;
     private PostmanItem[] item;
-    
-    
-    private String name;
+    private String name; 
     @Override
     public String getKey() {
         
@@ -163,18 +163,110 @@ public class PostmanItem implements IPostmanCollectionElement  {
         return null;
     }
     */
+
+
+
     public void addItem(PostmanItem newItem) throws Exception {
         
+        if(newItem.equals(this)) {
+            throw new Exception("Cannot add an object to itself, lolz");
+        }
         if(this.getItemType() == enumPostmanItemType.REQUEST)
         {
             throw new Exception("Cannot add items to Requests");
         }
-
+       
         this.addItem(newItem, item == null ? 0 : item.length);
+
+        try {
+            this.toJson(false, null);
+        }
+        catch(Exception e) {
+            System.out.println("rut roh");
+        }
+
     }
 
     public boolean isValid() {
         return true;
+    }
+
+    
+
+    public PostmanItem[] getItemsOfType(enumPostmanItemType ofType) {
+        List<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
+        PostmanItem curItem;
+        PostmanItem[] retVal = new PostmanItem[alItems.size()];
+        for(int i = 0; i < alItems.size(); i++)
+        {
+            curItem = (PostmanItem)alItems.get(i);
+            retVal[i] = curItem;
+        }
+        
+        return retVal;
+       
+
+    }
+
+    public boolean hasItem(PostmanItem theItem) {
+        PostmanItem[] reqs = this.getItemsOfType(enumPostmanItemType.REQUEST);
+        if(reqs != null)
+        {
+            for(PostmanItem curItem: reqs)
+            {
+                if(curItem.equals(theItem))
+                {
+                    return true;
+                }
+            }
+        }
+        PostmanItem[] flds = this.getItemsOfType(enumPostmanItemType.FOLDER);
+        if(flds != null)
+        {
+            for(PostmanItem curItem: flds)
+            {
+                if(curItem.equals(theItem))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private List<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType)
+    {
+            ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
+            
+
+            if(item == null)
+            {
+                return null;
+            }
+            
+            for (PostmanItem curItem: item)
+            {
+                if(curItem.getItemType() == ofType)
+                {
+                    results.add(curItem);
+                    System.out.println(curItem.getName());
+                }
+                try
+                {
+                    results.addAll(curItem.getItemsOfTypeImpl(ofType));
+
+                }
+                catch(Exception e)
+                {
+
+                }
+                
+            }
+
+            
+            return results;
+
+            
     }
 
 
@@ -201,6 +293,10 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
 
     public void addItem(PostmanItem newItem, int position) throws Exception {
+        if(this.hasItem(newItem))
+        {
+            throw new Exception ("Item is already present");
+        }
         if(item == null)
         {
             item = new PostmanItem[0];

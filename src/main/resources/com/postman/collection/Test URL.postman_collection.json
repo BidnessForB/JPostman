@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "974f2079-dce3-4418-8055-1c33c51ac7d5",
+		"name": "Test URL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23889826"
+	},
+	"item": [
+		{
+			"name": "URL 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://foo.com/bar/bat.json",
+					"protocol": "http",
+					"host": [
+						"foo",
+						"com"
+					],
+					"path": [
+						"bar",
+						"bat.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "//foo.com/bar/bat.json",
+					"path": [
+						"",
+						"foo.com",
+						"bar",
+						"bat.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/foo.com/bar/bat.json",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"foo.com",
+						"bar",
+						"bat.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 4",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://foo.com/bar/bat.json?foo=1&bar=2",
+					"protocol": "http",
+					"host": [
+						"foo",
+						"com"
+					],
+					"path": [
+						"bar",
+						"bat.json"
+					],
+					"query": [
+						{
+							"key": "foo",
+							"value": "1"
+						},
+						{
+							"key": "bar",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 5",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://foo.com/bar/bat.json?foo=1&bar=",
+					"protocol": "http",
+					"host": [
+						"foo",
+						"com"
+					],
+					"path": [
+						"bar",
+						"bat.json"
+					],
+					"query": [
+						{
+							"key": "foo",
+							"value": "1"
+						},
+						{
+							"key": "bar",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

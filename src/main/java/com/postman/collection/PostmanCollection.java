@@ -7,13 +7,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Hashtable;
+
 import java.util.Collections;
 import java.lang.reflect.Array;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 public class PostmanCollection extends PostmanItem 
@@ -29,10 +30,41 @@ public static void main( String[] args ) throws Exception
     {
         //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
         //Thus, fully qualified class names and no imports
-
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+        PostmanUrl[] urls = new PostmanUrl[5];
+        PostmanRequest[] requests = new PostmanRequest[5];
+        
+        urls[0] = new PostmanUrl("http://foo.com/bar/bat.json");
+        urls[1] = new PostmanUrl("//foo.com/bar/bat.json");
+        urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
+        urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
+        urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
+
+        for(int i = 0; i<5; i++)
+        {
+            requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
+        } 
+
+        PostmanCollection pmcTest = new PostmanCollection("Empty-Test");
+        pmcTest.writeToFile(filePath +"/test-output/empty-coll-test.json");
+
+        System.out.println("break");
+        
+        
+        
+        
+        
+        pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/catfact-complete-coll.json");
+        pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, "foo.com","","Newish Request","Added in code"));
+        
+         PostmanItem[] reqs = pmcTest.getItemsOfType(enumPostmanItemType.REQUEST);
+        PostmanItem[] flds = pmcTest.getItemsOfType(enumPostmanItemType.FOLDER);
+        System.out.println("Requests:\t\t" + reqs.length);
+        System.out.println("Folders:\t\t" + flds.length);
+       
+        
         PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+        
         
         String strRawItem = "";
         String strChunk;
@@ -50,6 +82,7 @@ public static void main( String[] args ) throws Exception
         
         PostmanEvent evt = PostmanEvent.pmcEventFactory(strRawItem);
         PostmanEvent evt2 = PostmanEvent.pmcEventFactory();
+        
     
 
         PostmanItem newFolder1 = new PostmanItem("new Folder One");
@@ -58,25 +91,32 @@ public static void main( String[] args ) throws Exception
         pmcTest.addItem(newFolder1);
         pmcTest.addItem(newFolder2);
         pmcTest.addItem(newFolder3);
+        //newFolder3.addItem(newFolder2);
+        System.out.println(pmcTest.toJson(false, null));
         pmcTest.moveItem(newFolder2, newFolder1);
         pmcTest.moveItem(newFolder3, newFolder2);
+        //System.out.println(pmcTest.getItemsOfType(enumPostmanItemType.FOLDER).length);
+        //System.out.println(pmcTest.hasItem(newFolder2));
 //        pmcTest.moveItem(newFolder2, newFolder1);
       
         pmcTest.addCollection(pmcWeather, newFolder1);
         
-        //pmcTest.addItem(pmcWeather, 2);
+        pmcTest.addItem(pmcWeather, 2);
         
         
-        //pmcTest.removeItem(newItem);
+        
         //System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
        // System.out.println(pmcTest.toJson(false, null));
        pmcTest.setName("Cat-Weather"); 
        System.out.println("NAME: " + pmcTest.getName());
+       pmcTest.getItemsOfType(enumPostmanItemType.REQUEST);
+       pmcTest.getItemsOfType(enumPostmanItemType.FOLDER);
        
        PostmanItem item = pmcTest.getItem("Weather");
        item.setEvent(evt);
        item.setEvent(evt2);
        pmcTest.moveItem(item, pmcTest);
+       
        pmcTest.writeToFile("new-coll.json");
        
     }
@@ -108,25 +148,26 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 
 
 
-public void addRequest(PostmanItem newRequest) throws Exception {
-    if(newRequest.getItemType() != enumPostmanItemType.REQUEST) {
-        throw new Exception("Item is not a request");
-    }
+public void addRequest(PostmanRequest  newRequest) throws Exception {
+      this.addItem(newRequest);
+}
 
-    this.addItem(newRequest);
+public void addRequest(PostmanRequest newRequest,int position) throws Exception {
+    super.addItem(newRequest, position);
 }
 
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
     PostmanItem curParent = this.getItem(itemToMove.getKey(), true);
+    if(itemToMove.equals(newParent))
+    {
+        throw new Exception("Can't move item to itself, yo");
+    }
     
     if(curParent == null) {
         throw new Exception("Item parent not found");
     }
     curParent.removeItem(itemToMove);
     newParent.addItem(itemToMove);
-
-
-
 }    
 public void setVariables(PostmanVariable[] vars)
 {
@@ -184,6 +225,13 @@ public String getDescription() {
     return this.getInfo().getDescription() + "";
 }
 
+public  PostmanCollection(String name){
+    this.info = new PostmanInfo();
+    this.info.setName(name);
+    this.setItems(new PostmanItem[0]);
+
+}
+
 public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoundException, IOException {
     PostmanCollection pmcRetVal = null;
     String strChunk = "";
@@ -219,6 +267,8 @@ public void writeToFile(String path) throws IOException {
     writer.write(this.toJson(false, null));   
     writer.close();
 }
+
+
 
 
 
@@ -262,9 +312,7 @@ public PostmanItem getItemParent(String key) {
     return result;
 }
  */
-public Hashtable<String, PostmanRequest> getRequests() {
-    return null;
-}
+
 
 @Override
 public String getKey() {

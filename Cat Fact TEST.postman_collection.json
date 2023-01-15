@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "01f90843-5f35-4c0d-9fc9-224980c368aa",
+		"name": "Cat Fact TEST",
+		"description": "Contact Support:\n Email: contact@catfact.ninja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23889826"
+	},
+	"item": [
+		{
+			"name": "Newish Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://foo/bar",
+					"protocol": "http",
+					"host": [
+						"foo"
+					],
+					"path": [
+						"bar"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{fakeAPIKey}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//Collection PR Script"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//Test PR Script"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://f653ab18-2f67-42d4-9ac2-d404779d7b24.mock.pstmn.io",
+			"type": "string"
+		},
+		{
+			"key": "foobar",
+			"value": "This is the foo value",
+			"type": "string"
+		},
+		{
+			"key": "testUrl",
+			"value": "https://foobarbat.com",
+			"type": "string"
+		},
+		{
+			"key": "fakeAPIKey",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
