@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5461775b-c82d-4328-a219-3172891ed0d9",
+		"_postman_id": "9029c796-2aae-40bc-9f3c-c4f8a892ebe4",
 		"name": "Cat Fact TEST",
 		"description": "Contact Support:\n Email: contact@catfact.ninja",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -401,7 +401,7 @@
 		},
 		{
 			"key": "fakeAPIKey",
-			"value": "",
+			"value": "122",
 			"type": "string"
 		}
 	]

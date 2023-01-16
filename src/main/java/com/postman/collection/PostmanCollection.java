@@ -1,19 +1,19 @@
 package com.postman.collection;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-
-import java.util.Collections;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
 
 
 
@@ -31,28 +31,34 @@ public static void main( String[] args ) throws Exception
         //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
         //Thus, fully qualified class names and no imports
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest;
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+        pmcTest.writeToFile(filePath + "/test-output/body-test-compare.json");
+        /*
+        pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
+        System.out.println("Foo");
+       */
+        /*
+
+        List<PostmanUrl> liUrls  = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
         
-        PostmanUrl[] urls = new PostmanUrl[11];
-        PostmanRequest[] requests = new PostmanRequest[11];
+
         
-        
-        urls[0] = new PostmanUrl("http://foo.com/bar/bat.json");
-        urls[1] = new PostmanUrl("//foo.com/bar/bat.json");
-        urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
-        urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
-        urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
-        urls[5] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=");
-        urls[6] = new PostmanUrl("{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=");
-        urls[7] = new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");  
-        urls[8] = new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar="); 
-        urls[9] = new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
-        urls[10] = new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar=");
+        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json"));
+        liUrls.add(new PostmanUrl("//foo.com/bar/bat.json"));
+        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json"));
+        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2"));
+        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar="));
+        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar="));
+        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar="));
+        liUrls.add(new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar="));  
+        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=")); 
+        liUrls.add(new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
+        liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
+
         PostmanCollection pmcTest2 = new PostmanCollection("URL Test");
-        for(int i = 0; i<urls.length; i++)
+        for(int i = 0; i<liUrls.size();i++)
         {
-            requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
-            pmcTest2.addRequest(requests[i],"URL " + (i + 1));
+            pmcTest2.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
         } 
 
         
@@ -130,6 +136,7 @@ public static void main( String[] args ) throws Exception
        pmcTest.moveItem(item, pmcTest);
        
        pmcTest.writeToFile("new-coll.json");
+       */
        
     }
 
@@ -164,6 +171,7 @@ public void addRequest(PostmanRequest  newRequest, String name) throws Exception
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
+    newItem.setResponses(new PostmanResponse[0]);
 }
 
 
@@ -172,6 +180,7 @@ public void addRequest(PostmanRequest newRequest,String name, int position) thro
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem, position);
+    newItem.setResponses(new PostmanResponse[0]);
 }
 
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {

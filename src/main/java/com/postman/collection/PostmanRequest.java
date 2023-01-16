@@ -7,6 +7,8 @@ public class PostmanRequest  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
     private PostmanHeader[] header = new PostmanHeader[0];
+    private String description;
+    private PostmanBody body;
     
     private PostmanVariable[] variable;
     
@@ -78,6 +80,22 @@ public class PostmanRequest  {
 
     public PostmanVariable[] getVariables() {
         return this.variable;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public PostmanVariable[] getVariable() {
+        return variable;
+    }
+
+    public void setVariable(PostmanVariable[] variable) {
+        this.variable = variable;
     }
 
     public void addVariable(PostmanVariable var)
