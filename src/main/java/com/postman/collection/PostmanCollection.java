@@ -33,25 +33,31 @@ public static void main( String[] args ) throws Exception
         String filePath = new java.io.File("").getAbsolutePath();
         PostmanCollection pmcTest;
         
-        PostmanUrl[] urls = new PostmanUrl[5];
-        PostmanRequest[] requests = new PostmanRequest[5];
+        PostmanUrl[] urls = new PostmanUrl[11];
+        PostmanRequest[] requests = new PostmanRequest[11];
         
         
-        urls[0] = new PostmanUrl("//foo.com/bar/bat.json");
-        urls[1] = new PostmanUrl("//foo.com");
-        urls[2] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
-        urls[3] = new PostmanUrl("http://foo.com/");
-        urls[4] = new PostmanUrl("http://foo.com");
-        PostmanCollection pmcTest2 = new PostmanCollection("URL Test Constructed");
+        urls[0] = new PostmanUrl("http://foo.com/bar/bat.json");
+        urls[1] = new PostmanUrl("//foo.com/bar/bat.json");
+        urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
+        urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
+        urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
+        urls[5] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=");
+        urls[6] = new PostmanUrl("{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=");
+        urls[7] = new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");  
+        urls[8] = new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar="); 
+        urls[9] = new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls[10] = new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar=");
+        PostmanCollection pmcTest2 = new PostmanCollection("URL Test");
         for(int i = 0; i<urls.length; i++)
         {
             requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
-            pmcTest2.addRequest(requests[i],"Test Constructed URL " + i);
+            pmcTest2.addRequest(requests[i],"URL " + (i + 1));
         } 
 
         
         
-        pmcTest2.writeToFile(filePath +"/test-output/empty-coll-test.json");
+        pmcTest2.writeToFile(filePath +"/test-output/shouldCreateURLs.json");
 
         System.out.println("break");
         

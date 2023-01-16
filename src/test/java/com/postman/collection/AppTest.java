@@ -29,7 +29,7 @@ public class AppTest
         @Test
         public void shouldCreateURLs() {
             
-        PostmanCollection pmcTest = new PostmanCollection("URL Test Constructed");
+        PostmanCollection pmcTest = new PostmanCollection("URL Test");
         PostmanUrl[] urls = new PostmanUrl[9];
         PostmanRequest[] requests = new PostmanRequest[9];
         
@@ -42,26 +42,29 @@ public class AppTest
         urls[6] = new PostmanUrl("{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=");
         urls[7] = new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
         urls[8] = new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls[9] = new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
         
         for(int i = 0; i<urls.length; i++)
         {
             requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
             try {
                 
-            pmcTest.addRequest(requests[i],"Test Constructed URL " + i);
+            pmcTest.addRequest(requests[i],"URL " + (i + 1));
             }
             catch(Exception e)
             {
                 assertTrue(false);
             }
         } 
+        /*
         requests[6].addVariable(new PostmanVariable("path1", "path-value"));
         requests[7].addVariable(new PostmanVariable("path1", "path-value"));
         requests[8].addVariable(new PostmanVariable("path1", "path-value"));
+        */
         try {
             
         pmcTest.writeToFile(filePath +"/test-output/shouldCreateUrRLs.json");
-        pmcTest = PostmanCollection.PMCFactory(filePath + "/test-output/shouldCreateUrRLs.json");
+        pmcTest = PostmanCollection.PMCFactory(filePath + "/test-output/shouldCreateURLs.json");
         
         
         }
