@@ -17,6 +17,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private PostmanQuery[] query;
     private PostmanVariable[] variable = null;
     private String protocol;
+    private String port;
     
     public void setRaw(String rawURL) {
        
@@ -50,7 +51,12 @@ public class PostmanUrl implements IPostmanCollectionElement {
         else {
             this.setHost(null);
         }
-
+        Pattern pnPort = Pattern.compile(":([0-9]+)");
+        Matcher maPort = pnPort.matcher(rawURL);
+        if(maPort.find() == true)
+        {
+            this.setPort(Integer.parseInt(maPort.group(1)));
+        }
         
         String [] queryElements = rawURL.split("\\?");
         if(queryElements != null && queryElements.length == 1)
@@ -241,5 +247,19 @@ public class PostmanUrl implements IPostmanCollectionElement {
                 this.addQuery(elements[0], elements[1]);
             }
 
+    }
+    public String getPort() {
+        return this.port;
+    }
+
+    public void setPort(int port) {
+        try {
+            this.port = Integer.toString(port);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
     }
 }

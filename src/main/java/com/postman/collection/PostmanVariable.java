@@ -3,16 +3,16 @@ import com.google.gson.Gson;
 public class PostmanVariable implements IPostmanCollectionElement {
     private String key = "";
     private String value = "";
-    private String type = "";
+    
     
     public String getToken() {
         return "{{" + key + "}}";
     }
 
-    public PostmanVariable(String key, String value, String type) {
+    public PostmanVariable(String key, String value) {
         this.key = key;
         this.value = value;
-        this.type = type;
+        
     }
 
     public String getKey() {
@@ -36,14 +36,7 @@ public class PostmanVariable implements IPostmanCollectionElement {
         this.value = value;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
         
