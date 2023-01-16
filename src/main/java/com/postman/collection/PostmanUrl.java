@@ -23,22 +23,28 @@ public class PostmanUrl implements IPostmanCollectionElement {
        
         
         this.raw = rawURL;
-
+        String testUrl = rawURL;
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
         if(maProtocol.find()) {
             this.setProtocol(maProtocol.group());
-            rawURL = rawURL.substring(maProtocol.group().length());
+            rawURL = rawURL.replace(maProtocol.group(0), "");
         }
         else {
             this.setProtocol(null);
         };
 
-        Pattern pnHost = Pattern.compile("([^:^/]*)" );
+        //Pattern pnHost = Pattern.compile("([^:^/]*)" );
+        Pattern pnHost = Pattern.compile("^([^:^/]*)(:([0-9]+))?");
         Matcher maHost = pnHost.matcher(rawURL);
         if(maHost.find()) {
-            this.setHost(maHost.group(0));
-            rawURL = rawURL.substring(maHost.group().length());
+            this.setHost(maHost.group(1));
+            if(maHost.groupCount() >= 3 && maHost.group(3) != null)
+            {
+                this.setPort(Integer.parseInt(maHost.group(3)));
+                rawURL = rawURL.replace(maHost.group(2),"");
+            }
+            rawURL = rawURL.replace(maHost.group(1),"");
         }
         else if (!maHost.find())
         {
@@ -51,12 +57,15 @@ public class PostmanUrl implements IPostmanCollectionElement {
         else {
             this.setHost(null);
         }
+       /*
         Pattern pnPort = Pattern.compile(":([0-9]+)");
         Matcher maPort = pnPort.matcher(rawURL);
         if(maPort.find() == true)
         {
             this.setPort(Integer.parseInt(maPort.group(1)));
+            rawURL = rawURL.replace(maPort.group(0), "");
         }
+        */
         
         String [] queryElements = rawURL.split("\\?");
         if(queryElements != null && queryElements.length == 1)
