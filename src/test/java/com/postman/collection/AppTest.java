@@ -1,7 +1,9 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertTrue;
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -29,38 +31,44 @@ public class AppTest
         @Test
         public void shouldCreateURLs() {
             
-        PostmanCollection pmcTest = new PostmanCollection("URL Test");
-        PostmanUrl[] urls = new PostmanUrl[9];
-        PostmanRequest[] requests = new PostmanRequest[9];
-        
-        urls[0] = new PostmanUrl("http://foo.com/bar/bat.json");
-        urls[1] = new PostmanUrl("//foo.com/bar/bat.json");
-        urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
-        urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
-        urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
-        urls[5] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=");
-        urls[6] = new PostmanUrl("{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=");
-        urls[7] = new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
-        urls[8] = new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
-        urls[9] = new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
-        
-        for(int i = 0; i<urls.length; i++)
-        {
-            requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
-            try {
-                
-            pmcTest.addRequest(requests[i],"URL " + (i + 1));
-            }
-            catch(Exception e)
+            String filePath = new java.io.File("").getAbsolutePath();
+            
+            
+            List<PostmanUrl> liUrls  = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
+            
+    
+            
+            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json"));
+            liUrls.add(new PostmanUrl("//foo.com/bar/bat.json"));
+            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json"));
+            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2"));
+            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar="));
+            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar="));
+            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar="));  
+            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=")); 
+            liUrls.add(new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
+    
+            PostmanCollection pmcTest = new PostmanCollection("URL Test");
+            for(int i = 0; i<liUrls.size();i++)
             {
-                assertTrue(false);
-            }
-        } 
+                try {
+                    pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                    assertTrue(false);
+                }
+                
+            } 
+    
         /*
         requests[6].addVariable(new PostmanVariable("path1", "path-value"));
         requests[7].addVariable(new PostmanVariable("path1", "path-value"));
         requests[8].addVariable(new PostmanVariable("path1", "path-value"));
         */
+        
         try {
             
         pmcTest.writeToFile(filePath +"/test-output/shouldCreateUrRLs.json");
@@ -76,6 +84,20 @@ public class AppTest
         assert(true);
         
 
+        }
+        @Test
+        public void shouldProduceIdenticalCollection() {
+            PostmanCollection pmcTest;
+            try {
+                pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+                pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+                assertTrue(false);
+            }
+            assertTrue(true);
+            
         }
     }
 

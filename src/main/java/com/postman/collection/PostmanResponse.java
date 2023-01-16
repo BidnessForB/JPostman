@@ -8,6 +8,7 @@ public class PostmanResponse implements IPostmanCollectionElement {
     private String _postman_previewlanguage = "";
     private PostmanCookie[] cookie = null;
     private String body = "";
+    private PostmanVariable[] header;
 
     public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
             String _postman_previewlanguage, PostmanCookie[] cookie, String body) {

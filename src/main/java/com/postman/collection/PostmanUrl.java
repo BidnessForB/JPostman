@@ -82,7 +82,33 @@ public class PostmanUrl implements IPostmanCollectionElement {
             this.setPath(null);
             this.setQuery(null);
         }
+/*
+        for(int i = 0; i < this.path.length; i++)
+        {
+            if(this.path[i].substring(0,1).equals(":")) {
+                this.addVariable(this.path[i].substring(1), null, null);
+            }
+        }
+        */
+
         System.out.println("foo");
+
+    }
+
+    public void addVariable(String key, String value, String description) {
+
+        //Setting to null so javac stops complaining about it not being initialized
+        List<PostmanVariable> liVars = null;
+
+        if(this.variable == null) {
+            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+        }
+        else
+        {
+            new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
+        }
+        liVars.add(new PostmanVariable(key,value,description));
+        this.variable = liVars.toArray(new PostmanVariable[0]);
 
     }
 
@@ -98,7 +124,9 @@ public class PostmanUrl implements IPostmanCollectionElement {
             {
                 if(pathElements[i] != null && pathElements[i].length() > 0 ) {
                     liPath.add(pathElements[i]);
-                    
+                    if(pathElements[i].substring(0,1).equals(":")) {
+                        this.addVariable(pathElements[i].substring(1), null, null);
+                    }
                 }
             }
 

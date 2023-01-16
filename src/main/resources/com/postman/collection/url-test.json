@@ -128,12 +128,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}foo.com/bar/bat.json?foo=1&bar=",
+					"raw": "{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=",
 					"host": [
-						"{{baseUrl}}foo",
-						"com"
+						"{{baseUrl}}"
 					],
 					"path": [
+						"foo.com",
 						"bar",
 						"bat.json"
 					],
@@ -157,12 +157,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=",
+					"raw": "{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar=",
 					"host": [
-						"{{baseUrl}}foo",
-						"com"
+						"{{baseUrl}}"
 					],
 					"path": [
+						"foo.com",
 						"bar",
 						":path1",
 						"bat.json"
@@ -180,7 +180,8 @@
 					"variable": [
 						{
 							"key": "path1",
-							"value": "path-value"
+							"value": "path-value",
+							"description": "This is a path variable"
 						}
 					]
 				}
@@ -254,6 +255,81 @@
 						{
 							"key": "path1",
 							"value": "path-value"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 10",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=",
+					"protocol": "https",
+					"host": [
+						"foo",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"bar",
+						":path1",
+						"bat.json"
+					],
+					"query": [
+						{
+							"key": "foo",
+							"value": "1"
+						},
+						{
+							"key": "bar",
+							"value": ""
+						}
+					],
+					"variable": [
+						{
+							"key": "path1",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL 11",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://foo.com/bar/:path1/bat.json?foo=1&bar=",
+					"protocol": "https",
+					"host": [
+						"foo",
+						"com"
+					],
+					"path": [
+						"bar",
+						":path1",
+						"bat.json"
+					],
+					"query": [
+						{
+							"key": "foo",
+							"value": "1"
+						},
+						{
+							"key": "bar",
+							"value": ""
+						}
+					],
+					"variable": [
+						{
+							"key": "path1",
+							"value": null
 						}
 					]
 				}
