@@ -31,6 +31,8 @@ public static void main( String[] args ) throws Exception
         //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
         //Thus, fully qualified class names and no imports
         String filePath = new java.io.File("").getAbsolutePath();
+        PostmanCollection pmcTest;
+        
         PostmanUrl[] urls = new PostmanUrl[5];
         PostmanRequest[] requests = new PostmanRequest[5];
         
@@ -39,14 +41,16 @@ public static void main( String[] args ) throws Exception
         urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
         urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
         urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
-
+        PostmanCollection pmcTest2 = new PostmanCollection("URL Test Constructed");
         for(int i = 0; i<5; i++)
         {
             requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
+            pmcTest2.addRequest(requests[i],"Test Constructed URL " + i);
         } 
 
-        PostmanCollection pmcTest = new PostmanCollection("Empty-Test");
-        pmcTest.writeToFile(filePath +"/test-output/empty-coll-test.json");
+        
+        
+        pmcTest2.writeToFile(filePath +"/test-output/empty-coll-test.json");
 
         System.out.println("break");
         
@@ -55,7 +59,8 @@ public static void main( String[] args ) throws Exception
         
         
         pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/catfact-complete-coll.json");
-        pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, "foo.com","","Newish Request","Added in code"));
+        PostmanRequest pmrNewish = new PostmanRequest(enumHTTPRequestMethod.GET, "foo.com","");
+        pmcTest.addRequest(pmrNewish, "Newish request");
         
          PostmanItem[] reqs = pmcTest.getItemsOfType(enumPostmanItemType.REQUEST);
         PostmanItem[] flds = pmcTest.getItemsOfType(enumPostmanItemType.FOLDER);
@@ -148,12 +153,18 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 
 
 
-public void addRequest(PostmanRequest  newRequest) throws Exception {
-      this.addItem(newRequest);
+public void addRequest(PostmanRequest  newRequest, String name) throws Exception  {
+    PostmanItem newItem = new PostmanItem(name);  
+    newItem.setRequest(newRequest);
+    super.addItem(newItem);
 }
 
-public void addRequest(PostmanRequest newRequest,int position) throws Exception {
-    super.addItem(newRequest, position);
+
+
+public void addRequest(PostmanRequest newRequest,String name, int position) throws Exception {
+    PostmanItem newItem = new PostmanItem(name);  
+    newItem.setRequest(newRequest);
+    super.addItem(newItem, position);
 }
 
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {

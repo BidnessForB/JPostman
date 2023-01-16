@@ -4,6 +4,7 @@ package com.postman.collection;
 import com.google.gson.Gson;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
     private String description; 
@@ -34,7 +35,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public PostmanItem(String name)
     {
         this.setName(name);
-        this.item = new PostmanItem[0];
+        
     }
 
     public PostmanItem() {
@@ -164,7 +165,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
     */
 
-
+  
 
     public void addItem(PostmanItem newItem) throws Exception {
         
@@ -194,6 +195,10 @@ public class PostmanItem implements IPostmanCollectionElement  {
     
 
     public PostmanItem[] getItemsOfType(enumPostmanItemType ofType) {
+        if(item == null)
+        {
+            return null;
+        }
         List<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
         PostmanItem curItem;
         PostmanItem[] retVal = new PostmanItem[alItems.size()];
@@ -297,10 +302,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         {
             throw new Exception ("Item is already present");
         }
-        if(item == null)
-        {
-            item = new PostmanItem[0];
-        }
+     
         if(newItem.getClass().getName().equals("com.postman.collection.PostmanCollection"))
         {
             String clname = this.getClass().getName();
@@ -317,30 +319,19 @@ public class PostmanItem implements IPostmanCollectionElement  {
             return;
             //throw new Exception("Can't add a collection to a collection");
         }
-        if((position > (item.length) || position < 0)) {
-            throw new Exception("Position " + position + " out of bounds.");
-        }
-        PostmanItem[] newArr = new PostmanItem[item.length + 1];
-        for(int i = 0; i < item.length; i++)
+        ArrayList<PostmanItem> liItems = new ArrayList<PostmanItem>(Arrays.asList(new PostmanItem[0]));
+        if(this.item == null)
         {
-            if(i == position)
-            {
-                newArr[i] = newItem;
-                newArr[i+1] = item[i];
-            }
-            else if (i < position)
-            {
-                newArr[i] = item[i];
-            }
-            else if (i > position)
-            {
-                newArr[i+1] = item[i];
-            }
+            liItems.add(newItem);
         }
-        if(position == item.length) {
-            newArr[position] = newItem;
+        else{
+            liItems = new ArrayList<PostmanItem>(Arrays.asList(this.item));
+            liItems.add(position < liItems.size() ? position : liItems.size(), newItem);
         }
-        item = newArr;
+
+
+        
+        item = liItems.toArray(new PostmanItem[0]);
         
     }
     public void removeItem(PostmanItem oldItem) throws Exception

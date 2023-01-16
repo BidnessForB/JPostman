@@ -1,10 +1,10 @@
 package com.postman.collection;
 
 import com.google.gson.Gson;
-import java.util.StringTokenizer;
+
 import java.util.regex.*;
 
-import javax.lang.model.util.ElementScanner14;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,12 +19,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private String protocol;
     
     public void setRaw(String rawURL) {
-        String testUrl = rawURL;
-        String protocol;
-        String domain;
-        String port;
-        String uri;
-        String query;
+       
         
         this.raw = rawURL;
 
@@ -37,12 +32,20 @@ public class PostmanUrl implements IPostmanCollectionElement {
         else {
             this.setProtocol(null);
         };
-        
+
         Pattern pnHost = Pattern.compile("([^:^/]*)" );
         Matcher maHost = pnHost.matcher(rawURL);
         if(maHost.find()) {
-            this.setHost(maHost.group());
+            this.setHost(maHost.group(0));
             rawURL = rawURL.substring(maHost.group().length());
+        }
+        else if (!maHost.find())
+        {
+            pnHost = Pattern.compile("([\\.]*)" );
+            maHost = pnHost.matcher(rawURL);
+            if(maHost.find()) {
+                this.setHost(maHost.group());
+            }
         }
         else {
             this.setHost(null);
@@ -64,7 +67,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
             this.setPath(null);
             this.setQuery(null);
         }
-        
+        System.out.println("foo");
 
     }
 
@@ -75,12 +78,12 @@ public class PostmanUrl implements IPostmanCollectionElement {
         if(rawPath != null && rawPath.length() > 0)
         {
             pathElements = rawPath.split("/");
-            liPath = new ArrayList<String>(Arrays.asList(pathElements));
-            for(int i = 0; i < liPath.size(); i++)
+            liPath = new ArrayList<String>(Arrays.asList(new String[0]));
+            for(int i = 0; i < pathElements.length; i++)
             {
-                if(liPath.get(i) == null || liPath.get(i) == "") {
-                    liPath.remove(i);
-                    //i--;
+                if(pathElements[i] != null && pathElements[i].length() > 0 ) {
+                    liPath.add(pathElements[i]);
+                    
                 }
             }
 
@@ -208,7 +211,10 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void addQuery(String key, String value, String description) {
         PostmanQuery newQuery = new PostmanQuery(key,value, description);
-
+        if(this.query == null)
+        {
+            this.query = new PostmanQuery[0];
+        }
         List<PostmanQuery> liQuery = new ArrayList<PostmanQuery>(Arrays.asList(this.query));
         liQuery.add(newQuery);
         this.query = liQuery.toArray(this.query);
@@ -217,8 +223,6 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void addQuery(String queryString) {
         
-        String key = "";
-        String value = "";
         String[] elements = new String[2];
 
         if((queryString == null || queryString.length() < 1))

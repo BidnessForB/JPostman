@@ -5,7 +5,7 @@ public class PostmanInfo implements IPostmanCollectionElement {
     private String _postman_id = "";
     private String name = "";
     private String description = "";
-    private String schema = "";
+    private String schema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
     private String _exporter_id;
 
     public String get_postman_id() {

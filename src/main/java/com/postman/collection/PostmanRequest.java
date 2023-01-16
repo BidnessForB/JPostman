@@ -10,21 +10,26 @@ public class PostmanRequest extends PostmanItem  {
     
  
 
-    public PostmanRequest(enumHTTPRequestMethod method, String host,String path, String name, String description) {
+    public PostmanRequest(enumHTTPRequestMethod method, String host,String path) {
+        
         this.setMethod(method);
         this.setUrl(new PostmanUrl(host, path));
-        this.setName(name);
-        this.setDescription(description);
+        
+        setRequest(this);
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
+        
         this.setMethod(method);
         this.setUrl(url);
+        setRequest(this);
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, String URL) {
+        
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);
+        setRequest(this);
     }
 
     
