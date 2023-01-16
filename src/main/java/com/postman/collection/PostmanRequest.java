@@ -1,10 +1,14 @@
 package com.postman.collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
-
-public class PostmanRequest extends PostmanItem  {
+public class PostmanRequest  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
     private PostmanHeader[] header = new PostmanHeader[0];
+    
+    private PostmanVariable[] variable;
     
     //private String description = "";
     
@@ -15,21 +19,21 @@ public class PostmanRequest extends PostmanItem  {
         this.setMethod(method);
         this.setUrl(new PostmanUrl(host, path));
         
-        setRequest(this);
+        
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
         
         this.setMethod(method);
         this.setUrl(url);
-        setRequest(this);
+        
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, String URL) {
         
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);
-        setRequest(this);
+        
     }
 
     
@@ -42,7 +46,7 @@ public class PostmanRequest extends PostmanItem  {
         boolean valid = true;
         valid = valid && (method != null);
         valid = valid && (url.isValid() && url != null);
-        valid = this.getName() != null;
+        
         return valid;
     }
 
@@ -67,16 +71,30 @@ public class PostmanRequest extends PostmanItem  {
         this.header = header;
     }
 
-  
-
-    
-    
-    
-    public void addItem(PostmanItem item) throws Exception {
-        throw new Exception("Cannot add items to a Request");
-    } 
-
-    public void removeItem(PostmanItem item) throws Exception {
-        throw new Exception("Cannot remove an item from a Request");
+    public void setVariables(PostmanVariable[] vars)
+    {
+        this.variable = vars;
     }
+
+    public PostmanVariable[] getVariables() {
+        return this.variable;
+    }
+
+    public void addVariable(PostmanVariable var)
+    {
+        List<PostmanVariable> liVars;
+        
+        if(this.variable != null)
+        {
+            liVars = new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
+        }
+        else {
+            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+        }
+
+        liVars.add(var);
+        this.variable = liVars.toArray(new PostmanVariable[0]);
+
+    }
+
 }

@@ -36,13 +36,14 @@ public static void main( String[] args ) throws Exception
         PostmanUrl[] urls = new PostmanUrl[5];
         PostmanRequest[] requests = new PostmanRequest[5];
         
-        urls[0] = new PostmanUrl("http://foo.com/bar/bat.json");
-        urls[1] = new PostmanUrl("//foo.com/bar/bat.json");
-        urls[2] = new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json");
-        urls[3] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
-        urls[4] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=");
+        
+        urls[0] = new PostmanUrl("//foo.com/bar/bat.json");
+        urls[1] = new PostmanUrl("//foo.com");
+        urls[2] = new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2");
+        urls[3] = new PostmanUrl("http://foo.com/");
+        urls[4] = new PostmanUrl("http://foo.com");
         PostmanCollection pmcTest2 = new PostmanCollection("URL Test Constructed");
-        for(int i = 0; i<5; i++)
+        for(int i = 0; i<urls.length; i++)
         {
             requests[i] = new PostmanRequest(enumHTTPRequestMethod.GET,urls[i]);
             pmcTest2.addRequest(requests[i],"Test Constructed URL " + i);
