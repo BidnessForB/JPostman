@@ -3,20 +3,41 @@ import com.google.gson.Gson;
 public class PostmanVariable implements IPostmanCollectionElement {
     private String key = "";
     private String value = "";
-    private String type = "";
+    private String description = "";
+    private String type;
+    
     
     public String getToken() {
         return "{{" + key + "}}";
     }
 
-    public PostmanVariable(String key, String value, String type) {
+    public PostmanVariable(String key, String value, String description) {
+        this(key,value,description,null);
+        
+    }
+
+    public PostmanVariable(String key, String value, String description, String type) {
         this.key = key;
         this.value = value;
+        this.description = description;
         this.type = type;
+    }
+
+    public PostmanVariable(String key, String value) {
+        this(key,value,null,null);
     }
 
     public String getKey() {
         return key;
+    }
+
+    public void setDescription(String desc)
+    {
+        this.description = desc;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public boolean isValid() {
@@ -36,18 +57,19 @@ public class PostmanVariable implements IPostmanCollectionElement {
         this.value = value;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
         
         return new Gson().toJson(this);
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
     

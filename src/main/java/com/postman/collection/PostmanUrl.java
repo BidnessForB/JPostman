@@ -17,27 +17,34 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private PostmanQuery[] query;
     private PostmanVariable[] variable = null;
     private String protocol;
+    private String port;
     
     public void setRaw(String rawURL) {
        
         
         this.raw = rawURL;
-
+        String testUrl = rawURL;
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
         if(maProtocol.find()) {
             this.setProtocol(maProtocol.group());
-            rawURL = rawURL.substring(maProtocol.group().length());
+            rawURL = rawURL.replace(maProtocol.group(0), "");
         }
         else {
             this.setProtocol(null);
         };
 
-        Pattern pnHost = Pattern.compile("([^:^/]*)" );
+        //Pattern pnHost = Pattern.compile("([^:^/]*)" );
+        Pattern pnHost = Pattern.compile("^([^:^/]*)(:([0-9]+))?");
         Matcher maHost = pnHost.matcher(rawURL);
         if(maHost.find()) {
-            this.setHost(maHost.group(0));
-            rawURL = rawURL.substring(maHost.group().length());
+            this.setHost(maHost.group(1));
+            if(maHost.groupCount() >= 3 && maHost.group(3) != null)
+            {
+                this.setPort(Integer.parseInt(maHost.group(3)));
+                rawURL = rawURL.replace(maHost.group(2),"");
+            }
+            rawURL = rawURL.replace(maHost.group(1),"");
         }
         else if (!maHost.find())
         {
@@ -50,7 +57,15 @@ public class PostmanUrl implements IPostmanCollectionElement {
         else {
             this.setHost(null);
         }
-
+       /*
+        Pattern pnPort = Pattern.compile(":([0-9]+)");
+        Matcher maPort = pnPort.matcher(rawURL);
+        if(maPort.find() == true)
+        {
+            this.setPort(Integer.parseInt(maPort.group(1)));
+            rawURL = rawURL.replace(maPort.group(0), "");
+        }
+        */
         
         String [] queryElements = rawURL.split("\\?");
         if(queryElements != null && queryElements.length == 1)
@@ -67,7 +82,33 @@ public class PostmanUrl implements IPostmanCollectionElement {
             this.setPath(null);
             this.setQuery(null);
         }
+/*
+        for(int i = 0; i < this.path.length; i++)
+        {
+            if(this.path[i].substring(0,1).equals(":")) {
+                this.addVariable(this.path[i].substring(1), null, null);
+            }
+        }
+        */
+
         System.out.println("foo");
+
+    }
+
+    public void addVariable(String key, String value, String description) {
+
+        //Setting to null so javac stops complaining about it not being initialized
+        List<PostmanVariable> liVars = null;
+
+        if(this.variable == null) {
+            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+        }
+        else
+        {
+            new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
+        }
+        liVars.add(new PostmanVariable(key,value,description));
+        this.variable = liVars.toArray(new PostmanVariable[0]);
 
     }
 
@@ -83,7 +124,9 @@ public class PostmanUrl implements IPostmanCollectionElement {
             {
                 if(pathElements[i] != null && pathElements[i].length() > 0 ) {
                     liPath.add(pathElements[i]);
-                    
+                    if(pathElements[i].substring(0,1).equals(":")) {
+                        this.addVariable(pathElements[i].substring(1), null, null);
+                    }
                 }
             }
 
@@ -241,5 +284,19 @@ public class PostmanUrl implements IPostmanCollectionElement {
                 this.addQuery(elements[0], elements[1]);
             }
 
+    }
+    public String getPort() {
+        return this.port;
+    }
+
+    public void setPort(int port) {
+        try {
+            this.port = Integer.toString(port);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
     }
 }
