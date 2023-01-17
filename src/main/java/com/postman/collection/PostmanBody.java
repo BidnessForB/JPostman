@@ -31,14 +31,29 @@ public class PostmanBody {
     }
 
     public void setRaw(String raw, enumRawBodyLanguage language) {
-        this.raw = raw;
+        
         
         if(this.getMode() == enumRequestBodyMode.TEXT)
         {
+            this.raw = raw;
             this.options = null;
             return;
         }
-        this.options = new PostmanBodyOptions(new PostmanBodyRaw(language));
+        if(this.getMode() == enumRequestBodyMode.RAW)
+        {
+            this.options = new PostmanBodyOptions(new PostmanBodyRaw(language));
+            this.raw = raw;
+        }
+        if(this.getMode() == enumRequestBodyMode.FORMDATA || this.getMode() == enumRequestBodyMode.URLENCODED)
+        {
+            this.options = null;
+        }
+        if(this.getMode() == enumRequestBodyMode.GRAPHQL) {
+            this.options = null;
+            this.graphql = new PostmanGraphQL(raw);
+        }
+
+        
     }
 
     public PostmanGraphQL getGraphql() {
@@ -130,7 +145,7 @@ public class PostmanBody {
         
         this.setMode(mode);
 
-        if(this.getMode() == enumRequestBodyMode.RAW)
+        if(this.getMode() == enumRequestBodyMode.RAW || this.getMode() == enumRequestBodyMode.GRAPHQL)
         {
             this.setRaw(content, language);
         }
@@ -138,6 +153,7 @@ public class PostmanBody {
         {
             this.file.setSrc(content);
         }
+        
         
     }
 

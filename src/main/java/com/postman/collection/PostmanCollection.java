@@ -8,12 +8,23 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
+import java.util.Set;
+import java.util.Iterator;
+
 
 import com.google.gson.Gson;
+
 
 
 
@@ -25,14 +36,18 @@ public class PostmanCollection extends PostmanItem
 private PostmanInfo info = null;
 private PostmanVariable[] variable = null;
 private PostmanAuth auth = null;
+private ValidationMessage[] validationMessages;
 
 public static void main( String[] args ) throws Exception
     {
         //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
         //Thus, fully qualified class names and no imports
         String filePath = new java.io.File("").getAbsolutePath();
-        //PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+        // PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+        //PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/broken.postman_collection.json");
+        //pmcTest.validate();
         PostmanCollection pmcTest = new PostmanCollection("Constructed Bodies");
+
 
         PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
         byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
@@ -59,9 +74,28 @@ public static void main( String[] args ) throws Exception
         rqJsondata.setBody(byJsondata);
         pmcTest.addRequest(rqJsondata, "JSON data Body");
 
+        PostmanBody byHTML = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",enumRawBodyLanguage.HTML);
+        PostmanRequest rqHTML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqHTML.setBody(byHTML);
+        pmcTest.addRequest(rqHTML, "HTML data Body");
 
+        PostmanBody byXML = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",enumRawBodyLanguage.XML);
+        PostmanRequest rqXML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqXML.setBody(byXML);
+        pmcTest.addRequest(rqXML, "XML data Body");
 
+        String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
+
+        PostmanBody byGraphQL = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL,enumRawBodyLanguage.GRAPHQL);
+        //byGraphQL.addVariable(new PostmanVariable("{ \"limit\":2}");
+        PostmanRequest rqGraphQL = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqGraphQL.setBody(byGraphQL);
+        pmcTest.addRequest(rqGraphQL, "GraphQL data Body");
+        
         pmcTest.writeToFile(filePath + "/test-output/constructed-bodies.json");
+        System.out.println("Is valid: " + pmcTest.validate());
+
+        System.out.println("break");
 
         
         /*
@@ -182,9 +216,49 @@ public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
 
 }
 
+public ValidationMessage[] getValidationMessage() {
+    return this.validationMessages;
+}
 
-public boolean isValid() {
-    return true;
+
+public boolean validate() throws Exception {
+    
+    String filePath = new java.io.File("").getAbsolutePath();
+    String schemaJSON = null;;
+    BufferedReader brItem;
+    String strChunk;
+    ObjectMapper mapper = new ObjectMapper();
+    this.validationMessages = null;
+    
+    brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/postman-collection-2.1-schema.json")));
+        while((strChunk = brItem.readLine()) != null)
+            schemaJSON = schemaJSON + strChunk;
+        try {
+            brItem.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    schemaJSON = schemaJSON.substring(4);
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+    JsonSchema schema = factory.getSchema(schemaJSON);
+    JsonNode pmcNode = mapper.readTree(this.toJson(false, null));
+    schema.initializeValidators();
+    Set<ValidationMessage> errors = schema.validate(pmcNode);
+    Iterator<ValidationMessage> itErrors = errors.iterator();
+    
+    if(errors.size() > 0) {
+        this.validationMessages = errors.toArray(new ValidationMessage[0]);
+    }
+
+    while(itErrors.hasNext()) {
+        System.out.println(itErrors.next().getMessage());
+    }
+    return(errors.size() == 0);
+
+    
 }
 
 public void addFolder(PostmanItem newFolder) throws Exception {

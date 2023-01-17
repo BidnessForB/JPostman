@@ -38,8 +38,16 @@
       <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
+    
+  <dependency>
+    <groupId>com.networknt</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <version>1.0.76</version>
+  </dependency>
+
   </dependencies>
 
+  
   <build>
 
     <pluginManagement>      <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
