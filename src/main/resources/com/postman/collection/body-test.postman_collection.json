@@ -11,6 +11,29 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "FormField1",
+							"value": "Field 1 value",
+							"description": "This is for Field 1",
+							"type": "text"
+						},
+						{
+							"key": "FormField2",
+							"value": "Field 2 value",
+							"description": "This is for Field 2",
+							"type": "text"
+						},
+						{
+							"key": "FormField3",
+							"value": "122",
+							"description": "This is a number",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
 					"raw": "https://postman-echo.com/post",
 					"protocol": "https",
@@ -210,7 +233,7 @@
 				"body": {
 					"mode": "file",
 					"file": {
-						"src": "qZdBTwcdi/jenkins-small.png"
+						"src": "8vhckkNqZ/jenkins-small.png"
 					}
 				},
 				"url": {

@@ -14,4 +14,8 @@ public class PostmanBodyOptions {
     public PostmanBodyOptions(PostmanBodyRaw raw) {
         this.raw = raw;
     }
+
+    public PostmanBodyOptions(enumRawBodyLanguage language) {
+        this.raw = new PostmanBodyRaw(language);
+    }
 }

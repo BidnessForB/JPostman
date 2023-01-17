@@ -99,5 +99,22 @@ public class AppTest
             assertTrue(true);
             
         }
+
+        @Test
+        public void testBodyImportExport() {
+            String filePath = new java.io.File("").getAbsolutePath();
+            try {
+                PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+                pmcTest.writeToFile(filePath + "/test-output/body-test-compare.json");
+                //TO-DO: Some JSON validation
+            }
+            catch(Exception e)
+             {
+                e.printStackTrace();
+                assertTrue(false);
+             }
+             assertTrue(true);
+            
+        }
     }
 

@@ -31,8 +31,39 @@ public static void main( String[] args ) throws Exception
         //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
         //Thus, fully qualified class names and no imports
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
-        pmcTest.writeToFile(filePath + "/test-output/body-test-compare.json");
+        //PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+        PostmanCollection pmcTest = new PostmanCollection("Constructed Bodies");
+
+        PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
+        byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
+        byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
+        PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqUrlencoded.setBody(byUrlencoded);
+        pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+
+        PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
+        byPlainText.setRaw("This is some plain text");
+        PostmanRequest rqPlainText = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqPlainText.setBody(byPlainText);
+        pmcTest.addRequest(rqPlainText, "Text Body");
+
+        PostmanBody byFormdata = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        byFormdata.setFormdata("field-1", "value 1", "This is value 1");
+        byFormdata.setFormdata("field-2", "value 2", "This is value 2");
+        PostmanRequest rqFormData = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqFormData.setBody(byFormdata);
+        pmcTest.addRequest(rqFormData, "Formdata Body");
+
+        PostmanBody byJsondata = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}",enumRawBodyLanguage.JSON);
+        PostmanRequest rqJsondata = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqJsondata.setBody(byJsondata);
+        pmcTest.addRequest(rqJsondata, "JSON data Body");
+
+
+
+        pmcTest.writeToFile(filePath + "/test-output/constructed-bodies.json");
+
+        
         /*
         pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
         System.out.println("Foo");
