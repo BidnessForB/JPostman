@@ -52,11 +52,7 @@ public class PostmanScript implements IPostmanCollectionElement {
     }
 
 
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+ 
 
 
     @Override

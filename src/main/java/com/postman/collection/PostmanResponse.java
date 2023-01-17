@@ -8,7 +8,6 @@ public class PostmanResponse implements IPostmanCollectionElement {
     private String _postman_previewlanguage = "";
     private PostmanCookie[] cookie = null;
     private String body = "";
-    private PostmanVariable[] header;
 
     public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
             String _postman_previewlanguage, PostmanCookie[] cookie, String body) {
@@ -23,6 +22,13 @@ public class PostmanResponse implements IPostmanCollectionElement {
 
     public boolean isValid() {
         return true;
+    }
+
+    public PostmanResponse(PostmanRequest req, String status, int code, String body) {
+        this.originalRequest = req;
+        this.status = status;
+        this.code = code;
+        this.body = body;
     }
 
 
@@ -88,11 +94,7 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return null;
     }
 
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+    
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {

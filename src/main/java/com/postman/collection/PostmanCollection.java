@@ -54,7 +54,10 @@ public static void main( String[] args ) throws Exception
         byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
         PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqUrlencoded.setBody(byUrlencoded);
-        pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+        PostmanResponse resp = new PostmanResponse(rqUrlencoded, "OK", 200, "this is the expected response body");
+        
+                pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+                pmcTest.addResponse(resp);
 
         PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
         byPlainText.setRaw("This is some plain text");
@@ -270,22 +273,42 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 
 }
 
+public void addResponse(String requestKey) {
+    PostmanItem req = getItem(requestKey);
+}
+
+public void addResponse(PostmanResponse resp) {
+    List<PostmanResponse> liResp = null;
+
+    if(this.response == null) {
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(new PostmanResponse[0]));
+    }
+    else{
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(this.response));
+    }
+
+    liResp.add(resp);
+    this.response = liResp.toArray(new PostmanResponse[0]);
 
 
-public void addRequest(PostmanRequest  newRequest, String name) throws Exception  {
+}
+
+public String addRequest(PostmanRequest  newRequest, String name) throws Exception  {
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
     newItem.setResponses(new PostmanResponse[0]);
+    return newItem.getKey();
 }
 
 
 
-public void addRequest(PostmanRequest newRequest,String name, int position) throws Exception {
+public String addRequest(PostmanRequest newRequest,String name, int position) throws Exception {
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem, position);
     newItem.setResponses(new PostmanResponse[0]);
+    return newItem.getKey();
 }
 
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
@@ -452,10 +475,6 @@ public String getKey() {
     return null;
 }
 
-@Override
-public void setKey(String key) {
-    
-    
-}
+
 
 }

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
     private String description; 
@@ -13,17 +14,16 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private PostmanResponse[] response = null;
     private PostmanItem[] item;
     private String name; 
+    private transient String key = UUID.randomUUID().toString();
     @Override
     public String getKey() {
         
-        return this.getName();
+        return this.key;
     }
 
-    @Override
-    public void setKey(String key) {
-        
-        this.setName(key);
-    }
+    
+
+    
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
@@ -166,6 +166,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
     */
 
   
+
+
 
     public void addItem(PostmanItem newItem) throws Exception {
         

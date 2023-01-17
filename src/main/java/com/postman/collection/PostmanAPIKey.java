@@ -6,6 +6,7 @@ public class PostmanAPIKey implements IPostmanCollectionElement {
     private String type = "";
     private String value = "";
     private String key = "";
+    private transient String key = UUID.randomUUID().toString();
 
     public PostmanAPIKey(String type, String value, String key) {
         this.type = type;

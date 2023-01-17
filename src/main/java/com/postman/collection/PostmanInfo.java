@@ -48,11 +48,7 @@ public class PostmanInfo implements IPostmanCollectionElement {
         
         return name;
     }
-    @Override
-    public void setKey(String key) {
-        
-        name = key;
-    }
+
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
         

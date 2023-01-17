@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import com.google.gson.*;
+private transient String key = UUID.randomUUID().toString();
 
 public class PostmanAuth implements IPostmanCollectionElement {
     
@@ -23,11 +24,7 @@ public class PostmanAuth implements IPostmanCollectionElement {
         return true;
     }
 
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+    
 
 
     @Override
