@@ -134,43 +134,75 @@ public class AppTest
         byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
         PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqUrlencoded.setBody(byUrlencoded);
-        pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+        PostmanResponse resp = new PostmanResponse("NORMAL Urlencoded", rqUrlencoded, "OK", 200, "this is the expected response body");
+        
+                String reqKey = pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+                pmcTest.addResponse(reqKey, resp);
 
         PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
         byPlainText.setRaw("This is some plain text");
         PostmanRequest rqPlainText = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqPlainText.setBody(byPlainText);
-        pmcTest.addRequest(rqPlainText, "Text Body");
+        resp = new PostmanResponse("NORMAL Plaintext", rqPlainText, "OK", 200, "this is the expected response body");
+        
+                reqKey = pmcTest.addRequest(rqPlainText, "Plaintext body");
+                pmcTest.addResponse(reqKey, resp);
 
         PostmanBody byFormdata = new PostmanBody(enumRequestBodyMode.FORMDATA);
         byFormdata.setFormdata("field-1", "value 1", "This is value 1");
         byFormdata.setFormdata("field-2", "value 2", "This is value 2");
         PostmanRequest rqFormData = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqFormData.setBody(byFormdata);
-        pmcTest.addRequest(rqFormData, "Formdata Body");
+        
+        resp = new PostmanResponse("NORMAL Formdata", rqFormData, "OK", 200, "this is the expected response body");
+                reqKey = pmcTest.addRequest(rqFormdata, "Formdata body");
+                pmcTest.addResponse(reqKey, resp);
 
         PostmanBody byJsondata = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}",enumRawBodyLanguage.JSON);
         PostmanRequest rqJsondata = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqJsondata.setBody(byJsondata);
-        pmcTest.addRequest(rqJsondata, "JSON data Body");
+        
+
+        resp = new PostmanResponse("NORMAL JSON", rqJsondata , "OK", 200, "this is the expected response body");
+        reqKey = pmcTest.addRequest(rqJsondata, "JSON body");
+        pmcTest.addResponse(reqKey, resp);
+
 
         PostmanBody byHTML = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",enumRawBodyLanguage.HTML);
         PostmanRequest rqHTML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqHTML.setBody(byHTML);
-        pmcTest.addRequest(rqHTML, "HTML data Body");
+        resp = new PostmanResponse("NORMAL HTML", rqHTML, "OK", 200, "this is the expected response body");
+        reqKey = pmcTest.addRequest(rqHTML, "HTML body");
+        pmcTest.addResponse(reqKey, resp);
+
 
         PostmanBody byXML = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",enumRawBodyLanguage.XML);
         PostmanRequest rqXML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqXML.setBody(byXML);
-        pmcTest.addRequest(rqXML, "XML data Body");
+        resp = new PostmanResponse("NORMAL XML", rqXML, "OK", 200, "this is the expected response body");
+        reqKey = pmcTest.addRequest(rqXML, "XML body");
+        pmcTest.addResponse(reqKey, resp);
+
 
         String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
 
         PostmanBody byGraphQL = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL,enumRawBodyLanguage.GRAPHQL);
-        //byGraphQL.addVariable(new PostmanVariable("{ \"limit\":2}");
+        
         PostmanRequest rqGraphQL = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqGraphQL.setBody(byGraphQL);
-        pmcTest.addRequest(rqGraphQL, "GraphQL data Body");
+        resp = new PostmanResponse("NORMAL GrapqhQL", rqGraphQL, "OK", 200, "this is the expected response body");
+        reqKey = pmcTest.addRequest(rqGraphQL, "GraphQL body");
+        pmcTest.addResponse(reqKey, resp);
+        try {
+            pmcTest.writeToFile(filePath + "/test-output/bodies-with-responses.postman_collection.json");
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+        
 
         assertTrue(pmcTest.validate());
             }
