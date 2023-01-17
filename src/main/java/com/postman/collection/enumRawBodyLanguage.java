@@ -1,5 +1,5 @@
 package com.postman.collection;
 
 public enum enumRawBodyLanguage {
-    JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+    TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
 }

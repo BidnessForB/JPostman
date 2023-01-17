@@ -12,14 +12,19 @@ public class PostmanVariable implements IPostmanCollectionElement {
     }
 
     public PostmanVariable(String key, String value, String description) {
-        this.key = key;
-        this.value = value;
-        this.description = null;
+        this(key,value,description,null);
         
     }
 
+    public PostmanVariable(String key, String value, String description, String type) {
+        this.key = key;
+        this.value = value;
+        this.description = description;
+        this.type = type;
+    }
+
     public PostmanVariable(String key, String value) {
-        this(key,value,null);
+        this(key,value,null,null);
     }
 
     public String getKey() {

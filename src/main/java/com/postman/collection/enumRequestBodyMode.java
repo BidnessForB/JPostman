@@ -1,5 +1,5 @@
 package com.postman.collection;
 
 public enum enumRequestBodyMode {
-    FORMDATA,RAW,FILE,GRAPHQL;
+    TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
 }

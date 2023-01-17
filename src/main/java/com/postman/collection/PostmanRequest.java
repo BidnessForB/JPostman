@@ -98,6 +98,23 @@ public class PostmanRequest  {
         this.variable = variable;
     }
 
+    public PostmanBody setBody(enumRequestBodyMode bodyMode) {
+        return this.setBody(bodyMode, null);
+    }
+
+    public PostmanBody setBody(enumRequestBodyMode bodyMode, String rawContent) {
+        this.setBody(new PostmanBody(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
+        return this.getBody();
+    }
+    
+    public PostmanBody getBody() {
+        return this.body;
+    }
+
+    public void setBody(PostmanBody body) {
+        this.body = body;
+    }
+
     public void addVariable(PostmanVariable var)
     {
         List<PostmanVariable> liVars;
