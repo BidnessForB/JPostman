@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build LATEST Snapshot JAR
+name: Check JDK
 
 on:
   repository_dispatch:
