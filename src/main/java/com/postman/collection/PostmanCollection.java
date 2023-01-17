@@ -54,10 +54,10 @@ public static void main( String[] args ) throws Exception
         byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
         PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         rqUrlencoded.setBody(byUrlencoded);
-        PostmanResponse resp = new PostmanResponse(rqUrlencoded, "OK", 200, "this is the expected response body");
+        PostmanResponse resp = new PostmanResponse("NORMAL Urlencoded", rqUrlencoded, "OK", 200, "this is the expected response body");
         
-                pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
-                pmcTest.addResponse(resp);
+                String reqKey = pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
+                pmcTest.addResponse(reqKey, resp);
 
         PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
         byPlainText.setRaw("This is some plain text");
@@ -223,6 +223,11 @@ public ValidationMessage[] getValidationMessage() {
     return this.validationMessages;
 }
 
+public void addResponse(String requestKey, PostmanResponse response) {
+    PostmanItem req = this.getItem(requestKey);
+    req.addResponse(response);
+
+}
 
 public boolean validate() throws Exception {
     
@@ -273,25 +278,8 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 
 }
 
-public void addResponse(String requestKey) {
-    PostmanItem req = getItem(requestKey);
-}
-
-public void addResponse(PostmanResponse resp) {
-    List<PostmanResponse> liResp = null;
-
-    if(this.response == null) {
-        liResp = new ArrayList<PostmanResponse>(Arrays.asList(new PostmanResponse[0]));
-    }
-    else{
-        liResp = new ArrayList<PostmanResponse>(Arrays.asList(this.response));
-    }
-
-    liResp.add(resp);
-    this.response = liResp.toArray(new PostmanResponse[0]);
 
 
-}
 
 public String addRequest(PostmanRequest  newRequest, String name) throws Exception  {
     PostmanItem newItem = new PostmanItem(name);  

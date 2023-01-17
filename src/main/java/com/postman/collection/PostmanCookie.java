@@ -95,11 +95,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
         
         return name;
     }
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+ 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
         

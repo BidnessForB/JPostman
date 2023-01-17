@@ -118,7 +118,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
             System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
             if (item == null)
               return null;
-            if (curItem.getName().equals(key))
+            if (curItem.getKey().equals(key))
             {
                 if (!parent) {
                     result = curItem;
@@ -164,8 +164,22 @@ public class PostmanItem implements IPostmanCollectionElement  {
         return null;
     }
     */
+    
+   public void addResponse(PostmanResponse resp) {
+    List<PostmanResponse> liResp = null;    
+    
+    if(this.response == null)
+    {
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(new PostmanResponse[0]));
+    }
+    else{
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(this.response));
+    }
+    liResp.add(resp);
+    this.response = liResp.toArray(new PostmanResponse[0]);
 
-  
+   }
+
 
 
 

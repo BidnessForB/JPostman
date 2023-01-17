@@ -1,12 +1,13 @@
 package com.postman.collection;
 
 import com.google.gson.*;
-private transient String key = UUID.randomUUID().toString();
+import java.util.UUID;
 
 public class PostmanAuth implements IPostmanCollectionElement {
-    
+    private transient String key = UUID.randomUUID().toString();    
     private String type = "";
     private PostmanAPIKey[] apikey = null;
+    
     
     public String getType() {
         return type;

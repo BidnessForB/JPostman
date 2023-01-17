@@ -24,11 +24,12 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return true;
     }
 
-    public PostmanResponse(PostmanRequest req, String status, int code, String body) {
+    public PostmanResponse(String name, PostmanRequest req, String status, int code, String body) {
         this.originalRequest = req;
         this.status = status;
         this.code = code;
         this.body = body;
+        this.name = name;
     }
 
 
