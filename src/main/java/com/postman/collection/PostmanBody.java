@@ -73,6 +73,8 @@ public class PostmanBody {
         this.setGraphql(new PostmanGraphQL(graphQL, variables));
     }
 
+    
+
     public PostmanVariable[] getFormdata() throws Exception {
         return formdata;
     }

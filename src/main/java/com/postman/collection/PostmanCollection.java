@@ -43,22 +43,84 @@ public static void main( String[] args ) throws Exception
     {
 
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest = null;
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory();
+        pmcTest.setName("Constructed Body");
         PostmanCollection pmcTest2 = null;
-        ValidationMessage[] msgs = null;
+
+        PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
+        byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
+        byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
+        PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqUrlencoded.setBody(byUrlencoded);
+        PostmanResponse resp = new PostmanResponse("NORMAL Urlencoded", rqUrlencoded, "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(rqUrlencoded, "URLEncoded body", resp);
+        
+
+        PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
+        byPlainText.setRaw("This is some plain text");
+        PostmanRequest rqPlainText = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqPlainText.setBody(byPlainText);
+        resp = new PostmanResponse("NORMAL Plaintext", rqPlainText, "OK", 200, "this is the expected response body");
+        
+        pmcTest.addRequest(rqPlainText, "Plaintext body", resp);
+                
+
+        PostmanBody byFormdata = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        byFormdata.setFormdata("field-1", "value 1", "This is value 1");
+        byFormdata.setFormdata("field-2", "value 2", "This is value 2");
+        PostmanRequest rqFormData = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqFormData.setBody(byFormdata);
+        
+        resp = new PostmanResponse("NORMAL Formdata", rqFormData, "OK", 200, "this is the expected response body");
+                pmcTest.addRequest(rqFormData, "Formdata body", resp);
+                
+
+        PostmanBody byJsondata = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}",enumRawBodyLanguage.JSON);
+        PostmanRequest rqJsondata = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqJsondata.setBody(byJsondata);
+        
+
+        resp = new PostmanResponse("NORMAL JSON", rqJsondata , "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(rqJsondata, "JSON body",resp);
+        
+
+
+        PostmanBody byHTML = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",enumRawBodyLanguage.HTML);
+        PostmanRequest rqHTML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqHTML.setBody(byHTML);
+        resp = new PostmanResponse("NORMAL HTML", rqHTML, "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(rqHTML, "HTML body", resp);
+        
+
+
+        PostmanBody byXML = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",enumRawBodyLanguage.XML);
+        PostmanRequest rqXML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqXML.setBody(byXML);
+        resp = new PostmanResponse("NORMAL XML", rqXML, "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(rqXML, "XML body", resp);
+        
+
+
+        String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
+        String strVars = "{\"limit\":2}";
+        PostmanBody byGraphQL = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL,enumRawBodyLanguage.GRAPHQL);
+        byGraphQL.setGraphql(strGraphQL, strVars);
+        PostmanRequest rqGraphQL = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        rqGraphQL.setBody(byGraphQL);
+        resp = new PostmanResponse("NORMAL GrapqhQL", rqGraphQL, "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(rqGraphQL, "GraphQL body", resp);
+        
         try {
-            pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
-            pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
-            pmcTest.addCollection(pmcTest2, true, true);
-            pmcTest.validate();
-            msgs = pmcTest.getValidationMessages();
-            pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
-            System.out.println("done");
+            pmcTest.writeToFile(filePath + "/test-output/bodies-with-responses.postman_collection.json");
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        //    assertTrue(false);
         }
         
-            catch(Exception e) {
-                e.printStackTrace();
-            }
+
         
             }
 
@@ -133,14 +195,25 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 }
 
 
+public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws Exception {
+    PostmanItem newItem = this.addRequest(newRequest, name);
+    newItem.addResponse(response);
+    return newItem;
+}
 
-
-public void addRequest(PostmanRequest  newRequest, String name) throws Exception  {
+public PostmanItem addRequest(PostmanRequest  newRequest, String name) throws Exception  {
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
-    newItem.setResponses(new PostmanResponse[0]);
+    //newItem.setResponses(new PostmanResponse[0]);
+    return newItem;
     
+}
+
+public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse[] responses) throws Exception {
+    PostmanItem newItem = addRequest(newRequest, name);
+    newItem.setResponses(responses);
+    return newItem;
 }
 
 
