@@ -187,6 +187,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
    }
 
+   
+
 
     public void addItems(PostmanItem[] newItems) throws Exception {
         for(int i = 0; i < newItems.length; i++)
