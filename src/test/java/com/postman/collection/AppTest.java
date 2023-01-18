@@ -1,11 +1,14 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNoException;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import org.junit.Test;
+import com.networknt.schema.ValidationMessage;
 
 
 /**
@@ -144,6 +147,25 @@ public class AppTest
              }
              
             
+        }
+
+        @Test
+        public void testAddCollection() throws Exception {
+
+            PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+            pmcTest.addCollection(pmcTest2, true, true);
+            boolean worked = pmcTest.validate();
+            ValidationMessage[] msgs = pmcTest.getValidationMessages();
+            for(int i = 0; i < msgs.length; i++)
+            {
+                System.out.println(msgs[i].getMessage());
+            }
+            pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
+            assertTrue(worked);
+            System.out.println("done");
+
+
         }
 /*
         @Test

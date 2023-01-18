@@ -105,7 +105,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         }
         else
         {
-            new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
+            liVars = new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
         }
         liVars.add(new PostmanVariable(key,value,description));
         this.variable = liVars.toArray(new PostmanVariable[0]);

@@ -44,15 +44,16 @@ public static void main( String[] args ) throws Exception
 
         String filePath = new java.io.File("").getAbsolutePath();
         PostmanCollection pmcTest = null;
+        PostmanCollection pmcTest2 = null;
+        ValidationMessage[] msgs = null;
         try {
             pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+            pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+            pmcTest.addCollection(pmcTest2, true, true);
             pmcTest.validate();
-            
-            for(int i = 0; i < pmcTest.getValidationMessages().length ;i++)
-            {
-                System.out.println("Message " + i + ": " + pmcTest.getValidationMessages()[i]);
-            }
-            pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
+            msgs = pmcTest.getValidationMessages();
+            pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
+            System.out.println("done");
         }
         
             catch(Exception e) {
@@ -173,29 +174,53 @@ public void setVariables(PostmanVariable[] vars)
 public void addCollection(PostmanCollection newColl, PostmanItem parent) throws Exception {
     this.addCollection(newColl, parent, true, true);
 }
+
+public void addCollection(PostmanCollection newColl, boolean copyScripts, boolean copyVariables) throws Exception {
+    this.addCollection(newColl, this, copyScripts, copyVariables);
+}
+
 public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws Exception {
-    if(!copyScripts)
-    {
-        newColl.setEvents(new PostmanEvent[0]);
-    }
-    parent.addItem(newColl);
-    if (!copyVariables) {
+    
+    List<PostmanVariable> liThisCollVars = null;
+    List<PostmanVariable> liNewCollVars = null;
+    PostmanItem newFolder = new PostmanItem(newColl.getName());
+    parent.addItem(newFolder);
+    
+    newFolder.addItems(newColl.getItems());
+    if (!copyVariables || (this.getVariables() == null && newColl.getVariables() == null) || (this.getVariables().length == 0 && newColl.getVariables().length == 0)) {
         return;
     }
 
-    List<PostmanVariable> resultList = new ArrayList<PostmanVariable>(this.getVariables().length + newColl.getVariables().length);
-    Collections.addAll(resultList, this.getVariables());
-    Collections.addAll(resultList, newColl.getVariables());
-
+    if(this.getVariables() == null) {
+        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+    }
+    else {
+        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(this.getVariables()));
+    }
+    if(newColl.getVariables() == null)
+    {
+        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+    }
+    else { 
+        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(newColl.getVariables()));
+    }
+    liThisCollVars.addAll(liNewCollVars);
+    this.setVariables(liThisCollVars.toArray(new PostmanVariable[0]));
     
-    PostmanVariable[] resultArray = (PostmanVariable[]) Array.newInstance(this.getVariables().getClass().getComponentType(), 0);
-    this.setVariables(resultList.toArray(resultArray));
+    if(copyScripts) {
+        newFolder.setEvents(newColl.getEvents());
+    }
+
+
 }
 
 public void addCollection(PostmanCollection newColl) throws Exception
 {
-    this.addCollection(newColl, this);
+    
+    this.addCollection(newColl, this , true, true);
 }
+    
+
 
 public PostmanInfo getInfo() {
     return info;
@@ -234,8 +259,37 @@ public void init() {
     if(this.getInfo() == null)
     {
         this.info = new PostmanInfo();
-
     }
+    //set parents for all items.
+    this.setParents();
+
+}
+
+private void setParents() {
+    PostmanItem[] folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
+    PostmanItem[] requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
+    PostmanItem curItem = null;
+    PostmanItem curParent = null;
+    if(folders != null && folders.length > 0)
+    {
+        for (int f= 0; f < folders.length;f++)
+        {
+            curItem = folders[f];
+            curParent = getItem(curItem.getKey(), true);
+            curItem.setParent(curParent);
+        }
+    }
+    if(requests != null && requests.length > 0)
+    {
+        for(int r = 0; r < requests.length; r++)
+        {
+            curItem = requests[r];
+            curParent = getItem(curItem.getKey(), true);
+            curItem.setParent(curParent);
+        }
+    }
+
+
 }
 
 
@@ -284,9 +338,6 @@ public void writeToFile(String path) throws IOException {
     writer.write(this.toJson(false, null));   
     writer.close();
 }
-
-
-
 
 
 public PostmanItem getItemParent(String key) {

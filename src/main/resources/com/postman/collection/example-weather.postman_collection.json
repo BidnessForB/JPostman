@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a55a4f78-ce48-40ce-8cd5-cd462591befc",
+		"_postman_id": "4cc9f91e-5c5d-4dd3-a081-e0ecbe2a9fea",
 		"name": "Weather",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23889826"
@@ -148,62 +148,62 @@
 		{
 			"key": "API_KEY",
 			"value": "efd333ca516eb1af9c6f0b02b39e9bda",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "SanFranciscoLat",
 			"value": "37.7749",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "SanFranciscoLon",
 			"value": "122.4194",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "BangaloreLat",
 			"value": "12.9716",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "BangaloreLog",
 			"value": "77.5946",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "LondonLat",
 			"value": "51.5072",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "LondonLog",
 			"value": "0.1276",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "ResultLat",
 			"value": "",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "ResultLog",
 			"value": "",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "ResultCity",
 			"value": "",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "ResultCityTemp",
 			"value": "",
-			"type": "default"
+			"type": "string"
 		},
 		{
 			"key": "SanFranciscoTemp",
 			"value": "",
-			"type": "default"
+			"type": "string"
 		}
 	]
 }

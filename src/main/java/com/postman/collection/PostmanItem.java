@@ -15,6 +15,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private PostmanItem[] item;
     private String name; 
     private transient String key = UUID.randomUUID().toString();
+    private transient PostmanItem parent = null;
     @Override
     public String getKey() {
         
@@ -33,6 +34,11 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
 
     
+    public PostmanItem(String name, PostmanItem parent) {
+        this(name);
+        this.setParent(parent);
+
+    }
     public PostmanItem(String name)
     {
         this.setName(name);
@@ -182,6 +188,12 @@ public class PostmanItem implements IPostmanCollectionElement  {
    }
 
 
+    public void addItems(PostmanItem[] newItems) throws Exception {
+        for(int i = 0; i < newItems.length; i++)
+        {
+            this.addItem(newItems[i]);
+        }
+    }
 
 
     public void addItem(PostmanItem newItem) throws Exception {
@@ -196,17 +208,22 @@ public class PostmanItem implements IPostmanCollectionElement  {
        
         this.addItem(newItem, item == null ? 0 : item.length);
 
-        try {
-            this.toJson(false, null);
-        }
-        catch(Exception e) {
-            System.out.println("rut roh");
-        }
+        
 
     }
 
     public boolean isValid() {
         return true;
+    }
+
+    public void setParent(PostmanItem parent)
+    {
+        this.parent = parent;
+    }
+
+    public PostmanItem getParent()
+    {
+        return this.parent;
     }
 
     
@@ -319,7 +336,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         {
             throw new Exception ("Item is already present");
         }
-     
+        
         if(newItem.getClass().getName().equals("com.postman.collection.PostmanCollection"))
         {
             String clname = this.getClass().getName();
