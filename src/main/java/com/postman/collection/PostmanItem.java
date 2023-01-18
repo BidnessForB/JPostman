@@ -18,7 +18,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
     @Override
     public String getKey() {
         
-        return this.key;
+        //return this.key;
+        return this.name;
     }
 
     
@@ -164,7 +165,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         return null;
     }
     */
-    
+   
    public void addResponse(PostmanResponse resp) {
     List<PostmanResponse> liResp = null;    
     

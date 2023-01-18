@@ -5,13 +5,16 @@ import java.util.UUID;
 public class PostmanAPIKey implements IPostmanCollectionElement {
     private String type = "";
     private String value = "";
-    private transient String key = UUID.randomUUID().toString();
+    private String key = "";
+    private transient String id = UUID.randomUUID().toString();
 
     public PostmanAPIKey(String type, String value, String key) {
         this.type = type;
         this.value = value;
         this.key = key;
     }
+
+    
 
     public boolean isValid() {
         return true;
