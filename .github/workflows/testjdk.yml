@@ -9,8 +9,8 @@
 name: Check JDK
 
 on:
-  repository_dispatch:
-    types: [on-demand-test]
+  workflow_dispatch:
+    
   
 
 jobs:
