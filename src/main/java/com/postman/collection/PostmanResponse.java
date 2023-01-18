@@ -25,6 +25,14 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return true;
     }
 
+    public PostmanResponse(String name, PostmanRequest req, String status, int code, String body) {
+        this.originalRequest = req;
+        this.status = status;
+        this.code = code;
+        this.body = body;
+        this.name = name;
+    }
+
 
     public String getName() {
         return name;
@@ -88,11 +96,7 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return null;
     }
 
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+    
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {

@@ -36,174 +36,30 @@ public class PostmanCollection extends PostmanItem
 private PostmanInfo info = null;
 private PostmanVariable[] variable = null;
 private PostmanAuth auth = null;
-private ValidationMessage[] validationMessages;
+private transient ValidationMessage[] validationMessages;
+
 
 public static void main( String[] args ) throws Exception
     {
-        //NOTE: using "import java.io.File" produces a spurious warning in VSCode that the "Import is never used"
-        //Thus, fully qualified class names and no imports
+
         String filePath = new java.io.File("").getAbsolutePath();
-        // PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
-        //PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/broken.postman_collection.json");
-        //pmcTest.validate();
-        PostmanCollection pmcTest = new PostmanCollection("Constructed Bodies");
-
-
-        PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
-        byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
-        byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
-        PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqUrlencoded.setBody(byUrlencoded);
-        pmcTest.addRequest(rqUrlencoded, "URLEncoded body");
-
-        PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
-        byPlainText.setRaw("This is some plain text");
-        PostmanRequest rqPlainText = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqPlainText.setBody(byPlainText);
-        pmcTest.addRequest(rqPlainText, "Text Body");
-
-        PostmanBody byFormdata = new PostmanBody(enumRequestBodyMode.FORMDATA);
-        byFormdata.setFormdata("field-1", "value 1", "This is value 1");
-        byFormdata.setFormdata("field-2", "value 2", "This is value 2");
-        PostmanRequest rqFormData = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqFormData.setBody(byFormdata);
-        pmcTest.addRequest(rqFormData, "Formdata Body");
-
-        PostmanBody byJsondata = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}",enumRawBodyLanguage.JSON);
-        PostmanRequest rqJsondata = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqJsondata.setBody(byJsondata);
-        pmcTest.addRequest(rqJsondata, "JSON data Body");
-
-        PostmanBody byHTML = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",enumRawBodyLanguage.HTML);
-        PostmanRequest rqHTML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqHTML.setBody(byHTML);
-        pmcTest.addRequest(rqHTML, "HTML data Body");
-
-        PostmanBody byXML = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",enumRawBodyLanguage.XML);
-        PostmanRequest rqXML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqXML.setBody(byXML);
-        pmcTest.addRequest(rqXML, "XML data Body");
-
-        String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
-
-        PostmanBody byGraphQL = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL,enumRawBodyLanguage.GRAPHQL);
-        //byGraphQL.addVariable(new PostmanVariable("{ \"limit\":2}");
-        PostmanRequest rqGraphQL = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqGraphQL.setBody(byGraphQL);
-        pmcTest.addRequest(rqGraphQL, "GraphQL data Body");
-        
-        pmcTest.writeToFile(filePath + "/test-output/constructed-bodies.json");
-        System.out.println("Is valid: " + pmcTest.validate());
-
-        System.out.println("break");
-
-        
-        /*
-        pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
-        System.out.println("Foo");
-       */
-        /*
-
-        List<PostmanUrl> liUrls  = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
-        
-
-        
-        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json"));
-        liUrls.add(new PostmanUrl("//foo.com/bar/bat.json"));
-        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json"));
-        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2"));
-        liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar="));
-        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar="));
-        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar="));
-        liUrls.add(new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar="));  
-        liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=")); 
-        liUrls.add(new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
-        liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
-
-        PostmanCollection pmcTest2 = new PostmanCollection("URL Test");
-        for(int i = 0; i<liUrls.size();i++)
-        {
-            pmcTest2.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
-        } 
-
-        
-        
-        pmcTest2.writeToFile(filePath +"/test-output/shouldCreateURLs.json");
-
-        System.out.println("break");
-        
-        
-        
-        
-        
-        pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/catfact-complete-coll.json");
-        PostmanRequest pmrNewish = new PostmanRequest(enumHTTPRequestMethod.GET, "foo.com","");
-        pmcTest.addRequest(pmrNewish, "Newish request");
-        
-         PostmanItem[] reqs = pmcTest.getItemsOfType(enumPostmanItemType.REQUEST);
-        PostmanItem[] flds = pmcTest.getItemsOfType(enumPostmanItemType.FOLDER);
-        System.out.println("Requests:\t\t" + reqs.length);
-        System.out.println("Folders:\t\t" + flds.length);
-       
-        
-        PostmanCollection pmcWeather = PostmanCollection.PMCFactory(filePath +  "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
-        
-        
-        String strRawItem = "";
-        String strChunk;
-        
-        BufferedReader brItem = new java.io.BufferedReader(new java.io.FileReader(new java.io.File(filePath + "/src/main/resources/com/postman/collection/test-event-test.json")));
-        while((strChunk = brItem.readLine()) != null)
-            strRawItem = strRawItem + strChunk;
+        PostmanCollection pmcTest = null;
         try {
-            brItem.close();
+            pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+            pmcTest.validate();
+            
+            for(int i = 0; i < pmcTest.getValidationMessages().length ;i++)
+            {
+                System.out.println("Message " + i + ": " + pmcTest.getValidationMessages()[i]);
+            }
+            pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.json");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
         
-        PostmanEvent evt = PostmanEvent.pmcEventFactory(strRawItem);
-        PostmanEvent evt2 = PostmanEvent.pmcEventFactory();
+            catch(Exception e) {
+                e.printStackTrace();
+            }
         
-    
-
-        PostmanItem newFolder1 = new PostmanItem("new Folder One");
-        PostmanItem newFolder2 = new PostmanItem("new Folder Two");
-        PostmanItem newFolder3 = new PostmanItem("new Folder Three");
-        pmcTest.addItem(newFolder1);
-        pmcTest.addItem(newFolder2);
-        pmcTest.addItem(newFolder3);
-        //newFolder3.addItem(newFolder2);
-        System.out.println(pmcTest.toJson(false, null));
-        pmcTest.moveItem(newFolder2, newFolder1);
-        pmcTest.moveItem(newFolder3, newFolder2);
-        //System.out.println(pmcTest.getItemsOfType(enumPostmanItemType.FOLDER).length);
-        //System.out.println(pmcTest.hasItem(newFolder2));
-//        pmcTest.moveItem(newFolder2, newFolder1);
-      
-        pmcTest.addCollection(pmcWeather, newFolder1);
-        
-        pmcTest.addItem(pmcWeather, 2);
-        
-        
-        
-        //System.out.println("ITEM: " + newItem.getName() + " TYPE: " + newItem.getItemType());// + " PARENT: " + item.getParent());
-       // System.out.println(pmcTest.toJson(false, null));
-       pmcTest.setName("Cat-Weather"); 
-       System.out.println("NAME: " + pmcTest.getName());
-       pmcTest.getItemsOfType(enumPostmanItemType.REQUEST);
-       pmcTest.getItemsOfType(enumPostmanItemType.FOLDER);
-       
-       PostmanItem item = pmcTest.getItem("Weather");
-       item.setEvent(evt);
-       item.setEvent(evt2);
-       pmcTest.moveItem(item, pmcTest);
-       
-       pmcTest.writeToFile("new-coll.json");
-       */
-       
-    }
+            }
 
 public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
     PostmanItem itemToMove = this.getItem(itemToMoveKey);
@@ -216,10 +72,15 @@ public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
 
 }
 
-public ValidationMessage[] getValidationMessage() {
-    return this.validationMessages;
+public ValidationMessage[] getValidationMessages() {
+    return this.validationMessages != null ? this.validationMessages : new ValidationMessage[0];
 }
 
+public void addResponse(String requestKey, PostmanResponse response) {
+    PostmanItem req = this.getItem(requestKey);
+    req.addResponse(response);
+
+}
 
 public boolean validate() throws Exception {
     
@@ -272,11 +133,13 @@ public void addFolder(PostmanItem newFolder) throws Exception {
 
 
 
+
 public void addRequest(PostmanRequest  newRequest, String name) throws Exception  {
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
     newItem.setResponses(new PostmanResponse[0]);
+    
 }
 
 
@@ -286,6 +149,7 @@ public void addRequest(PostmanRequest newRequest,String name, int position) thro
     newItem.setRequest(newRequest);
     super.addItem(newItem, position);
     newItem.setResponses(new PostmanResponse[0]);
+    
 }
 
 public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
@@ -361,7 +225,28 @@ public  PostmanCollection(String name){
     this.info = new PostmanInfo();
     this.info.setName(name);
     this.setItems(new PostmanItem[0]);
+    
 
+}
+
+public void init() {
+    System.out.println("We're in init");
+    if(this.getInfo() == null)
+    {
+        this.info = new PostmanInfo();
+
+    }
+}
+
+
+
+public static PostmanCollection PMCFactory() {
+    String json = "{}";
+    Gson gson = new Gson();
+    PostmanCollection pmcRetVal = gson.fromJson(json, PostmanCollection.class);
+    pmcRetVal.init();
+    pmcRetVal.setName("New Collection");
+    return pmcRetVal;
 }
 
 public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoundException, IOException {
@@ -384,7 +269,7 @@ public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoun
         }
         gson = new Gson();
         pmcRetVal = gson.fromJson(strRawItem, PostmanCollection.class);
-        
+        pmcRetVal.init();
         
         
             
@@ -452,10 +337,6 @@ public String getKey() {
     return null;
 }
 
-@Override
-public void setKey(String key) {
-    
-    
-}
+
 
 }

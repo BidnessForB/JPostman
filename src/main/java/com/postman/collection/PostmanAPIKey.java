@@ -1,17 +1,20 @@
 package com.postman.collection;
 
 import com.google.gson.*;
-
+import java.util.UUID;
 public class PostmanAPIKey implements IPostmanCollectionElement {
     private String type = "";
     private String value = "";
     private String key = "";
+    private transient String id = UUID.randomUUID().toString();
 
     public PostmanAPIKey(String type, String value, String key) {
         this.type = type;
         this.value = value;
         this.key = key;
     }
+
+    
 
     public boolean isValid() {
         return true;

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
     private String description; 
@@ -13,17 +14,17 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private PostmanResponse[] response = null;
     private PostmanItem[] item;
     private String name; 
+    private transient String key = UUID.randomUUID().toString();
     @Override
     public String getKey() {
         
-        return this.getName();
+        //return this.key;
+        return this.name;
     }
 
-    @Override
-    public void setKey(String key) {
-        
-        this.setName(key);
-    }
+    
+
+    
 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
@@ -118,7 +119,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
             System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
             if (item == null)
               return null;
-            if (curItem.getName().equals(key))
+            if (curItem.getKey().equals(key))
             {
                 if (!parent) {
                     result = curItem;
@@ -164,8 +165,24 @@ public class PostmanItem implements IPostmanCollectionElement  {
         return null;
     }
     */
+   
+   public void addResponse(PostmanResponse resp) {
+    List<PostmanResponse> liResp = null;    
+    
+    if(this.response == null)
+    {
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(new PostmanResponse[0]));
+    }
+    else{
+        liResp = new ArrayList<PostmanResponse>(Arrays.asList(this.response));
+    }
+    liResp.add(resp);
+    this.response = liResp.toArray(new PostmanResponse[0]);
 
-  
+   }
+
+
+
 
     public void addItem(PostmanItem newItem) throws Exception {
         

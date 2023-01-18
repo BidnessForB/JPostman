@@ -237,11 +237,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         
         return null;
     }
-    @Override
-    public void setKey(String key) {
-        
-        
-    }
+ 
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
         

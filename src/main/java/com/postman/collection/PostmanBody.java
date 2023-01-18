@@ -3,6 +3,7 @@ package com.postman.collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PostmanBody {
     private String mode;
@@ -12,6 +13,7 @@ public class PostmanBody {
     private PostmanVariable[] formdata;
     private PostmanVariable[] urlencoded;
     private PostmanBinaryFile file;
+    private transient String key = UUID.randomUUID().toString();
     
 
 
