@@ -75,7 +75,7 @@ public class AppTest
             liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
     
             pmcTest = PostmanCollection.PMCFactory();
-            pmcTest.setName("URL Test");
+            pmcTest.setName("TEST ShouldCreateURLs");
             for(int i = 0; i<liUrls.size();i++)
             {
                 try {
@@ -139,6 +139,7 @@ public class AppTest
                     System.out.println("Validation [" + i+"]: " + pmcTest.getValidationMessages()[i]);
                 }
                 assertTrue(pmcTest.getValidationMessages().length == 0);
+                pmcTest.setName("TEST body-test-compare");
                 pmcTest.writeToFile(filePath + "/test-output/body-test-compare.postman_collection.json");
             }
             catch(Exception e)
@@ -161,6 +162,7 @@ public class AppTest
             {
                 System.out.println(msgs[i].getMessage());
             }
+            pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
             assertTrue(worked);
             System.out.println("done");
@@ -172,7 +174,7 @@ public class AppTest
         public void testConstructedBodies() throws Exception {
             
         PostmanCollection pmcTest = PostmanCollection.PMCFactory();
-        pmcTest.setName("Constructed Body");
+        pmcTest.setName("TEST Constructed Body with Responses");
         PostmanCollection pmcTest2 = null;
 
         PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
