@@ -10,7 +10,8 @@ name: Check JDK
 
 on:
   repository_dispatch:
-  push:
+    types: [on-demand-test]
+  
 
 jobs:
   build:
