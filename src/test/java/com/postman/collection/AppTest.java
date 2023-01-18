@@ -130,14 +130,17 @@ public class AppTest
             String filePath = new java.io.File("").getAbsolutePath();
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
-                assertTrue(pmcTest.validate());
-                pmcTest.writeToFile(filePath + "/test-output/body-test-compare.json");
-                //TO-DO: Some JSON validation
+                pmcTest.validate();
+                for(int i = 0; i < pmcTest.getValidationMessages().length; i++)
+                {
+                    System.out.println("Validation [" + i+"]: " + pmcTest.getValidationMessages()[i]);
+                }
+                assertTrue(pmcTest.getValidationMessages().length == 0);
+                pmcTest.writeToFile(filePath + "/test-output/body-test-compare.postman_collection.json");
             }
             catch(Exception e)
              {
                 e.printStackTrace();
-                assertTrue(false);
              }
              
             
