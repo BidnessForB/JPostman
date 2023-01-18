@@ -14,7 +14,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private String raw = "";
     private String[] host;
     private String[] path;
-    private PostmanQuery[] query;
+    private PostmanVariable[] query;
     private PostmanVariable[] variable = null;
     private String protocol;
     private String port;
@@ -220,10 +220,10 @@ public class PostmanUrl implements IPostmanCollectionElement {
     public void setPaths(String[] path) {
         this.path = path;
     }
-    public PostmanQuery[] getQueries() {
+    public PostmanVariable[] getQueries() {
         return query;
     }
-    public void setQueries(PostmanQuery[] query) {
+    public void setQueries(PostmanVariable[] query) {
         this.query = query;
     }
     public PostmanVariable[] getVariables() {
@@ -249,12 +249,12 @@ public class PostmanUrl implements IPostmanCollectionElement {
     }
 
     public void addQuery(String key, String value, String description) {
-        PostmanQuery newQuery = new PostmanQuery(key,value, description);
+        PostmanVariable newQuery = new PostmanVariable(key,value, description);
         if(this.query == null)
         {
-            this.query = new PostmanQuery[0];
+            this.query = new PostmanVariable[0];
         }
-        List<PostmanQuery> liQuery = new ArrayList<PostmanQuery>(Arrays.asList(this.query));
+        List<PostmanVariable> liQuery = new ArrayList<PostmanVariable>(Arrays.asList(this.query));
         liQuery.add(newQuery);
         this.query = liQuery.toArray(this.query);
     }
