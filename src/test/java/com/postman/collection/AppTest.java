@@ -43,7 +43,7 @@ public class AppTest
         newReq.getUrl().addQuery("foo","bar");
         pmcTest.addRequest(newReq,"Get Foo Bar");
         pmcTest.setName("TEST Constructed Queries");
-        pmcTest.writeToFile(filePath + "/test-output/constructed-queries.postman_collection.json");
+        pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-queries.postman_collection.json");
         }
         catch(Exception e)
         {
@@ -98,7 +98,7 @@ public class AppTest
             liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
     
             pmcTest = PostmanCollection.PMCFactory();
-            pmcTest.setName("TEST ShouldCreateURLs");
+            pmcTest.setName("TEST Construct URLs");
             for(int i = 0; i<liUrls.size();i++)
             {
                 try {
@@ -126,8 +126,7 @@ public class AppTest
         
         try {
             
-        pmcTest.writeToFile(filePath +"/test-output/shouldCreateURLs.json");
-        pmcTest = PostmanCollection.PMCFactory(filePath + "/test-output/shouldCreateURLs.json");
+        pmcTest.writeToFile(filePath +"/test-output/TEST-construct-urls.postman_collection.json");
         assertTrue(pmcTest.validate());
         
         }
@@ -146,8 +145,9 @@ public class AppTest
             
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+                pmcTest.setName("TEST Cat Fact");
                 assertTrue(pmcTest.validate());
-                pmcTest.writeToFile(filePath + "/test-output/example-catfact-compare.postman_collection.json");
+                pmcTest.writeToFile(filePath + "/test-output/TEST-example-catfact.postman_collection.json");
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -169,7 +169,7 @@ public class AppTest
                 }
                 assertTrue(pmcTest.getValidationMessages().length == 0);
                 pmcTest.setName("TEST body-test-compare");
-                pmcTest.writeToFile(filePath + "/test-output/body-test-compare.postman_collection.json");
+                pmcTest.writeToFile(filePath + "/test-output/TEST-body-test.postman_collection.json");
             }
             catch(Exception e)
              {
@@ -177,6 +177,132 @@ public class AppTest
              }
              
             
+        }
+
+        public void testBuildAuths() throws Exception {
+            pmcTest.setName("TEST Auth");
+            PostmanAuth auth;
+            PostmanRequest req;
+    
+            auth = new PostmanAuth(enumAuthType.AKAMAI);
+            auth.setAuthElement("headersToSign", "x-api-key");
+            auth.setAuthElement("baseURL", "https://akamai-base.com");
+            auth.setAuthElement("timestamp", "akamaiTimestamp");
+            auth.setAuthElement("nonce", "akamaiNonce");
+            auth.setAuthElement("clientSecret","akamaiClientSecret");
+            auth.setAuthElement("clientToken", "akamaiClientToken");
+            auth.setAuthElement("accessToken", "akamaiToken");
+            
+             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "AKAMAI request");
+    
+            
+             auth = new PostmanAuth(enumAuthType.APIKEY);
+            auth.setAuthElement("key", "API-KEY");
+            auth.setAuthElement("value", "x-api-key");
+            auth.setAuthElement("in","query");
+             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "APIKEY request");
+    
+                  
+            auth = new PostmanAuth(enumAuthType.AWS);
+            auth.setAuthElement("sessionToken","awsSessiontoken");
+            auth.setAuthElement("service","awsServiceName");
+            auth.setAuthElement("secretKey","aswSecretKey");
+            auth.setAuthElement("accessKey","awsAccessKey");
+            auth.setAuthElement("addAuthDataToQuery","false");
+             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "AWS request");
+            
+            auth = new PostmanAuth(enumAuthType.BEARER);
+            auth.setAuthElement("key", "API-KEY");
+            auth.setAuthElement("value", "x-api-key");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "BEARER request");
+            System.out.println("Valid: " + pmcTest.validate());
+            
+    
+            auth = new PostmanAuth(enumAuthType.BASIC);
+            auth.setAuthElement("password","fakePassword");
+            auth.setAuthElement("username","fakeusername");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "BASIC request");
+            System.out.println("Valid: " + pmcTest.validate());
+            
+            
+            auth = new PostmanAuth(enumAuthType.DIGEST);
+            auth.setAuthElement("opaque","OpaqueString");
+            auth.setAuthElement("clientNonce","2020202");
+            auth.setAuthElement("nonceCount","1010101");
+            auth.setAuthElement("qop","digest-qop");
+            auth.setAuthElement("algorithim","SHA-256");
+            auth.setAuthElement("nonce","digestNonce");
+            auth.setAuthElement("realm","digest@test.com");
+            auth.setAuthElement("password","digestPassword");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "DIGEST request");
+    
+            auth = new PostmanAuth(enumAuthType.HAWK);
+            auth.setAuthElement("includePayloadHash","true");
+            auth.setAuthElement("timestamp","hawkTimestamp");
+            auth.setAuthElement("delegation","hawk-dlg");
+            auth.setAuthElement("app","HawkApp");
+            auth.setAuthElement("extraData","Hawk-ext");
+            auth.setAuthElement("nonce","hawkNonce");
+            auth.setAuthElement("user","HawkUser");
+            auth.setAuthElement("authKey", "HawkAuthKey");
+            auth.setAuthElement("algorithim", "sha256");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "HAWK request");
+    
+            auth = new PostmanAuth(enumAuthType.OAUTH1);
+            auth.setAuthElement(new PostmanVariable("addEmptyParamsToSign","true", null, "boolean"));
+            auth.setAuthElement(new PostmanVariable("includeBodyHash","true", null, "boolean"));
+            auth.setAuthElement("realm","testoauth@test.com");
+            auth.setAuthElement("nonce","oauthNonce");
+            auth.setAuthElement("timestamp","oauthTimestamp");
+            auth.setAuthElement("verifier","oauthVerifier");
+            auth.setAuthElement("callback","https:/callback.url");
+            auth.setAuthElement("tokenSecret","OAuthTokenSecret");
+            auth.setAuthElement("token","oauthToken");
+            auth.setAuthElement("consumerSecret","oauthConsumerSecret");
+            auth.setAuthElement("consumerKey","oauthConsumerKey");
+            auth.setAuthElement("signatureMethod","HMAC-SHA1");
+            auth.setAuthElement("version","1.0");
+            auth.setAuthElement(new PostmanVariable("addParamsToHeader","false",null,"boolean"));
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "OAUTH1 request");
+    
+            auth = new PostmanAuth(enumAuthType.OAUTH2);
+            auth.setAuthElement("grant_type","authorization_code");
+            auth.setAuthElement("tokenName", "Oauth2TokenName");
+            auth.setAuthElement("tokenType","");
+            auth.setAuthElement("accessToken","oauth2AccessToken");
+            auth.setAuthElement("addTokenTo","header");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "OAUTH2 request");
+    
+            auth = new PostmanAuth(enumAuthType.NTLM);
+            auth.setAuthElement("workstation","NTMLWorkstation");
+            auth.setAuthElement("domain","NTLMDomain");
+            auth.setAuthElement("password","NTLMPassword");
+            auth.setAuthElement("username","NTLMUsername");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req.setAuth(auth);
+            pmcTest.addRequest(req, "NTLM request");
+            auth.getAuthTypeAsString();
+           
+            assertTrue(pmcTest.validate());
+            pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
         }
 
         @Test
@@ -192,7 +318,7 @@ public class AppTest
                 //System.out.println(msgs[i].getMessage());
             }
             pmcTest.setName("TEST Cat-Weather");
-            pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
+            pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
             assertTrue(worked);
             //System.out.println("done");
 
@@ -270,7 +396,7 @@ public class AppTest
         pmcTest.addRequest(rqGraphQL, "GraphQL body", resp);
         
         try {
-            pmcTest.writeToFile(filePath + "/test-output/bodies-with-responses.postman_collection.json");
+            pmcTest.writeToFile(filePath + "/test-output/TEST-bodies-with-responses.postman_collection.json");
 
             
         }

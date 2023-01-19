@@ -16,13 +16,21 @@ import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
 import com.postman.collection.util.*;
-
-
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.Gson;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 
 
 
+@SuppressWarnings("unused")
 public class PostmanCollection extends PostmanItem 
 {
 
@@ -37,11 +45,20 @@ private transient ValidationMessage[] validationMessages;
 public static void main( String[] args ) throws Exception
     {
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
-        pmcTest.validate();
-        pmcTest.writeToFile(filePath + "/test-output/inner-class-test.postman_collection.json");
+        String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
         
-    
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+            pmcTest.addCollection(pmcTest2, true, true);
+            boolean worked = pmcTest.validate();
+            ValidationMessage[] msgs = pmcTest.getValidationMessages();
+            for(int i = 0; i < msgs.length; i++)
+            {
+                //System.out.println(msgs[i].getMessage());
+            }
+            pmcTest.setName("TEST Cat-Weather");
+            pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
+
         
 
         
@@ -273,6 +290,7 @@ private void setParents() {
 
 
 public static PostmanCollection PMCFactory() {
+    
     String json = "{}";
     Gson gson = new Gson();
     PostmanCollection pmcRetVal = gson.fromJson(json, PostmanCollection.class);
@@ -313,10 +331,51 @@ public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoun
 public void writeToFile(String path) throws IOException {
 
     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-    writer.write(this.toJson(false, null));   
+    writer.write(this.toJson());
     writer.close();
 }
 
+public String toJson() {
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    Type varListType = new TypeToken<ArrayList<PostmanVariable>>() {}.getType();
+
+    JsonSerializer<ArrayList<PostmanVariable>> varSerializer = new JsonSerializer<ArrayList<PostmanVariable>> () {
+        public JsonElement serialize(ArrayList<PostmanVariable> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonArray varArray = new JsonArray();
+            
+            for(PostmanVariable var : src) {
+                varArray.add("" + src);
+            }
+            return varArray;
+        }
+    };
+    
+    JsonSerializer<PostmanAuth> serializer = new JsonSerializer<PostmanAuth>() {  
+        @Override
+        public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonAuth = new JsonObject();
+            
+
+    
+            //src.preJson(); 
+            jsonAuth.addProperty("type", src.getAuthTypeAsString());
+            jsonAuth.add(src.getAuthTypeAsString(), context.serialize(src.getAuthElements()));
+            
+            
+            
+            System.out.println("Is object: " + jsonAuth.isJsonObject());
+            return jsonAuth;
+        }
+    };
+
+
+
+gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
+gsonBuilder.registerTypeAdapter(varListType, varSerializer);
+Gson customGson = gsonBuilder.create();  
+String customJSON = customGson.toJson(this);  
+return customJSON;
+}
 
 public PostmanItem getItemParent(String key) {
     return this.getItem(key, true);

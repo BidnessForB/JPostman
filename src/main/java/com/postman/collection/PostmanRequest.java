@@ -6,6 +6,7 @@ public class PostmanRequest  {
     private PostmanVariable[] header = new PostmanVariable[0];
     private String description;
     private PostmanBody body;
+    private PostmanAuth auth;
     
     
 
@@ -26,6 +27,14 @@ public class PostmanRequest  {
         this.setMethod(method);
         this.setUrl(url);
         
+    }
+
+    public void setAuth(PostmanAuth auth) {
+        this.auth = auth;
+    }
+
+    public PostmanAuth getAuth() {
+        return this.auth;
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, String URL) throws Exception {
