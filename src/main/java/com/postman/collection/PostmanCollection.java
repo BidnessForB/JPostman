@@ -37,34 +37,11 @@ private transient ValidationMessage[] validationMessages;
 public static void main( String[] args ) throws Exception
     {
         String filePath = new java.io.File("").getAbsolutePath();
-
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
+        pmcTest.validate();
+        pmcTest.writeToFile(filePath + "/test-output/inner-class-test.postman_collection.json");
+        
     
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory();
-        pmcTest.setName("TEST Constructed Queries");
-
-        
-        PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
-        newReq.getUrl().addQuery("foo","bar");
-        pmcTest.addRequest(newReq,"Get Foo Bar");
-        
-        
-        
-        try {
-            pmcTest.writeToFile(filePath + "/test-output/constructed-queries.postman_collection.json");
-
-            
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            
-        }
-        boolean valid = pmcTest.validate();
-        if(!valid) {
-            for(int i = 0; i < pmcTest.getValidationMessages().length;i++) {
-                //System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
-            }
-        }
         
 
         
