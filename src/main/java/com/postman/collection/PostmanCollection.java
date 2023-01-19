@@ -11,6 +11,7 @@ import java.lang.reflect.Array;
 import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
+import com.postman.collection.util.*;
 
 
 import com.google.gson.Gson;
@@ -41,9 +43,37 @@ private transient ValidationMessage[] validationMessages;
 
 public static void main( String[] args ) throws Exception
     {
-
         String filePath = new java.io.File("").getAbsolutePath();
+
+    
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory();
+        pmcTest.setName("TEST Constructed Queries");
+
         
+        PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        newReq.getUrl().addQuery("foo","bar");
+        pmcTest.addRequest(newReq,"Get Foo Bar");
+        
+        
+        
+        try {
+            pmcTest.writeToFile(filePath + "/test-output/constructed-queries.postman_collection.json");
+
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            
+        }
+        boolean valid = pmcTest.validate();
+        if(!valid) {
+            for(int i = 0; i < pmcTest.getValidationMessages().length;i++) {
+                System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
+            }
+        }
+        
+
         
 
         
@@ -64,7 +94,7 @@ public ValidationMessage[] getValidationMessages() {
     return this.validationMessages != null ? this.validationMessages : new ValidationMessage[0];
 }
 
-public void addResponse(String requestKey, PostmanResponse response) {
+public void addResponse(String requestKey, PostmanResponse response) throws Exception {
     PostmanItem req = this.getItem(requestKey);
     req.addResponse(response);
 
@@ -179,37 +209,17 @@ public void addCollection(PostmanCollection newColl, boolean copyScripts, boolea
 
 public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws Exception {
     
-    List<PostmanVariable> liThisCollVars = null;
-    List<PostmanVariable> liNewCollVars = null;
     PostmanItem newFolder = new PostmanItem(newColl.getName());
     parent.addItem(newFolder);
     
     newFolder.addItems(newColl.getItems());
-    if (!copyVariables || (this.getVariables() == null && newColl.getVariables() == null) || (this.getVariables().length == 0 && newColl.getVariables().length == 0)) {
-        return;
+    if (copyVariables) {
+        this.setVariables(CollectionUtils.arrayConcat(new PostmanVariable[0], newColl.getVariables(), this.getVariables()));
     }
 
-    if(this.getVariables() == null) {
-        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-    }
-    else {
-        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(this.getVariables()));
-    }
-    if(newColl.getVariables() == null)
-    {
-        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-    }
-    else { 
-        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(newColl.getVariables()));
-    }
-    liThisCollVars.addAll(liNewCollVars);
-    this.setVariables(liThisCollVars.toArray(new PostmanVariable[0]));
-    
     if(copyScripts) {
         newFolder.setEvents(newColl.getEvents());
     }
-
-
 }
 
 public void addCollection(PostmanCollection newColl) throws Exception

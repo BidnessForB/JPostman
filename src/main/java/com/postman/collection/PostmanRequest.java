@@ -31,7 +31,7 @@ public class PostmanRequest  {
         
     }
 
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) {
+    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws Exception {
         
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);
@@ -115,21 +115,6 @@ public class PostmanRequest  {
         this.body = body;
     }
 
-    /* public void addVariable(PostmanVariable var)
-    {
-        List<PostmanVariable> liVars;
-        
-        if(this.variable != null)
-        {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
-        }
-        else {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-        }
-
-        liVars.add(var);
-        this.variable = liVars.toArray(new PostmanVariable[0]);
-
-    } */
+    
 
 }

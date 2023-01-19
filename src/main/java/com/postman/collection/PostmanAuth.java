@@ -71,7 +71,7 @@ public class PostmanAuth implements IPostmanCollectionElement {
         List<PostmanVariable> liElems;
         if(this.apikey == null)
         {
-            liElems = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
+            return null;
         }
         else
           {

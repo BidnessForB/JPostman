@@ -34,7 +34,30 @@ public class AppTest
             currentFile.delete();
         }
     }
+    @Test
+    public void shouldCreateRequestQueries() {
+        try {
+        
+        pmcTest  = PostmanCollection.PMCFactory();
+        PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        newReq.getUrl().addQuery("foo","bar");
+        pmcTest.addRequest(newReq,"Get Foo Bar");
+        pmcTest.setName("TEST Constructed Queries");
+        pmcTest.writeToFile(filePath + "/test-output/constructed-queries.postman_collection.json");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            assertTrue(false);
+        }
 
+        
+        
+
+
+
+
+    }
     @Test
     public void shouldImportCollection()
     {
@@ -59,7 +82,7 @@ public class AppTest
             
             
             List<PostmanUrl> liUrls  = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
-            
+            try {
     
             
             liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json"));
@@ -88,6 +111,12 @@ public class AppTest
                 }
                 
             } 
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            assertTrue(false);
+        }
     
         /*
         requests[6].addVariable(new PostmanVariable("path1", "path-value"));

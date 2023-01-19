@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import com.google.gson.Gson;
+import com.postman.collection.util.CollectionUtils;
 
 import java.util.regex.*;
 
@@ -19,7 +20,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private String protocol;
     private String port;
     
-    public void setRaw(String rawURL) {
+    public void setRaw(String rawURL) throws Exception {
        
         
         this.raw = rawURL;
@@ -82,37 +83,19 @@ public class PostmanUrl implements IPostmanCollectionElement {
             this.setPath(null);
             this.setQuery(null);
         }
-/*
-        for(int i = 0; i < this.path.length; i++)
-        {
-            if(this.path[i].substring(0,1).equals(":")) {
-                this.addVariable(this.path[i].substring(1), null, null);
-            }
-        }
-        */
+
 
         System.out.println("foo");
 
     }
 
-    public void addVariable(String key, String value, String description) {
+    public void addVariable(String key, String value, String description) throws Exception {
 
-        //Setting to null so javac stops complaining about it not being initialized
-        List<PostmanVariable> liVars = null;
-
-        if(this.variable == null) {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-        }
-        else
-        {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
-        }
-        liVars.add(new PostmanVariable(key,value,description));
-        this.variable = liVars.toArray(new PostmanVariable[0]);
-
+        this.variable = CollectionUtils.insertInCopy((this.variable == null ? new PostmanVariable[0] : this.variable),new PostmanVariable(key, value,description));
+       
     }
 
-    public void setPath(String rawPath) {
+    public void setPath(String rawPath) throws Exception  {
         String pathElements[] = new String[0];
         List<String> liPath;
         this.path = new String[0];
@@ -136,7 +119,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     }
 
-    public void setQuery(String rawQuery) {
+    public void setQuery(String rawQuery) throws Exception {
         String queryElements[];
         if(rawQuery != null && rawQuery.length() > 0)
         {
@@ -186,7 +169,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         return raw;
     }
 
-    public PostmanUrl(String rawURL) {
+    public PostmanUrl(String rawURL) throws Exception {
         this.setRaw(rawURL);
     }
 
@@ -244,23 +227,18 @@ public class PostmanUrl implements IPostmanCollectionElement {
         return new Gson().toJson(this);
     }
 
-    public void addQuery(String key, String value) {
+    public void addQuery(String key, String value) throws Exception {
         this.addQuery(key, value, null);
     }
 
-    public void addQuery(String key, String value, String description) {
-        PostmanVariable newQuery = new PostmanVariable(key,value, description);
-        if(this.query == null)
-        {
-            this.query = new PostmanVariable[0];
-        }
-        List<PostmanVariable> liQuery = new ArrayList<PostmanVariable>(Arrays.asList(this.query));
-        liQuery.add(newQuery);
-        this.query = liQuery.toArray(this.query);
+    public void addQuery(String key, String value, String description) throws Exception {
+        
+        this.query = CollectionUtils.insertInCopy(this.query == null ? new PostmanVariable[0] : this.query, new PostmanVariable(key,value,description));
+    
     }
 
 
-    public void addQuery(String queryString) {
+    public void addQuery(String queryString) throws Exception {
         
         String[] elements = new String[2];
 
