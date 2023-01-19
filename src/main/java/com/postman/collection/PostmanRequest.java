@@ -1,7 +1,4 @@
 package com.postman.collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 
 public class PostmanRequest  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;

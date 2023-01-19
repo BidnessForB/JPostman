@@ -1,14 +1,12 @@
 package com.postman.collection.util;
-import java.util.Arrays;
+
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.reflect.Type;
 
 
 
 public class CollectionUtils {
- 
+    
+    @SuppressWarnings("unchecked")
     public static <T> T[] arrayConcat(T[]... arrays) {
         int totalLen = 0;
         for (T[] arr: arrays) {

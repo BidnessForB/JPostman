@@ -1,7 +1,7 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeNoException;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -165,7 +165,7 @@ public class AppTest
                 pmcTest.validate();
                 for(int i = 0; i < pmcTest.getValidationMessages().length; i++)
                 {
-                    System.out.println("Validation [" + i+"]: " + pmcTest.getValidationMessages()[i]);
+                    //System.out.println("Validation [" + i+"]: " + pmcTest.getValidationMessages()[i]);
                 }
                 assertTrue(pmcTest.getValidationMessages().length == 0);
                 pmcTest.setName("TEST body-test-compare");
@@ -189,12 +189,12 @@ public class AppTest
             ValidationMessage[] msgs = pmcTest.getValidationMessages();
             for(int i = 0; i < msgs.length; i++)
             {
-                System.out.println(msgs[i].getMessage());
+                //System.out.println(msgs[i].getMessage());
             }
             pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/cat-weather.postman_collection.json");
             assertTrue(worked);
-            System.out.println("done");
+            //System.out.println("done");
 
 
         }
@@ -204,7 +204,7 @@ public class AppTest
             
         PostmanCollection pmcTest = PostmanCollection.PMCFactory();
         pmcTest.setName("TEST Constructed Body with Responses");
-        PostmanCollection pmcTest2 = null;
+        
 
         PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
         byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
@@ -282,7 +282,7 @@ public class AppTest
         boolean valid = pmcTest.validate();
         if(!valid) {
             for(int i = 0; i < pmcTest.getValidationMessages().length;i++) {
-                System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
+                //System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
             }
         }
         assertTrue(valid);

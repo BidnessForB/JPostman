@@ -24,7 +24,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
        
         
         this.raw = rawURL;
-        String testUrl = rawURL;
+        
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
         if(maProtocol.find()) {
@@ -58,15 +58,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         else {
             this.setHost(null);
         }
-       /*
-        Pattern pnPort = Pattern.compile(":([0-9]+)");
-        Matcher maPort = pnPort.matcher(rawURL);
-        if(maPort.find() == true)
-        {
-            this.setPort(Integer.parseInt(maPort.group(1)));
-            rawURL = rawURL.replace(maPort.group(0), "");
-        }
-        */
+       
         
         String [] queryElements = rawURL.split("\\?");
         if(queryElements != null && queryElements.length == 1)
@@ -85,7 +77,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         }
 
 
-        System.out.println("foo");
+        
 
     }
 

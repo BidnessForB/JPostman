@@ -26,7 +26,7 @@ public static PostmanEvent pmcEventFactory() {
     }
     catch(Exception e)
     {
-        System.out.println("This should not happen here.");
+        //System.out.println("This should not happen here.");
     }
     
     

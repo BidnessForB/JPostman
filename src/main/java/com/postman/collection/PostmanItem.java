@@ -6,8 +6,8 @@ import com.postman.collection.util.CollectionUtils;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
+
+//import java.util.UUID;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
     private String description; 
@@ -16,7 +16,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private PostmanResponse[] response = null;
     private PostmanItem[] item;
     private String name; 
-    private transient String key = UUID.randomUUID().toString();
+    //private transient String key = UUID.randomUUID().toString();
     private transient PostmanItem parent = null;
     @Override
     public String getKey() {
@@ -124,7 +124,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         }
         //recursively traverse items looking for name == key
         for (PostmanItem curItem: item) {
-            System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
+            //System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
             if (item == null)
               return null;
             if (curItem.getKey().equals(key))
@@ -240,7 +240,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
                 if(curItem.getItemType() == ofType)
                 {
                     results.add(curItem);
-                    System.out.println(curItem.getName());
+                    //System.out.println(curItem.getName());
                 }
                 try
                 {

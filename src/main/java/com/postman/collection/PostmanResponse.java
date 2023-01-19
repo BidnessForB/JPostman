@@ -25,6 +25,14 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return true;
     }
 
+    public void  setHeader(PostmanVariable[] headers) {
+        this.header = headers;
+    }
+
+    public PostmanVariable[] getHeader() {
+        return this.header;
+    }
+
     public PostmanResponse(String name, PostmanRequest req, String status, int code, String body) {
         this.originalRequest = req;
         this.status = status;

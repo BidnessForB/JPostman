@@ -7,13 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
@@ -69,7 +62,7 @@ public static void main( String[] args ) throws Exception
         boolean valid = pmcTest.validate();
         if(!valid) {
             for(int i = 0; i < pmcTest.getValidationMessages().length;i++) {
-                System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
+                //System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
             }
         }
         
@@ -133,7 +126,7 @@ public boolean validate() throws Exception {
     }
 
     while(itErrors.hasNext()) {
-        System.out.println(itErrors.next().getMessage());
+        //System.out.println(itErrors.next().getMessage());
     }
     return(errors.size() == 0);
 
@@ -263,7 +256,7 @@ public  PostmanCollection(String name){
 }
 
 public void init() {
-    System.out.println("We're in init");
+    //System.out.println("We're in init");
     if(this.getInfo() == null)
     {
         this.info = new PostmanInfo();
@@ -360,7 +353,7 @@ public PostmanItem getItemParent(String key) {
     }
     //recursively traverse items looking for name == key
     for (PostmanItem curItem: item) {
-        System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
+        //System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
         if (item == null)
           return null;
         if (curItem.getName().equals(key))
