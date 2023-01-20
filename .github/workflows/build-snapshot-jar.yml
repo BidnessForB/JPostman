@@ -11,8 +11,8 @@ name: Build LATEST Snapshot JAR
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
 
 jobs:
   build:
