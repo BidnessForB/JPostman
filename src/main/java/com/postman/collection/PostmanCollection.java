@@ -53,7 +53,7 @@ public static void main( String[] args ) throws Exception
         PostmanItem req = pmcTest.getItem("get Random Fact");
         
         req.validate();
-        System.out.println("x");
+        //System.out.println("x");
         
 
         
@@ -344,7 +344,7 @@ public String toJson() {
             
             
             
-            System.out.println("Is object: " + jsonAuth.isJsonObject());
+            
             return jsonAuth;
         }
     };

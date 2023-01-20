@@ -46,7 +46,7 @@ public class AppTest
         pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-queries.postman_collection.json");
         boolean valid = pmcTest.validate();
         ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -141,7 +141,7 @@ public class AppTest
             pmcTest  = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
             boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -187,7 +187,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
                     boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -219,7 +219,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         pmcTest.writeToFile(filePath +"/test-output/TEST-construct-urls.postman_collection.json");
         boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -246,7 +246,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
                 pmcTest.setName("TEST Cat Fact");
                 boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -270,7 +270,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
                 boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -294,6 +294,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.setName("TEST Auth");
             PostmanAuth auth;
             PostmanRequest req;
+            boolean valid;
     
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             pmcTest.addRequest(req, "INHERIT request");
@@ -338,7 +339,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BEARER request");
-            System.out.println("Valid: " + pmcTest.validate());
+            valid = req.validate();
             
     
             auth = new PostmanAuth(enumAuthType.BASIC);
@@ -347,7 +348,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BASIC request");
-            System.out.println("Valid: " + pmcTest.validate());
+            valid = pmcTest.validate();
             
             
             auth = new PostmanAuth(enumAuthType.DIGEST);
@@ -418,15 +419,15 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.setAuth(auth);
             
             pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
-            boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            valid = pmcTest.validate();
+            ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+            if(msgs != null && msgs.size() > 0)
+            {
+                for(ValidationMessage curMsg: msgs) {
+                    System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+                }
             }
-        }
-        assertTrue(valid);
+            assertTrue(valid);
 
         }
 
@@ -439,7 +440,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.setName("TEST Cat-Weather ");
             boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
@@ -450,7 +451,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/TEST-cat-weather.postman_collection.json");
             assertTrue(valid);
-            //System.out.println("done");
+            
 
 
         }
@@ -549,7 +550,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         }
         boolean valid = pmcTest.validate();
 ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs.size() > 0)
+        if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {
                 System.out.println("VALIDATION ERROR: " + curMsg.getMessage());

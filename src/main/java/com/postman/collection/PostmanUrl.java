@@ -24,7 +24,7 @@ public class PostmanUrl extends PostmanCollectionElement {
        
         
         this.raw = rawURL;
-        System.out.println(this.protocol);
+        //System.out.println(this.protocol);
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
         if(maProtocol.find()) {
