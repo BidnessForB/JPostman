@@ -50,13 +50,7 @@ public class PostmanRequest  {
         return method;
     }
 
-    public boolean validate() throws Exception {
-        boolean valid = true;
-        valid = valid && (method != null);
-        valid = valid && (url.validate() && url != null);
-        
-        return valid;
-    }
+    
 
 
     public void setMethod(enumHTTPRequestMethod method) {

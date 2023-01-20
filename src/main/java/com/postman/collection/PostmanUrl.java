@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class PostmanUrl implements IPostmanCollectionElement {
+public class PostmanUrl extends PostmanCollectionElement {
     private String raw = "";
     private ArrayList<String> host;
     private ArrayList<String> path;
@@ -183,9 +183,6 @@ public class PostmanUrl implements IPostmanCollectionElement {
         return host;
     }
 
-    public boolean validate() {
-        return true;
-    }
 
 
 
@@ -216,11 +213,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         return null;
     }
  
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
+  
 
     public void addQuery(String key, String value) throws Exception {
         this.addQuery(key, value, null);

@@ -44,12 +44,15 @@ private transient ArrayList<ValidationMessage> validationMessages;
 public transient String tempSchemaJson;
 
 
+
 public static void main( String[] args ) throws Exception
     {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
         PostmanCollection pmcTest = PostmanCollection.PMCFactory(resourcePath + "/example-catfact.postman_collection.json");
-        pmcTest.validate();
+        PostmanItem req = pmcTest.getItem("get Random Fact");
+        
+        req.validate();
         System.out.println("x");
         
 
@@ -102,40 +105,7 @@ public void addResponse(String requestKey, PostmanResponse response) throws Exce
 
 }
 
-public boolean validate() throws Exception {
-    
-    
-    String schemaJSON = null;;
-    ObjectMapper mapper = new ObjectMapper();
-    JsonSchema schema;
-    this.validationMessages = null;
-    
-    schemaJSON = PostmanCollection.getPostmanCollectionSchema();
-    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
-    if(this.tempSchemaJson != null)
-    {
-        schema = factory.getSchema(this.tempSchemaJson);
-    }
-    else {
-        schema = factory.getSchema(new URI("https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json"));
-    }
-     schema = factory.getSchema(new URI("https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json"));
-    JsonNode pmcNode = mapper.readTree(this.toJson(false, null));
-    schema.initializeValidators();
-    Set<ValidationMessage> errors = schema.validate(pmcNode);
-    Iterator<ValidationMessage> itErrors = errors.iterator();
-    
-    if(errors.size() > 0) {
-        this.validationMessages = new ArrayList<ValidationMessage>(errors);
-    }
 
-    while(itErrors.hasNext()) {
-        //System.out.println(itErrors.next().getMessage());
-    }
-    return(errors.size() == 0);
-
-    
-}
 
 public void addFolder(PostmanItem newFolder) throws Exception {
     if(newFolder.getItemType() != enumPostmanItemType.FOLDER) {
@@ -241,9 +211,7 @@ public ArrayList<PostmanVariable> getVariables() {
     return variable;
 }
 
-public PostmanAuth getAuth() {
-    return auth;
-}
+
 
 public String getName() {
     return this.getInfo().getName() + "";
@@ -338,6 +306,14 @@ public void writeToFile(String path) throws IOException {
     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
     writer.write(this.toJson());
     writer.close();
+}
+
+public void setAuth(PostmanAuth auth) {
+    this.auth = auth;
+}
+
+public PostmanAuth getAuth() {
+    return this.auth;
 }
 
 public String toJson() {

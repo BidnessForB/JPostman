@@ -1,7 +1,7 @@
 package com.postman.collection;
 import com.google.gson.Gson;
 
-public class PostmanInfo implements IPostmanCollectionElement {
+public class PostmanInfo extends PostmanCollectionElement {
     private String _postman_id = "";
     private String name = "";
     private String description = "";
@@ -21,9 +21,7 @@ public class PostmanInfo implements IPostmanCollectionElement {
         this.name = name;
     }
 
-    public boolean validate() {
-        return true;
-    }
+
 
     public String getDescription() {
         return description;
@@ -49,11 +47,6 @@ public class PostmanInfo implements IPostmanCollectionElement {
         return name;
     }
 
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
 
     
 }

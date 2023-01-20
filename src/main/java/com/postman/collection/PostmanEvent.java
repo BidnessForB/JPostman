@@ -2,7 +2,7 @@ package com.postman.collection;
 
 import com.google.gson.Gson;
 
-public class PostmanEvent implements IPostmanCollectionElement {
+public class PostmanEvent extends PostmanCollectionElement {
     
 private String listen = ""; // basically the name
 private PostmanScript script = null;
@@ -34,9 +34,7 @@ public static PostmanEvent pmcEventFactory() {
     return retVal;
 }
 
-public boolean validate() {
-    return true;
-}
+
 
 public enumEventType getEventType() {
     if(this.getListen().equals("test"))
@@ -87,11 +85,6 @@ public String getKey() {
 
 
 
-@Override
-public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-    
-    return new Gson().toJson(this);
-}
 
 
 

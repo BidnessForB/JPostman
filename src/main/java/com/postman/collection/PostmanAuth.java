@@ -1,15 +1,16 @@
 package com.postman.collection;
 
-import com.google.gson.*;
+
 import java.util.HashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 ////import java.util.UUID;
 
 
-public class PostmanAuth implements IPostmanCollectionElement {
+public class PostmanAuth extends PostmanCollectionElement {
     ////private transient String key = UUID.randomUUID().toString();    
     private String type = "";
     
@@ -64,9 +65,7 @@ public class PostmanAuth implements IPostmanCollectionElement {
         }
     }
 
-    public boolean validate() {
-        return true;
-    }
+  
 
     public PostmanAuth() {
         arrTypes[enumAuthType.AKAMAI.ordinal()] = "edgegrid";
@@ -89,11 +88,7 @@ public class PostmanAuth implements IPostmanCollectionElement {
     }
 
 
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
+   
 
 
     public void setType(enumAuthType authType) {
