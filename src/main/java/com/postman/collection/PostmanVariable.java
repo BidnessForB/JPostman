@@ -3,8 +3,8 @@ import com.google.gson.Gson;
 public class PostmanVariable implements IPostmanCollectionElement {
     private String key = "";
     private String value = "";
-    private String description = "";
-    private String type = "";
+    private String description;
+    private String type = "string";
     
     
     public String getToken() {

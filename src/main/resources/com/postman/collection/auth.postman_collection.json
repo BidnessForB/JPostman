@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "024e0a8d-d970-4694-aa41-e23742e5c447",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23889826"
+	},
+	"item": [
+		{
+			"name": "Auth in Header",
+			"item": [
+				{
+					"name": "Inherit auth",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "No Auth",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "API-key",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "API-KEY",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bearer Token",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Basic Auth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "fakepassword",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "fakeusername",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Digest",
+					"request": {
+						"auth": {
+							"type": "digest",
+							"digest": [
+								{
+									"key": "opaque",
+									"value": "OpaqueString",
+									"type": "string"
+								},
+								{
+									"key": "clientNonce",
+									"value": "2020202",
+									"type": "string"
+								},
+								{
+									"key": "nonceCount",
+									"value": "1010101",
+									"type": "string"
+								},
+								{
+									"key": "qop",
+									"value": "digest-qop",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "SHA-256",
+									"type": "string"
+								},
+								{
+									"key": "nonce",
+									"value": "digestnonce",
+									"type": "string"
+								},
+								{
+									"key": "realm",
+									"value": "digest@test.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "digestPassword",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "digestUsername",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Oauth 1.0",
+					"request": {
+						"auth": {
+							"type": "oauth1",
+							"oauth1": [
+								{
+									"key": "addEmptyParamsToSign",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "includeBodyHash",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "realm",
+									"value": "testoauth@test.com",
+									"type": "string"
+								},
+								{
+									"key": "nonce",
+									"value": "oauthNonce",
+									"type": "string"
+								},
+								{
+									"key": "timestamp",
+									"value": "oauthTimestamp",
+									"type": "string"
+								},
+								{
+									"key": "verifier",
+									"value": "oauthVerifier",
+									"type": "string"
+								},
+								{
+									"key": "callback",
+									"value": "https://callback.url",
+									"type": "string"
+								},
+								{
+									"key": "tokenSecret",
+									"value": "oauthTokenSecret",
+									"type": "string"
+								},
+								{
+									"key": "token",
+									"value": "oauthToken",
+									"type": "string"
+								},
+								{
+									"key": "consumerSecret",
+									"value": "consumerSecret",
+									"type": "string"
+								},
+								{
+									"key": "consumerKey",
+									"value": "consumerKey",
+									"type": "string"
+								},
+								{
+									"key": "signatureMethod",
+									"value": "HMAC-SHA1",
+									"type": "string"
+								},
+								{
+									"key": "version",
+									"value": "1.0",
+									"type": "string"
+								},
+								{
+									"key": "addParamsToHeader",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Oauth 2.0",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "Oauth2TokenName",
+									"type": "string"
+								},
+								{
+									"key": "tokenType",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "oauth2Token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hawk",
+					"request": {
+						"auth": {
+							"type": "hawk",
+							"hawk": [
+								{
+									"key": "includePayloadHash",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "timestamp",
+									"value": "HawkTimestamp",
+									"type": "string"
+								},
+								{
+									"key": "delegation",
+									"value": "Hawk-dlg",
+									"type": "string"
+								},
+								{
+									"key": "app",
+									"value": "HawkAppID",
+									"type": "string"
+								},
+								{
+									"key": "extraData",
+									"value": "Hawk-ext",
+									"type": "string"
+								},
+								{
+									"key": "nonce",
+									"value": "HawkNonce",
+									"type": "string"
+								},
+								{
+									"key": "user",
+									"value": "HawkUser",
+									"type": "string"
+								},
+								{
+									"key": "authKey",
+									"value": "HawkAuthKey",
+									"type": "string"
+								},
+								{
+									"key": "authId",
+									"value": "hawkAuthID",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "sha256",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AWS Signature",
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "sessionToken",
+									"value": "awsSessiontoken",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "awsServiceName",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "awsRegion",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "awsSecretKey",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "awsAccessKey",
+									"type": "string"
+								},
+								{
+									"key": "addAuthDataToQuery",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NTLM",
+					"request": {
+						"auth": {
+							"type": "ntlm",
+							"ntlm": [
+								{
+									"key": "workstation",
+									"value": "NTMLWorkstation",
+									"type": "string"
+								},
+								{
+									"key": "domain",
+									"value": "NTLMdomain",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "NTLMPassword",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "NTLMUsername",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Akamai",
+					"request": {
+						"auth": {
+							"type": "edgegrid",
+							"edgegrid": [
+								{
+									"key": "headersToSign",
+									"value": "x-api-key",
+									"type": "string"
+								},
+								{
+									"key": "baseURL",
+									"value": "https://akamai-base.com",
+									"type": "string"
+								},
+								{
+									"key": "timestamp",
+									"value": "akamaiTimestamp",
+									"type": "string"
+								},
+								{
+									"key": "nonce",
+									"value": "akamaiNonce",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "akamaiClientSecret",
+									"type": "string"
+								},
+								{
+									"key": "clientToken",
+									"value": "akamaiClientToken",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "akamaiToken",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

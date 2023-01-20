@@ -2,19 +2,22 @@ package com.postman.collection;
 
 
 import com.google.gson.Gson;
+import com.postman.collection.util.CollectionUtils;
+
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
+
+//import java.util.UUID;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
+    
     private String description; 
-    private PostmanEvent[] event = null;
+    private ArrayList<PostmanEvent> event = null;
     private PostmanRequest request = null;
-    private PostmanResponse[] response = null;
+    private ArrayList<PostmanResponse> response = null;
     private PostmanItem[] item;
     private String name; 
-    private transient String key = UUID.randomUUID().toString();
+    //private transient String key = UUID.randomUUID().toString();
     private transient PostmanItem parent = null;
     @Override
     public String getKey() {
@@ -55,29 +58,26 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void setDescription(String description) {
         this.description = description;
     }
-    public PostmanEvent[] getEvents() {
-        if (event == null) {
-            event = new PostmanEvent[0];
-        }
+    public ArrayList<PostmanEvent> getEvents() {
+        
         return event;
     }
 
     public PostmanEvent getEvent(enumEventType evtType) {
-        PostmanEvent event;
-        PostmanEvent[] events = this.getEvents();
-        for(int i = 0; i < events.length; i++)
+        if(event == null) {
+            return null;
+        }
+        for(int i = 0; i < event.size(); i++)
         {
-            event = events[i];
-            if (event.getEventType() == evtType)
-            {
-                return event;
+            if(event.get(i).getEventType() == evtType) {
+                return event.get(i);
             }
         }
         return null;
     }
 
-    public void setEvents(PostmanEvent[] event) {
-        this.event = event;
+    public void setEvents(ArrayList<PostmanEvent> events) {
+        this.event = events;
     }
     public PostmanRequest getRequest() {
         return request;
@@ -85,10 +85,10 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void setRequest(PostmanRequest request) {
         this.request = request;
     }
-    public PostmanResponse[] getResponses() {
+    public ArrayList<PostmanResponse> getResponses() {
         return response;
     }
-    public void setResponses(PostmanResponse[] response) {
+    public void setResponses(ArrayList<PostmanResponse> response) {
         this.response = response;
     }
     public PostmanItem[] getItems() {
@@ -122,7 +122,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
         }
         //recursively traverse items looking for name == key
         for (PostmanItem curItem: item) {
-            System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
+            //System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
             if (item == null)
               return null;
             if (curItem.getKey().equals(key))
@@ -149,43 +149,13 @@ public class PostmanItem implements IPostmanCollectionElement  {
     
         return result;
     }
-    
-  /*  
-    public PostmanItem getItem(String key, boolean parent) { 
-        System.out.println("TYPE: " + (this.getItemType() == enumPostmanItemType.FOLDER ? "FOLDER" : "REQUEST"));    
-        if (item == null) {
-            return null;
-        }
-        for(PostmanItem curItem: item) {
-            if (curItem.getName().equals(key))
-            {
-                if (!parent)
-                    return curItem;
-                else
-                    return this;
-            }
-            else
-                return curItem.getItem(key, parent);
-
-        }
-        return null;
-    }
-    */
    
-   public void addResponse(PostmanResponse resp) {
-    List<PostmanResponse> liResp = null;    
-    
-    if(this.response == null)
-    {
-        liResp = new ArrayList<PostmanResponse>(Arrays.asList(new PostmanResponse[0]));
+   public void addResponse(PostmanResponse resp) throws Exception {
+    if(this.response == null) {
+        this.response = new ArrayList<PostmanResponse>();
     }
-    else{
-        liResp = new ArrayList<PostmanResponse>(Arrays.asList(this.response));
-    }
-    liResp.add(resp);
-    this.response = liResp.toArray(new PostmanResponse[0]);
-
-   }
+    this.response.add(resp);
+       }
 
    
 
@@ -198,21 +168,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
 
 
-    public void addItem(PostmanItem newItem) throws Exception {
-        
-        if(newItem.equals(this)) {
-            throw new Exception("Cannot add an object to itself, lolz");
-        }
-        if(this.getItemType() == enumPostmanItemType.REQUEST)
-        {
-            throw new Exception("Cannot add items to Requests");
-        }
-       
-        this.addItem(newItem, item == null ? 0 : item.length);
-
-        
-
-    }
+    
 
     public boolean isValid() {
         return true;
@@ -236,17 +192,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
             return null;
         }
         List<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
-        PostmanItem curItem;
-        PostmanItem[] retVal = new PostmanItem[alItems.size()];
-        for(int i = 0; i < alItems.size(); i++)
-        {
-            curItem = (PostmanItem)alItems.get(i);
-            retVal[i] = curItem;
-        }
-        
-        return retVal;
-       
-
+        return (alItems == null ? null : alItems.toArray(new PostmanItem[0]));
+    
     }
 
     public boolean hasItem(PostmanItem theItem) {
@@ -290,7 +237,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
                 if(curItem.getItemType() == ofType)
                 {
                     results.add(curItem);
-                    System.out.println(curItem.getName());
+                    //System.out.println(curItem.getName());
                 }
                 try
                 {
@@ -312,24 +259,29 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
 
     public void setEvent(PostmanEvent newEvent) {
-        //will replace the script if it already exists. 
-        
-        
-
-        if(this.getEvent(newEvent.getEventType()) == null)
-        {
-            PostmanEvent[] newArr = new PostmanEvent[1 + event.length]; 
-            newArr[newArr.length - 1] = newEvent;
-            event = newArr;
+        if(event == null) {
+            event = new ArrayList<PostmanEvent>();
+        }
+        if(this.getEvent(newEvent.getEventType()) == null) {
+            event.add(newEvent);
         }
         else {
-            for(int i = 0; i < event.length; i++)
-            {
-                if(event[i].getEventType() == newEvent.getEventType()) {
-                    event[i] = newEvent;
-                }
-            }
+            event.remove(this.getEvent(newEvent.getEventType()));
+            event.add(newEvent);
         }
+    }
+
+    public void addItem(PostmanItem newItem) throws Exception {
+        
+        if(newItem.equals(this)) {
+            throw new Exception("Cannot add an object to itself, lolz");
+        }
+        if(this.getItemType() == enumPostmanItemType.REQUEST)
+        {
+            throw new Exception("Cannot add items to Requests");
+        }
+       
+        this.addItem(newItem, item == null ? 0 : item.length);
 
     }
 
@@ -338,37 +290,15 @@ public class PostmanItem implements IPostmanCollectionElement  {
         {
             throw new Exception ("Item is already present");
         }
-        
-        if(newItem.getClass().getName().equals("com.postman.collection.PostmanCollection"))
-        {
-            String clname = this.getClass().getName();
-            System.out.println("CLASS " + clname);
-            PostmanItem[] newItems = newItem.getItems();
-            PostmanItem newFolder = new PostmanItem(newItem.getName());
-            newFolder.setDescription(newItem.getDescription() + " IMPORTED Collection");
-            this.addItem(newFolder, position);
-            newFolder.setEvents(newItem.getEvents());
-            for(int i = 0; i < newItems.length; i++)
-            {
-                newFolder.addItem(newItems[i]);
-            }
-            return;
-            //throw new Exception("Can't add a collection to a collection");
-        }
-        ArrayList<PostmanItem> liItems = new ArrayList<PostmanItem>(Arrays.asList(new PostmanItem[0]));
-        if(this.item == null)
-        {
-            liItems.add(newItem);
-        }
-        else{
-            liItems = new ArrayList<PostmanItem>(Arrays.asList(this.item));
-            liItems.add(position < liItems.size() ? position : liItems.size(), newItem);
-        }
+        //If the newitem already owns this item, it's a circular recursion
+        if(newItem.getItem(this.getKey()) != null)
 
-
-        
-        item = liItems.toArray(new PostmanItem[0]);
-        
+        {
+            throw new Exception("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey() );
+        }
+       
+        this.item = CollectionUtils.insertInCopy((this.item == null ? new PostmanItem[0] : this.item), newItem, position);
+         
     }
     public void removeItem(PostmanItem oldItem) throws Exception
     {

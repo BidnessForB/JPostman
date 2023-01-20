@@ -26,7 +26,7 @@ public static PostmanEvent pmcEventFactory() {
     }
     catch(Exception e)
     {
-        System.out.println("This should not happen here.");
+        //System.out.println("This should not happen here.");
     }
     
     
@@ -47,9 +47,8 @@ public enumEventType getEventType() {
     {
         return enumEventType.PRE_REQUEST;
     }
-    else
-    {
-        return enumEventType.UNKNOWN;
+    else {
+        return null;
     }
 }
 

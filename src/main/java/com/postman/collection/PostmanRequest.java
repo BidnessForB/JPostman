@@ -1,17 +1,15 @@
 package com.postman.collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 
 public class PostmanRequest  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
-    private PostmanHeader[] header = new PostmanHeader[0];
+    private PostmanVariable[] header = new PostmanVariable[0];
     private String description;
     private PostmanBody body;
+    private PostmanAuth auth;
     
-    private PostmanVariable[] variable;
     
+
     //private String description = "";
     
  
@@ -31,7 +29,15 @@ public class PostmanRequest  {
         
     }
 
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) {
+    public void setAuth(PostmanAuth auth) {
+        this.auth = auth;
+    }
+
+    public PostmanAuth getAuth() {
+        return this.auth;
+    }
+
+    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws Exception {
         
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);
@@ -65,14 +71,14 @@ public class PostmanRequest  {
         this.url = url;
     }
 
-    public PostmanHeader[] getHeader() {
+    public PostmanVariable[] getHeader() {
         return header;
     }
 
-    public void setHeader(PostmanHeader[] header) {
+    public void setHeader(PostmanVariable[] header) {
         this.header = header;
     }
-
+/*
     public void setVariables(PostmanVariable[] vars)
     {
         this.variable = vars;
@@ -81,7 +87,7 @@ public class PostmanRequest  {
     public PostmanVariable[] getVariables() {
         return this.variable;
     }
-
+*/
     public String getDescription() {
         return description;
     }
@@ -90,13 +96,13 @@ public class PostmanRequest  {
         this.description = description;
     }
 
-    public PostmanVariable[] getVariable() {
+    /* public PostmanVariable[] getVariable() {
         return variable;
     }
 
     public void setVariable(PostmanVariable[] variable) {
         this.variable = variable;
-    }
+    } */
 
     public PostmanBody setBody(enumRequestBodyMode bodyMode) {
         return this.setBody(bodyMode, null);
@@ -115,21 +121,6 @@ public class PostmanRequest  {
         this.body = body;
     }
 
-    public void addVariable(PostmanVariable var)
-    {
-        List<PostmanVariable> liVars;
-        
-        if(this.variable != null)
-        {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(this.variable));
-        }
-        else {
-            liVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-        }
-
-        liVars.add(var);
-        this.variable = liVars.toArray(new PostmanVariable[0]);
-
-    }
+    
 
 }

@@ -1,9 +1,8 @@
 package com.postman.collection;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
+//import java.util.UUID;
+
+import com.postman.collection.util.CollectionUtils;
 
 public class PostmanBody {
     private String mode;
@@ -13,7 +12,7 @@ public class PostmanBody {
     private PostmanVariable[] formdata;
     private PostmanVariable[] urlencoded;
     private PostmanBinaryFile file;
-    private transient String key = UUID.randomUUID().toString();
+    //private transient String key = UUID.randomUUID().toString();
     
 
 
@@ -101,45 +100,27 @@ public class PostmanBody {
         this.formdata = formdata;
     }
     
-    public void setFormdata(String key, String value, String description, int position) {
+    public void setFormdata(String key, String value, String description, int position) throws Exception {
         this.setFormdata(new PostmanVariable(key, value, description, "text"), position);
     }
 
-    public void setFormdata(String key, String value, String description) {
+    public void setFormdata(String key, String value, String description) throws Exception {
         this.setFormdata(new PostmanVariable(key, value, description), 0);
     }
 
-    public void setFormdata(PostmanVariable data, int position) {
+    public void setFormdata(PostmanVariable data, int position) throws Exception {
         
-        List<PostmanVariable> liFormData;
-        PostmanVariable[] arrData = null;
-        if(this.getMode() == enumRequestBodyMode.URLENCODED)
-        {
-            arrData = (this.urlencoded != null ? this.urlencoded : new PostmanVariable[0]);
-        }
-        else if(this.getMode() == enumRequestBodyMode.FORMDATA) {
-            arrData = (this.formdata != null ? this.formdata : new PostmanVariable[0]);
-        }
-            liFormData = new ArrayList<PostmanVariable>(Arrays.asList(arrData));
-            if(position == -1) {                liFormData.add(0,data);
-            }
-            else {
-                if(position < 0 || position > liFormData.size())
-                {
-                    liFormData.add(data);
-                }
-                else
-                {
-                    liFormData.add(position,data);
-                }
-            }
         
-        if(this.getMode() == enumRequestBodyMode.FORMDATA) {
-            this.formdata = liFormData.toArray(new PostmanVariable[0]);
+
+        if(this.getMode() == enumRequestBodyMode.URLENCODED)  {
+            this.urlencoded = CollectionUtils.insertInCopy(this.urlencoded, data, position);
         }
-        else if (this.getMode() == enumRequestBodyMode.URLENCODED)
+        else if(this.getMode() == enumRequestBodyMode.FORMDATA)
         {
-            this.urlencoded = liFormData.toArray(new PostmanVariable[0]);
+            this.formdata = CollectionUtils.insertInCopy(this.formdata, data, position);
+        }
+        else {
+            throw new Exception("Cannot set Form Data.  Mode must be URLENCODED or FORMDATA");
         }
     }
 
@@ -259,6 +240,27 @@ public class PostmanBody {
     public PostmanBody(enumRequestBodyMode mode) {
         this.setMode(mode);
     }
+
+class PostmanBodyOptions {
+    private PostmanBodyRaw raw;
+    //private transient String key = UUID.randomUUID().toString();
+    public PostmanBodyRaw getRaw() {
+        return raw;
+    }
+
+    public void setRaw(PostmanBodyRaw raw) {
+        this.raw = raw;
+    }
+
+    public PostmanBodyOptions(PostmanBodyRaw raw) {
+        this.raw = raw;
+    }
+
+    public PostmanBodyOptions(enumRawBodyLanguage language) {
+        this.raw = new PostmanBodyRaw(language);
+    }
+}
+
 
 
 }

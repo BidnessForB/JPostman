@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "9029c796-2aae-40bc-9f3c-c4f8a892ebe4",
-		"name": "Cat Fact TEST",
+		"name": "Cat Fact",
 		"description": "Contact Support:\n Email: contact@catfact.ninja",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23889826"
@@ -34,6 +34,18 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Header-1",
+								"value": "Header-1value",
+								"description": "This is header 1",
+								"type": "text"
+							},
+							{
+								"key": "Header-2",
+								"value": "Header-2value",
+								"description": "This is header 2",
+								"type": "text"
 							}
 						],
 						"url": {

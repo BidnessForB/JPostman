@@ -1,8 +1,8 @@
 package com.postman.collection;
-import java.util.UUID;
+//import java.util.UUID;
 public class PostmanBodyRaw {
     private String language;
-    private transient String key = UUID.randomUUID().toString();
+    //private transient String key = UUID.randomUUID().toString();
     public enumRawBodyLanguage getLanguage() {
         if(language == null)
         {

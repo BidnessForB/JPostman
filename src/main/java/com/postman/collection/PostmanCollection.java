@@ -7,12 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
@@ -21,13 +15,22 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
-
-
+import com.postman.collection.util.*;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.Gson;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 
 
 
+@SuppressWarnings("unused")
 public class PostmanCollection extends PostmanItem 
 {
 
@@ -41,84 +44,23 @@ private transient ValidationMessage[] validationMessages;
 
 public static void main( String[] args ) throws Exception
     {
-
         String filePath = new java.io.File("").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory();
-        pmcTest.setName("Constructed Body");
-        PostmanCollection pmcTest2 = null;
+        String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
+        
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
+            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
+            pmcTest.addCollection(pmcTest2, true, true);
+            boolean worked = pmcTest.validate();
+            ValidationMessage[] msgs = pmcTest.getValidationMessages();
+            for(int i = 0; i < msgs.length; i++)
+            {
+                //System.out.println(msgs[i].getMessage());
+            }
+            pmcTest.setName("TEST Cat-Weather");
+            pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
 
-        PostmanBody byUrlencoded = new PostmanBody(enumRequestBodyMode.URLENCODED);
-        byUrlencoded.setFormdata("x-field-1", "value 1", "This is value 1");
-        byUrlencoded.setFormdata("x-field-2", "value 2", "This is value 2");
-        PostmanRequest rqUrlencoded = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqUrlencoded.setBody(byUrlencoded);
-        PostmanResponse resp = new PostmanResponse("NORMAL Urlencoded", rqUrlencoded, "OK", 200, "this is the expected response body");
-        pmcTest.addRequest(rqUrlencoded, "URLEncoded body", resp);
         
 
-        PostmanBody byPlainText = new PostmanBody(enumRequestBodyMode.TEXT);
-        byPlainText.setRaw("This is some plain text");
-        PostmanRequest rqPlainText = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqPlainText.setBody(byPlainText);
-        resp = new PostmanResponse("NORMAL Plaintext", rqPlainText, "OK", 200, "this is the expected response body");
-        
-        pmcTest.addRequest(rqPlainText, "Plaintext body", resp);
-                
-
-        PostmanBody byFormdata = new PostmanBody(enumRequestBodyMode.FORMDATA);
-        byFormdata.setFormdata("field-1", "value 1", "This is value 1");
-        byFormdata.setFormdata("field-2", "value 2", "This is value 2");
-        PostmanRequest rqFormData = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqFormData.setBody(byFormdata);
-        
-        resp = new PostmanResponse("NORMAL Formdata", rqFormData, "OK", 200, "this is the expected response body");
-                pmcTest.addRequest(rqFormData, "Formdata body", resp);
-                
-
-        PostmanBody byJsondata = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}",enumRawBodyLanguage.JSON);
-        PostmanRequest rqJsondata = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqJsondata.setBody(byJsondata);
-        
-
-        resp = new PostmanResponse("NORMAL JSON", rqJsondata , "OK", 200, "this is the expected response body");
-        pmcTest.addRequest(rqJsondata, "JSON body",resp);
-        
-
-
-        PostmanBody byHTML = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",enumRawBodyLanguage.HTML);
-        PostmanRequest rqHTML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqHTML.setBody(byHTML);
-        resp = new PostmanResponse("NORMAL HTML", rqHTML, "OK", 200, "this is the expected response body");
-        pmcTest.addRequest(rqHTML, "HTML body", resp);
-        
-
-
-        PostmanBody byXML = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",enumRawBodyLanguage.XML);
-        PostmanRequest rqXML = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqXML.setBody(byXML);
-        resp = new PostmanResponse("NORMAL XML", rqXML, "OK", 200, "this is the expected response body");
-        pmcTest.addRequest(rqXML, "XML body", resp);
-        
-
-
-        String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
-        String strVars = "{\"limit\":2}";
-        PostmanBody byGraphQL = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL,enumRawBodyLanguage.GRAPHQL);
-        byGraphQL.setGraphql(strGraphQL, strVars);
-        PostmanRequest rqGraphQL = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
-        rqGraphQL.setBody(byGraphQL);
-        resp = new PostmanResponse("NORMAL GrapqhQL", rqGraphQL, "OK", 200, "this is the expected response body");
-        pmcTest.addRequest(rqGraphQL, "GraphQL body", resp);
-        
-        try {
-            pmcTest.writeToFile(filePath + "/test-output/bodies-with-responses.postman_collection.json");
-            
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        //    assertTrue(false);
-        }
         
 
         
@@ -139,7 +81,7 @@ public ValidationMessage[] getValidationMessages() {
     return this.validationMessages != null ? this.validationMessages : new ValidationMessage[0];
 }
 
-public void addResponse(String requestKey, PostmanResponse response) {
+public void addResponse(String requestKey, PostmanResponse response) throws Exception {
     PostmanItem req = this.getItem(requestKey);
     req.addResponse(response);
 
@@ -178,7 +120,7 @@ public boolean validate() throws Exception {
     }
 
     while(itErrors.hasNext()) {
-        System.out.println(itErrors.next().getMessage());
+        //System.out.println(itErrors.next().getMessage());
     }
     return(errors.size() == 0);
 
@@ -210,7 +152,7 @@ public PostmanItem addRequest(PostmanRequest  newRequest, String name) throws Ex
     
 }
 
-public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse[] responses) throws Exception {
+public PostmanItem addRequest(PostmanRequest newRequest, String name, ArrayList<PostmanResponse> responses) throws Exception {
     PostmanItem newItem = addRequest(newRequest, name);
     newItem.setResponses(responses);
     return newItem;
@@ -222,7 +164,7 @@ public void addRequest(PostmanRequest newRequest,String name, int position) thro
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem, position);
-    newItem.setResponses(new PostmanResponse[0]);
+    //newItem.setResponses(new PostmanResponse[0]);
     
 }
 
@@ -254,37 +196,17 @@ public void addCollection(PostmanCollection newColl, boolean copyScripts, boolea
 
 public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws Exception {
     
-    List<PostmanVariable> liThisCollVars = null;
-    List<PostmanVariable> liNewCollVars = null;
     PostmanItem newFolder = new PostmanItem(newColl.getName());
     parent.addItem(newFolder);
     
     newFolder.addItems(newColl.getItems());
-    if (!copyVariables || (this.getVariables() == null && newColl.getVariables() == null) || (this.getVariables().length == 0 && newColl.getVariables().length == 0)) {
-        return;
+    if (copyVariables) {
+        this.setVariables(CollectionUtils.arrayConcat(new PostmanVariable[0], newColl.getVariables(), this.getVariables()));
     }
 
-    if(this.getVariables() == null) {
-        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-    }
-    else {
-        liThisCollVars = new ArrayList<PostmanVariable>(Arrays.asList(this.getVariables()));
-    }
-    if(newColl.getVariables() == null)
-    {
-        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(new PostmanVariable[0]));
-    }
-    else { 
-        liNewCollVars = new ArrayList<PostmanVariable>(Arrays.asList(newColl.getVariables()));
-    }
-    liThisCollVars.addAll(liNewCollVars);
-    this.setVariables(liThisCollVars.toArray(new PostmanVariable[0]));
-    
     if(copyScripts) {
         newFolder.setEvents(newColl.getEvents());
     }
-
-
 }
 
 public void addCollection(PostmanCollection newColl) throws Exception
@@ -328,7 +250,7 @@ public  PostmanCollection(String name){
 }
 
 public void init() {
-    System.out.println("We're in init");
+    //System.out.println("We're in init");
     if(this.getInfo() == null)
     {
         this.info = new PostmanInfo();
@@ -368,6 +290,7 @@ private void setParents() {
 
 
 public static PostmanCollection PMCFactory() {
+    
     String json = "{}";
     Gson gson = new Gson();
     PostmanCollection pmcRetVal = gson.fromJson(json, PostmanCollection.class);
@@ -408,10 +331,51 @@ public static PostmanCollection PMCFactory(String pathToJson) throws FileNotFoun
 public void writeToFile(String path) throws IOException {
 
     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-    writer.write(this.toJson(false, null));   
+    writer.write(this.toJson());
     writer.close();
 }
 
+public String toJson() {
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    Type varListType = new TypeToken<ArrayList<PostmanVariable>>() {}.getType();
+
+    JsonSerializer<ArrayList<PostmanVariable>> varSerializer = new JsonSerializer<ArrayList<PostmanVariable>> () {
+        public JsonElement serialize(ArrayList<PostmanVariable> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonArray varArray = new JsonArray();
+            
+            for(PostmanVariable var : src) {
+                varArray.add("" + src);
+            }
+            return varArray;
+        }
+    };
+    
+    JsonSerializer<PostmanAuth> serializer = new JsonSerializer<PostmanAuth>() {  
+        @Override
+        public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonAuth = new JsonObject();
+            
+
+    
+            //src.preJson(); 
+            jsonAuth.addProperty("type", src.getAuthTypeAsString());
+            jsonAuth.add(src.getAuthTypeAsString(), context.serialize(src.getAuthElements()));
+            
+            
+            
+            System.out.println("Is object: " + jsonAuth.isJsonObject());
+            return jsonAuth;
+        }
+    };
+
+
+
+gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
+gsonBuilder.registerTypeAdapter(varListType, varSerializer);
+Gson customGson = gsonBuilder.create();  
+String customJSON = customGson.toJson(this);  
+return customJSON;
+}
 
 public PostmanItem getItemParent(String key) {
     return this.getItem(key, true);
@@ -425,7 +389,7 @@ public PostmanItem getItemParent(String key) {
     }
     //recursively traverse items looking for name == key
     for (PostmanItem curItem: item) {
-        System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
+        //System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
         if (item == null)
           return null;
         if (curItem.getName().equals(key))
