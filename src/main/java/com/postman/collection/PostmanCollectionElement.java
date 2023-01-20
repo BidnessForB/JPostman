@@ -2,15 +2,14 @@ package com.postman.collection;
 import com.networknt.schema.ValidationMessage;
 import java.util.ArrayList;
 import com.google.gson.Gson;
-//import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.ValidationMessage;
 import java.util.ArrayList;
+import com.networknt.schema.JsonSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Set;
-import java.util.Iterator;
+
 import com.networknt.schema.SpecVersion;
 import java.net.URI;
 

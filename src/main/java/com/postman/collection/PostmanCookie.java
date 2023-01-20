@@ -1,8 +1,8 @@
 package com.postman.collection;
 
-import com.google.gson.Gson;
+
 import java.util.ArrayList;
-import com.networknt.schema.ValidationMessage;
+//import com.networknt.schema.ValidationMessage;
 
 public class PostmanCookie extends PostmanCollectionElement {
     private String domain = "";
