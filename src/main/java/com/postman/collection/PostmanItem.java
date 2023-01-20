@@ -10,10 +10,11 @@ import java.util.ArrayList;
 //import java.util.UUID;
 // foo
 public class PostmanItem implements IPostmanCollectionElement  {
+    
     private String description; 
-    private PostmanEvent[] event = null;
+    private ArrayList<PostmanEvent> event = null;
     private PostmanRequest request = null;
-    private PostmanResponse[] response = null;
+    private ArrayList<PostmanResponse> response = null;
     private PostmanItem[] item;
     private String name; 
     //private transient String key = UUID.randomUUID().toString();
@@ -57,29 +58,26 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void setDescription(String description) {
         this.description = description;
     }
-    public PostmanEvent[] getEvents() {
-        if (event == null) {
-            event = new PostmanEvent[0];
-        }
+    public ArrayList<PostmanEvent> getEvents() {
+        
         return event;
     }
 
     public PostmanEvent getEvent(enumEventType evtType) {
-        PostmanEvent event;
-        PostmanEvent[] events = this.getEvents();
-        for(int i = 0; i < events.length; i++)
+        if(event == null) {
+            return null;
+        }
+        for(int i = 0; i < event.size(); i++)
         {
-            event = events[i];
-            if (event.getEventType() == evtType)
-            {
-                return event;
+            if(event.get(i).getEventType() == evtType) {
+                return event.get(i);
             }
         }
         return null;
     }
 
-    public void setEvents(PostmanEvent[] event) {
-        this.event = event;
+    public void setEvents(ArrayList<PostmanEvent> events) {
+        this.event = events;
     }
     public PostmanRequest getRequest() {
         return request;
@@ -87,10 +85,10 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void setRequest(PostmanRequest request) {
         this.request = request;
     }
-    public PostmanResponse[] getResponses() {
+    public ArrayList<PostmanResponse> getResponses() {
         return response;
     }
-    public void setResponses(PostmanResponse[] response) {
+    public void setResponses(ArrayList<PostmanResponse> response) {
         this.response = response;
     }
     public PostmanItem[] getItems() {
@@ -153,12 +151,11 @@ public class PostmanItem implements IPostmanCollectionElement  {
     }
    
    public void addResponse(PostmanResponse resp) throws Exception {
-    
-    
-    this.response = CollectionUtils.insertInCopy((this.response == null ? new PostmanResponse[0] : this.response),resp);
-    
-
-   }
+    if(this.response == null) {
+        this.response = new ArrayList<PostmanResponse>();
+    }
+    this.response.add(resp);
+       }
 
    
 
@@ -262,25 +259,16 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
 
     public void setEvent(PostmanEvent newEvent) {
-        //will replace the script if it already exists. 
-        
-        
-
-        if(this.getEvent(newEvent.getEventType()) == null)
-        {
-            PostmanEvent[] newArr = new PostmanEvent[1 + event.length]; 
-            newArr[newArr.length - 1] = newEvent;
-            event = newArr;
+        if(event == null) {
+            event = new ArrayList<PostmanEvent>();
+        }
+        if(this.getEvent(newEvent.getEventType()) == null) {
+            event.add(newEvent);
         }
         else {
-            for(int i = 0; i < event.length; i++)
-            {
-                if(event[i].getEventType() == newEvent.getEventType()) {
-                    event[i] = newEvent;
-                }
-            }
+            event.remove(this.getEvent(newEvent.getEventType()));
+            event.add(newEvent);
         }
-
     }
 
     public void addItem(PostmanItem newItem) throws Exception {

@@ -152,7 +152,7 @@ public PostmanItem addRequest(PostmanRequest  newRequest, String name) throws Ex
     
 }
 
-public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse[] responses) throws Exception {
+public PostmanItem addRequest(PostmanRequest newRequest, String name, ArrayList<PostmanResponse> responses) throws Exception {
     PostmanItem newItem = addRequest(newRequest, name);
     newItem.setResponses(responses);
     return newItem;
@@ -164,7 +164,7 @@ public void addRequest(PostmanRequest newRequest,String name, int position) thro
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem, position);
-    newItem.setResponses(new PostmanResponse[0]);
+    //newItem.setResponses(new PostmanResponse[0]);
     
 }
 

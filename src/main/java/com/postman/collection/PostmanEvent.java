@@ -47,9 +47,8 @@ public enumEventType getEventType() {
     {
         return enumEventType.PRE_REQUEST;
     }
-    else
-    {
-        return enumEventType.UNKNOWN;
+    else {
+        return null;
     }
 }
 

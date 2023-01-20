@@ -59,6 +59,63 @@ public class AppTest
 
 
     }
+
+    @Test
+    public void shouldCreateScripts() {
+        
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory();
+        PostmanItem folder;
+        PostmanItem request;
+        PostmanScript script;
+        PostmanEvent event;
+        PostmanRequest req;
+        PostmanBody body;
+
+        try {
+            pmcTest.setName("TEST Scripts");
+            folder = new PostmanItem("Scripts");
+            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the folder");
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            folder.setEvent(event);
+            script = new PostmanScript("text/javascript","//TEST this is some source code for the folder");
+            event = new PostmanEvent(enumEventType.TEST, script);
+            folder.setEvent(event);
+            pmcTest.addItem(folder);
+
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the request");
+            request = new PostmanItem("TEST Request with Scripts");
+            request.setRequest(req);
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            request.setEvent(event);
+            script = new PostmanScript("text/javascript","//TEST this is some source code for the request");
+            event = new PostmanEvent(enumEventType.TEST, script);
+            request.setEvent(event);
+            folder.addItem(request);
+
+            script = new PostmanScript("text/javascript","//TEST this is some source code for the collection");
+            event = new PostmanEvent(enumEventType.TEST, script);
+            pmcTest.setEvent(event);
+            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the collection");
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            pmcTest.setEvent(event);
+            
+            
+
+            
+
+            //assertTrue(pmcTest.validate());
+            pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-scripts.postman_collection.json");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+
+
+    }
+
     @Test
     public void shouldImportCollection()
     {
