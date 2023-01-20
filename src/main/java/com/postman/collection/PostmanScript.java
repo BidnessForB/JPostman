@@ -1,6 +1,6 @@
 package com.postman.collection;
 import java.util.ArrayList;
-import com.google.gson.Gson;
+
 public class PostmanScript extends PostmanCollectionElement {
     private String type = "";
     private ArrayList<String> exec;

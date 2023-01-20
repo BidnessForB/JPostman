@@ -1,5 +1,5 @@
 package com.postman.collection;
-import com.google.gson.Gson;
+
 
 public class PostmanInfo extends PostmanCollectionElement {
     private String _postman_id = "";

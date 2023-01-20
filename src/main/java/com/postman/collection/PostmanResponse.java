@@ -1,5 +1,5 @@
 package com.postman.collection;
-import com.google.gson.Gson;
+
 import java.util.ArrayList;
 public class PostmanResponse extends PostmanCollectionElement {
     private String name = "";

@@ -3,16 +3,6 @@ package com.postman.collection;
 
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
-import java.net.URI;
-import java.util.Set;
-import java.util.Iterator;
 
 //import java.util.UUID;
 // foo
@@ -24,7 +14,7 @@ public class PostmanItem extends PostmanCollectionElement  {
     private ArrayList<PostmanResponse> response = null;
     private ArrayList<PostmanItem> item;
     private String name; 
-    private transient ArrayList<ValidationMessage> validationMessages;
+    
     
 
     //private transient String key = UUID.randomUUID().toString();

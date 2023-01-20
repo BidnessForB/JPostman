@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-import com.google.gson.Gson;
+
 
 
 import java.util.regex.*;
@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
+
 public class PostmanUrl extends PostmanCollectionElement {
     private String raw = "";
     private ArrayList<String> host;
     private ArrayList<String> path;
     private ArrayList<PostmanVariable> query;
     private ArrayList<PostmanVariable> variable = null;
+    @SuppressWarnings("unused")
     private String protocol;
     private String port;
     
@@ -24,7 +26,7 @@ public class PostmanUrl extends PostmanCollectionElement {
        
         
         this.raw = rawURL;
-        //System.out.println(this.protocol);
+        
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
         if(maProtocol.find()) {
@@ -144,19 +146,21 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     public void setProtocol(String rawProtocol) {
         
+        
         if(rawProtocol == null || rawProtocol.length() < 1)
         {
-            this.protocol = null;
+            protocol = null;
         }
         else if(rawProtocol.contains("https")) {
-            this.protocol = "https";
+            protocol = "https";
         }
         else if(rawProtocol.contains("http")) {
-            this.protocol = "http";
+            protocol = "http";
         }
         else {
-            this.protocol = null;
+            protocol = null;
         }
+        
     }
     
     public String getRaw() {

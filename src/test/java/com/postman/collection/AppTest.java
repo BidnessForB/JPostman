@@ -269,7 +269,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
                 boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage curMsg: msgs) {

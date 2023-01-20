@@ -1,6 +1,4 @@
 package com.postman.collection;
-import com.google.gson.Gson;
-import com.networknt.schema.ValidationMessage;
 
 public class PostmanVariable extends PostmanCollectionElement {
     private String key = "";
