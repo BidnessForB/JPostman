@@ -15,6 +15,7 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
+import java.net.URI;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
@@ -40,14 +41,17 @@ private PostmanInfo info = null;
 private ArrayList<PostmanVariable> variable = null;
 private PostmanAuth auth = null;
 private transient ArrayList<ValidationMessage> validationMessages;
+public transient String tempSchemaJson;
 
 
 public static void main( String[] args ) throws Exception
     {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(resourcePath + "/example-catfact.postman_collection.json");
+        pmcTest.validate();
+        System.out.println("x");
         
-      
 
         
             }
@@ -84,6 +88,10 @@ public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
 
 }
 
+public void setTemporarySchema(String schemaJSON) {
+    this.tempSchemaJson = schemaJSON;
+}
+
 public ArrayList<ValidationMessage> getValidationMessages() {
     return this.validationMessages != null ? this.validationMessages : new ArrayList<ValidationMessage>();
 }
@@ -99,12 +107,19 @@ public boolean validate() throws Exception {
     
     String schemaJSON = null;;
     ObjectMapper mapper = new ObjectMapper();
-    
+    JsonSchema schema;
     this.validationMessages = null;
     
     schemaJSON = PostmanCollection.getPostmanCollectionSchema();
-    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
-    JsonSchema schema = factory.getSchema(schemaJSON);
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
+    if(this.tempSchemaJson != null)
+    {
+        schema = factory.getSchema(this.tempSchemaJson);
+    }
+    else {
+        schema = factory.getSchema(new URI("https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json"));
+    }
+     schema = factory.getSchema(new URI("https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json"));
     JsonNode pmcNode = mapper.readTree(this.toJson(false, null));
     schema.initializeValidators();
     Set<ValidationMessage> errors = schema.validate(pmcNode);
