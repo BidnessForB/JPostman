@@ -47,23 +47,31 @@ public static void main( String[] args ) throws Exception
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
         
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
-            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
-            pmcTest.addCollection(pmcTest2, true, true);
-            boolean worked = pmcTest.validate();
-            ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-            for(ValidationMessage msg: msgs) {
-                System.out.println("VALIDATION ERROR: " + msg.getMessage());
-            }
-            pmcTest.setName("TEST Cat-Weather");
-            pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
-
-        
-
-        
+      
 
         
             }
+
+public static String getPostmanCollectionSchema() throws Exception {
+    BufferedReader brItem;
+    String strChunk = null;
+    String schemaJSON = null;
+    String filePath = new java.io.File("").getAbsolutePath();
+    
+    brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/postman-collection-2.1-schema.json")));
+        while((strChunk = brItem.readLine()) != null)
+            schemaJSON = schemaJSON + strChunk;
+        try {
+            brItem.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    schemaJSON = schemaJSON.substring(4);
+    return schemaJSON;
+}
 
 public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
     PostmanItem itemToMove = this.getItem(itemToMoveKey);
@@ -88,25 +96,13 @@ public void addResponse(String requestKey, PostmanResponse response) throws Exce
 
 public boolean validate() throws Exception {
     
-    String filePath = new java.io.File("").getAbsolutePath();
+    
     String schemaJSON = null;;
-    BufferedReader brItem;
-    String strChunk;
     ObjectMapper mapper = new ObjectMapper();
+    
     this.validationMessages = null;
     
-    brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/postman-collection-2.1-schema.json")));
-        while((strChunk = brItem.readLine()) != null)
-            schemaJSON = schemaJSON + strChunk;
-        try {
-            brItem.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    schemaJSON = schemaJSON.substring(4);
+    schemaJSON = PostmanCollection.getPostmanCollectionSchema();
     JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
     JsonSchema schema = factory.getSchema(schemaJSON);
     JsonNode pmcNode = mapper.readTree(this.toJson(false, null));

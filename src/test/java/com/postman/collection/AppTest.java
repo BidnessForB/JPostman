@@ -433,6 +433,13 @@ public class AppTest
         req.setBody(body);
         resp = new PostmanResponse("NORMAL Javascript", req , "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Javascript body",resp);
+
+        body = new PostmanBody(enumRequestBodyMode.FILE);
+        body.setFile(new PostmanBinaryFile("8vhckkNqZ/jenkins-small.png"));
+        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req.setBody(body);
+        resp = new PostmanResponse("NORMAL Binary", req , "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(req, "Binary body",resp);
         
 
 
