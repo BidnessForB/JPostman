@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
 
 public class PostmanCookie implements IPostmanCollectionElement {
     private String domain = "";
@@ -13,7 +14,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
     private boolean secure;
     private boolean session;
     private String value = "";
-    private PostmanVariable[] extensions;
+    private ArrayList<PostmanVariable> extensions;
 
 
     
@@ -84,10 +85,10 @@ public class PostmanCookie implements IPostmanCollectionElement {
     public void setValue(String value) {
         this.value = value;
     }
-    public PostmanVariable[] getExtensions() {
+    public ArrayList<PostmanVariable> getExtensions() {
         return extensions;
     }
-    public void setExtensions(PostmanVariable[] extensions) {
+    public void setExtensions(ArrayList<PostmanVariable> extensions) {
         this.extensions = extensions;
     }
     @Override

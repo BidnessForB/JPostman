@@ -2,7 +2,7 @@ package com.postman.collection;
 
 
 import com.google.gson.Gson;
-import com.postman.collection.util.CollectionUtils;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -185,43 +185,30 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
     
 
-    public PostmanItem[] getItemsOfType(enumPostmanItemType ofType) {
+    public ArrayList<PostmanItem> getItemsOfType(enumPostmanItemType ofType) {
         if(item == null)
         {
             return null;
         }
-        List<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
-        return (alItems == null ? null : alItems.toArray(new PostmanItem[0]));
+        ArrayList<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
+        return alItems;
     
     }
 
     public boolean hasItem(PostmanItem theItem) {
-        PostmanItem[] reqs = this.getItemsOfType(enumPostmanItemType.REQUEST);
-        if(reqs != null)
-        {
-            for(PostmanItem curItem: reqs)
-            {
-                if(curItem.equals(theItem))
-                {
-                    return true;
-                }
-            }
+        if(item == null) {
+            return false;
         }
-        PostmanItem[] flds = this.getItemsOfType(enumPostmanItemType.FOLDER);
-        if(flds != null)
+        for(PostmanItem curItem: item)
         {
-            for(PostmanItem curItem: flds)
-            {
-                if(curItem.equals(theItem))
-                {
-                    return true;
-                }
-            }
+            if(curItem.equals(theItem));
+            return true;
         }
+        
         return false;
     }
 
-    private List<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType)
+    private ArrayList<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType)
     {
             ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
             

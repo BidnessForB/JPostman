@@ -1,7 +1,7 @@
 package com.postman.collection;
 
 import com.google.gson.Gson;
-import com.postman.collection.util.CollectionUtils;
+
 
 import java.util.regex.*;
 
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class PostmanUrl implements IPostmanCollectionElement {
     private String raw = "";
-    private String[] host;
-    private String[] path;
+    private ArrayList<String> host;
+    private ArrayList<String> path;
     private ArrayList<PostmanVariable> query;
     private ArrayList<PostmanVariable> variable = null;
     private String protocol;
@@ -60,24 +60,21 @@ public class PostmanUrl implements IPostmanCollectionElement {
         }
        
         
-        String [] queryElements = rawURL.split("\\?");
-        if(queryElements != null && queryElements.length == 1)
+        ArrayList<String> queryElements = new ArrayList(Arrays.asList(rawURL.split("\\?")));
+        if(queryElements != null && queryElements.size() == 1)
         {
-            this.setPath(queryElements[0]);
+            this.setPath(queryElements.get(0));
         }
-        else if (queryElements != null && queryElements.length == 2)
+        else if (queryElements != null && queryElements.size() == 2)
         {
-            this.setPath(queryElements[0]);
-            this.setQuery(queryElements[1]);
+            this.setPath(queryElements.get(0));
+            this.setQuery(queryElements.get(1));
         }
         else 
         {
             this.setPath(null);
             this.setQuery(null);
         }
-
-
-        
 
     }
 
@@ -92,36 +89,37 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void setPath(String rawPath) throws Exception  {
         
-        String pathElements[] = new String[0];
-        List<String> liPath;
-        this.path = new String[0];
+        ArrayList<String> pathElements = new ArrayList<String>();
+        ArrayList<String> liPath;
+        this.path = new ArrayList<String>();
         if(rawPath != null && rawPath.length() > 0)
         {
-            pathElements = rawPath.split("/");
+            pathElements = new ArrayList<String>(Arrays.asList(rawPath.split("/")));
             liPath = new ArrayList<String>(Arrays.asList(new String[0]));
-            for(int i = 0; i < pathElements.length; i++)
+            for(int i = 0; i < pathElements.size(); i++)
             {
-                if(pathElements[i] != null && pathElements[i].length() > 0 ) {
-                    liPath.add(pathElements[i]);
-                    if(pathElements[i].substring(0,1).equals(":")) {
-                        this.addVariable(pathElements[i].substring(1), null, null);
+                if(pathElements.get(i) != null && pathElements.get(i).length() > 0 ) {
+                    liPath.add(pathElements.get(i));
+                    if(pathElements.get(i).substring(0,1).equals(":")) {
+                        this.addVariable(pathElements.get(i).substring(1), null, null);
                     }
                 }
             }
 
-            this.path = liPath.toArray(this.path);
+            this.path = liPath;
         }
 
 
     }
 
     public void setQuery(String rawQuery) throws Exception {
-        String queryElements[];
+        ArrayList<String> queryElements;
         if(rawQuery != null && rawQuery.length() > 0)
         {
-            queryElements = rawQuery.split("&");
-            for(int i = 0; i < queryElements.length; i++) {
-                this.addQuery(queryElements[i]);
+            queryElements = new ArrayList<String>(Arrays.asList(rawQuery.split("&",0)));
+                           
+            for(int i = 0; i < queryElements.size() ; i++) {
+                this.addQuery(queryElements.get(i));
             }
         }
         else {
@@ -137,7 +135,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
             return;
         }
 
-        this.host = rawHost.split("\\.",0);
+        this.host = new ArrayList<String>(Arrays.asList(rawHost.split("\\.",0)));
         
 
 
@@ -172,16 +170,16 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public PostmanUrl(String host, String path)
     {
-        this.host = new String[1];
-        this.host[0] = host;
-        this.path = new String[1];
-        this.path[0] = path;
+        this.host = new ArrayList<String>();
+        this.host.add(host);
+        this.path = new ArrayList<String>();
+        this.path.add(path);
     }
 
   
   
 
-    public String[] getHosts() {
+    public ArrayList<String> getHosts() {
         return host;
     }
 
@@ -191,13 +189,13 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
 
 
-    public void setHosts(String[] host) {
+    public void setHosts(ArrayList<String> host) {
         this.host = host;
     }
-    public String[] getPaths() {
+    public ArrayList<String> getPaths() {
         return path;
     }
-    public void setPaths(String[] path) {
+    public void setPaths(ArrayList<String> path) {
         this.path = path;
     }
     public ArrayList<PostmanVariable> getQueries() {
@@ -240,22 +238,22 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void addQuery(String queryString) throws Exception {
         
-        String[] elements = new String[2];
+        ArrayList<String> elements = new ArrayList<String>();
 
         if((queryString == null || queryString.length() < 1))
         {
             return;
         }
 
-            elements = queryString.split("=", 0);
-            if(elements.length == 1)
+            elements = new ArrayList(Arrays.asList(queryString.split("=", 0)));
+            if(elements.size() == 1)
             {
-                this.addQuery(elements[0], "");
+                this.addQuery(elements.get(0), "");
                 
             }
-            if(elements.length == 2)
+            if(elements.size() == 2)
             {
-                this.addQuery(elements[0], elements[1]);
+                this.addQuery(elements.get(0), elements.get(1));
             }
 
     }

@@ -15,7 +15,7 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
-import com.postman.collection.util.*;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonElement;
@@ -39,7 +39,7 @@ public class PostmanCollection extends PostmanItem
 private PostmanInfo info = null;
 private ArrayList<PostmanVariable> variable = null;
 private PostmanAuth auth = null;
-private transient ValidationMessage[] validationMessages;
+private transient ArrayList<ValidationMessage> validationMessages;
 
 
 public static void main( String[] args ) throws Exception
@@ -51,10 +51,9 @@ public static void main( String[] args ) throws Exception
             PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
             pmcTest.addCollection(pmcTest2, true, true);
             boolean worked = pmcTest.validate();
-            ValidationMessage[] msgs = pmcTest.getValidationMessages();
-            for(int i = 0; i < msgs.length; i++)
-            {
-                //System.out.println(msgs[i].getMessage());
+            ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+            for(ValidationMessage msg: msgs) {
+                System.out.println("VALIDATION ERROR: " + msg.getMessage());
             }
             pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
@@ -77,8 +76,8 @@ public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
 
 }
 
-public ValidationMessage[] getValidationMessages() {
-    return this.validationMessages != null ? this.validationMessages : new ValidationMessage[0];
+public ArrayList<ValidationMessage> getValidationMessages() {
+    return this.validationMessages != null ? this.validationMessages : new ArrayList<ValidationMessage>();
 }
 
 public void addResponse(String requestKey, PostmanResponse response) throws Exception {
@@ -116,7 +115,7 @@ public boolean validate() throws Exception {
     Iterator<ValidationMessage> itErrors = errors.iterator();
     
     if(errors.size() > 0) {
-        this.validationMessages = errors.toArray(new ValidationMessage[0]);
+        this.validationMessages = new ArrayList<ValidationMessage>(errors);
     }
 
     while(itErrors.hasNext()) {
@@ -147,7 +146,7 @@ public PostmanItem addRequest(PostmanRequest  newRequest, String name) throws Ex
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
-    //newItem.setResponses(new PostmanResponse[0]);
+    
     return newItem;
     
 }
@@ -250,7 +249,7 @@ public String getDescription() {
 public  PostmanCollection(String name){
     this.info = new PostmanInfo();
     this.info.setName(name);
-    //this.setItems(new PostmanItem[0]);
+    
     
 
 }
@@ -267,30 +266,19 @@ public void init() {
 }
 
 private void setParents() {
-    PostmanItem[] folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
-    PostmanItem[] requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
-    PostmanItem curItem = null;
+    ArrayList<PostmanItem> folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
+    ArrayList<PostmanItem> requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
+    folders = folders == null ? new ArrayList<PostmanItem>() : folders;
+    requests = requests == null ? new ArrayList<PostmanItem>() : requests;
     PostmanItem curParent = null;
-    if(folders != null && folders.length > 0)
-    {
-        for (int f= 0; f < folders.length;f++)
+    folders.addAll(requests);
+    
+    
+        for(PostmanItem curItem: folders)
         {
-            curItem = folders[f];
             curParent = getItem(curItem.getKey(), true);
             curItem.setParent(curParent);
         }
-    }
-    if(requests != null && requests.length > 0)
-    {
-        for(int r = 0; r < requests.length; r++)
-        {
-            curItem = requests[r];
-            curParent = getItem(curItem.getKey(), true);
-            curItem.setParent(curParent);
-        }
-    }
-
-
 }
 
 

@@ -220,14 +220,15 @@ public class AppTest
             String filePath = new java.io.File("").getAbsolutePath();
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
-                pmcTest.validate();
-                for(int i = 0; i < pmcTest.getValidationMessages().length; i++)
+                boolean valid = pmcTest.validate();
+                for(ValidationMessage curMsg: pmcTest.getValidationMessages())
                 {
-                    //System.out.println("Validation [" + i+"]: " + pmcTest.getValidationMessages()[i]);
+                    System.out.println("Validation Error: " + curMsg.getMessage());
                 }
-                assertTrue(pmcTest.getValidationMessages().length == 0);
+                
                 pmcTest.setName("TEST body-test-compare");
                 pmcTest.writeToFile(filePath + "/test-output/TEST-body-test.postman_collection.json");
+                assertTrue(valid);
             }
             catch(Exception e)
              {
@@ -371,15 +372,15 @@ public class AppTest
             PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
             pmcTest.addCollection(pmcTest2, true, true);
             pmcTest.setName("TEST Cat-Weather ");
-            boolean worked = pmcTest.validate();
-            ValidationMessage[] msgs = pmcTest.getValidationMessages();
-            for(int i = 0; i < msgs.length; i++)
+            boolean valid = pmcTest.validate();
+            
+            for(ValidationMessage curMsg: pmcTest.getValidationMessages())
             {
-                //System.out.println(msgs[i].getMessage());
+                System.out.println("Validation Error: " + curMsg.getMessage());
             }
             pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/TEST-cat-weather.postman_collection.json");
-            assertTrue(worked);
+            assertTrue(valid);
             //System.out.println("done");
 
 
@@ -472,15 +473,16 @@ public class AppTest
         }
         boolean valid = pmcTest.validate();
         if(!valid) {
-            for(int i = 0; i < pmcTest.getValidationMessages().length;i++) {
-                //System.out.println("Validation message [" + i + "]: " + pmcTest.getValidationMessages()[i].getMessage());
+            for(ValidationMessage curMsg: pmcTest.getValidationMessages())
+                System.out.println("Validation message: " + curMsg.getMessage());
             }
+            assertTrue(valid);
         }
-        assertTrue(valid);
+        
 
     }
 
     
     
-}
+
 

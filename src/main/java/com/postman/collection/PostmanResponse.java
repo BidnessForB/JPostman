@@ -1,17 +1,18 @@
 package com.postman.collection;
 import com.google.gson.Gson;
+import java.util.ArrayList;
 public class PostmanResponse implements IPostmanCollectionElement {
     private String name = "";
     private PostmanRequest originalRequest = null;
     private int code;
     private String status;
     private String _postman_previewlanguage = "";
-    private PostmanCookie[] cookie = null;
+    private ArrayList<PostmanCookie> cookie = null;
     private String body = "";
-    private PostmanVariable[] header;
+    private ArrayList<PostmanVariable> header;
 
     public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
-            String _postman_previewlanguage, PostmanCookie[] cookie, String body) {
+            String _postman_previewlanguage, ArrayList<PostmanCookie> cookie, String body) {
         this.name = name;
         this.originalRequest = originalRequest;
         this.code = code;
@@ -25,11 +26,11 @@ public class PostmanResponse implements IPostmanCollectionElement {
         return true;
     }
 
-    public void  setHeader(PostmanVariable[] headers) {
+    public void  setHeader(ArrayList<PostmanVariable> headers) {
         this.header = headers;
     }
 
-    public PostmanVariable[] getHeader() {
+    public ArrayList<PostmanVariable> getHeader() {
         return this.header;
     }
 
@@ -82,11 +83,11 @@ public class PostmanResponse implements IPostmanCollectionElement {
         this._postman_previewlanguage = _postman_previewlanguage;
     }
 
-    public PostmanCookie[] getCookies() {
+    public ArrayList<PostmanCookie> getCookies() {
         return cookie;
     }
 
-    public void setCookies(PostmanCookie[] cookie) {
+    public void setCookies(ArrayList<PostmanCookie> cookie) {
         this.cookie = cookie;
     }
 

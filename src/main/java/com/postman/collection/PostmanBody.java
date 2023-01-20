@@ -2,7 +2,7 @@ package com.postman.collection;
 
 //import java.util.UUID;
 import java.util.ArrayList;
-import com.postman.collection.util.CollectionUtils;
+
 
 public class PostmanBody {
     private String mode;
