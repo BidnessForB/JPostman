@@ -244,7 +244,7 @@ public String getDescription() {
 public  PostmanCollection(String name){
     this.info = new PostmanInfo();
     this.info.setName(name);
-    this.setItems(new PostmanItem[0]);
+    //this.setItems(new PostmanItem[0]);
     
 
 }
