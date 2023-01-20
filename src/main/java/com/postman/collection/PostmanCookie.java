@@ -25,7 +25,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
         return domain;
     }
 
-    public boolean Validate() throws Exception {
+    public boolean validate() throws Exception {
         return true;
     }
     public void setDomain(String domain) {

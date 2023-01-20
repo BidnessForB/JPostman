@@ -9,7 +9,7 @@ import java.util.regex.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 public class PostmanUrl implements IPostmanCollectionElement {
     private String raw = "";
@@ -60,7 +60,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         }
        
         
-        ArrayList<String> queryElements = new ArrayList(Arrays.asList(rawURL.split("\\?")));
+        ArrayList<String> queryElements = new ArrayList<String>(Arrays.asList(rawURL.split("\\?")));
         if(queryElements != null && queryElements.size() == 1)
         {
             this.setPath(queryElements.get(0));
@@ -245,7 +245,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
             return;
         }
 
-            elements = new ArrayList(Arrays.asList(queryString.split("=", 0)));
+            elements = new ArrayList<String>(Arrays.asList(queryString.split("=", 0)));
             if(elements.size() == 1)
             {
                 this.addQuery(elements.get(0), "");

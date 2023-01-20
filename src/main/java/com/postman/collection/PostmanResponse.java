@@ -22,7 +22,7 @@ public class PostmanResponse implements IPostmanCollectionElement {
         this.body = body;
     }
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 

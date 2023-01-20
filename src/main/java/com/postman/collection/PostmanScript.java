@@ -25,7 +25,7 @@ public class PostmanScript implements IPostmanCollectionElement {
     }
 
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 
