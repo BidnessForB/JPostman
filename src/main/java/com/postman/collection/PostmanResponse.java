@@ -1,7 +1,7 @@
 package com.postman.collection;
-import com.google.gson.Gson;
+
 import java.util.ArrayList;
-public class PostmanResponse implements IPostmanCollectionElement {
+public class PostmanResponse extends PostmanCollectionElement {
     private String name = "";
     private PostmanRequest originalRequest = null;
     private int code;
@@ -22,9 +22,7 @@ public class PostmanResponse implements IPostmanCollectionElement {
         this.body = body;
     }
 
-    public boolean validate() {
-        return true;
-    }
+  
 
     public void  setHeader(ArrayList<PostmanVariable> headers) {
         this.header = headers;
@@ -107,11 +105,6 @@ public class PostmanResponse implements IPostmanCollectionElement {
 
     
 
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
 
     
 

@@ -3,11 +3,10 @@ package com.postman.collection;
 
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
 
 //import java.util.UUID;
 // foo
-public class PostmanItem implements IPostmanCollectionElement  {
+public class PostmanItem extends PostmanCollectionElement  {
     
     private String description; 
     private ArrayList<PostmanEvent> event = null;
@@ -15,6 +14,9 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private ArrayList<PostmanResponse> response = null;
     private ArrayList<PostmanItem> item;
     private String name; 
+    
+    
+
     //private transient String key = UUID.randomUUID().toString();
     private transient PostmanItem parent = null;
     @Override
@@ -28,11 +30,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
     
 
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
+ 
 
     
     public PostmanItem(String name, PostmanItem parent) {
@@ -166,10 +164,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
 
     
-
-    public boolean validate() throws Exception {
-        return true;
-    }
+    
 
     public void setParent(PostmanItem parent)
     {

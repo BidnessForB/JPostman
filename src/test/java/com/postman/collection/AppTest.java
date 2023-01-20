@@ -44,7 +44,15 @@ public class AppTest
         pmcTest.addRequest(newReq,"Get Foo Bar");
         pmcTest.setName("TEST Constructed Queries");
         pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-queries.postman_collection.json");
-        assertTrue(pmcTest.validate());
+        boolean valid = pmcTest.validate();
+        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
         }
         catch(Exception e)
         {
@@ -104,7 +112,15 @@ public class AppTest
 
             
 
-            //assertTrue(pmcTest.validate());
+            boolean valid = pmcTest.validate();
+        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
             pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-scripts.postman_collection.json");
         }
         catch(Exception e)
@@ -123,7 +139,15 @@ public class AppTest
         
         try {
             pmcTest  = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
-            assertTrue(pmcTest.validate());
+            boolean valid = pmcTest.validate();
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
             
         }
         catch(Exception e) {
@@ -161,7 +185,15 @@ public class AppTest
             {
                 try {
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
-                    assertTrue(pmcTest.validate());
+                    boolean valid = pmcTest.validate();
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -185,7 +217,15 @@ public class AppTest
         try {
             
         pmcTest.writeToFile(filePath +"/test-output/TEST-construct-urls.postman_collection.json");
-        assertTrue(pmcTest.validate());
+        boolean valid = pmcTest.validate();
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
         
         }
         catch(Exception e)
@@ -204,7 +244,15 @@ public class AppTest
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
                 pmcTest.setName("TEST Cat Fact");
-                assertTrue(pmcTest.validate());
+                boolean valid = pmcTest.validate();
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        assertTrue(valid);
                 pmcTest.writeToFile(filePath + "/test-output/TEST-example-catfact.postman_collection.json");
             }
             catch(Exception e) {
@@ -221,14 +269,17 @@ public class AppTest
             try {
                 pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json");
                 boolean valid = pmcTest.validate();
-                for(ValidationMessage curMsg: pmcTest.getValidationMessages())
-                {
-                    System.out.println("Validation Error: " + curMsg.getMessage());
-                }
-                
+        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+            }
+        }
+        
                 pmcTest.setName("TEST body-test-compare");
                 pmcTest.writeToFile(filePath + "/test-output/TEST-body-test.postman_collection.json");
-                assertTrue(valid);
+                assertTrue(valid);        
             }
             catch(Exception e)
              {
@@ -243,7 +294,12 @@ public class AppTest
             pmcTest.setName("TEST Auth");
             PostmanAuth auth;
             PostmanRequest req;
+            boolean valid;
     
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            pmcTest.addRequest(req, "INHERIT request");
+    
+
             auth = new PostmanAuth(enumAuthType.AKAMAI);
             auth.setAuthElement("headersToSign", "x-api-key");
             auth.setAuthElement("baseURL", "https://akamai-base.com");
@@ -253,7 +309,7 @@ public class AppTest
             auth.setAuthElement("clientToken", "akamaiClientToken");
             auth.setAuthElement("accessToken", "akamaiToken");
             
-             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "AKAMAI request");
     
@@ -283,7 +339,7 @@ public class AppTest
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BEARER request");
-            System.out.println("Valid: " + pmcTest.validate());
+            valid = req.validate();
             
     
             auth = new PostmanAuth(enumAuthType.BASIC);
@@ -292,7 +348,7 @@ public class AppTest
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BASIC request");
-            System.out.println("Valid: " + pmcTest.validate());
+            valid = pmcTest.validate();
             
             
             auth = new PostmanAuth(enumAuthType.DIGEST);
@@ -359,10 +415,20 @@ public class AppTest
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "NTLM request");
-            auth.getAuthTypeAsString();
-           
-            assertTrue(pmcTest.validate());
+
+            pmcTest.setAuth(auth);
+            
             pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
+            valid = pmcTest.validate();
+            ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+            if(msgs != null && msgs.size() > 0)
+            {
+                for(ValidationMessage curMsg: msgs) {
+                    System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
+                }
+            }
+            assertTrue(valid);
+
         }
 
         @Test
@@ -373,15 +439,19 @@ public class AppTest
             pmcTest.addCollection(pmcTest2, true, true);
             pmcTest.setName("TEST Cat-Weather ");
             boolean valid = pmcTest.validate();
-            
-            for(ValidationMessage curMsg: pmcTest.getValidationMessages())
-            {
-                System.out.println("Validation Error: " + curMsg.getMessage());
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
             }
+        }
+        
+        
             pmcTest.setName("TEST Cat-Weather");
             pmcTest.writeToFile(filePath + "/test-output/TEST-cat-weather.postman_collection.json");
             assertTrue(valid);
-            //System.out.println("done");
+            
 
 
         }
@@ -479,16 +549,18 @@ public class AppTest
             assertTrue(false);
         }
         boolean valid = pmcTest.validate();
-        if(!valid) {
-            for(ValidationMessage curMsg: pmcTest.getValidationMessages())
-                System.out.println("Validation message: " + curMsg.getMessage());
+ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage curMsg: msgs) {
+                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
             }
-            assertTrue(valid);
         }
+        assertTrue(valid);
         
 
     }
-
+}
     
     
 

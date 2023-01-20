@@ -1,6 +1,6 @@
 package com.postman.collection;
 import java.util.ArrayList;
-public class PostmanRequest  {
+public class PostmanRequest extends PostmanCollectionElement  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
     private ArrayList<PostmanVariable> header;// = new PostmanVariable[0];
@@ -12,9 +12,11 @@ public class PostmanRequest  {
 
     //private String description = "";
     
- 
+    public String getKey() {
+        return null;
+    }
 
-    public PostmanRequest(enumHTTPRequestMethod method, String host,String path) {
+    public PostmanRequest(enumHTTPRequestMethod method, String host,String path)  {
         
         this.setMethod(method);
         this.setUrl(new PostmanUrl(host, path));
@@ -50,13 +52,7 @@ public class PostmanRequest  {
         return method;
     }
 
-    public boolean validate() throws Exception {
-        boolean valid = true;
-        valid = valid && (method != null);
-        valid = valid && (url.validate() && url != null);
-        
-        return valid;
-    }
+    
 
 
     public void setMethod(enumHTTPRequestMethod method) {

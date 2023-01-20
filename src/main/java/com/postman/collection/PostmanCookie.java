@@ -1,9 +1,10 @@
 package com.postman.collection;
 
-import com.google.gson.Gson;
-import java.util.ArrayList;
 
-public class PostmanCookie implements IPostmanCollectionElement {
+import java.util.ArrayList;
+//import com.networknt.schema.ValidationMessage;
+
+public class PostmanCookie extends PostmanCollectionElement {
     private String domain = "";
     private String expires = "";
     private String maxAge = "";
@@ -25,9 +26,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
         return domain;
     }
 
-    public boolean validate() throws Exception {
-        return true;
-    }
+    
     public void setDomain(String domain) {
         this.domain = domain;
     }
@@ -98,11 +97,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
     }
     
  
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
+   
     
 
     

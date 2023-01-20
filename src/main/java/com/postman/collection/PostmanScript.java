@@ -1,7 +1,7 @@
 package com.postman.collection;
 import java.util.ArrayList;
-import com.google.gson.Gson;
-public class PostmanScript implements IPostmanCollectionElement {
+
+public class PostmanScript extends PostmanCollectionElement {
     private String type = "";
     private ArrayList<String> exec;
 
@@ -25,9 +25,7 @@ public class PostmanScript implements IPostmanCollectionElement {
     }
 
 
-    public boolean validate() {
-        return true;
-    }
+
 
 
     public void setType(String type) {
@@ -55,11 +53,7 @@ public class PostmanScript implements IPostmanCollectionElement {
  
 
 
-    @Override
-    public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
-        
-        return new Gson().toJson(this);
-    }
+ 
 
     
 
