@@ -1,11 +1,9 @@
 package com.postman.collection;
 
 
-import com.google.gson.Gson;
-import com.postman.collection.util.CollectionUtils;
-
-import java.util.List;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
 
 //import java.util.UUID;
 // foo
@@ -15,7 +13,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     private ArrayList<PostmanEvent> event = null;
     private PostmanRequest request = null;
     private ArrayList<PostmanResponse> response = null;
-    private PostmanItem[] item;
+    private ArrayList<PostmanItem> item;
     private String name; 
     //private transient String key = UUID.randomUUID().toString();
     private transient PostmanItem parent = null;
@@ -91,7 +89,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void setResponses(ArrayList<PostmanResponse> response) {
         this.response = response;
     }
-    public PostmanItem[] getItems() {
+    public ArrayList<PostmanItem> getItems() {
         return item;
     }
 
@@ -105,9 +103,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
             return enumPostmanItemType.REQUEST;
         }
     }
-    public void setItems(PostmanItem[] item) {
-        if(item != null && item.length != 0)
-        this.item = item;
+    public void setItems(ArrayList<PostmanItem> items) {
+        this.item = items;
     }
 
     public PostmanItem getItem(String key) {
@@ -160,17 +157,17 @@ public class PostmanItem implements IPostmanCollectionElement  {
    
 
 
-    public void addItems(PostmanItem[] newItems) throws Exception {
-        for(int i = 0; i < newItems.length; i++)
-        {
-            this.addItem(newItems[i]);
+    public void addItems(ArrayList<PostmanItem> newItems) throws Exception {
+        if(this.item == null) {
+            this.item = new ArrayList<PostmanItem>();
         }
+        this.item.addAll(newItems);
     }
 
 
     
 
-    public boolean isValid() {
+    public boolean validate() throws Exception {
         return true;
     }
 
@@ -186,43 +183,30 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
     
 
-    public PostmanItem[] getItemsOfType(enumPostmanItemType ofType) {
+    public ArrayList<PostmanItem> getItemsOfType(enumPostmanItemType ofType) {
         if(item == null)
         {
             return null;
         }
-        List<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
-        return (alItems == null ? null : alItems.toArray(new PostmanItem[0]));
+        ArrayList<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
+        return alItems;
     
     }
 
     public boolean hasItem(PostmanItem theItem) {
-        PostmanItem[] reqs = this.getItemsOfType(enumPostmanItemType.REQUEST);
-        if(reqs != null)
-        {
-            for(PostmanItem curItem: reqs)
-            {
-                if(curItem.equals(theItem))
-                {
-                    return true;
-                }
-            }
+        if(item == null) {
+            return false;
         }
-        PostmanItem[] flds = this.getItemsOfType(enumPostmanItemType.FOLDER);
-        if(flds != null)
+        for(PostmanItem curItem: item)
         {
-            for(PostmanItem curItem: flds)
-            {
-                if(curItem.equals(theItem))
-                {
-                    return true;
-                }
-            }
+            if(curItem.equals(theItem));
+            return true;
         }
+        
         return false;
     }
 
-    private List<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType)
+    private ArrayList<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType)
     {
             ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
             
@@ -280,8 +264,10 @@ public class PostmanItem implements IPostmanCollectionElement  {
         {
             throw new Exception("Cannot add items to Requests");
         }
-       
-        this.addItem(newItem, item == null ? 0 : item.length);
+        if(this.item == null) {
+            this.item = new ArrayList<PostmanItem>();
+        }
+        this.item.add(newItem);
 
     }
 
@@ -296,8 +282,8 @@ public class PostmanItem implements IPostmanCollectionElement  {
         {
             throw new Exception("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey() );
         }
-       
-        this.item = CollectionUtils.insertInCopy((this.item == null ? new PostmanItem[0] : this.item), newItem, position);
+        this.item.add(position, newItem);
+        
          
     }
     public void removeItem(PostmanItem oldItem) throws Exception
@@ -305,23 +291,33 @@ public class PostmanItem implements IPostmanCollectionElement  {
         this.removeItem(oldItem.getKey());
     }
 
+    public void setPreRequestScript(String code) throws Exception {
+        PostmanScript prScript = new PostmanScript("text/javascript",code);
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, prScript);
+        this.setEvent(prEvent);
+    }
+
+    public void setTestScript(String code) throws Exception {
+        PostmanScript prScript = new PostmanScript("text/javascript",code);
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, prScript);
+        this.setEvent(prEvent);
+    }
+
+    public void setPreRequestScript(String code, String type) {
+
+    }
+
     public void removeItem(String key) throws Exception {
+        if(item == null) {
+            return;
+        }
+        for(PostmanItem curItem: item) {
+            if(curItem.getKey().equals(key)) {
+                this.item.remove(curItem);
+            }
+
+        }
         
-        PostmanItem curItem;
-        if(this.getItem(key) == null) {
-            throw new Exception("Item " + key + " not found.");
-        }
-        PostmanItem[] newArr = new PostmanItem[item.length - 1];
-        int newArrIndex = -1;
-        for(int i = 0; i < item.length;)
-        {
-            curItem = item[i];
-            if(!curItem.getKey().equals(key)) {
-                newArr[++newArrIndex] = curItem;
-            }   
-            i++;
-        }
-        this.item = newArr;
     }
 
     public String getName() {

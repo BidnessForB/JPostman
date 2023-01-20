@@ -1,9 +1,9 @@
 package com.postman.collection;
-
+import java.util.ArrayList;
 public class PostmanRequest  {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
-    private PostmanVariable[] header = new PostmanVariable[0];
+    private ArrayList<PostmanVariable> header;// = new PostmanVariable[0];
     private String description;
     private PostmanBody body;
     private PostmanAuth auth;
@@ -50,10 +50,10 @@ public class PostmanRequest  {
         return method;
     }
 
-    public boolean isValid() {
+    public boolean validate() throws Exception {
         boolean valid = true;
         valid = valid && (method != null);
-        valid = valid && (url.isValid() && url != null);
+        valid = valid && (url.validate() && url != null);
         
         return valid;
     }
@@ -71,23 +71,14 @@ public class PostmanRequest  {
         this.url = url;
     }
 
-    public PostmanVariable[] getHeader() {
+    public ArrayList<PostmanVariable> getHeader() {
         return header;
     }
 
-    public void setHeader(PostmanVariable[] header) {
+    public void setHeader(ArrayList<PostmanVariable> header) {
         this.header = header;
     }
-/*
-    public void setVariables(PostmanVariable[] vars)
-    {
-        this.variable = vars;
-    }
 
-    public PostmanVariable[] getVariables() {
-        return this.variable;
-    }
-*/
     public String getDescription() {
         return description;
     }
@@ -95,14 +86,6 @@ public class PostmanRequest  {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /* public PostmanVariable[] getVariable() {
-        return variable;
-    }
-
-    public void setVariable(PostmanVariable[] variable) {
-        this.variable = variable;
-    } */
 
     public PostmanBody setBody(enumRequestBodyMode bodyMode) {
         return this.setBody(bodyMode, null);

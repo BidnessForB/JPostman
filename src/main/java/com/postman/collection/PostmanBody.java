@@ -1,16 +1,16 @@
 package com.postman.collection;
 
 //import java.util.UUID;
+import java.util.ArrayList;
 
-import com.postman.collection.util.CollectionUtils;
 
 public class PostmanBody {
     private String mode;
     private PostmanBodyOptions options;
     private String raw;
     private PostmanGraphQL graphql;
-    private PostmanVariable[] formdata;
-    private PostmanVariable[] urlencoded;
+    private ArrayList<PostmanVariable> formdata;
+    private ArrayList<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
     //private transient String key = UUID.randomUUID().toString();
     
@@ -74,7 +74,7 @@ public class PostmanBody {
 
     
 
-    public PostmanVariable[] getFormdata() throws Exception {
+    public ArrayList<PostmanVariable> getFormdata() throws Exception {
         return formdata;
     }
 
@@ -83,11 +83,11 @@ public class PostmanBody {
         {
             case URLENCODED:
             {
-                return this.urlencoded[position];
+                return this.urlencoded.get(position);
             }
             case FORMDATA:
             {
-                return this.formdata[position];
+                return this.formdata.get(position);
             }
             default:
             {
@@ -96,7 +96,7 @@ public class PostmanBody {
         }
     }
 
-    public void setFormdata(PostmanVariable[] formdata) {
+    public void setFormdata(ArrayList<PostmanVariable> formdata) {
         this.formdata = formdata;
     }
     
@@ -113,11 +113,18 @@ public class PostmanBody {
         
 
         if(this.getMode() == enumRequestBodyMode.URLENCODED)  {
-            this.urlencoded = CollectionUtils.insertInCopy(this.urlencoded, data, position);
+            if(this.urlencoded == null)
+            {
+                this.urlencoded = new ArrayList<PostmanVariable>();
+            }
+            this.urlencoded.add(position, data);
         }
         else if(this.getMode() == enumRequestBodyMode.FORMDATA)
         {
-            this.formdata = CollectionUtils.insertInCopy(this.formdata, data, position);
+            if(this.formdata == null) {
+                this.formdata = new ArrayList<PostmanVariable>();
+            }
+            this.formdata.add(position, data);
         }
         else {
             throw new Exception("Cannot set Form Data.  Mode must be URLENCODED or FORMDATA");
@@ -142,10 +149,10 @@ public class PostmanBody {
         
     }
 
-    public PostmanVariable[] getUrlencoded() {
+    public ArrayList<PostmanVariable> getUrlencoded() {
         return urlencoded;
     }
-    public void setUrlencoded(PostmanVariable[] urlencoded) {
+    public void setUrlencoded(ArrayList<PostmanVariable> urlencoded) {
         this.urlencoded = urlencoded;
     }
     public PostmanBinaryFile getFile() {
@@ -188,7 +195,7 @@ public class PostmanBody {
         case FORMDATA:
         this.mode = "formdata";
         this.file = null;
-        this.formdata = new PostmanVariable[0];;
+        this.formdata = new ArrayList<PostmanVariable>();
         this.urlencoded = null;
         this.graphql = null;
         this.options = null;
@@ -197,7 +204,7 @@ public class PostmanBody {
         this.mode = "urlencoded";
         this.file = null;
         this.formdata = null;
-        this.urlencoded = new PostmanVariable[0];
+        this.urlencoded = new ArrayList<PostmanVariable>();
         this.graphql = null;
         this.options = null;
         break;

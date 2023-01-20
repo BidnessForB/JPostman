@@ -40,7 +40,7 @@ public class PostmanVariable implements IPostmanCollectionElement {
         return this.description;
     }
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 

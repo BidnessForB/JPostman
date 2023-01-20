@@ -15,7 +15,7 @@ import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
 import java.util.Iterator;
-import com.postman.collection.util.*;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonElement;
@@ -37,9 +37,9 @@ public class PostmanCollection extends PostmanItem
 
 
 private PostmanInfo info = null;
-private PostmanVariable[] variable = null;
+private ArrayList<PostmanVariable> variable = null;
 private PostmanAuth auth = null;
-private transient ValidationMessage[] validationMessages;
+private transient ArrayList<ValidationMessage> validationMessages;
 
 
 public static void main( String[] args ) throws Exception
@@ -47,54 +47,16 @@ public static void main( String[] args ) throws Exception
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
         
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json");
-            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json");
-            pmcTest.addCollection(pmcTest2, true, true);
-            boolean worked = pmcTest.validate();
-            ValidationMessage[] msgs = pmcTest.getValidationMessages();
-            for(int i = 0; i < msgs.length; i++)
-            {
-                //System.out.println(msgs[i].getMessage());
-            }
-            pmcTest.setName("TEST Cat-Weather");
-            pmcTest.writeToFile(filePath + "/test-output/TEST cat-weather.postman_collection.json");
-
-        
-
-        
+      
 
         
             }
 
-public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
-    PostmanItem itemToMove = this.getItem(itemToMoveKey);
-    PostmanItem parent = this.getItem(parentKey);
-    
-    if(itemToMove == null || parent == null)
-    {
-        throw new Exception("Couldn't find item to move and/or parent");
-    }
-
-}
-
-public ValidationMessage[] getValidationMessages() {
-    return this.validationMessages != null ? this.validationMessages : new ValidationMessage[0];
-}
-
-public void addResponse(String requestKey, PostmanResponse response) throws Exception {
-    PostmanItem req = this.getItem(requestKey);
-    req.addResponse(response);
-
-}
-
-public boolean validate() throws Exception {
-    
-    String filePath = new java.io.File("").getAbsolutePath();
-    String schemaJSON = null;;
+public static String getPostmanCollectionSchema() throws Exception {
     BufferedReader brItem;
-    String strChunk;
-    ObjectMapper mapper = new ObjectMapper();
-    this.validationMessages = null;
+    String strChunk = null;
+    String schemaJSON = null;
+    String filePath = new java.io.File("").getAbsolutePath();
     
     brItem = new BufferedReader(new FileReader(new File(filePath + "/src/main/resources/com/postman/collection/postman-collection-2.1-schema.json")));
         while((strChunk = brItem.readLine()) != null)
@@ -108,6 +70,39 @@ public boolean validate() throws Exception {
         }
 
     schemaJSON = schemaJSON.substring(4);
+    return schemaJSON;
+}
+
+public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
+    PostmanItem itemToMove = this.getItem(itemToMoveKey);
+    PostmanItem parent = this.getItem(parentKey);
+    
+    if(itemToMove == null || parent == null)
+    {
+        throw new Exception("Couldn't find item to move and/or parent");
+    }
+
+}
+
+public ArrayList<ValidationMessage> getValidationMessages() {
+    return this.validationMessages != null ? this.validationMessages : new ArrayList<ValidationMessage>();
+}
+
+public void addResponse(String requestKey, PostmanResponse response) throws Exception {
+    PostmanItem req = this.getItem(requestKey);
+    req.addResponse(response);
+
+}
+
+public boolean validate() throws Exception {
+    
+    
+    String schemaJSON = null;;
+    ObjectMapper mapper = new ObjectMapper();
+    
+    this.validationMessages = null;
+    
+    schemaJSON = PostmanCollection.getPostmanCollectionSchema();
     JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
     JsonSchema schema = factory.getSchema(schemaJSON);
     JsonNode pmcNode = mapper.readTree(this.toJson(false, null));
@@ -116,7 +111,7 @@ public boolean validate() throws Exception {
     Iterator<ValidationMessage> itErrors = errors.iterator();
     
     if(errors.size() > 0) {
-        this.validationMessages = errors.toArray(new ValidationMessage[0]);
+        this.validationMessages = new ArrayList<ValidationMessage>(errors);
     }
 
     while(itErrors.hasNext()) {
@@ -147,7 +142,7 @@ public PostmanItem addRequest(PostmanRequest  newRequest, String name) throws Ex
     PostmanItem newItem = new PostmanItem(name);  
     newItem.setRequest(newRequest);
     super.addItem(newItem);
-    //newItem.setResponses(new PostmanResponse[0]);
+    
     return newItem;
     
 }
@@ -181,7 +176,7 @@ public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Excep
     curParent.removeItem(itemToMove);
     newParent.addItem(itemToMove);
 }    
-public void setVariables(PostmanVariable[] vars)
+public void setVariables(ArrayList<PostmanVariable> vars)
 {
     this.variable = vars;
 }
@@ -198,10 +193,16 @@ public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean
     
     PostmanItem newFolder = new PostmanItem(newColl.getName());
     parent.addItem(newFolder);
-    
     newFolder.addItems(newColl.getItems());
+
     if (copyVariables) {
-        this.setVariables(CollectionUtils.arrayConcat(new PostmanVariable[0], newColl.getVariables(), this.getVariables()));
+        
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        if(newColl.getVariables() != null) {
+            this.variable.addAll(newColl.getVariables());
+        }
     }
 
     if(copyScripts) {
@@ -221,7 +222,7 @@ public PostmanInfo getInfo() {
     return info;
 }
 
-public PostmanVariable[] getVariables() {
+public ArrayList<PostmanVariable> getVariables() {
     return variable;
 }
 
@@ -244,7 +245,7 @@ public String getDescription() {
 public  PostmanCollection(String name){
     this.info = new PostmanInfo();
     this.info.setName(name);
-    this.setItems(new PostmanItem[0]);
+    
     
 
 }
@@ -261,30 +262,19 @@ public void init() {
 }
 
 private void setParents() {
-    PostmanItem[] folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
-    PostmanItem[] requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
-    PostmanItem curItem = null;
+    ArrayList<PostmanItem> folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
+    ArrayList<PostmanItem> requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
+    folders = folders == null ? new ArrayList<PostmanItem>() : folders;
+    requests = requests == null ? new ArrayList<PostmanItem>() : requests;
     PostmanItem curParent = null;
-    if(folders != null && folders.length > 0)
-    {
-        for (int f= 0; f < folders.length;f++)
+    folders.addAll(requests);
+    
+    
+        for(PostmanItem curItem: folders)
         {
-            curItem = folders[f];
             curParent = getItem(curItem.getKey(), true);
             curItem.setParent(curParent);
         }
-    }
-    if(requests != null && requests.length > 0)
-    {
-        for(int r = 0; r < requests.length; r++)
-        {
-            curItem = requests[r];
-            curParent = getItem(curItem.getKey(), true);
-            curItem.setParent(curParent);
-        }
-    }
-
-
 }
 
 
@@ -371,7 +361,7 @@ public String toJson() {
 
 
 gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
-gsonBuilder.registerTypeAdapter(varListType, varSerializer);
+//gsonBuilder.registerTypeAdapter(varListType, varSerializer);
 Gson customGson = gsonBuilder.create();  
 String customJSON = customGson.toJson(this);  
 return customJSON;

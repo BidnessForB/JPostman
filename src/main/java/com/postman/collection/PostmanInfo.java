@@ -21,7 +21,7 @@ public class PostmanInfo implements IPostmanCollectionElement {
         this.name = name;
     }
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 

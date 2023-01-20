@@ -1,19 +1,19 @@
 package com.postman.collection;
-
+import java.util.ArrayList;
 import com.google.gson.Gson;
 public class PostmanScript implements IPostmanCollectionElement {
     private String type = "";
-    private String[] exec;
+    private ArrayList<String> exec;
 
     
-    public PostmanScript(String scriptType, String[] Exec) {
+    public PostmanScript(String scriptType, ArrayList<String> Exec) {
             this.type = scriptType;
             exec = Exec;
     }
 
     public PostmanScript(String scriptType, String srcCode)  {
-        this.exec = new String[1];
-        this.exec[0] = srcCode;
+        this.exec = new ArrayList<String>();
+        this.exec.add(srcCode);
         this.type = scriptType;
 
     }
@@ -25,7 +25,7 @@ public class PostmanScript implements IPostmanCollectionElement {
     }
 
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 
@@ -35,12 +35,12 @@ public class PostmanScript implements IPostmanCollectionElement {
     }
 
 
-    public String[] getExec() {
+    public ArrayList<String> getExec() {
         return exec;
     }
 
 
-    public void setExec(String[] exec) {
+    public void setExec(ArrayList<String> exec) {
         this.exec = exec;
     }
 

@@ -64,7 +64,7 @@ public class PostmanAuth implements IPostmanCollectionElement {
         }
     }
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 

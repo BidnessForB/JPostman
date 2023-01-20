@@ -34,7 +34,7 @@ public static PostmanEvent pmcEventFactory() {
     return retVal;
 }
 
-public boolean isValid() {
+public boolean validate() {
     return true;
 }
 
