@@ -69,7 +69,7 @@ public class AppTest
         PostmanScript script;
         PostmanEvent event;
         PostmanRequest req;
-        PostmanBody body;
+        
 
         try {
             pmcTest.setName("TEST Scripts");

@@ -183,7 +183,7 @@ public class PostmanUrl implements IPostmanCollectionElement {
         return host;
     }
 
-    public boolean isValid() {
+    public boolean validate() {
         return true;
     }
 

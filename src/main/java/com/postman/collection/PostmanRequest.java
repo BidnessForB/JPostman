@@ -50,10 +50,10 @@ public class PostmanRequest  {
         return method;
     }
 
-    public boolean isValid() {
+    public boolean validate() throws Exception {
         boolean valid = true;
         valid = valid && (method != null);
-        valid = valid && (url.isValid() && url != null);
+        valid = valid && (url.validate() && url != null);
         
         return valid;
     }

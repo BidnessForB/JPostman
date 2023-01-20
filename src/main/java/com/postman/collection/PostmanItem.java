@@ -169,7 +169,7 @@ public class PostmanItem implements IPostmanCollectionElement  {
 
     
 
-    public boolean isValid() {
+    public boolean validate() throws Exception {
         return true;
     }
 
@@ -291,6 +291,22 @@ public class PostmanItem implements IPostmanCollectionElement  {
     public void removeItem(PostmanItem oldItem) throws Exception
     {
         this.removeItem(oldItem.getKey());
+    }
+
+    public void setPreRequestScript(String code) throws Exception {
+        PostmanScript prScript = new PostmanScript("text/javascript",code);
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, prScript);
+        this.setEvent(prEvent);
+    }
+
+    public void setTestScript(String code) throws Exception {
+        PostmanScript prScript = new PostmanScript("text/javascript",code);
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, prScript);
+        this.setEvent(prEvent);
+    }
+
+    public void setPreRequestScript(String code, String type) {
+
     }
 
     public void removeItem(String key) throws Exception {

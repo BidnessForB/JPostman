@@ -25,7 +25,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
         return domain;
     }
 
-    public boolean isValid() {
+    public boolean Validate() throws Exception {
         return true;
     }
     public void setDomain(String domain) {
@@ -96,6 +96,7 @@ public class PostmanCookie implements IPostmanCollectionElement {
         
         return name;
     }
+    
  
     @Override
     public String toJson(boolean escaped, enumVariableResolution variableStrategy) {
