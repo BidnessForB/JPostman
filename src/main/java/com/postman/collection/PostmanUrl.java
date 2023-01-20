@@ -15,8 +15,8 @@ public class PostmanUrl implements IPostmanCollectionElement {
     private String raw = "";
     private String[] host;
     private String[] path;
-    private PostmanVariable[] query;
-    private PostmanVariable[] variable = null;
+    private ArrayList<PostmanVariable> query;
+    private ArrayList<PostmanVariable> variable = null;
     private String protocol;
     private String port;
     
@@ -83,11 +83,15 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void addVariable(String key, String value, String description) throws Exception {
 
-        this.variable = CollectionUtils.insertInCopy((this.variable == null ? new PostmanVariable[0] : this.variable),new PostmanVariable(key, value,description));
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        this.variable.add(new PostmanVariable(key,value,description));
        
     }
 
     public void setPath(String rawPath) throws Exception  {
+        
         String pathElements[] = new String[0];
         List<String> liPath;
         this.path = new String[0];
@@ -196,16 +200,16 @@ public class PostmanUrl implements IPostmanCollectionElement {
     public void setPaths(String[] path) {
         this.path = path;
     }
-    public PostmanVariable[] getQueries() {
+    public ArrayList<PostmanVariable> getQueries() {
         return query;
     }
-    public void setQueries(PostmanVariable[] query) {
+    public void setQueries(ArrayList<PostmanVariable> query) {
         this.query = query;
     }
-    public PostmanVariable[] getVariables() {
+    public ArrayList<PostmanVariable> getVariables() {
         return variable;
     }
-    public void setVariables(PostmanVariable[] variable) {
+    public void setVariables(ArrayList<PostmanVariable> variable) {
         this.variable = variable;
     }
     @Override
@@ -226,7 +230,10 @@ public class PostmanUrl implements IPostmanCollectionElement {
 
     public void addQuery(String key, String value, String description) throws Exception {
         
-        this.query = CollectionUtils.insertInCopy(this.query == null ? new PostmanVariable[0] : this.query, new PostmanVariable(key,value,description));
+        if(this.query == null) {
+            this.query = new ArrayList<PostmanVariable>();
+        }
+        this.query.add(new PostmanVariable(key,value,description));
     
     }
 

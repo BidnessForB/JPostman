@@ -37,7 +37,7 @@ public class PostmanCollection extends PostmanItem
 
 
 private PostmanInfo info = null;
-private PostmanVariable[] variable = null;
+private ArrayList<PostmanVariable> variable = null;
 private PostmanAuth auth = null;
 private transient ValidationMessage[] validationMessages;
 
@@ -181,7 +181,7 @@ public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Excep
     curParent.removeItem(itemToMove);
     newParent.addItem(itemToMove);
 }    
-public void setVariables(PostmanVariable[] vars)
+public void setVariables(ArrayList<PostmanVariable> vars)
 {
     this.variable = vars;
 }
@@ -198,10 +198,16 @@ public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean
     
     PostmanItem newFolder = new PostmanItem(newColl.getName());
     parent.addItem(newFolder);
-    
     newFolder.addItems(newColl.getItems());
+
     if (copyVariables) {
-        this.setVariables(CollectionUtils.arrayConcat(new PostmanVariable[0], newColl.getVariables(), this.getVariables()));
+        
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        if(newColl.getVariables() != null) {
+            this.variable.addAll(newColl.getVariables());
+        }
     }
 
     if(copyScripts) {
@@ -221,7 +227,7 @@ public PostmanInfo getInfo() {
     return info;
 }
 
-public PostmanVariable[] getVariables() {
+public ArrayList<PostmanVariable> getVariables() {
     return variable;
 }
 
@@ -371,7 +377,7 @@ public String toJson() {
 
 
 gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
-gsonBuilder.registerTypeAdapter(varListType, varSerializer);
+//gsonBuilder.registerTypeAdapter(varListType, varSerializer);
 Gson customGson = gsonBuilder.create();  
 String customJSON = customGson.toJson(this);  
 return customJSON;

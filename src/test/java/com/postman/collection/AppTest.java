@@ -236,8 +236,9 @@ public class AppTest
              
             
         }
-
+        @Test
         public void testBuildAuths() throws Exception {
+            pmcTest = PostmanCollection.PMCFactory();
             pmcTest.setName("TEST Auth");
             PostmanAuth auth;
             PostmanRequest req;
@@ -478,5 +479,8 @@ public class AppTest
         assertTrue(valid);
 
     }
+
+    
+    
 }
 
