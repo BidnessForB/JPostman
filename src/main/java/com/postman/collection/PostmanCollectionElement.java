@@ -2,7 +2,7 @@ package com.postman.collection;
 import com.networknt.schema.ValidationMessage;
 import java.util.ArrayList;
 import com.google.gson.Gson;
-import com.networknt.schema.ValidationMessage;
+//import com.networknt.schema.ValidationMessage;
 import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchema;
@@ -63,9 +63,6 @@ public abstract class PostmanCollectionElement {
         this.validationMessages = (errors == null || errors.size() == 0) ? new ArrayList<ValidationMessage>() : new ArrayList<ValidationMessage>(errors);
         return (this.validationMessages == null || this.validationMessages.size() == 0);
     
-    
-    
-
     }
     
 
