@@ -15,6 +15,11 @@ public class PostmanUrl extends PostmanCollectionElement {
     private String protocol;
     private String port;
 
+    
+    /** 
+     * @param rawURL
+     * @throws Exception
+     */
     public void setRaw(String rawURL) throws Exception {
 
         this.raw = rawURL;
@@ -62,6 +67,13 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param key
+     * @param value
+     * @param description
+     * @throws Exception
+     */
     public void addVariable(String key, String value, String description) throws Exception {
 
         if (this.variable == null) {
@@ -71,6 +83,11 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param rawPath
+     * @throws Exception
+     */
     public void setPath(String rawPath) throws Exception {
 
         ArrayList<String> pathElements = new ArrayList<String>();
@@ -93,6 +110,11 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param rawQuery
+     * @throws Exception
+     */
     public void setQuery(String rawQuery) throws Exception {
         ArrayList<String> queryElements;
         if (rawQuery != null && rawQuery.length() > 0) {
@@ -106,6 +128,10 @@ public class PostmanUrl extends PostmanCollectionElement {
         }
     }
 
+    
+    /** 
+     * @param rawHost
+     */
     public void setHost(String rawHost) {
 
         if (rawHost == null || rawHost.length() < 1) {
@@ -116,6 +142,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param rawProtocol
+     */
     public void setProtocol(String rawProtocol) {
 
         if (rawProtocol == null || rawProtocol.length() < 1) {
@@ -130,6 +160,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getRaw() {
         // this.raw = this.host
         return raw;
@@ -146,48 +180,97 @@ public class PostmanUrl extends PostmanCollectionElement {
         this.path.add(path);
     }
 
+    
+    /** 
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getHosts() {
         return host;
     }
 
+    
+    /** 
+     * @param host
+     */
     public void setHosts(ArrayList<String> host) {
         this.host = host;
     }
 
+    
+    /** 
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getPaths() {
         return path;
     }
 
+    
+    /** 
+     * @param path
+     */
     public void setPaths(ArrayList<String> path) {
         this.path = path;
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getQueries() {
         return query;
     }
 
+    
+    /** 
+     * @param query
+     */
     public void setQueries(ArrayList<PostmanVariable> query) {
         this.query = query;
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getVariables() {
         return variable;
     }
 
+    
+    /** 
+     * @param variable
+     */
     public void setVariables(ArrayList<PostmanVariable> variable) {
         this.variable = variable;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getKey() {
 
         return null;
     }
 
+    
+    /** 
+     * @param key
+     * @param value
+     * @throws Exception
+     */
     public void addQuery(String key, String value) throws Exception {
         this.addQuery(key, value, null);
     }
 
+    
+    /** 
+     * @param key
+     * @param value
+     * @param description
+     * @throws Exception
+     */
     public void addQuery(String key, String value, String description) throws Exception {
 
         if (this.query == null) {
@@ -197,6 +280,11 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param queryString
+     * @throws Exception
+     */
     public void addQuery(String queryString) throws Exception {
 
         ArrayList<String> elements = new ArrayList<String>();
@@ -216,10 +304,18 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getPort() {
         return this.port;
     }
 
+    
+    /** 
+     * @param port
+     */
     public void setPort(int port) {
         try {
             this.port = Integer.toString(port);

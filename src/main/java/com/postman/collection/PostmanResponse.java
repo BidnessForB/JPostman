@@ -23,10 +23,18 @@ public class PostmanResponse extends PostmanCollectionElement {
         this.body = body;
     }
 
+    
+    /** 
+     * @param headers
+     */
     public void setHeader(ArrayList<PostmanVariable> headers) {
         this.header = headers;
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getHeader() {
         return this.header;
     }
@@ -39,62 +47,122 @@ public class PostmanResponse extends PostmanCollectionElement {
         this.name = name;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    
+    /** 
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    
+    /** 
+     * @return PostmanRequest
+     */
     public PostmanRequest getOriginalRequest() {
         return originalRequest;
     }
 
+    
+    /** 
+     * @param originalRequest
+     */
     public void setOriginalRequest(PostmanRequest originalRequest) {
         this.originalRequest = originalRequest;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getCode() {
         return code;
     }
 
+    
+    /** 
+     * @param code
+     */
     public void setCode(int code) {
         this.code = code;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getStatus() {
         return status;
     }
 
+    
+    /** 
+     * @param status
+     */
     public void setStatus(String status) {
         this.status = status;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String get_postman_previewlanguage() {
         return _postman_previewlanguage;
     }
 
+    
+    /** 
+     * @param _postman_previewlanguage
+     */
     public void set_postman_previewlanguage(String _postman_previewlanguage) {
         this._postman_previewlanguage = _postman_previewlanguage;
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanCookie>
+     */
     public ArrayList<PostmanCookie> getCookies() {
         return cookie;
     }
 
+    
+    /** 
+     * @param cookie
+     */
     public void setCookies(ArrayList<PostmanCookie> cookie) {
         this.cookie = cookie;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBody() {
         return body;
     }
 
+    
+    /** 
+     * @param body
+     */
     public void setBody(String body) {
         this.body = body;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getKey() {
 

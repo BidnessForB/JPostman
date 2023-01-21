@@ -10,6 +10,10 @@ public class PostmanRequest extends PostmanCollectionElement {
     private PostmanBody body;
     private PostmanAuth auth;
 
+    
+    /** 
+     * @return String
+     */
     // private String description = "";
 
     public String getKey() {
@@ -30,10 +34,18 @@ public class PostmanRequest extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param auth
+     */
     public void setAuth(PostmanAuth auth) {
         this.auth = auth;
     }
 
+    
+    /** 
+     * @return PostmanAuth
+     */
     public PostmanAuth getAuth() {
         return this.auth;
     }
@@ -45,51 +57,102 @@ public class PostmanRequest extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @return enumHTTPRequestMethod
+     */
     public enumHTTPRequestMethod getMethod() {
         return method;
     }
 
+    
+    /** 
+     * @param method
+     */
     public void setMethod(enumHTTPRequestMethod method) {
         this.method = method;
     }
 
+    
+    /** 
+     * @return PostmanUrl
+     */
     public PostmanUrl getUrl() {
         return url;
     }
 
+    
+    /** 
+     * @param url
+     */
     public void setUrl(PostmanUrl url) {
         this.url = url;
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getHeader() {
         return header;
     }
 
+    
+    /** 
+     * @param header
+     */
     public void setHeader(ArrayList<PostmanVariable> header) {
         this.header = header;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getDescription() {
         return description;
     }
 
+    
+    /** 
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    
+    /** 
+     * @param bodyMode
+     * @return PostmanBody
+     */
     public PostmanBody setBody(enumRequestBodyMode bodyMode) {
         return this.setBody(bodyMode, null);
     }
 
+    
+    /** 
+     * @param bodyMode
+     * @param rawContent
+     * @return PostmanBody
+     */
     public PostmanBody setBody(enumRequestBodyMode bodyMode, String rawContent) {
         this.setBody(new PostmanBody(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
         return this.getBody();
     }
 
+    
+    /** 
+     * @return PostmanBody
+     */
     public PostmanBody getBody() {
         return this.body;
     }
 
+    
+    /** 
+     * @param body
+     */
     public void setBody(PostmanBody body) {
         this.body = body;
     }

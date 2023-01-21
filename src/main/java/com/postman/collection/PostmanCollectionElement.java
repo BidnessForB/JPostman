@@ -23,10 +23,21 @@ public abstract class PostmanCollectionElement {
 
     public abstract String getKey();
 
+    
+    /** 
+     * @return boolean
+     * @throws Exception
+     */
     public boolean validate() throws Exception {
         return this.validate(null);
     }
 
+    
+    /** 
+     * @param altSchemaJSON
+     * @return boolean
+     * @throws Exception
+     */
     public boolean validate(String altSchemaJSON) throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -66,26 +77,54 @@ public abstract class PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @return ArrayList<ValidationMessage>
+     */
     public ArrayList<ValidationMessage> getValidationMessages() {
         return this.validationMessages;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String toJson() {
         return this.toJson(false, false);
     }
 
+    
+    /** 
+     * @param escape
+     * @param resolveVariables
+     * @return String
+     */
     public String toJson(boolean escape, boolean resolveVariables) {
         return new Gson().toJson(this);
     }
 
+    
+    /** 
+     * @return UUID
+     */
     public UUID getUUID() {
         return this.uuid;
     }
 
+    
+    /** 
+     * @param newID
+     */
     public void setUUID(UUID newID) {
         this.uuid = newID;
     }
 
+    
+    /** 
+     * @param compare
+     * @return JsonNode
+     * @throws Exception
+     */
     public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws Exception {
         ObjectMapper jacksonObjectMapper = new ObjectMapper();
         JsonNode beforeNode = jacksonObjectMapper.readTree(this.toJson());

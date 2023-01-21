@@ -16,14 +16,26 @@ public class PostmanEvent extends PostmanCollectionElement {
         this(evtType, scriptCode, "text/javascript");
     }
 
+    
+    /** 
+     * @param scriptType
+     */
     public void setScriptType(String scriptType) {
         this.script.setType(scriptType);
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getScriptType() {
         return this.script.getType();
     }
 
+    
+    /** 
+     * @return enumEventType
+     */
     public enumEventType getEventType() {
         if (this.getListen().equals("test")) {
             return enumEventType.TEST;
@@ -34,6 +46,11 @@ public class PostmanEvent extends PostmanCollectionElement {
         }
     }
 
+    
+    /** 
+     * @param eventType
+     * @throws Exception
+     */
     public void setEventType(enumEventType eventType) throws Exception {
         if (eventType == enumEventType.PRE_REQUEST) {
             this.setListen("prerequest");
@@ -44,28 +61,52 @@ public class PostmanEvent extends PostmanCollectionElement {
         }
     }
 
+    
+    /** 
+     * @return String
+     */
     private String getListen() {
         return listen;
     }
 
+    
+    /** 
+     * @param listen
+     */
     private void setListen(String listen) {
         this.listen = listen;
     }
 
+    
+    /** 
+     * @return PostmanScript
+     */
     public PostmanScript getScript() {
         return script;
     }
 
+    
+    /** 
+     * @param script
+     */
     public void setScript(PostmanScript script) {
         this.script = script;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getKey() {
 
         return listen;
     }
 
+    
+    /** 
+     * @param code
+     */
     public void setExecElement(String code) {
         this.script.getExec().set(1, code);
     }

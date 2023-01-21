@@ -47,6 +47,11 @@ public class PostmanCollection extends PostmanItem {
     public transient String tempSchemaJson;
     public HashMap<String, String> info;
 
+    
+    /** 
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/")
@@ -60,6 +65,11 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @return String
+     * @throws Exception
+     */
     public static String getPostmanCollectionSchema() throws Exception {
         BufferedReader brItem;
         String strChunk = null;
@@ -80,6 +90,12 @@ public class PostmanCollection extends PostmanItem {
         return schemaJSON;
     }
 
+    
+    /** 
+     * @param itemToMoveKey
+     * @param parentKey
+     * @throws Exception
+     */
     public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
         PostmanItem itemToMove = this.getItem(itemToMoveKey);
         PostmanItem parent = this.getItem(parentKey);
@@ -90,16 +106,31 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param schemaJSON
+     */
     public void setTemporarySchema(String schemaJSON) {
         this.tempSchemaJson = schemaJSON;
     }
 
+    
+    /** 
+     * @param requestKey
+     * @param response
+     * @throws Exception
+     */
     public void addResponse(String requestKey, PostmanResponse response) throws Exception {
         PostmanItem req = this.getItem(requestKey);
         req.addResponse(response);
 
     }
 
+    
+    /** 
+     * @param newFolder
+     * @throws Exception
+     */
     public void addFolder(PostmanItem newFolder) throws Exception {
         if (newFolder.getItemType() != enumPostmanItemType.FOLDER) {
             throw new Exception("Item is not a folder");
@@ -109,12 +140,27 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param newRequest
+     * @param name
+     * @param response
+     * @return PostmanItem
+     * @throws Exception
+     */
     public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws Exception {
         PostmanItem newItem = this.addRequest(newRequest, name);
         newItem.addResponse(response);
         return newItem;
     }
 
+    
+    /** 
+     * @param newRequest
+     * @param name
+     * @return PostmanItem
+     * @throws Exception
+     */
     public PostmanItem addRequest(PostmanRequest newRequest, String name) throws Exception {
         PostmanItem newItem = new PostmanItem(name);
         newItem.setRequest(newRequest);
@@ -124,6 +170,14 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param newRequest
+     * @param name
+     * @param responses
+     * @return PostmanItem
+     * @throws Exception
+     */
     public PostmanItem addRequest(PostmanRequest newRequest, String name, ArrayList<PostmanResponse> responses)
             throws Exception {
         PostmanItem newItem = addRequest(newRequest, name);
@@ -131,6 +185,13 @@ public class PostmanCollection extends PostmanItem {
         return newItem;
     }
 
+    
+    /** 
+     * @param newRequest
+     * @param name
+     * @param position
+     * @throws Exception
+     */
     public void addRequest(PostmanRequest newRequest, String name, int position) throws Exception {
         PostmanItem newItem = new PostmanItem(name);
         newItem.setRequest(newRequest);
@@ -139,6 +200,12 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param itemToMove
+     * @param newParent
+     * @throws Exception
+     */
     public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws Exception {
         PostmanItem curParent = this.getItem(itemToMove.getKey(), true);
         if (itemToMove.equals(newParent)) {
@@ -152,10 +219,18 @@ public class PostmanCollection extends PostmanItem {
         newParent.addItem(itemToMove);
     }
 
+    
+    /** 
+     * @param vars
+     */
     public void setVariables(ArrayList<PostmanVariable> vars) {
         this.variable = vars;
     }
 
+    
+    /** 
+     * @param var
+     */
     public void addVariable(PostmanVariable var) {
         if (this.variable == null) {
             this.variable = new ArrayList<PostmanVariable>();
@@ -166,6 +241,10 @@ public class PostmanCollection extends PostmanItem {
         this.variable.add(var);
     }
 
+    
+    /** 
+     * @param key
+     */
     public void removeVariable(String key) {
         if (this.variable == null) {
             return;
@@ -177,6 +256,11 @@ public class PostmanCollection extends PostmanItem {
             }
     }
 
+    
+    /** 
+     * @param key
+     * @return PostmanVariable
+     */
     public PostmanVariable getVariable(String key) {
         if (this.variable == null) {
             return null;
@@ -189,14 +273,35 @@ public class PostmanCollection extends PostmanItem {
         return null;
     }
 
+    
+    /** 
+     * @param newColl
+     * @param parent
+     * @throws Exception
+     */
     public void addCollection(PostmanCollection newColl, PostmanItem parent) throws Exception {
         this.addCollection(newColl, parent, true, true);
     }
 
+    
+    /** 
+     * @param newColl
+     * @param copyScripts
+     * @param copyVariables
+     * @throws Exception
+     */
     public void addCollection(PostmanCollection newColl, boolean copyScripts, boolean copyVariables) throws Exception {
         this.addCollection(newColl, this, copyScripts, copyVariables);
     }
 
+    
+    /** 
+     * @param newColl
+     * @param parent
+     * @param copyScripts
+     * @param copyVariables
+     * @throws Exception
+     */
     public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables)
             throws Exception {
 
@@ -219,14 +324,25 @@ public class PostmanCollection extends PostmanItem {
         }
     }
 
+    
+    /** 
+     * @param newColl
+     * @throws Exception
+     */
     public void addCollection(PostmanCollection newColl) throws Exception {
 
         this.addCollection(newColl, this, true, true);
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getVariables() {
         return variable;
     }
+
+
 
     public PostmanCollection(String name) {
         // this.info = new PostmanInfo();
@@ -249,6 +365,10 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param newName
+     */
     public void setName(String newName) {
         this.info.put("name", newName);
     }
@@ -267,14 +387,26 @@ public class PostmanCollection extends PostmanItem {
         }
     }
 
+    
+    /** 
+     * @param desc
+     */
     public void setDescription(String desc) {
         this.info.put("description", desc);
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getDescription() {
         return this.info.get("description");
     }
 
+    
+    /** 
+     * @return PostmanCollection
+     */
     public static PostmanCollection PMCFactory() {
 
         String json = "{}";
@@ -292,6 +424,13 @@ public class PostmanCollection extends PostmanItem {
         return pmcRetVal;
     }
 
+    
+    /** 
+     * @param jsonFile
+     * @return PostmanCollection
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static PostmanCollection PMCFactory(File jsonFile) throws FileNotFoundException, IOException {
 
         String strChunk = "";
@@ -317,32 +456,65 @@ public class PostmanCollection extends PostmanItem {
         return pmcRetVal;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getName() {
         return this.info.get("name");
     }
 
+    
+    /** 
+     * @param newInfo
+     */
     public void setInfo(HashMap<String, String> newInfo) {
         this.info = newInfo;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getPostmanID() {
         return this.info.get("_postman_id");
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setPostmanID(String id) {
         this.info.put("_postman_id", id);
     }
 
+    
+    /** 
+     * @param id
+     */
     public void setExporterID(String id) {
         this.info.remove("_exporter_id");
         this.info.put("_exporter_id", id);
     }
 
+    
+    /** 
+     * @param schemaURI
+     */
     public void setSchemaURI(URI schemaURI) {
 
         this.info.put("schema", schemaURI.toString());
     }
 
+    
+    /** 
+     * @param name
+     * @param description
+     * @param postmanID
+     * @param exporterID
+     * @param schemaURI
+     * @throws Exception
+     */
     public void setInfo(String name, String description, String postmanID, String exporterID, String schemaURI)
             throws Exception {
         this.setName(name);
@@ -353,6 +525,11 @@ public class PostmanCollection extends PostmanItem {
 
     }
 
+    
+    /** 
+     * @param path
+     * @throws IOException
+     */
     public void writeToFile(String path) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -360,14 +537,26 @@ public class PostmanCollection extends PostmanItem {
         writer.close();
     }
 
+    
+    /** 
+     * @param auth
+     */
     public void setAuth(PostmanAuth auth) {
         this.auth = auth;
     }
 
+    
+    /** 
+     * @return PostmanAuth
+     */
     public PostmanAuth getAuth() {
         return this.auth;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -458,14 +647,27 @@ public class PostmanCollection extends PostmanItem {
         return customJSON;
     }
 
+    
+    /** 
+     * @param key
+     * @return PostmanItem
+     */
     public PostmanItem getItemParent(String key) {
         return this.getItem(key, true);
     }
 
+    
+    /** 
+     * @return Map<String, String>
+     */
     public Map<String, String> getInfo() {
         return this.info;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getKey() {
 

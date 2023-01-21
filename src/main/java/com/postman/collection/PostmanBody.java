@@ -11,22 +11,42 @@ public class PostmanBody {
     private ArrayList<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
 
+    
+    /** 
+     * @return PostmanBodyOptions
+     */
     public PostmanBodyOptions getOptions() {
         return options;
     }
 
+    
+    /** 
+     * @param options
+     */
     public void setOptions(PostmanBodyOptions options) {
         this.options = options;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getRaw() {
         return raw;
     }
 
+    
+    /** 
+     * @param raw
+     */
     public void setRaw(String raw) {
         this.raw = raw;
     }
 
+    
+    /** 
+     * @param lang
+     */
     public void setRawLanguage(enumRawBodyLanguage lang) {
         if (this.getMode() != enumRequestBodyMode.RAW) {
             return;
@@ -34,6 +54,10 @@ public class PostmanBody {
         this.getOptions().getRaw().setLanguage(lang);
     }
 
+    
+    /** 
+     * @return enumRawBodyLanguage
+     */
     public enumRawBodyLanguage getRawLanguage() {
         if (this.getMode() != enumRequestBodyMode.RAW) {
             return null;
@@ -41,6 +65,11 @@ public class PostmanBody {
         return this.getOptions().getRaw().getLanguage();
     }
 
+    
+    /** 
+     * @param raw
+     * @param language
+     */
     public void setRaw(String raw, enumRawBodyLanguage language) {
 
         if (this.getMode() == enumRequestBodyMode.TEXT) {
@@ -62,22 +91,46 @@ public class PostmanBody {
 
     }
 
+    
+    /** 
+     * @return PostmanGraphQL
+     */
     public PostmanGraphQL getGraphql() {
         return graphql;
     }
 
+    
+    /** 
+     * @param graphQL
+     */
     public void setGraphql(String graphQL) {
         this.setGraphql(graphQL, null);
     }
 
+    
+    /** 
+     * @param graphQL
+     * @param variables
+     */
     public void setGraphql(String graphQL, String variables) {
         this.graphql = (new PostmanGraphQL(graphQL, variables));
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     * @throws Exception
+     */
     public ArrayList<PostmanVariable> getFormdata() throws Exception {
         return formdata;
     }
 
+    
+    /** 
+     * @param position
+     * @return PostmanVariable
+     * @throws Exception
+     */
     public PostmanVariable getFormdata(int position) throws Exception {
         switch (this.getMode()) {
             case URLENCODED: {
@@ -93,18 +146,43 @@ public class PostmanBody {
         }
     }
 
+    
+    /** 
+     * @param formdata
+     */
     public void setFormdata(ArrayList<PostmanVariable> formdata) {
         this.formdata = formdata;
     }
 
+    
+    /** 
+     * @param key
+     * @param value
+     * @param description
+     * @param position
+     * @throws Exception
+     */
     public void setFormdata(String key, String value, String description, int position) throws Exception {
         this.setFormdata(new PostmanVariable(key, value, description, "text"), position);
     }
 
+    
+    /** 
+     * @param key
+     * @param value
+     * @param description
+     * @throws Exception
+     */
     public void setFormdata(String key, String value, String description) throws Exception {
         this.setFormdata(new PostmanVariable(key, value, description), 0);
     }
 
+    
+    /** 
+     * @param data
+     * @param position
+     * @throws Exception
+     */
     public void setFormdata(PostmanVariable data, int position) throws Exception {
 
         if (this.getMode() == enumRequestBodyMode.URLENCODED) {
@@ -135,14 +213,26 @@ public class PostmanBody {
 
     }
 
+    
+    /** 
+     * @return ArrayList<PostmanVariable>
+     */
     public ArrayList<PostmanVariable> getUrlencoded() {
         return urlencoded;
     }
 
+    
+    /** 
+     * @param urlencoded
+     */
     public void setUrlencoded(ArrayList<PostmanVariable> urlencoded) {
         this.urlencoded = urlencoded;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getFile() {
         if (this.getMode() != enumRequestBodyMode.FILE) {
             return null;
@@ -150,11 +240,19 @@ public class PostmanBody {
         return this.file.getSrc();
     }
 
+    
+    /** 
+     * @param file
+     */
     public void setFile(String file) {
         if (this.getMode() != enumRequestBodyMode.FILE)
             this.file.setSrc(file);
     }
 
+    
+    /** 
+     * @return enumRequestBodyMode
+     */
     public enumRequestBodyMode getMode() {
         if (mode == null) {
             return null;
@@ -174,6 +272,10 @@ public class PostmanBody {
         return null;
     }
 
+    
+    /** 
+     * @param newMode
+     */
     public void setMode(enumRequestBodyMode newMode) {
         switch (newMode) {
             case FILE:
@@ -227,10 +329,18 @@ public class PostmanBody {
         }
     }
 
+    
+    /** 
+     * @param position
+     */
     public void removeFormData(int position) {
 
     }
 
+    
+    /** 
+     * @param data
+     */
     public void removeFormDAta(PostmanVariable data) {
 
     }
