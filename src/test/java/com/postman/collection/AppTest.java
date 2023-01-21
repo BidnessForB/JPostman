@@ -1,5 +1,6 @@
 package com.postman.collection;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -740,14 +741,6 @@ public class AppTest {
         assertTrue(var == null);
 
     
-
-
-
-
-
-
-
-
     }
     @Test
     public void testBodyObject() {
@@ -772,7 +765,17 @@ public class AppTest {
             
             printValidationMessages(body.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
-            
+
+            body = new PostmanBody(enumRequestBodyMode.RAW);
+            assertNull(body.getFile());
+            assertNull(body.getFormdata());
+            assertNull(body.getUrlencoded());
+            assertNull(body.getGraphql());
+            assertNull(body.getRaw());
+            assertNull(body.getOptions());
+
+
+                        
             
             
     }

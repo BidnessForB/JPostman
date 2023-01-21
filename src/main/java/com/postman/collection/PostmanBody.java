@@ -262,9 +262,8 @@ public class PostmanBody extends PostmanCollectionElement {
     
     /** 
      * @return ArrayList<PostmanVariable>
-     * @throws Exception
      */
-    public ArrayList<PostmanVariable> getFormdata() throws Exception {
+    public ArrayList<PostmanVariable> getFormdata()  {
         return formdata;
     }
 
