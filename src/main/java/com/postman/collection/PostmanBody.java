@@ -1,18 +1,144 @@
+
 package com.postman.collection;
 
 import java.util.ArrayList;
 
-public class PostmanBody {
-    private String mode;
-    private PostmanBodyOptions options;
-    private String raw;
-    private PostmanGraphQL graphql;
-    private ArrayList<PostmanVariable> formdata;
-    private ArrayList<PostmanVariable> urlencoded;
-    private PostmanBinaryFile file;
+
+/**
+ * 
+ * <p>Encapsulates the <code>body</code> property of a <a href="./PostmanRequest.html">PostmanRequest</a> object.  There are several different permutations for this property depending on the 
+ * <code>mode</code> selected in Postman.  Some examples:
+ * </p>
+ * 
+ * <strong>plaintext:</strong>
+ * <pre>
+ * "body": {
+ *   "mode": "raw",
+ *     "raw": "This is some text in the body"
+ *   }
+ *   </pre>
+ * 
+ * <strong>Form data</strong>
+ * 
+ *   Formdata and Urlencoded bodies comprise an array of key value pairs persisted as instance of PostmanVariable:
+ * <pre>
+    "body": {
+        "mode": "urlencoded",
+        "urlencoded": [
+            {
+                "key": "x-field-1",
+                "value": "x-field-1 value",
+                "description": "This is x-field-1",
+                "type": "text"
+            },
+            {
+                "key": "x-field-2",
+                "value": "x-field-2 value",
+                "description": "This is x-field-2",
+                "type": "text"
+            },
+            {
+                "key": "x-field-3",
+                "value": "{{Xfield3value}}",
+                "description": "variable",
+                "type": "text"
+            }
+            ]
+        }
+</pre>
+<strong>RAW options</strong>
+<p>Other forms of textual data contain an <code>options</code> property which only includes the langauge of the payload, e.g., <code>javascript</code>
+<pre>
+    "body": {
+        "mode": "raw",
+        "raw": "pm.test(\"Status code is 200\", function () {\n ...",
+        "options": {
+            "raw": {
+                "language": "javascript"
+            }
+        }
+    }
+    </pre>
+    <p><strong>GraphQL</strong></p>
+
+    <p>GraphQL includes query and variable properties</p>
+    <pre>
+    "body": {
+        "mode": "graphql",
+            "graphql": {
+            "query": "query ($limit: Int!) {\n  ...",
+            "variables": "{\n    \"limit\":2\n}"
+            }
+    }
+    </pre>
+<p><strong>Binary</strong></p>
+<p>Binary bodies contain a single <code>src</code> property with a path to the file</p>
+
+    <pre>
+    "body": {
+        "mode": "file",
+        "file": {
+            "src": "8vhckkNqZ/jenkins-small.png"
+        }
+    }
+    </pre>
+ * 
+ * 
+ * 
+ */
+public class PostmanBody extends PostmanCollectionElement {
+  
 
     
+    private PostmanGraphQL graphql;
+    private ArrayList<PostmanVariable> formdata;
+    
+    private ArrayList<PostmanVariable> urlencoded;
+
+    
+    private PostmanBinaryFile file;
+    public String getKey() {
+        return this.getUUID().toString();
+    }
+    /**
+     * 
+     * Constructs a body with the provided <code>mode</code>, content, and language. If <code>mode</code> is not raw, the language value is discarded.  
+     * 
+     * @param mode  Enumerated value for the underying <code>mode</code> property of this request body
+     * @param content The content in the body
+     * @param language For bodies with <code>mode</code> RAW, the language of the body content, e.g., <code>javascript</code>
+     */
+    public PostmanBody(enumRequestBodyMode mode, String content, enumRawBodyLanguage language) {
+
+        this.setMode(mode);
+
+        if (this.getMode() == enumRequestBodyMode.RAW || this.getMode() == enumRequestBodyMode.GRAPHQL) {
+            this.setRaw(content, language);
+        }
+        if (this.getMode() == enumRequestBodyMode.FILE) {
+            this.file.setSrc(content);
+        }
+
+    }
+
+    /**
+     * Convenience constructor, creates an empty body object of the specified mode
+     * 
+     * 
+     * @param mode  Enumerated value for the <code>mode</code> property 
+     */
+    public PostmanBody(enumRequestBodyMode mode) {
+        this.setMode(mode);
+    }
+
+     
+    
+
     /** 
+     * 
+     * returns the <code>options</code> property object as an instance of the inner class PostmanBodyOptions
+     * 
+     * 
      * @return PostmanBodyOptions
      */
     public PostmanBodyOptions getOptions() {
@@ -51,7 +177,15 @@ public class PostmanBody {
         if (this.getMode() != enumRequestBodyMode.RAW) {
             return;
         }
-        this.getOptions().getRaw().setLanguage(lang);
+        try {
+            this.getOptions().getRaw().setLanguage(lang);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        
     }
 
     
@@ -62,7 +196,16 @@ public class PostmanBody {
         if (this.getMode() != enumRequestBodyMode.RAW) {
             return null;
         }
-        return this.getOptions().getRaw().getLanguage();
+        try {
+            return this.getOptions() == null || this.getOptions().getRaw() == null ? null : this.getOptions().getRaw().getLanguage();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+        
     }
 
     
@@ -146,6 +289,8 @@ public class PostmanBody {
         }
     }
 
+   
+
     
     /** 
      * @param formdata
@@ -198,19 +343,6 @@ public class PostmanBody {
         } else {
             throw new Exception("Cannot set Form Data.  Mode must be URLENCODED or FORMDATA");
         }
-    }
-
-    public PostmanBody(enumRequestBodyMode mode, String content, enumRawBodyLanguage language) {
-
-        this.setMode(mode);
-
-        if (this.getMode() == enumRequestBodyMode.RAW || this.getMode() == enumRequestBodyMode.GRAPHQL) {
-            this.setRaw(content, language);
-        }
-        if (this.getMode() == enumRequestBodyMode.FILE) {
-            this.file.setSrc(content);
-        }
-
     }
 
     
@@ -272,7 +404,6 @@ public class PostmanBody {
         return null;
     }
 
-    
     /** 
      * @param newMode
      */
@@ -329,7 +460,6 @@ public class PostmanBody {
         }
     }
 
-    
     /** 
      * @param position
      */
@@ -337,7 +467,6 @@ public class PostmanBody {
 
     }
 
-    
     /** 
      * @param data
      */
@@ -345,32 +474,14 @@ public class PostmanBody {
 
     }
 
-    public PostmanBody(enumRequestBodyMode mode) {
-        this.setMode(mode);
-    }
-
-    class PostmanBodyOptions {
-        private PostmanBodyRaw raw;
-
-        public PostmanBodyRaw getRaw() {
-            return raw;
-        }
-
-        public void setRaw(PostmanBodyRaw raw) {
-            this.raw = raw;
-        }
-
-        public PostmanBodyOptions(PostmanBodyRaw raw) {
-            this.raw = raw;
-        }
-
-        public PostmanBodyOptions(enumRawBodyLanguage language) {
-            this.raw = new PostmanBodyRaw(language);
-        }
-    }
+    //Inner Classes
 
     public class PostmanBodyRaw {
         private String language;
+
+        public PostmanBodyRaw(enumRawBodyLanguage language) {
+            this.setLanguage(language);
+        }
 
         public enumRawBodyLanguage getLanguage() {
             if (language == null) {
@@ -412,14 +523,13 @@ public class PostmanBody {
                     this.language = null;
             }
         }
-
-        public PostmanBodyRaw(enumRawBodyLanguage language) {
-            this.setLanguage(language);
-        }
     }
-
     public class PostmanBinaryFile {
         private String src;
+
+        public PostmanBinaryFile(String src) {
+            this.src = src;
+        }
 
         public String getSrc() {
             return src;
@@ -428,12 +538,7 @@ public class PostmanBody {
         public void setSrc(String src) {
             this.src = src;
         }
-
-        public PostmanBinaryFile(String src) {
-            this.src = src;
-        }
     }
-
     public class PostmanGraphQL {
         private String query;
         private String variables;
@@ -463,4 +568,26 @@ public class PostmanBody {
             this.variables = variables;
         }
     }
+    class PostmanBodyOptions {
+        private PostmanBodyRaw raw;
+
+        public PostmanBodyOptions(PostmanBodyRaw raw) {
+            this.raw = raw;
+        }
+
+        public PostmanBodyOptions(enumRawBodyLanguage language) {
+            this.raw = new PostmanBodyRaw(language);
+        }
+
+        public PostmanBodyRaw getRaw() {
+            return raw;
+        }
+
+        public void setRaw(PostmanBodyRaw raw) {
+            this.raw = raw;
+        }
+    }
+    private String mode;
+    private PostmanBodyOptions options;
+    private String raw;
 }

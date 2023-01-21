@@ -58,6 +58,9 @@ public abstract class PostmanCollectionElement {
             case "PostmanAuth": {
                 strSubSchema = "#/definitions/auth";
             }
+            case "PostmanBody": {
+                strSubSchema = "#/definitions/request/oneOf/0/properties/body";
+            }
         }
 
         JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);

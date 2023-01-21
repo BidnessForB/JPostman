@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.security.auth.AuthPermission;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -739,12 +739,42 @@ public class AppTest {
         PostmanVariable var = auth.getProperty("addEmptyParamsToSign");
         assertTrue(var == null);
 
+    
 
 
 
 
 
 
+
+
+    }
+    @Test
+    public void testBodyObject() {
+            PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
+            assertTrue(body.getMode() == enumRequestBodyMode.RAW);
+            assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+
+            body = new PostmanBody(enumRequestBodyMode.RAW);
+            assertTrue(body.getRawLanguage() == null);
+            assertTrue(body.getOptions() == null);
+
+            body.setRaw("//some javascript");
+            assertTrue(body.getRaw().equals("//some javascript"));
+            boolean valid = false;
+            try {
+                valid = body.validate();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            
+            printValidationMessages(body.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+            
+            
+            
     }
 
 }
