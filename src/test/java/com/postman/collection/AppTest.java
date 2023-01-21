@@ -10,6 +10,7 @@ import java.io.File;
 import org.junit.Test;
 import com.networknt.schema.ValidationMessage;
 import java.util.HashMap;
+import com.fasterxml.jackson.databind.JsonNode;
 
 
 /**
@@ -165,9 +166,6 @@ public class AppTest
         
         @Test
         public void shouldCreateURLs() {
-            
-            String filePath = new java.io.File("").getAbsolutePath();
-            
             
             List<PostmanUrl> liUrls  = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
             try {
@@ -545,6 +543,51 @@ public class AppTest
         }
 
         @Test
+        public void testEquivalence() throws Exception {
+            PostmanBody body;
+            PostmanRequest req;
+            PostmanResponse resp;
+            pmcTest = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
+            PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
+            JsonNode diffs = pmcTest.isEquivalentTo(pmcTest2);
+            System.out.println("diffs (should be none) " + diffs.toPrettyString());
+            assertTrue(diffs.size() == 0);
+
+            pmcTest2 = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/body-test-diff.postman_collection.json"));
+            diffs = pmcTest.isEquivalentTo(pmcTest2);
+            System.out.println("diffs " + diffs.toPrettyString());
+            assertTrue(diffs.size() == 1);
+
+            body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        body.setFormdata("field-1", "value 1", "This is value 1");
+        body.setFormdata("field-2", "value 2", "This is value 2");
+        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req.setBody(body);
+        resp = new PostmanResponse("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
+        pmcTest.addRequest(req, "Test Request", resp);
+
+        body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        body.setFormdata("field-1", "value 1", "This is value 1");
+        body.setFormdata("field-2", "value 2", "This is value 2");
+        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req.setBody(body);
+        resp = new PostmanResponse("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
+        pmcTest2.addRequest(req, "Test Request", resp);
+
+        PostmanItem itemReq = pmcTest.getItem("Test Request");
+        PostmanItem itemReq2 = pmcTest2.getItem("Test Request");
+
+        diffs = itemReq.isEquivalentTo(itemReq2);
+        System.out.println("Req diffs (should be none) " + diffs.toPrettyString());
+        assertTrue(diffs.size() == 0);
+
+            
+        }
+
+       
+
+
+        @Test
         public void testConstructedBodies() throws Exception {
             
         PostmanCollection pmcTest = PostmanCollection.PMCFactory();
@@ -645,11 +688,15 @@ public class AppTest
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
             assertTrue(new File(collectionOutputPath).exists());
+
+        
+
+
         
 
     }
+    
+    
+
+
 }
-    
-    
-
-

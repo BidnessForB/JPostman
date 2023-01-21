@@ -11,6 +11,7 @@ import java.util.Set;
 import com.networknt.schema.SpecVersion;
 import java.net.URI;
 import java.util.UUID;
+import com.flipkart.zjsonpatch.*;
 
 public abstract class PostmanCollectionElement {
 
@@ -88,5 +89,12 @@ public abstract class PostmanCollectionElement {
         this.uuid = newID;
     }
     
-    
+    public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws Exception {
+        ObjectMapper jacksonObjectMapper = new ObjectMapper();
+        JsonNode beforeNode = jacksonObjectMapper.readTree(this.toJson());
+        JsonNode afterNode = jacksonObjectMapper.readTree(compare.toJson());
+        JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
+
+        return patch;
+    }
 }
