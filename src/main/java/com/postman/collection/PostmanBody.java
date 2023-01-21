@@ -31,6 +31,21 @@ public class PostmanBody {
         this.raw = raw;
     }
 
+    public void setRawLanguage(enumRawBodyLanguage lang) {
+        if(this.getMode() != enumRequestBodyMode.RAW) {
+            return;
+        }
+        this.getOptions().getRaw().setLanguage(lang);
+    }
+
+    public enumRawBodyLanguage getRawLanguage() { 
+        if(this.getMode() != enumRequestBodyMode.RAW)
+        {
+            return null;
+        }
+        return this.getOptions().getRaw().getLanguage();
+    }
+
     public void setRaw(String raw, enumRawBodyLanguage language) {
         
         
@@ -155,11 +170,15 @@ public class PostmanBody {
     public void setUrlencoded(ArrayList<PostmanVariable> urlencoded) {
         this.urlencoded = urlencoded;
     }
-    public PostmanBinaryFile getFile() {
-        return file;
+    public String getFile() {
+        if(this.getMode() != enumRequestBodyMode.FILE) {
+            return null;
+        }
+        return this.file.getSrc();
     }
-    public void setFile(PostmanBinaryFile file) {
-        this.file = file;
+    public void setFile(String file) {
+        if(this.getMode() != enumRequestBodyMode.FILE)
+        this.file.setSrc(file);
     }
     public enumRequestBodyMode getMode() {
         if(mode == null)
@@ -268,6 +287,71 @@ class PostmanBodyOptions {
     }
 }
 
+public class PostmanBodyRaw {
+    private String language;
+    //private transient String key = UUID.randomUUID().toString();
+    public enumRawBodyLanguage getLanguage() {
+        if(language == null)
+        {
+            return null;
+        }
+        switch(language) {
+            case "javascript":
+                return enumRawBodyLanguage.JAVASCRIPT;
+            case "json":
+                return enumRawBodyLanguage.JSON;
+            case "html":
+                return enumRawBodyLanguage.HTML;
+            case "xml":
+                return enumRawBodyLanguage.XML;
+            case "graphql":
+                return enumRawBodyLanguage.GRAPHQL;
+        }
+        return null;
+    }
 
+    public void setLanguage(enumRawBodyLanguage newLanguage) {
+        switch(newLanguage) {
+            case JSON:
+                this.language = "json";
+                break;
+            case JAVASCRIPT:
+                this.language = "javascript";
+                break;
+            case HTML:
+                this.language = "html";
+                break;
+            case XML:
+                this.language = "xml";
+                break;
+            case GRAPHQL:
+                this.language = "graphql";
+                break;
+            default:
+                this.language = null;
+        }
+    }
+
+    public PostmanBodyRaw(enumRawBodyLanguage language) {
+        this.setLanguage(language);
+    }
+}
+
+public class PostmanBinaryFile {
+    private String src;
+    //private transient String key = UUID.randomUUID().toString();
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public PostmanBinaryFile(String src) {
+        this.src = src;
+    }   
+}
 
 }

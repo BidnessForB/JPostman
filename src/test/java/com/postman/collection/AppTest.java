@@ -476,7 +476,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             {
                 for(ValidationMessage msg : pmcTest.getValidationMessages())
                 {
-                    System.out.println("VALIDATIN ERROR: " + msg.getMessage());
+                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
                 }
 
             }
@@ -557,7 +557,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         pmcTest.addRequest(req, "Javascript body",resp);
 
         body = new PostmanBody(enumRequestBodyMode.FILE);
-        body.setFile(new PostmanBinaryFile("8vhckkNqZ/jenkins-small.png"));
+        body.setFile("8vhckkNqZ/jenkins-small.png");
         req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
         resp = new PostmanResponse("NORMAL Binary", req , "OK", 200, "this is the expected response body");
