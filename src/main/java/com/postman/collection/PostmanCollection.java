@@ -13,6 +13,8 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
+import com.postman.collection.adapter.*;
+
 import java.util.Set;
 import java.util.Iterator;
 import java.net.URI;
@@ -33,8 +35,6 @@ import java.util.Arrays;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import java.util.Map;
-import com.postman.collection.deserializer.*;
-
 import java.util.HashMap;
 
 @SuppressWarnings("unused")
@@ -59,8 +59,12 @@ public static void main( String[] args ) throws Exception
     {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/").getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new File(resourcePath + "/example-catfact.postman_collection.json"));
-        pmcTest.writeToFile(filePath + "/test-output/frankencol.json");
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
+        PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
+
+        System.out.println("Equals: " + pmcTest.equals(pmcTest2));
+        
+        
         
 
         
@@ -492,7 +496,7 @@ JsonSerializer<HashMap<String,PostmanVariable>> varMapSerializer = new JsonSeria
     //gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
     gsonBuilder.registerTypeAdapter(mapType, mapSerializer);
     //gsonBuilder.registerTypeAdapter(varType, varSerializer);
-    gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.deserializer.varMapSerializer());
+    gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.varMapSerializer());
     gsonBuilder.registerTypeAdapter(PostmanAuth.class, new authSerializer());
 
     Gson customGson = gsonBuilder.create();  
@@ -507,44 +511,6 @@ public PostmanItem getItemParent(String key) {
 public Map<String,String> getInfo() {
     return this.info;
 }
-
-/* public PostmanItem getItem(String key, boolean parent) {
-    PostmanItem result = null;
-    if (this.item == null)
-    {
-        return null;
-    }
-    //recursively traverse items looking for name == key
-    for (PostmanItem curItem: item) {
-        //System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
-        if (item == null)
-          return null;
-        if (curItem.getName().equals(key))
-        {
-            if (!parent) {
-                result = curItem;
-            }
-            else
-            {
-                result = (PostmanItem) this;
-            }
-            
-            break;
-        }
-        else
-        {
-            result = curItem.getItem(key, parent);
-            if (result != null) {
-                break;
-            }
-        }
-        
-    }
-
-    return result;
-}
- */
-
 
 @Override
 public String getKey() {

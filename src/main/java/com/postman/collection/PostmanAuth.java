@@ -3,15 +3,13 @@ package com.postman.collection;
 
 import java.util.HashMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
-////import java.util.UUID;
+
 
 
 public class PostmanAuth extends PostmanCollectionElement {
-    ////private transient String key = UUID.randomUUID().toString();    
+    
     private String type = "";
     public HashMap<String, PostmanVariable> authElements = new HashMap<String, PostmanVariable>();
     private transient String[] arrTypes = new String[10];

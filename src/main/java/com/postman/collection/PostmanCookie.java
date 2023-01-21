@@ -2,7 +2,7 @@ package com.postman.collection;
 
 
 import java.util.ArrayList;
-//import com.networknt.schema.ValidationMessage;
+
 
 public class PostmanCookie extends PostmanCollectionElement {
     private String domain = "";

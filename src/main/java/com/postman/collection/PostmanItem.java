@@ -4,8 +4,7 @@ package com.postman.collection;
 import java.util.ArrayList;
 
 
-//import java.util.UUID;
-// foo
+
 public class PostmanItem extends PostmanCollectionElement  {
     
     private String description; 
@@ -17,7 +16,7 @@ public class PostmanItem extends PostmanCollectionElement  {
     
     
 
-    //private transient String key = UUID.randomUUID().toString();
+    
     private transient PostmanItem parent = null;
     @Override
     public String getKey() {
@@ -287,14 +286,14 @@ public class PostmanItem extends PostmanCollectionElement  {
     }
 
     public void setPreRequestScript(String code) throws Exception {
-        PostmanScript prScript = new PostmanScript("text/javascript",code);
-        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, prScript);
+        
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, code);
         this.setEvent(prEvent);
     }
 
     public void setTestScript(String code) throws Exception {
-        PostmanScript prScript = new PostmanScript("text/javascript",code);
-        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, prScript);
+        
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, code);
         this.setEvent(prEvent);
     }
 

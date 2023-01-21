@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-//import java.util.UUID;
+
 import java.util.ArrayList;
 
 
@@ -12,7 +12,7 @@ public class PostmanBody {
     private ArrayList<PostmanVariable> formdata;
     private ArrayList<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
-    //private transient String key = UUID.randomUUID().toString();
+    
     
 
 
@@ -29,6 +29,21 @@ public class PostmanBody {
 
     public void setRaw(String raw) {
         this.raw = raw;
+    }
+
+    public void setRawLanguage(enumRawBodyLanguage lang) {
+        if(this.getMode() != enumRequestBodyMode.RAW) {
+            return;
+        }
+        this.getOptions().getRaw().setLanguage(lang);
+    }
+
+    public enumRawBodyLanguage getRawLanguage() { 
+        if(this.getMode() != enumRequestBodyMode.RAW)
+        {
+            return null;
+        }
+        return this.getOptions().getRaw().getLanguage();
     }
 
     public void setRaw(String raw, enumRawBodyLanguage language) {
@@ -60,16 +75,13 @@ public class PostmanBody {
     public PostmanGraphQL getGraphql() {
         return graphql;
     }
-    public void setGraphql(PostmanGraphQL graphql) {
-        this.graphql = graphql;
-    }
-
+    
     public void setGraphql(String graphQL) {
-        this.setGraphql(new PostmanGraphQL(graphQL));
+        this.setGraphql(graphQL, null);
     }
 
     public void setGraphql(String graphQL, String variables) {
-        this.setGraphql(new PostmanGraphQL(graphQL, variables));
+        this.graphql = (new PostmanGraphQL(graphQL, variables));
     }
 
     
@@ -149,17 +161,22 @@ public class PostmanBody {
         
     }
 
+    
     public ArrayList<PostmanVariable> getUrlencoded() {
         return urlencoded;
     }
     public void setUrlencoded(ArrayList<PostmanVariable> urlencoded) {
         this.urlencoded = urlencoded;
     }
-    public PostmanBinaryFile getFile() {
-        return file;
+    public String getFile() {
+        if(this.getMode() != enumRequestBodyMode.FILE) {
+            return null;
+        }
+        return this.file.getSrc();
     }
-    public void setFile(PostmanBinaryFile file) {
-        this.file = file;
+    public void setFile(String file) {
+        if(this.getMode() != enumRequestBodyMode.FILE)
+        this.file.setSrc(file);
     }
     public enumRequestBodyMode getMode() {
         if(mode == null)
@@ -250,7 +267,7 @@ public class PostmanBody {
 
 class PostmanBodyOptions {
     private PostmanBodyRaw raw;
-    //private transient String key = UUID.randomUUID().toString();
+    
     public PostmanBodyRaw getRaw() {
         return raw;
     }
@@ -268,6 +285,100 @@ class PostmanBodyOptions {
     }
 }
 
+public class PostmanBodyRaw {
+    private String language;
+    
+    public enumRawBodyLanguage getLanguage() {
+        if(language == null)
+        {
+            return null;
+        }
+        switch(language) {
+            case "javascript":
+                return enumRawBodyLanguage.JAVASCRIPT;
+            case "json":
+                return enumRawBodyLanguage.JSON;
+            case "html":
+                return enumRawBodyLanguage.HTML;
+            case "xml":
+                return enumRawBodyLanguage.XML;
+            case "graphql":
+                return enumRawBodyLanguage.GRAPHQL;
+        }
+        return null;
+    }
+
+    public void setLanguage(enumRawBodyLanguage newLanguage) {
+        switch(newLanguage) {
+            case JSON:
+                this.language = "json";
+                break;
+            case JAVASCRIPT:
+                this.language = "javascript";
+                break;
+            case HTML:
+                this.language = "html";
+                break;
+            case XML:
+                this.language = "xml";
+                break;
+            case GRAPHQL:
+                this.language = "graphql";
+                break;
+            default:
+                this.language = null;
+        }
+    }
+
+    public PostmanBodyRaw(enumRawBodyLanguage language) {
+        this.setLanguage(language);
+    }
+}
+
+public class PostmanBinaryFile {
+    private String src;
+    
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public PostmanBinaryFile(String src) {
+        this.src = src;
+    }   
+}
+public class PostmanGraphQL {
+    private String query;
+    private String variables;
+
+    
+
+    public PostmanGraphQL(String query) {
+        this(query,null);
+    }
+
+    public PostmanGraphQL(String query, String variables) {
+        this.query = query;
+        this.variables = variables;
+    }
 
 
+
+    public String getQuery() {
+        return query;
+    }
+    public void setQuery(String query) {
+        this.query = query;
+    }
+    public String getVariables() {
+        return variables;
+    }
+    public void setVariables(String variables) {
+        this.variables = variables;
+    }
+}
 }

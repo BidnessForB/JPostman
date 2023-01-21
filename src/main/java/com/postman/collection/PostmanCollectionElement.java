@@ -10,13 +10,14 @@ import java.util.Set;
 
 import com.networknt.schema.SpecVersion;
 import java.net.URI;
+import java.util.UUID;
 
 public abstract class PostmanCollectionElement {
 
     private transient ArrayList<ValidationMessage> validationMessages;
     public static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
     public static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
-
+    private transient UUID uuid = UUID.randomUUID();
     public abstract String getKey();
     
     
@@ -77,6 +78,14 @@ public abstract class PostmanCollectionElement {
 
     public String toJson(boolean escape, boolean resolveVariables) {
         return new Gson().toJson(this);
+    }
+
+    public UUID getUUID() {
+        return this.uuid;
+    }
+
+    public void setUUID(UUID newID) {
+        this.uuid = newID;
     }
     
     
