@@ -75,16 +75,13 @@ public class PostmanBody {
     public PostmanGraphQL getGraphql() {
         return graphql;
     }
-    public void setGraphql(PostmanGraphQL graphql) {
-        this.graphql = graphql;
-    }
-
+    
     public void setGraphql(String graphQL) {
-        this.setGraphql(new PostmanGraphQL(graphQL));
+        this.setGraphql(graphQL, null);
     }
 
     public void setGraphql(String graphQL, String variables) {
-        this.setGraphql(new PostmanGraphQL(graphQL, variables));
+        this.graphql = (new PostmanGraphQL(graphQL, variables));
     }
 
     
@@ -164,6 +161,7 @@ public class PostmanBody {
         
     }
 
+    
     public ArrayList<PostmanVariable> getUrlencoded() {
         return urlencoded;
     }
@@ -353,5 +351,34 @@ public class PostmanBinaryFile {
         this.src = src;
     }   
 }
+public class PostmanGraphQL {
+    private String query;
+    private String variables;
 
+    
+
+    public PostmanGraphQL(String query) {
+        this(query,null);
+    }
+
+    public PostmanGraphQL(String query, String variables) {
+        this.query = query;
+        this.variables = variables;
+    }
+
+
+
+    public String getQuery() {
+        return query;
+    }
+    public void setQuery(String query) {
+        this.query = query;
+    }
+    public String getVariables() {
+        return variables;
+    }
+    public void setVariables(String variables) {
+        this.variables = variables;
+    }
+}
 }

@@ -75,7 +75,7 @@ public class AppTest
         PostmanCollection pmcTest = PostmanCollection.PMCFactory();
         PostmanItem folder;
         PostmanItem request;
-        PostmanScript script;
+        
         PostmanEvent event;
         PostmanRequest req;
         
