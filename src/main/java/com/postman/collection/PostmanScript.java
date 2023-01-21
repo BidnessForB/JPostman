@@ -24,10 +24,6 @@ public class PostmanScript extends PostmanCollectionElement {
         return type;
     }
 
-
-
-
-
     public void setType(String type) {
         this.type = type;
     }
@@ -41,6 +37,8 @@ public class PostmanScript extends PostmanCollectionElement {
     public void setExec(ArrayList<String> exec) {
         this.exec = exec;
     }
+
+    
 
 
     @Override

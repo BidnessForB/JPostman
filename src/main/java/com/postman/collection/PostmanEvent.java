@@ -1,37 +1,27 @@
 package com.postman.collection;
 
 import com.google.gson.Gson;
-
+import java.util.ArrayList;
 public class PostmanEvent extends PostmanCollectionElement {
     
 private String listen = ""; // basically the name
 private PostmanScript script = null;
 
-public PostmanEvent(enumEventType evtType, PostmanScript script) throws Exception {
+public PostmanEvent(enumEventType evtType, String scriptCode, String type) throws Exception {
     this.setEventType(evtType);
-    this.script = script;
+    this.script = new PostmanScript(type, scriptCode);
 }
 
-public static PostmanEvent pmcEventFactory(String eventCode) {
-    PostmanEvent retVal = new Gson().fromJson(eventCode,PostmanEvent.class);
-    return retVal;
+public PostmanEvent(enumEventType evtType, String scriptCode) throws Exception {
+    this(evtType, scriptCode, "text/javascript");
 }
 
-public static PostmanEvent pmcEventFactory() {
-    PostmanEvent retVal = null;
-    PostmanScript script = new PostmanScript("text/javascript", "//Your code here");
-    
-    try {
-        retVal = new PostmanEvent(enumEventType.TEST, script);
-    }
-    catch(Exception e)
-    {
-        //System.out.println("This should not happen here.");
-    }
-    
-    
-    retVal.setScript(new PostmanScript("text/javascript","//Your code here" ));
-    return retVal;
+public void setScriptType(String scriptType) {
+    this.script.setType(scriptType);
+}
+
+public String getScriptType() {
+    return this.script.getType();
 }
 
 
@@ -83,8 +73,65 @@ public String getKey() {
     return listen;
 }
 
+public void setExecElement(String code) {
+    this.script.getExec().set(1, code);
+}
 
 
+
+public class PostmanScript extends PostmanCollectionElement {
+    private String type = "";
+    private ArrayList<String> exec;
+
+    
+    public PostmanScript(String scriptType, ArrayList<String> Exec) {
+            this.type = scriptType;
+            exec = Exec;
+    }
+
+    public PostmanScript(String scriptType, String srcCode)  {
+        this.exec = new ArrayList<String>();
+        this.exec.add(srcCode);
+        this.type = scriptType;
+
+    }
+
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    public ArrayList<String> getExec() {
+        return exec;
+    }
+
+
+    public void setExec(ArrayList<String> exec) {
+        this.exec = exec;
+    }
+
+
+    @Override
+    public String getKey() {
+        
+        return null;
+    }
+
+
+ 
+
+
+ 
+
+    
+
+}
 
 
 

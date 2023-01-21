@@ -83,35 +83,29 @@ public class AppTest
         try {
             pmcTest.setName("TEST Scripts");
             folder = new PostmanItem("Scripts");
-            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the folder");
-            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, "//PRE-REQUEST this is some source code for the folder");
             folder.setEvent(event);
-            script = new PostmanScript("text/javascript","//TEST this is some source code for the folder");
-            event = new PostmanEvent(enumEventType.TEST, script);
+            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the folder");
             folder.setEvent(event);
             pmcTest.addItem(folder);
 
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
-            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the request");
+            
             request = new PostmanItem("TEST Request with Scripts");
             request.setRequest(req);
-            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, "//PRE-REQUEST this is some source code for the request");
             request.setEvent(event);
-            script = new PostmanScript("text/javascript","//TEST this is some source code for the request");
-            event = new PostmanEvent(enumEventType.TEST, script);
+            
+            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the request");
             request.setEvent(event);
             folder.addItem(request);
 
-            script = new PostmanScript("text/javascript","//TEST this is some source code for the collection");
-            event = new PostmanEvent(enumEventType.TEST, script);
+            
+            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the collection");
             pmcTest.setEvent(event);
-            script = new PostmanScript("text/javascript","//PRE-REQUEST this is some source code for the collection");
-            event = new PostmanEvent(enumEventType.PRE_REQUEST, script);
+            event = new PostmanEvent(enumEventType.PRE_REQUEST, "//PRE-REQUEST this is some source code for the collection");
             pmcTest.setEvent(event);
-            
-            
-
-            
 
             boolean valid = pmcTest.validate();
         ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
@@ -481,6 +475,19 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
 
             }
             pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-variables.postman_collection.json");
+        }
+        @Test
+        public void testIngestEvents() throws Exception {
+            PostmanCollection pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/example-cat-facts-with-tests.postman_collection.json"));
+            boolean valid = pmcTest.validate();
+            if(!valid) {
+                for(ValidationMessage msg : pmcTest.getValidationMessages()) {
+                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
+                }
+            }
+            pmcTest.setName("TEST Ingest Events");
+            pmcTest.writeToFile(filePath + "/test-output/TEST-ingested-events.postman_collection.json");
+            assertTrue(valid);
         }
 
         @Test
