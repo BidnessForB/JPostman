@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-import com.google.gson.Gson;
+
 import java.util.ArrayList;
 public class PostmanEvent extends PostmanCollectionElement {
     

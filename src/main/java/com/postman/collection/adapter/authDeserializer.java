@@ -1,4 +1,4 @@
-package com.postman.collection.deserializer;
+package com.postman.collection.adapter;
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;

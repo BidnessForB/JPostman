@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-//import java.util.UUID;
+
 import java.util.ArrayList;
 
 
@@ -12,7 +12,7 @@ public class PostmanBody {
     private ArrayList<PostmanVariable> formdata;
     private ArrayList<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
-    //private transient String key = UUID.randomUUID().toString();
+    
     
 
 
@@ -267,7 +267,7 @@ public class PostmanBody {
 
 class PostmanBodyOptions {
     private PostmanBodyRaw raw;
-    //private transient String key = UUID.randomUUID().toString();
+    
     public PostmanBodyRaw getRaw() {
         return raw;
     }
@@ -287,7 +287,7 @@ class PostmanBodyOptions {
 
 public class PostmanBodyRaw {
     private String language;
-    //private transient String key = UUID.randomUUID().toString();
+    
     public enumRawBodyLanguage getLanguage() {
         if(language == null)
         {
@@ -337,7 +337,7 @@ public class PostmanBodyRaw {
 
 public class PostmanBinaryFile {
     private String src;
-    //private transient String key = UUID.randomUUID().toString();
+    
 
     public String getSrc() {
         return src;
