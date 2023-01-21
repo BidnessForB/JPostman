@@ -13,8 +13,12 @@ import java.net.URI;
 
 public abstract class PostmanCollectionElement {
 
-    private ArrayList<ValidationMessage> validationMessages;
+    private transient ArrayList<ValidationMessage> validationMessages;
+    public static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
+    public static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
+
     public abstract String getKey();
+    
     
     public boolean validate() throws Exception{
         return this.validate(null);
@@ -26,7 +30,7 @@ public abstract class PostmanCollectionElement {
         JsonSchema schema;
         
         
-        String strSchemaRoot = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
+        String strSchemaRoot = PostmanCollectionElement.defaultValidationSchema;
         String strSubSchema = "";
         switch(this.getClass().getSimpleName()) {
             case "PostmanItem" : {
