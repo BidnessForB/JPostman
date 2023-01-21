@@ -19,6 +19,7 @@ public class AppTest
     String filePath = new java.io.File("").getAbsolutePath();
     String resourcePath = "/src/main/resources/com/postman/collection";
     PostmanCollection pmcTest = null;
+    String collectionOutputPath;
 
     @Test
     public void clearOutput() {
@@ -38,22 +39,19 @@ public class AppTest
     @Test
     public void shouldCreateRequestQueries() {
         try {
-        
+        collectionOutputPath = filePath + "/test-output/TEST-constructed-queries.postman_collection.json";
         pmcTest  = PostmanCollection.PMCFactory();
         PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         newReq.getUrl().addQuery("foo","bar");
         pmcTest.addRequest(newReq,"Get Foo Bar");
         pmcTest.setName("TEST Constructed Queries");
-        pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-queries.postman_collection.json");
         boolean valid = pmcTest.validate();
-        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
+        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.writeToFile(collectionOutputPath);
+        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
+        assertTrue(new File(collectionOutputPath).exists());
         }
         catch(Exception e)
         {
@@ -108,16 +106,13 @@ public class AppTest
             pmcTest.setEvent(event);
 
             boolean valid = pmcTest.validate();
-        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
-        pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-scripts.postman_collection.json");
-        assertTrue(valid);
-            pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-scripts.postman_collection.json");
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
+            
         }
         catch(Exception e)
         {
@@ -128,6 +123,15 @@ public class AppTest
 
     }
 
+    public void printValidationMessages(ArrayList<ValidationMessage> msgs, String methodName) {
+        if(msgs != null && msgs.size() > 0)
+        {
+            for(ValidationMessage msg: msgs) {
+                System.out.println("VALIDATION ERROR (" + methodName + "): " + msg.getMessage());
+            }
+        }
+    }
+
     @Test
     public void shouldImportCollection()
     {
@@ -136,14 +140,12 @@ public class AppTest
         try {
             pmcTest  = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
             boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
+        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.writeToFile(collectionOutputPath);
+        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
+        assertTrue(new File(collectionOutputPath).exists());
             
         }
         catch(Exception e) {
@@ -182,14 +184,12 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
                 try {
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
                     boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
-        assertTrue(valid);
+                    collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+                    pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+                    pmcTest.writeToFile(collectionOutputPath);
+                    printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+                    assertTrue(valid);
+                    assertTrue(new File(collectionOutputPath).exists());
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -212,16 +212,16 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         
         try {
             
-        pmcTest.writeToFile(filePath +"/test-output/TEST-construct-urls.postman_collection.json");
+        
+        
+        
         boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
+        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.writeToFile(collectionOutputPath);
+        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
+        assertTrue(new File(collectionOutputPath).exists());
         
         }
         catch(Exception e)
@@ -234,6 +234,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         
 
         }
+
         @Test
         public void shouldProduceIdenticalCollection() {
             
@@ -241,15 +242,12 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
                 pmcTest = PostmanCollection.PMCFactory(new File( filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
                 pmcTest.setName("TEST Cat Fact");
                 boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
-        assertTrue(valid);
-                pmcTest.writeToFile(filePath + "/test-output/TEST-example-catfact.postman_collection.json");
+                collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+                pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+                pmcTest.writeToFile(collectionOutputPath);
+                printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+                assertTrue(valid);
+                assertTrue(new File(collectionOutputPath).exists());
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -265,13 +263,8 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             try {
                 pmcTest = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
                 boolean valid = pmcTest.validate();
-        ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
+        
+        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         
                 pmcTest.setName("TEST body-test-compare");
                 pmcTest.writeToFile(filePath + "/test-output/TEST-body-test.postman_collection.json");
@@ -288,27 +281,25 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
         public void testAuthIngestion() throws Exception {
             pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
             boolean valid = pmcTest.validate();
-            pmcTest.writeToFile(filePath + "/test-output/TEST-auth-ingestion.postman_collection.json");
-            if(!valid) {
-                for(ValidationMessage msg : pmcTest.getValidationMessages()) {
-                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
-                }
-            }
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
         }
 
         @Test
         public void testLargeBodyIngestion() throws Exception {
             pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/test-collection.postman_collection.json"));
+            pmcTest.setName("TEST large body");
             boolean valid = pmcTest.validate();
-            if(!valid)
-             {
-                for(ValidationMessage msg : pmcTest.getValidationMessages()) {
-                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
-                }
-            }
-            pmcTest.writeToFile(filePath + "/test-output/TEST-large.postman_collection.json");
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
         }
 
         @Test
@@ -362,7 +353,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BEARER request");
-            valid = req.validate();
+            
             
     
             auth = new PostmanAuth(enumAuthType.BASIC);
@@ -371,7 +362,7 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             req.setAuth(auth);
             pmcTest.addRequest(req, "BASIC request");
-            valid = pmcTest.validate();
+            
             
             
             auth = new PostmanAuth(enumAuthType.DIGEST);
@@ -444,20 +435,18 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
             pmcTest.getAuth().getAuthElements().keySet().iterator().next();
             valid = pmcTest.validate();
-            ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-            if(msgs != null && msgs.size() > 0)
-            {
-                for(ValidationMessage curMsg: msgs) {
-                    System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-                }
-            }
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
-
+            assertTrue(new File(collectionOutputPath).exists());
         }
 
         @Test 
         public void testAddVariables() throws Exception {
             pmcTest = PostmanCollection.PMCFactory();
+        
             pmcTest.setName("TEST Constructed Variables");
             PostmanVariable var1 = new PostmanVariable("key 1", "value 1");
             PostmanVariable var2 = new PostmanVariable("key 2", "value 2");
@@ -467,27 +456,36 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.addVariable(var3);
             boolean valid = pmcTest.validate();
             if(!valid)
+            
             {
-                for(ValidationMessage msg : pmcTest.getValidationMessages())
-                {
-                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
+                ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
+                
+                //For some reason an empty collection, ie., one missing the 'item' element, doesn't validation, but still imports just fine
+                //Not sure whether we want to include this exception in the actual implementation tho.  
+                if(msgs.size() == 1 && msgs.get(0).getMessage().equals("$.item: is missing but it is required")) {
+                    valid = true;
                 }
+                printValidationMessages(msgs, new Throwable().getStackTrace()[0].getMethodName());
 
             }
-            pmcTest.writeToFile(filePath + "/test-output/TEST-constructed-variables.postman_collection.json");
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
+            
         }
         @Test
         public void testIngestEvents() throws Exception {
             PostmanCollection pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/example-cat-facts-with-tests.postman_collection.json"));
             boolean valid = pmcTest.validate();
-            if(!valid) {
-                for(ValidationMessage msg : pmcTest.getValidationMessages()) {
-                    System.out.println("VALIDATION ERROR: " + msg.getMessage());
-                }
-            }
-            pmcTest.setName("TEST Ingest Events");
-            pmcTest.writeToFile(filePath + "/test-output/TEST-ingested-events.postman_collection.json");
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
         }
 
         @Test
@@ -498,18 +496,13 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             pmcTest.addCollection(pmcTest2, true, true);
             pmcTest.setName("TEST Cat-Weather ");
             boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
         
-        
-            pmcTest.setName("TEST Cat-Weather");
-            pmcTest.writeToFile(filePath + "/test-output/TEST-cat-weather.postman_collection.json");
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
             
 
 
@@ -608,14 +601,12 @@ ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
             assertTrue(false);
         }
         boolean valid = pmcTest.validate();
-ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
-        if(msgs != null && msgs.size() > 0)
-        {
-            for(ValidationMessage curMsg: msgs) {
-                System.out.println("VALIDATION ERROR: " + curMsg.getMessage());
-            }
-        }
+        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
+        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.writeToFile(collectionOutputPath);
+        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
+        assertTrue(new File(collectionOutputPath).exists());
         
 
     }
