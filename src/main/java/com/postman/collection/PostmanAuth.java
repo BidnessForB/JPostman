@@ -13,11 +13,11 @@ import java.util.Arrays;
 public class PostmanAuth extends PostmanCollectionElement {
     ////private transient String key = UUID.randomUUID().toString();    
     private String type = "";
-    
+    public HashMap<String, PostmanVariable> authElements = new HashMap<String, PostmanVariable>();
     private transient String[] arrTypes = new String[10];
-    private transient HashMap<String, ArrayList<PostmanVariable>> elementArrays = new HashMap<String,  ArrayList<PostmanVariable>>();
+    
 
-    private transient HashMap<String, PostmanVariable> authElements = new HashMap<String, PostmanVariable>();
+    
     
     
     public enumAuthType getType() {
@@ -65,7 +65,11 @@ public class PostmanAuth extends PostmanCollectionElement {
         }
     }
 
-  
+    public PostmanAuth(String strType){
+        this();
+        this.type = strType;
+        this.setType(getType());
+    }
 
     public PostmanAuth() {
         arrTypes[enumAuthType.AKAMAI.ordinal()] = "edgegrid";
@@ -100,8 +104,8 @@ public class PostmanAuth extends PostmanCollectionElement {
      
     }
 
-    public void setAuthElements(PostmanVariable[] newElements) {
-        this.elementArrays.put(this.type, new ArrayList<PostmanVariable>(Arrays.asList(newElements))); 
+    public void setAuthElements(HashMap<String,PostmanVariable> newElements) {
+        this.authElements = newElements;
     }
 
 
@@ -111,8 +115,9 @@ public class PostmanAuth extends PostmanCollectionElement {
         return arrTypes[this.getType().ordinal()];
     }
 
-    public ArrayList<PostmanVariable> getAuthElements(){
-        return new ArrayList<PostmanVariable>(Arrays.asList(this.authElements.values().toArray(new PostmanVariable[0])));
+    public HashMap<String,PostmanVariable> getAuthElements(){
+        //return new ArrayList<PostmanVariable>(Arrays.asList(this.authElements.values().toArray(new PostmanVariable[0])));
+        return this.authElements;
     }
     
     
@@ -134,7 +139,7 @@ public class PostmanAuth extends PostmanCollectionElement {
         
     }
 
-    public PostmanAuth(enumAuthType type, PostmanVariable[] authElements) {
+    public PostmanAuth(enumAuthType type, HashMap<String,PostmanVariable> authElements) {
         
         this(type);
         this.setType(type);
