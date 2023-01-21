@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.io.File;
 import org.junit.Test;
 import com.networknt.schema.ValidationMessage;
+import java.util.HashMap;
 
 
 /**
@@ -45,9 +46,12 @@ public class AppTest
         newReq.getUrl().addQuery("foo","bar");
         pmcTest.addRequest(newReq,"Get Foo Bar");
         pmcTest.setName("TEST Constructed Queries");
+        
         boolean valid = pmcTest.validate();
-        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.setDescription(outputData.get("collection-description"));
+        pmcTest.setName(outputData.get("collection-name"));
+        collectionOutputPath = outputData.get("output-path");
         pmcTest.writeToFile(collectionOutputPath);
         printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
@@ -106,8 +110,10 @@ public class AppTest
             pmcTest.setEvent(event);
 
             boolean valid = pmcTest.validate();
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
@@ -127,7 +133,7 @@ public class AppTest
         if(msgs != null && msgs.size() > 0)
         {
             for(ValidationMessage msg: msgs) {
-                System.out.println("VALIDATION ERROR (" + methodName + "): " + msg.getMessage());
+                System.out.println("VALIDATION ERROR [" + methodName + "] output file: [" + collectionOutputPath + "]: " + msg.getMessage());
             }
         }
     }
@@ -140,12 +146,14 @@ public class AppTest
         try {
             pmcTest  = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
             boolean valid = pmcTest.validate();
-        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
-        pmcTest.writeToFile(collectionOutputPath);
-        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
-        assertTrue(valid);
-        assertTrue(new File(collectionOutputPath).exists());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
             
         }
         catch(Exception e) {
@@ -184,8 +192,10 @@ public class AppTest
                 try {
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET,liUrls.get(i)),"URL " + (i + 1));
                     boolean valid = pmcTest.validate();
-                    collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-                    pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+                    HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+                    pmcTest.setDescription(outputData.get("collection-description"));
+                    pmcTest.setName(outputData.get("collection-name"));
+                    collectionOutputPath = outputData.get("output-path");
                     pmcTest.writeToFile(collectionOutputPath);
                     printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
                     assertTrue(valid);
@@ -216,8 +226,10 @@ public class AppTest
         
         
         boolean valid = pmcTest.validate();
-        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+        HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+        pmcTest.setDescription(outputData.get("collection-description"));
+        pmcTest.setName(outputData.get("collection-name"));
+        collectionOutputPath = outputData.get("output-path");
         pmcTest.writeToFile(collectionOutputPath);
         printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
         assertTrue(valid);
@@ -242,8 +254,10 @@ public class AppTest
                 pmcTest = PostmanCollection.PMCFactory(new File( filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
                 pmcTest.setName("TEST Cat Fact");
                 boolean valid = pmcTest.validate();
-                collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-                pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+                HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+                pmcTest.setDescription(outputData.get("collection-description"));
+                pmcTest.setName(outputData.get("collection-name"));
+                collectionOutputPath = outputData.get("output-path");
                 pmcTest.writeToFile(collectionOutputPath);
                 printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
                 assertTrue(valid);
@@ -263,12 +277,16 @@ public class AppTest
             try {
                 pmcTest = PostmanCollection.PMCFactory(new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
                 boolean valid = pmcTest.validate();
-        
-        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
-        
-                pmcTest.setName("TEST body-test-compare");
-                pmcTest.writeToFile(filePath + "/test-output/TEST-body-test.postman_collection.json");
-                assertTrue(valid);        
+                
+                HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+                
+                pmcTest.setDescription(outputData.get("collection-description"));
+                pmcTest.setName(outputData.get("collection-name"));
+                collectionOutputPath = outputData.get("output-path");
+                pmcTest.writeToFile(collectionOutputPath);
+                printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+                assertTrue(valid);
+                assertTrue(new File(collectionOutputPath).exists());
             }
             catch(Exception e)
              {
@@ -294,8 +312,10 @@ public class AppTest
             pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/test-collection.postman_collection.json"));
             pmcTest.setName("TEST large body");
             boolean valid = pmcTest.validate();
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
@@ -435,8 +455,10 @@ public class AppTest
             pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
             pmcTest.getAuth().getAuthElements().keySet().iterator().next();
             valid = pmcTest.validate();
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
@@ -446,7 +468,7 @@ public class AppTest
         @Test 
         public void testAddVariables() throws Exception {
             pmcTest = PostmanCollection.PMCFactory();
-        
+            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
             pmcTest.setName("TEST Constructed Variables");
             PostmanVariable var1 = new PostmanVariable("key 1", "value 1");
             PostmanVariable var2 = new PostmanVariable("key 2", "value 2");
@@ -468,8 +490,11 @@ public class AppTest
                 printValidationMessages(msgs, new Throwable().getStackTrace()[0].getMethodName());
 
             }
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
@@ -480,12 +505,22 @@ public class AppTest
         public void testIngestEvents() throws Exception {
             PostmanCollection pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/example-cat-facts-with-tests.postman_collection.json"));
             boolean valid = pmcTest.validate();
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
             assertTrue(new File(collectionOutputPath).exists());
+        }
+
+        public HashMap<String,String> getOutputFileAndCollectionName(PostmanCollection pmcTest, String methodName) {
+            HashMap<String,String> retVal = new HashMap<String,String>();
+            retVal.put("collection-name", "TEST-" + methodName);
+            retVal.put("output-path", filePath + "/test-output/" + retVal.get("collection-name") + ".postman_collection.json");
+            retVal.put("collection-description",retVal.get("collection-name") + "generated by Test: " + methodName);
+            return retVal;
         }
 
         @Test
@@ -496,9 +531,10 @@ public class AppTest
             pmcTest.addCollection(pmcTest2, true, true);
             pmcTest.setName("TEST Cat-Weather ");
             boolean valid = pmcTest.validate();
-        
-            collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-            pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
+            HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
             pmcTest.writeToFile(collectionOutputPath);
             printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
@@ -601,12 +637,14 @@ public class AppTest
             assertTrue(false);
         }
         boolean valid = pmcTest.validate();
-        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
-        pmcTest.writeToFile(collectionOutputPath);
-        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
-        assertTrue(valid);
-        assertTrue(new File(collectionOutputPath).exists());
+        HashMap<String,String> outputData = getOutputFileAndCollectionName(pmcTest, new Throwable().getStackTrace()[0].getMethodName());
+            pmcTest.setDescription(outputData.get("collection-description"));
+            pmcTest.setName(outputData.get("collection-name"));
+            collectionOutputPath = outputData.get("output-path");
+            pmcTest.writeToFile(collectionOutputPath);
+            printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+            assertTrue(new File(collectionOutputPath).exists());
         
 
     }
