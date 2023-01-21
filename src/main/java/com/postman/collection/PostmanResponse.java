@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import java.util.ArrayList;
+
 public class PostmanResponse extends PostmanCollectionElement {
     private String name = "";
     private PostmanRequest originalRequest = null;
@@ -22,9 +23,7 @@ public class PostmanResponse extends PostmanCollectionElement {
         this.body = body;
     }
 
-  
-
-    public void  setHeader(ArrayList<PostmanVariable> headers) {
+    public void setHeader(ArrayList<PostmanVariable> headers) {
         this.header = headers;
     }
 
@@ -39,7 +38,6 @@ public class PostmanResponse extends PostmanCollectionElement {
         this.body = body;
         this.name = name;
     }
-
 
     public String getName() {
         return name;
@@ -99,13 +97,8 @@ public class PostmanResponse extends PostmanCollectionElement {
 
     @Override
     public String getKey() {
-        
+
         return null;
     }
-
-    
-
-
-    
 
 }

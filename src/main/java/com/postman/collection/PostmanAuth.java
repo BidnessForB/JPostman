@@ -1,69 +1,50 @@
 package com.postman.collection;
 
-
 import java.util.HashMap;
 
-
-
-
-
-
 public class PostmanAuth extends PostmanCollectionElement {
-    
+
     private String type = "";
     public HashMap<String, PostmanVariable> authElements = new HashMap<String, PostmanVariable>();
     private transient String[] arrTypes = new String[10];
-    
 
-    
-    
-    
     public enumAuthType getType() {
-        
-        switch(type) {
-            case "apikey", "bearer":
-            {
+
+        switch (type) {
+            case "apikey", "bearer": {
                 return enumAuthType.APIKEY;
             }
-            case "digest":
-            {
+            case "digest": {
                 return enumAuthType.DIGEST;
             }
-            case "basic":
-            {
+            case "basic": {
                 return enumAuthType.BASIC;
             }
-            case "oauth1":
-            {
+            case "oauth1": {
                 return enumAuthType.OAUTH1;
             }
-            case "oauth2":
-            {
+            case "oauth2": {
                 return enumAuthType.OAUTH2;
             }
-            case "hawk":
-            {
+            case "hawk": {
                 return enumAuthType.HAWK;
             }
-            case "ntlm":
-            {
+            case "ntlm": {
                 return enumAuthType.NTLM;
             }
-            case "edgegrid": 
-            {
+            case "edgegrid": {
                 return enumAuthType.AKAMAI;
             }
             case "awsv4": {
                 return enumAuthType.AWS;
             }
-            default:
-            {
+            default: {
                 return null;
             }
         }
     }
 
-    public PostmanAuth(String strType){
+    public PostmanAuth(String strType) {
         this();
         this.type = strType;
         this.setType(getType());
@@ -82,67 +63,56 @@ public class PostmanAuth extends PostmanCollectionElement {
         arrTypes[enumAuthType.NTLM.ordinal()] = "ntlm";
 
     }
-    
+
     @Override
     public String getKey() {
-        
+
         return type;
     }
 
-
-   
-
-
     public void setType(enumAuthType authType) {
         this.type = arrTypes[(authType.ordinal())];
-        }
+    }
 
     public PostmanVariable getAPIElement(String key) {
         return this.authElements.get(key);
-     
+
     }
 
-    public void setAuthElements(HashMap<String,PostmanVariable> newElements) {
+    public void setAuthElements(HashMap<String, PostmanVariable> newElements) {
         this.authElements = newElements;
     }
-
-
-    
 
     public String getAuthTypeAsString() {
         return arrTypes[this.getType().ordinal()];
     }
 
-    public HashMap<String,PostmanVariable> getAuthElements(){
-        //return new ArrayList<PostmanVariable>(Arrays.asList(this.authElements.values().toArray(new PostmanVariable[0])));
+    public HashMap<String, PostmanVariable> getAuthElements() {
+
         return this.authElements;
     }
-    
-    
+
     public void setAuthElement(PostmanVariable newElement) throws Exception {
         this.authElements.put(newElement.getKey(), newElement);
-       
+
     }
 
     public PostmanVariable getAuthElement(String key) {
         return this.authElements.get(key);
-        
-        
+
     }
 
-    
-    public void setAuthElement(String key, String value ) throws Exception {
-        this.authElements.put(key, new PostmanVariable(key,value));
-        
-        
+    public void setAuthElement(String key, String value) throws Exception {
+        this.authElements.put(key, new PostmanVariable(key, value));
+
     }
 
-    public PostmanAuth(enumAuthType type, HashMap<String,PostmanVariable> authElements) {
-        
+    public PostmanAuth(enumAuthType type, HashMap<String, PostmanVariable> authElements) {
+
         this(type);
         this.setType(type);
         this.setAuthElements(authElements);
-        
+
     }
 
     public PostmanAuth(enumAuthType type) {

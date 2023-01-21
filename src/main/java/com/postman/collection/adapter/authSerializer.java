@@ -1,4 +1,5 @@
 package com.postman.collection.adapter;
+
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
@@ -12,29 +13,28 @@ import java.util.Iterator;
 public class authSerializer implements JsonSerializer<PostmanAuth> {
 
     @Override
-    public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context)
-        {
-    JsonObject jsonAuth = new JsonObject();
-    JsonArray vars = new JsonArray();
-    
-    jsonAuth.addProperty("type", src.getAuthTypeAsString());
-    
-    JsonObject curJVar;
-    Iterator<String> keys = src.getAuthElements().keySet().iterator();
-    String curKey;
-    PostmanVariable curVar;
-    while(keys.hasNext()) {
-        curKey = (String)keys.next();
-        curVar = src.getAuthElement(curKey);
-        curJVar = new JsonObject();
-        curJVar.addProperty("key",curVar.getKey());
-        curJVar.addProperty("value",curVar.getValue());
-        curJVar.addProperty("type", "string");
-        vars.add(curJVar);
+    public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject jsonAuth = new JsonObject();
+        JsonArray vars = new JsonArray();
+
+        jsonAuth.addProperty("type", src.getAuthTypeAsString());
+
+        JsonObject curJVar;
+        Iterator<String> keys = src.getAuthElements().keySet().iterator();
+        String curKey;
+        PostmanVariable curVar;
+        while (keys.hasNext()) {
+            curKey = (String) keys.next();
+            curVar = src.getAuthElement(curKey);
+            curJVar = new JsonObject();
+            curJVar.addProperty("key", curVar.getKey());
+            curJVar.addProperty("value", curVar.getValue());
+            curJVar.addProperty("type", "string");
+            vars.add(curJVar);
+        }
+
+        jsonAuth.add(src.getAuthTypeAsString(), vars);
+        return jsonAuth;
+
     }
-
-    jsonAuth.add(src.getAuthTypeAsString(),vars);
-    return jsonAuth;
-
-        }       
 };

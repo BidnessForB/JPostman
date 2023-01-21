@@ -5,15 +5,14 @@ public class PostmanVariable extends PostmanCollectionElement {
     private String value = "";
     private String description;
     private String type = "string";
-    
-    
+
     public String getToken() {
         return "{{" + key + "}}";
     }
 
     public PostmanVariable(String key, String value, String description) {
-        this(key,value,description,null);
-        
+        this(key, value, description, null);
+
     }
 
     public PostmanVariable(String key, String value, String description, String type) {
@@ -24,24 +23,20 @@ public class PostmanVariable extends PostmanCollectionElement {
     }
 
     public PostmanVariable(String key, String value) {
-        this(key,value,null,null);
+        this(key, value, null, null);
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setDescription(String desc)
-    {
+    public void setDescription(String desc) {
         this.description = desc;
     }
 
     public String getDescription() {
         return this.description;
     }
-
-
-
 
     public void setKey(String key) {
         this.key = key;
@@ -55,9 +50,6 @@ public class PostmanVariable extends PostmanCollectionElement {
         this.value = value;
     }
 
-    
- 
-
     public String getType() {
         return this.type;
     }
@@ -65,6 +57,5 @@ public class PostmanVariable extends PostmanCollectionElement {
     public void setType(String type) {
         this.type = type;
     }
-    
-    
+
 }

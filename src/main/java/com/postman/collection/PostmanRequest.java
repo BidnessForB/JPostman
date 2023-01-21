@@ -1,34 +1,33 @@
 package com.postman.collection;
+
 import java.util.ArrayList;
-public class PostmanRequest extends PostmanCollectionElement  {
+
+public class PostmanRequest extends PostmanCollectionElement {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
     private ArrayList<PostmanVariable> header;// = new PostmanVariable[0];
     private String description;
     private PostmanBody body;
     private PostmanAuth auth;
-    
-    
 
-    //private String description = "";
-    
+    // private String description = "";
+
     public String getKey() {
         return null;
     }
 
-    public PostmanRequest(enumHTTPRequestMethod method, String host,String path)  {
-        
+    public PostmanRequest(enumHTTPRequestMethod method, String host, String path) {
+
         this.setMethod(method);
         this.setUrl(new PostmanUrl(host, path));
-        
-        
+
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
-        
+
         this.setMethod(method);
         this.setUrl(url);
-        
+
     }
 
     public void setAuth(PostmanAuth auth) {
@@ -40,20 +39,15 @@ public class PostmanRequest extends PostmanCollectionElement  {
     }
 
     public PostmanRequest(enumHTTPRequestMethod method, String URL) throws Exception {
-        
+
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);
-        
-    }
 
-    
+    }
 
     public enumHTTPRequestMethod getMethod() {
         return method;
     }
-
-    
-
 
     public void setMethod(enumHTTPRequestMethod method) {
         this.method = method;
@@ -91,7 +85,7 @@ public class PostmanRequest extends PostmanCollectionElement  {
         this.setBody(new PostmanBody(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
         return this.getBody();
     }
-    
+
     public PostmanBody getBody() {
         return this.body;
     }
@@ -99,7 +93,5 @@ public class PostmanRequest extends PostmanCollectionElement  {
     public void setBody(PostmanBody body) {
         this.body = body;
     }
-
-    
 
 }
