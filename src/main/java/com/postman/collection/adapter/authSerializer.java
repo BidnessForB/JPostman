@@ -12,6 +12,13 @@ import java.util.Iterator;
 
 public class authSerializer implements JsonSerializer<PostmanAuth> {
 
+    
+    /** 
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return JsonElement
+     */
     @Override
     public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonAuth = new JsonObject();

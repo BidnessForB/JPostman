@@ -309,7 +309,7 @@ public class PostmanCollection extends PostmanItem {
         }
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new authDeserializer());
+        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(strJson, PostmanCollection.class);
 
         System.out.println(pmcRetVal.getName());
@@ -409,6 +409,7 @@ public class PostmanCollection extends PostmanItem {
             }
         };
 
+        /*
         JsonSerializer<HashMap<String, PostmanVariable>> varMapSerializer = new JsonSerializer<HashMap<String, PostmanVariable>>() {
             public JsonElement serialize(HashMap<String, PostmanVariable> src, Type typeOfSrc,
                     JsonSerializationContext context) {
@@ -436,6 +437,7 @@ public class PostmanCollection extends PostmanItem {
 
             }
         };
+        */
 
         Type mapType = new TypeToken<HashMap<String, String>>() {
         }.getType();
@@ -449,7 +451,7 @@ public class PostmanCollection extends PostmanItem {
         gsonBuilder.registerTypeAdapter(mapType, mapSerializer);
         // gsonBuilder.registerTypeAdapter(varType, varSerializer);
         gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.varMapSerializer());
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new authSerializer());
+        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authSerializer());
 
         Gson customGson = gsonBuilder.create();
         String customJSON = customGson.toJson(this);

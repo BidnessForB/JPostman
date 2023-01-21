@@ -11,6 +11,14 @@ import java.lang.reflect.Type;
 
 public class authDeserializer implements JsonDeserializer<PostmanAuth> {
 
+    
+    /** 
+     * @param jElement
+     * @param typeOfT
+     * @param context
+     * @return PostmanAuth
+     * @throws JsonParseException
+     */
     @Override
     public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
