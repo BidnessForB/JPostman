@@ -112,12 +112,16 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param key
-     * @param value
-     * @param description
-     * @throws Exception
+     * 
+     * 
+     * Add a variable to the array of query elements
+     * 
+     * @param key Value for the <code>key</key> property 
+     * @param value Value for the <code>value</code> property
+     * @param description Value for the <code>description<code> property
+     * 
      */
-    public void addVariable(String key, String value, String description) throws Exception {
+    public void addVariable(String key, String value, String description) {
 
         if (this.variable == null) {
             this.variable = new ArrayList<PostmanVariable>();
@@ -128,10 +132,12 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param rawPath
+     * Set the path element using a String.  Elements of the <code>path</code> array are parsed out
+     * 
+     * @param rawPath the raw path, e.g., /foo/:path1/bat
      * @throws Exception
      */
-    public void setPath(String rawPath) throws Exception {
+    public void setPath(String rawPath) /*throws Exception*/ {
 
         ArrayList<String> pathElements = new ArrayList<String>();
         ArrayList<String> liPath;
@@ -158,7 +164,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param rawQuery
      * @throws Exception
      */
-    public void setQuery(String rawQuery) throws Exception {
+    public void setQuery(String rawQuery) /*throws Exception*/ {
         ArrayList<String> queryElements;
         if (rawQuery != null && rawQuery.length() > 0) {
             queryElements = new ArrayList<String>(Arrays.asList(rawQuery.split("&", 0)));
@@ -185,6 +191,52 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    public String generateURL() {
+        String url = "";
+        url = this.protocol == null ? url : url + this.protocol + "://";
+        
+        if(this.getHosts() != null) {
+            for(String host: this.getHosts()) {
+                url = url + host + ".";
+            }
+            if(url.substring(url.length() - 1).equals(".")) {
+                url = url.substring(0,url.length() -1);
+            }
+        }
+
+        
+        if(this.getPort() != null) {
+            if(this.getPort() != null && this.getPort().length() > 0) {
+                url = url + ":" + this.getPort();
+            }
+        }
+        
+        if(this.getPaths() != null && this.getPaths().size() > 0) {
+            for(String path: this.getPaths())
+            {
+                url = url + "/"+path;
+            }
+            if(url.substring(url.length() - 1).equals("/")) {
+                url = url.substring(0,url.length() -1);
+            }
+        }
+        
+        if(this.getQueries() == null || this.getQueries().size() == 0) {
+            return url;
+        }
+        
+        url = url + "?";
+        for(PostmanVariable query : this.getQueries()) {
+            url = url + query.getKey() + "=" + query.getValue() + "&";
+        }
+        if(url.substring(url.length() - 1).equals("&")) {
+            url = url.substring(0,url.length() -1);
+        }
+        
+
+        return url;
+    }
+
     
     /** 
      * @param rawProtocol
@@ -208,19 +260,19 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @return String
      */
     public String getRaw() {
-        // this.raw = this.host
+        //Won't "magically" set this to the value of generated URL.  Postman won't care anway
         return raw;
     }
 
-    public PostmanUrl(String rawURL) throws Exception {
+    public PostmanUrl(String rawURL) /*throws Exception*/ {
         this.setRaw(rawURL);
     }
 
     public PostmanUrl(String host, String path) {
         this.host = new ArrayList<String>();
-        this.host.add(host);
+        this.setHost(host);
         this.path = new ArrayList<String>();
-        this.path.add(path);
+        this.setPath(path);
     }
 
     
@@ -303,7 +355,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param value
      * @throws Exception
      */
-    public void addQuery(String key, String value) throws Exception {
+    public void addQuery(String key, String value) /*throws Exception*/ {
         this.addQuery(key, value, null);
     }
 
@@ -314,7 +366,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param description
      * @throws Exception
      */
-    public void addQuery(String key, String value, String description) throws Exception {
+    public void addQuery(String key, String value, String description) /*throws Exception*/ {
 
         if (this.query == null) {
             this.query = new ArrayList<PostmanVariable>();
@@ -328,7 +380,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param queryString
      * @throws Exception
      */
-    public void addQuery(String queryString) throws Exception {
+    public void addQuery(String queryString) /*throws Exception*/ {
 
         ArrayList<String> elements = new ArrayList<String>();
 

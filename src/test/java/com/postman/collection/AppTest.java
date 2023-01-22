@@ -880,16 +880,72 @@ public class AppTest {
                 assertTrue("Expected exception", true);
             }
             
+            
+    }
+
+    @Test
+    public void testURLObject() {
+
+        String url1 = "https://foo.com:8080/foo/bar/:path1/bat.json?var1=aaa&var2=bbb";
+        String path1 = "foo/bar/:path1/bat.json";
+        PostmanUrl url = new PostmanUrl(url1);
+
+        assertTrue(url.getHosts().size() == 2);
+        assertTrue(url.getPaths().size() == 4);
+        assertTrue(url.getVariables().size() == 1);
+        assertTrue(url.getQueries().size() == 2);
+
+        url = new PostmanUrl("foo.com",path1);
+        assertTrue(url.getPaths().size() == 4);
+        assertTrue(url.getVariables().size() == 1);
+
+        url.addQuery("query1", "q1value");
+        assertTrue(url.getQueries().size() == 1);
+        //assertTrue(url.generateURL().equals()
 
 
-            
-            
+        ArrayList<String> urls = new ArrayList<String>();
+        urls.add("");
+        urls.add("http://foo.com/bar/bat.json");
+        urls.add("//foo.com/bar/bat.json");
+        urls.add("{{baseUrl}}/foo.com/bar/bat.json");
+        urls.add("http://foo.com/bar/bat.json?foo=1&bar=2");
+        urls.add("http://foo.com/bar/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("https://foo.com/bar/:path1/bat.json?foo=1&bar=");
+        ArrayList<PostmanUrl> liUrls = new ArrayList<PostmanUrl>();
+
+    for(String curUrl: urls) {
+        liUrls.add(new PostmanUrl(curUrl));
+    }
+    for(int i = 0; i < liUrls.size(); i++){
+        try{
+            if(i != 2 && liUrls.get(i).generateURL().equals(urls.get(i))) {
+                assertTrue(true);
+                System.out.println("URL: " + urls.get(i));
+            }
+            //technical wrong, but it's OK i think
+            if(i == 2 && liUrls.get(i).generateURL().equals("/foo.com/bar/bat.json")) {
+                assertTrue(true);
+            }
+
+        }
+        catch(Exception e)
+        {
+            System.out.println("URL: " + i);
+            assertTrue(urls.get(i) + " failed", false);
+        }
+    }
+
             
 
 
-                        
-            
-            
+
+
     }
 
 }

@@ -56,12 +56,16 @@ public class PostmanCollection extends PostmanItem {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/")
                 .getAbsolutePath();
-        PostmanCollection pmcTest = PostmanCollection
+        /* PostmanCollection pmcTest = PostmanCollection
                 .PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
         PostmanCollection pmcTest2 = PostmanCollection
                 .PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
 
-        System.out.println("Equals: " + pmcTest.equals(pmcTest2));
+        System.out.println("Equals: " + pmcTest.equals(pmcTest2)); */
+
+        
+
+
 
     }
 
