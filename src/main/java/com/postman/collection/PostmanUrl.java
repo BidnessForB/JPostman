@@ -161,10 +161,13 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param rawQuery
-     * @throws Exception
+     * 
+     * Set the elements of the <code>query</code> array with a string
+     * 
+     * @param rawQuery String with the query component, e.g., "foo=bar&bat=big"
+     * 
      */
-    public void setQuery(String rawQuery) /*throws Exception*/ {
+    public void setQuery(String rawQuery) {
         ArrayList<String> queryElements;
         if (rawQuery != null && rawQuery.length() > 0) {
             queryElements = new ArrayList<String>(Arrays.asList(rawQuery.split("&", 0)));
@@ -179,7 +182,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param rawHost
+     * 
+     * Set the host component of the URL with a string.  The elements of the <code>host</code> array are parsed out.
+     * 
+     * @param rawHost The host as a string, e.g., foo.com
      */
     public void setHost(String rawHost) {
 
@@ -191,6 +197,13 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    /**
+     * Generate the raw URL from the component properties of this PostmanUrl.  If <code>raw</code> has been set, the output of this method
+     * should equal the raw URL provided.  
+     * 
+     * @return The generated URL.  Note that this may not be a valid URL
+     */
+    //TO-DO: Add resolve argument to allow resolving variables to their values.
     public String generateURL() {
         String url = "";
         url = this.protocol == null ? url : url + this.protocol + "://";
@@ -239,10 +252,14 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param rawProtocol
+     * Set the value of the <code>protocol</code> property with a string.  This method will attempt to resolve the provided value to either 'http' or 'https', or null 
+     * if a reasonable guess results in anything else.  
+     * 
+     * @param rawProtocol The protocol, eg http
      */
     public void setProtocol(String rawProtocol) {
 
+        rawProtocol = rawProtocol.toLowerCase();
         if (rawProtocol == null || rawProtocol.length() < 1) {
             protocol = null;
         } else if (rawProtocol.contains("https")) {
@@ -257,6 +274,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Returns the value of the <code>raw</code> property, or null if it has not been set.  Note that the Postman application doesn't seem to mind ingesting 
+     * URLs with no value in the <code>raw</code> property.
+     * 
      * @return String
      */
     public String getRaw() {
@@ -264,10 +285,21 @@ public class PostmanUrl extends PostmanCollectionElement {
         return raw;
     }
 
+    /**
+     * Create a PostmanURL with the specified URL
+     * @param rawURL The raw URL
+     */
+
     public PostmanUrl(String rawURL) /*throws Exception*/ {
         this.setRaw(rawURL);
     }
 
+    /**
+     * Create a PostmanURL with the specified host and path. 
+     * @param host The host, e.g., "foo.com"
+     * @param path The path, e.g., "/bar/bat"
+     */
+    
     public PostmanUrl(String host, String path) {
         this.host = new ArrayList<String>();
         this.setHost(host);
@@ -277,6 +309,9 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Return the array of elements in the <code>host</code> array.
+     * 
      * @return ArrayList<String>
      */
     public ArrayList<String> getHosts() {
@@ -285,7 +320,9 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param host
+     * Set the value of the elements in the <code>host</code> array with a pre-populated ArrayList&#60;String&#62;
+     * 
+     * @param host ArrayList&#60;String&#62; with host elements.
      */
     public void setHosts(ArrayList<String> host) {
         this.host = host;
@@ -293,7 +330,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<String>
+     * 
+     * Returns the contents of the <code>path</code> element array
+     * 
+     * @return ArrayList&#60;String#&62; containing the path elements
      */
     public ArrayList<String> getPaths() {
         return path;
@@ -301,7 +341,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param path
+     * 
+     * Set the elements of the <code>path</code> element array
+     * 
+     * @param path  ArrayList&#60;String&#62; containing the path elements
      */
     public void setPaths(ArrayList<String> path) {
         this.path = path;
@@ -309,7 +352,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanVariable>
+     * 
+     * Return an ArrayList&#60;PostmanVariable&#62; of key value pairs comprising the <code>query</code> array
+     * 
+     * @return ArrayList&#60;PostmanVariable&#62; containing the key value paris
      */
     public ArrayList<PostmanVariable> getQueries() {
         return query;
@@ -317,6 +363,9 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Set the contents of the <code>query</code> array with a pre-populated ArrayList&#60;PostmanVariable&#62; containing the key value pairs
+     * 
      * @param query
      */
     public void setQueries(ArrayList<PostmanVariable> query) {
@@ -325,7 +374,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanVariable>
+     * 
+     * Get an ArrayList&#60;PostmanVariable&#62; containing the key-value pairs comprising the <code>variable</code> array, or null if none exit.
+     * 
+     * @return ArrayList&#60;PostmanVariable&#62; The ArrayList containing the key-value pairs, or null if there are none.
      */
     public ArrayList<PostmanVariable> getVariables() {
         return variable;
@@ -333,7 +385,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param variable
+     * 
+     * Set the values of the <code>variable</code> array with a pre-populated ArrayList&#60;PostmanVariable&#62; containing the key-value paris
+     * 
+     * @param variable the ArrayList&#60;PostmanVariable&#62; containing the key-value paris
      */
     public void setVariables(ArrayList<PostmanVariable> variable) {
         this.variable = variable;
@@ -341,6 +396,8 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
+     * Currently unimplemented
+     * 
      * @return String
      */
     @Override
@@ -351,22 +408,28 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param key
-     * @param value
-     * @throws Exception
+     * 
+     * Add an element to the <code>query</code> array using raw string values.
+     * 
+     * @param key  The key
+     * @param value The value
+     * 
      */
-    public void addQuery(String key, String value) /*throws Exception*/ {
+    public void addQuery(String key, String value)  {
         this.addQuery(key, value, null);
     }
 
     
     /** 
-     * @param key
-     * @param value
-     * @param description
-     * @throws Exception
+     * 
+     * Add an element to the <code>query</code> array using raw String values, with a description property
+     * 
+     * @param key  The key
+     * @param value The value
+     * @param description The description
+     * 
      */
-    public void addQuery(String key, String value, String description) /*throws Exception*/ {
+    public void addQuery(String key, String value, String description)  {
 
         if (this.query == null) {
             this.query = new ArrayList<PostmanVariable>();
@@ -377,10 +440,13 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param queryString
+     * 
+     * Populate the elements of the <code>query</code> array with an http query string.  Replaces any existing query string.
+     * 
+     * @param queryString  The query string, e.g., foo=bar&bat=bing
      * @throws Exception
      */
-    public void addQuery(String queryString) /*throws Exception*/ {
+    public void addQuery(String queryString)  {
 
         ArrayList<String> elements = new ArrayList<String>();
 
@@ -401,7 +467,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @return String
+     * 
+     * Get the value of the <code>port</code> property 
+     * 
+     * @return String  The port
      */
     public String getPort() {
         return this.port;
@@ -409,7 +478,9 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param port
+     * Set the value of the <code>port</code> property
+     * 
+     * @param port The port
      */
     public void setPort(int port) {
         try {
