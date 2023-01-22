@@ -164,7 +164,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Set the elements of the <code>query</code> array with a string
      * 
-     * @param rawQuery String with the query component, e.g., "foo=bar&bat=big"
+     * @param rawQuery String with the query component, e.g., "foo=bar&ampbat=big"
      * 
      */
     public void setQuery(String rawQuery) {
@@ -333,7 +333,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Returns the contents of the <code>path</code> element array
      * 
-     * @return ArrayList&#60;String#&62; containing the path elements
+     * @return ArrayList&#60;String&#62; containing the path elements
      */
     public ArrayList<String> getPaths() {
         return path;
@@ -443,7 +443,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Populate the elements of the <code>query</code> array with an http query string.  Replaces any existing query string.
      * 
-     * @param queryString  The query string, e.g., foo=bar&bat=bing
+     * @param queryString  The query string, e.g., foo=bar&ampbat=bing
      * @throws Exception
      */
     public void addQuery(String queryString)  {
