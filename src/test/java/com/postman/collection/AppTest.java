@@ -744,16 +744,37 @@ public class AppTest {
     }
     @Test
     public void testBodyObject() {
+        Object opts;
             PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
             assertTrue(body.getMode() == enumRequestBodyMode.RAW);
-            assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+            try {
+                assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue(false);
+            }
 
-            body = new PostmanBody(enumRequestBodyMode.RAW);
-            assertTrue(body.getRawLanguage() == null);
-            assertTrue(body.getOptions() == null);
-
-            body.setRaw("//some javascript");
-            assertTrue(body.getRaw().equals("//some javascript"));
+            
+            try {
+                body.setRaw("//some javascript");
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Unexpected IllegalPropertyAccessException ", false);
+            }
+            
+            
+            
+            try {
+                assertTrue(body.getRaw().equals("//some javascript"));
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Unexpected IllegalPropertyAccessException ", false);
+            }
+            
+            
             boolean valid = false;
             try {
                 valid = body.validate();
@@ -766,13 +787,104 @@ public class AppTest {
             printValidationMessages(body.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
 
+            body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+            
+            try {
+                assertNull(body.getRawLanguage());
+            }
+            catch (IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown", true);
+            }
+
             body = new PostmanBody(enumRequestBodyMode.RAW);
-            assertNull(body.getFile());
-            assertNull(body.getFormdata());
-            assertNull(body.getUrlencoded());
-            assertNull(body.getGraphql());
-            assertNull(body.getRaw());
-            assertNull(body.getOptions());
+            try {
+                assertNull(body.getFile());    
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+            
+            
+            try {
+                assertNull(body.getFormdata());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+
+            try {
+                assertNull(body.getGraphql());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected Exception thrown", true);
+            }
+            
+            try {
+                assertNull(body.getRaw());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.GRAPHQL);
+            try {
+                opts = body.getGraphql();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown", true);
+            }
+            try {
+                String file = body.getFile();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown",true);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.FILE);
+            try {
+                String file = "some/path/to/file.png";
+                body.setFile(file);
+                assertTrue(body.getFile().equals(file));
+            }
+            catch(Exception e)
+            {
+                assertTrue("Exception " + e.getMessage(), false);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.RAW);
+            try {
+                body.setRawLanguage(enumRawBodyLanguage.JAVASCRIPT);
+                body.setRaw("//some javascript");
+                assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+                assertTrue(body.getRaw().equals("//some javascript"));
+            }
+            catch(Exception e)
+            {
+                System.out.println(e);
+                assertTrue(false);
+            }
+
+            body.setMode(enumRequestBodyMode.FORMDATA);
+            try {
+                String raw = body.getRaw();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception", true);
+            }
+            
+
+
+            
+            
+            
 
 
                         

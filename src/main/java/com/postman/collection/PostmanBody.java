@@ -2,7 +2,7 @@
 package com.postman.collection;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 /**
  * 
@@ -108,12 +108,12 @@ public class PostmanBody extends PostmanCollectionElement {
      * @param content The content in the body
      * @param language For bodies with <code>mode</code> RAW, the language of the body content, e.g., <code>javascript</code>
      */
-    public PostmanBody(enumRequestBodyMode mode, String content, enumRawBodyLanguage language) {
+    public PostmanBody(enumRequestBodyMode mode, String content, enumRawBodyLanguage language)  {
 
         this.setMode(mode);
 
         if (this.getMode() == enumRequestBodyMode.RAW || this.getMode() == enumRequestBodyMode.GRAPHQL) {
-            this.setRaw(content, language);
+            this.raw = content;
         }
         if (this.getMode() == enumRequestBodyMode.FILE) {
             this.file.setSrc(content);
@@ -136,12 +136,15 @@ public class PostmanBody extends PostmanCollectionElement {
 
     /** 
      * 
-     * returns the <code>options</code> property object as an instance of the inner class PostmanBodyOptions
+     * Returns the <code>options</code> property object as an instance of the inner class PostmanBodyOptions
      * 
      * 
      * @return PostmanBodyOptions
      */
-    public PostmanBodyOptions getOptions() {
+    private PostmanBodyOptions getOptions()  {
+        if(this.getMode() == null || this.getMode() != enumRequestBodyMode.RAW) {
+            return null;
+        }
         return options;
     }
 
@@ -149,52 +152,79 @@ public class PostmanBody extends PostmanCollectionElement {
     /** 
      * @param options
      */
-    public void setOptions(PostmanBodyOptions options) {
+    private void setOptions(PostmanBodyOptions options) {
         this.options = options;
     }
 
     
     /** 
-     * @return String
+     * 
+     * Returns the content of the <code>raw</code> property of the body, or null if it has not been set
+     * 
+     * @return String The raw content
+     * @throws IllegalPropertyAccessException If body <code>mode</code> is not RAW
      */
-    public String getRaw() {
+    public String getRaw() throws IllegalPropertyAccessException {
+        if(this.getMode() != enumRequestBodyMode.RAW) {
+            throw new IllegalPropertyAccessException("Body mode must be RAW to access raw content");
+        }
         return raw;
     }
 
     
     /** 
+     * 
+     * Sets the <code>raw</code> property of the body, or null if it has not been set
+     * 
      * @param raw
+     * @throws IllegalPropertyAccessException If body <code>mode</code> is not RAW
      */
-    public void setRaw(String raw) {
+    public void setRaw(String raw) throws IllegalPropertyAccessException {
+        if(this.getMode() != enumRequestBodyMode.RAW) {
+            throw new IllegalPropertyAccessException("Body mode must be RAW to access raw content");
+        }
         this.raw = raw;
     }
 
     
     /** 
+     * 
+     * Sets the <code>langauge</code> property of the <code>options</code> property
+     * 
      * @param lang
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not RAW
      */
-    public void setRawLanguage(enumRawBodyLanguage lang) {
+    public void setRawLanguage(enumRawBodyLanguage lang) throws IllegalPropertyAccessException {
+        
+        if(this.getMode() != enumRequestBodyMode.RAW) {
+            throw new IllegalPropertyAccessException("Body mode must be RAW to access raw content");
+        }
         if (this.getMode() != enumRequestBodyMode.RAW) {
             return;
         }
         try {
-            this.getOptions().getRaw().setLanguage(lang);
+            this.options = new PostmanBodyOptions(lang);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        
+                
         
     }
 
     
     /** 
+     * 
+     * Returns the enumerated value of the <code>language</code> property of the <code>options</code> property
+     * 
      * @return enumRawBodyLanguage
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not RAW
      */
-    public enumRawBodyLanguage getRawLanguage() {
+    public enumRawBodyLanguage getRawLanguage() throws IllegalPropertyAccessException {
+        
         if (this.getMode() != enumRequestBodyMode.RAW) {
-            return null;
+            throw new IllegalPropertyAccessException("Cannot access options unless body mode is RAW.");
         }
         try {
             return this.getOptions() == null || this.getOptions().getRaw() == null ? null : this.getOptions().getRaw().getLanguage();
@@ -210,41 +240,62 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @param raw
-     * @param language
+     * 
+     * Sets the content (<code>raw</code>) and the <code>language</code> property of the <code>options</code> object
+     * 
+     * @param raw The content of the body (<code>raw</code>)
+     * @param language The language of the content, eg. <code>javascript</code>
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not RAW
      */
-    public void setRaw(String raw, enumRawBodyLanguage language) {
+    public void setRaw(String raw, enumRawBodyLanguage language) throws IllegalPropertyAccessException {
 
-        if (this.getMode() == enumRequestBodyMode.TEXT) {
-            this.raw = raw;
-            this.options = null;
-            return;
-        }
-        if (this.getMode() == enumRequestBodyMode.RAW) {
-            this.options = new PostmanBodyOptions(new PostmanBodyRaw(language));
-            this.raw = raw;
-        }
-        if (this.getMode() == enumRequestBodyMode.FORMDATA || this.getMode() == enumRequestBodyMode.URLENCODED) {
-            this.options = null;
-        }
-        if (this.getMode() == enumRequestBodyMode.GRAPHQL) {
-            this.options = null;
-            this.graphql = new PostmanGraphQL(raw);
-        }
+        switch(this.getMode()) {
+            case TEXT: {
+                this.raw = raw;
+                this.options = null;
+                break;
+            }
+            case RAW: {
+                this.options = new PostmanBodyOptions(new PostmanBodyRaw(language));
+                this.raw = raw;
+                break;
+            }
+            default: {
+                throw new IllegalPropertyAccessException("Mode must be RAW or TEXT to set raw content ");
+            }
 
+    }
+}
+
+    //TODO: This should probably be handled by a typeadapter
+    /** 
+     * @return HashMap&#60;String,String&#62; A HashMap with the following keys:
+     * <p><code>query</code> The graphql query</p>
+     * <p><code>variables</code> The variables, or null if none are configured</p>
+     
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not GRAPHQL
+     * 
+     */
+    public HashMap<String,String> getGraphql() throws IllegalPropertyAccessException {
+        if (this.getMode() != enumRequestBodyMode.GRAPHQL) {
+            throw new IllegalPropertyAccessException("Body mode must be GRAPHQL to access file property");
+        }
+        if(this.graphql == null)
+        {
+            return null;
+        }
+        HashMap<String,String> retVal = new HashMap<String,String>();
+        retVal.put("query",this.graphql.getQuery());
+        retVal.put("variables",this.graphql.getVariables());
+        return retVal;
     }
 
     
     /** 
-     * @return PostmanGraphQL
-     */
-    public PostmanGraphQL getGraphql() {
-        return graphql;
-    }
-
-    
-    /** 
-     * @param graphQL
+     * 
+     * Sets the query portion of the <code>graphql</code> property
+     * 
+     * @param graphQL The query part of the GraphQL property
      */
     public void setGraphql(String graphQL) {
         this.setGraphql(graphQL, null);
@@ -252,8 +303,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @param graphQL
-     * @param variables
+     * Sets both the <code>query</code> and <code>variables</code> properties of the <code>graphql</code> element
+     * 
+     * @param graphQL  The <code>query</code> property of the <code>graphql</code> element
+     * @param variables  The <code>variables</code> property of the <code>graphql</code> element
      */
     public void setGraphql(String graphQL, String variables) {
         this.graphql = (new PostmanGraphQL(graphQL, variables));
@@ -261,19 +314,55 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanVariable>
+     * Returns an ArrayList&#62;PostmanVariable&#60; containing formdata paramters:
+     * 
+     * <pre>
+     * {
+            "key": "FormField1",
+            "value": "Field 1 value",
+            "description": "This is for Field 1",
+            "type": "text"
+        },
+        {
+            "key": "FormField2",
+            "value": "Field 2 value",
+            "description": "This is for Field 2",
+            "type": "text"
+        }
+    </pre>
+     * 
+     * 
+     * 
+     * @return ArrayList<PostmanVariable> The data
+     * @throws IllegalPropertyAccessExceptoin If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public ArrayList<PostmanVariable> getFormdata()  {
-        return formdata;
+    public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
+        switch(this.getMode()) {
+            case URLENCODED: {
+                return this.urlencoded;
+                
+            }
+            case FORMDATA: {
+                return this.formdata;
+                
+            }
+            default: {
+                throw new IllegalPropertyAccessException("Formdata can only be accessed if body mode is FORMDATA or URLENCODED");
+            }
+        }
+    
     }
 
     
     /** 
-     * @param position
-     * @return PostmanVariable
-     * @throws Exception
+     * 
+     * Returns a formdata property at the specified position in the array
+     * 
+     * @param position The position in the array
+     * @return PostmanVariable The form data.
+     * @throws IllegalPropertyAcessException if <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public PostmanVariable getFormdata(int position) throws Exception {
+    public PostmanVariable getFormdata(int position) throws IllegalPropertyAccessException {
         switch (this.getMode()) {
             case URLENCODED: {
                 return this.urlencoded.get(position);
@@ -282,8 +371,7 @@ public class PostmanBody extends PostmanCollectionElement {
                 return this.formdata.get(position);
             }
             default: {
-                throw new Exception(
-                        "Body mode " + this.getMode() + ". Must be URLENCODED or FORMDATA to add form data");
+                throw new IllegalPropertyAccessException("Formdata can only be accessed if body mode is FORMDATA or URLENCODED");
             }
         }
     }
@@ -292,81 +380,84 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @param formdata
+     * Convenience method to set the formdata with an already filled ArrayList&#60;PostmanVariable&#62; of properties
+     * 
+     * 
+     * @param formdata  The filled ArrayList&#60;PostmanVariable&#62;
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(ArrayList<PostmanVariable> formdata) {
-        this.formdata = formdata;
+    public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {
+        
+        switch(this.getMode()) {
+            case URLENCODED: {
+                this.urlencoded = formdata;
+                break;
+            }
+            case FORMDATA: {
+                this.formdata = formdata;
+                break;
+            }
+            default: {
+                throw new IllegalPropertyAccessException("Formdata can only be accessed if body mode is FORMDATA or URLENCODED");
+            }
+        }
+        
     }
 
     
-    /** 
-     * @param key
-     * @param value
-     * @param description
-     * @param position
-     * @throws Exception
-     */
-    public void setFormdata(String key, String value, String description, int position) throws Exception {
-        this.setFormdata(new PostmanVariable(key, value, description, "text"), position);
-    }
-
+    
     
     /** 
-     * @param key
-     * @param value
-     * @param description
-     * @throws Exception
+     * 
+     * Add a formdata element by string values
+     * 
+     * @param key  The value for the <code>key</code> property of the formdata element
+     * @param value The value for the <code>value</code> property of the formdata element
+     * @param description The value 
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(String key, String value, String description) throws Exception {
-        this.setFormdata(new PostmanVariable(key, value, description), 0);
+    public void setFormdata(String key, String value, String description) throws IllegalPropertyAccessException {
+        this.setFormdata(new PostmanVariable(key, value, description));
     }
 
     
     /** 
      * @param data
      * @param position
-     * @throws Exception
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(PostmanVariable data, int position) throws Exception {
-
-        if (this.getMode() == enumRequestBodyMode.URLENCODED) {
-            if (this.urlencoded == null) {
-                this.urlencoded = new ArrayList<PostmanVariable>();
+    public void setFormdata(PostmanVariable data) throws IllegalPropertyAccessException  {
+        switch(this.getMode()) {
+            case FORMDATA:
+            {
+                formdata.add(data);
+                break;
             }
-            this.urlencoded.add(position, data);
-        } else if (this.getMode() == enumRequestBodyMode.FORMDATA) {
-            if (this.formdata == null) {
-                this.formdata = new ArrayList<PostmanVariable>();
+            case URLENCODED: {
+                urlencoded.add(data);
+                break;
             }
-            this.formdata.add(position, data);
-        } else {
-            throw new Exception("Cannot set Form Data.  Mode must be URLENCODED or FORMDATA");
+            default: {
+                throw new IllegalPropertyAccessException("Body mode must be FORMDATA or URLENCODED to access formdata");
+            }
         }
+
+        
     }
 
     
-    /** 
-     * @return ArrayList<PostmanVariable>
-     */
-    public ArrayList<PostmanVariable> getUrlencoded() {
-        return urlencoded;
-    }
-
     
-    /** 
-     * @param urlencoded
-     */
-    public void setUrlencoded(ArrayList<PostmanVariable> urlencoded) {
-        this.urlencoded = urlencoded;
-    }
+    
+    
 
     
     /** 
      * @return String
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not FILE
      */
-    public String getFile() {
+    public String getFile() throws IllegalPropertyAccessException {
         if (this.getMode() != enumRequestBodyMode.FILE) {
-            return null;
+            throw new IllegalPropertyAccessException("Body mode must be FILE to access file property");
         }
         return this.file.getSrc();
     }
@@ -376,7 +467,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * @param file
      */
     public void setFile(String file) {
-        if (this.getMode() != enumRequestBodyMode.FILE)
+        if (this.getMode() == enumRequestBodyMode.FILE)
             this.file.setSrc(file);
     }
 
