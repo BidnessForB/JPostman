@@ -8,37 +8,37 @@ import java.util.ArrayList;
  * 
  * <pre>
  * "event": [
-        {
-            "listen": "test",
-            "script": {
-                "exec": [
-                    "pm.test(\"Status code is 200\", function () {",
-                    "    pm.response.to.have.status(200);",
-                    "});",
-                    "",
-                    "var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
-                    "",
-                    "pm.test(latencyTestName, function () {",
-                    "    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
-                    "});",
-                    "",
-                    "pm.test(\"Response contains fact\", function () {",
-                    "    var jsonData = pm.response.json();",
-                    "    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
-                    "});"
-                ],
-                "type": "text/javascript"
-            }
-        },
-        {
-            "listen": "prerequest",
-            "script": {
-                "exec": [
-                    "console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
-                ],
-                "type": "text/javascript"
-            }
+    {
+        "listen": "test",
+        "script": {
+            "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+                "",
+                "pm.test(latencyTestName, function () {",
+                "    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+                "});",
+                "",
+                "pm.test(\"Response contains fact\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
+                "});"
+            ],
+            "type": "text/javascript"
         }
+    },
+    {
+        "listen": "prerequest",
+        "script": {
+            "exec": [
+                "console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
+            ],
+            "type": "text/javascript"
+        }
+    }
     ]
 
                     </pre>
@@ -140,16 +140,30 @@ public class PostmanEvent extends PostmanCollectionElement {
      * 
      * @return
      */
-    public String getSourceCode() {
+    public String getSourceCode() throws InvalidPropertyException {
         String srcCode = "";
         if(this.getScript() == null || this.getScript().getSourceCode() == null) {
             return null;
         }
-        for(String chunk: this.getScript().getSourceCode()) {
-            srcCode = srcCode + "\n" + chunk;
+        String chunk = "";
+        for(int i = 0; i < this.getScript().getSourceCode().size(); i++) {
+            
+            chunk = this.getScript().getSourceCodeElement(i);
+            srcCode = srcCode + (i > 0 && i < (this.getScript().getSourceCode().size() -1) ? "\n" : "") + chunk;
         }
+        
 
         return srcCode;
+    }
+
+    public ArrayList<String> getSourceCodeElements() {
+        if(this.getScript() == null || this.getScript().getSourceCode() == null)
+        {
+            return null;
+        }
+        else {
+            return this.getScript().getSourceCode();
+        }
     }
 
 
@@ -197,17 +211,20 @@ public class PostmanEvent extends PostmanCollectionElement {
      * 
      * @param code
      */
-    public void addSourceCodeElement(String code, boolean append) {
+    public void addSourceCodeElement(String code, int position) {
         if(this.getScript() == null) {
             this.setScript(new PostmanScript("text/javascript",code));
             return;
         }
-        this.getScript().setSourceCodeElement(code, append);
+        this.getScript().setSourceCodeElement(code, position);
         
     }
 
-    public void removeSourceCodeElement(int position) {
-
+    public void removeSourceCodeElement(int position) throws InvalidPropertyException{
+        if(this.getScript() == null || this.getScript().getSourceCode() == null || position < 0 || position > this.getScript().getSourceCode().size()) {
+            throw new InvalidPropertyException("Source code null or position out of bounds");
+        }
+        this.getScript().removeSourceCodeElement(position);
     }
 
     public class PostmanScript extends PostmanCollectionElement {
@@ -226,9 +243,11 @@ public class PostmanEvent extends PostmanCollectionElement {
 
         }
 
-        public void setSourceCodeElement(String code, boolean append) {
-            if(append) {
-                this.exec.add(0,code);
+        public void setSourceCodeElement(String code, int position) {
+            if(this.getSourceCode() == null || position < 0 || position > this.getSourceCode().size())
+            {
+                this.exec = new ArrayList<String>();
+                this.exec.add(code);
             }
             else {
                 this.exec.add(code);
@@ -240,6 +259,7 @@ public class PostmanEvent extends PostmanCollectionElement {
             if(this.exec == null || (position < 0 || position > this.exec.size())) {
                 throw new InvalidPropertyException("Postion " + position + "out of bounds" );
             }
+            this.exec.remove(position);
         }
 
         
@@ -252,7 +272,14 @@ public class PostmanEvent extends PostmanCollectionElement {
             this.type = type;
         }
 
-        public ArrayList<String> getSourceCode() {
+        public String getSourceCodeElement(int position) throws InvalidPropertyException {
+            if(position < 0 || exec == null || position > (exec.size() - 1)) {
+                throw new InvalidPropertyException("Source code not set or position out of bounds");
+            }
+            return exec.get(position);
+        }
+
+        public ArrayList<String>getSourceCode() {
             return exec;
         }
 

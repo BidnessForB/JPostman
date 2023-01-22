@@ -987,4 +987,50 @@ public class AppTest {
 
     }
 
+    @Test
+    public void testEventObject() {
+        PostmanEvent evt = new PostmanEvent(enumEventType.PRE_REQUEST, "//fake javascript");
+        
+        assertTrue(evt.getSourceCodeElements().size() == 1);
+
+        evt.addSourceCodeElement("//some more code", 0);
+        assertTrue(evt.getSourceCodeElements().size() == 2);
+        try {
+            evt.removeSourceCodeElement(0);
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected excpetion", false);
+        }
+
+        assertTrue(evt.getSourceCodeElements().size() == 1);
+        try {
+            assertTrue(evt.getSourceCode().equals("//some more code"));
+        }
+        catch(InvalidPropertyException e)
+         {
+            assertTrue("Unexpected exception",false);
+         }
+        
+
+        try {
+            evt.removeSourceCodeElement(10);
+        }
+        catch (InvalidPropertyException e) {
+            assertTrue("Expected exception", true);
+        }
+        
+
+
+        
+
+        try {
+            evt.removeSourceCodeElement(0);
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected exception " + e.getMessage(), false);
+        }
+
+        
+        
+    }
 }
