@@ -14,8 +14,6 @@ public class PostmanRequest extends PostmanCollectionElement {
     /** 
      * @return String
      */
-    // private String description = "";
-
     public String getKey() {
         return null;
     }
