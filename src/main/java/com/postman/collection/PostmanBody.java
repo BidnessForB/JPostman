@@ -112,9 +112,18 @@ public class PostmanBody extends PostmanCollectionElement {
 
         this.setMode(mode);
 
-        if (this.getMode() == enumRequestBodyMode.RAW || this.getMode() == enumRequestBodyMode.GRAPHQL) {
-            this.raw = content;
+        if (this.getMode() == enumRequestBodyMode.RAW) {
+            try {
+                this.setOptions(new PostmanBodyOptions(language));
+                this.setRaw(content);
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                e.printStackTrace();
+            }
+            
         }
+
         if (this.getMode() == enumRequestBodyMode.FILE) {
             this.file.setSrc(content);
         }
@@ -183,6 +192,7 @@ public class PostmanBody extends PostmanCollectionElement {
         if(this.getMode() != enumRequestBodyMode.RAW) {
             throw new IllegalPropertyAccessException("Body mode must be RAW to access raw content");
         }
+        
         this.raw = raw;
     }
 

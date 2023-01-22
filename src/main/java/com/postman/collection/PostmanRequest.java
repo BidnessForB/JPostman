@@ -127,7 +127,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param URL  The raw URL 
      * @throws Exception
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws Exception {
+    public PostmanRequest(enumHTTPRequestMethod method, String URL)  {
 
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);

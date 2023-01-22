@@ -948,4 +948,29 @@ public class AppTest {
 
     }
 
+    @Test
+    public void testResponseObject() {
+
+        PostmanRequest req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+        PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
+        assertTrue(resp.getBody().equals("This is the body"));
+        assertTrue(resp.getCode() == 200);
+        try {
+            JsonNode diffs = resp.getOriginalRequest().isEquivalentTo(req);
+            assertTrue(diffs.size() == 0);
+        }
+        catch(Exception e)
+        {
+            assertTrue("Equivalence test exception",false);
+        }
+
+        
+        
+
+
+        
+
+
+    }
+
 }

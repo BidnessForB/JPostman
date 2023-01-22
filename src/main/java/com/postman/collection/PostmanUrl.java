@@ -259,12 +259,12 @@ public class PostmanUrl extends PostmanCollectionElement {
      */
     public void setProtocol(String rawProtocol) {
 
-        rawProtocol = rawProtocol.toLowerCase();
+        
         if (rawProtocol == null || rawProtocol.length() < 1) {
             protocol = null;
-        } else if (rawProtocol.contains("https")) {
+        } else if (rawProtocol.toLowerCase().contains("https")) {
             protocol = "https";
-        } else if (rawProtocol.contains("http")) {
+        } else if (rawProtocol.toLowerCase().contains("http")) {
             protocol = "http";
         } else {
             protocol = null;
