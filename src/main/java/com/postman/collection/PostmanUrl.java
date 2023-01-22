@@ -164,7 +164,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Set the elements of the <code>query</code> array with a string
      * 
-     * @param rawQuery String with the query component, e.g., "foo=bar&ampbat=big"
+     * @param rawQuery String with the query component, e.g., "foo=bar&amp;bat=big"
      * 
      */
     public void setQuery(String rawQuery) {
@@ -443,7 +443,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Populate the elements of the <code>query</code> array with an http query string.  Replaces any existing query string.
      * 
-     * @param queryString  The query string, e.g., foo=bar&ampbat=bing
+     * @param queryString  The query string, e.g., foo=bar&amp;bat=bing
      * @throws Exception
      */
     public void addQuery(String queryString)  {
