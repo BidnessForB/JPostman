@@ -5,6 +5,43 @@ import java.util.regex.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class to encapsulate the properties in the <code>url</code> object of a <a href="./PostmanRequest.html">PostmanRequst</a> object.  
+ * The URL object properties contain the raw URL itself, the protocol, the port an array of strings for the individual host and path elements, arrays of key/value pairs for query parameters, as well as 
+ * path variables.
+ * <pre>
+ * "url": {
+                    "raw": "https://foo.com:8080/bar/:path1/bat.json?foo\u003d1\u0026bar\u003d",
+                    "host": [
+                        "foo",
+                        "com"
+                    ],
+                    "path": [
+                        "bar",
+                        ":path1",
+                        "bat.json"
+                    ],
+                    "query": [
+                        {
+                            "key": "foo",
+                            "value": "1"
+                        },
+                        {
+                            "key": "bar",
+                            "value": ""
+                        }
+                    ],
+                    "variable": [
+                        {
+                            "key": "path1"
+                        }
+                    ],
+                    "protocol": "https",
+                    "port": "8080"
+                }   
+                </pre>                 
+ */
+
 public class PostmanUrl extends PostmanCollectionElement {
     private String raw = "";
     private ArrayList<String> host;
@@ -17,10 +54,16 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
     /** 
-     * @param rawURL
+     * 
+     * Sets the raw URL.  The host, path, query,protocl, query and port properties are parsed from the raw url.  
+     * Parsing does not always result in these properties being filled, as collection URLs are not always valid URLs in the java sense.  
+     * For example, URLs containing variables may not produce discrete values, eg.
+     * <pre> {{baseUrl}}/{{theHost}}/foo/{{filename}}</pre>
+     * 
+     * @param rawURL The raw URL as a String.  The URL is not validated
      * @throws Exception
      */
-    public void setRaw(String rawURL) throws Exception {
+    public void setRaw(String rawURL)  {
 
         this.raw = rawURL;
 

@@ -422,8 +422,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @param data
-     * @param position
+     * 
+     * Sets an element of the formdata or urlencoded property array 
+     * 
+     * @param PostmanVariable Populated PostmanVariable containing the formdata
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(PostmanVariable data) throws IllegalPropertyAccessException  {
@@ -452,7 +454,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @return String
+     * 
+     * Returns the value of the <code>file/src</code> property, the path to the file
+     * 
+     * @return String The stored file spec
      * @throws IllegalPropertyAccessException If <code>mode</code> is not FILE
      */
     public String getFile() throws IllegalPropertyAccessException {
@@ -464,7 +469,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * @param file
+     * Sets the value of the <code>file/src</code> property, the path to the file
+     * 
+     * @param file The file path or name
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not FILE
      */
     public void setFile(String file) {
         if (this.getMode() == enumRequestBodyMode.FILE)
@@ -473,6 +481,9 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Returns the <code>mode</code> property as an enumerated value
+     * 
      * @return enumRequestBodyMode
      */
     public enumRequestBodyMode getMode() {
@@ -495,6 +506,8 @@ public class PostmanBody extends PostmanCollectionElement {
     }
 
     /** 
+     * Sets the value of the <code>mode</code> property and initializes relevant internal properties
+     * 
      * @param newMode
      */
     public void setMode(enumRequestBodyMode newMode) {
@@ -551,17 +564,51 @@ public class PostmanBody extends PostmanCollectionElement {
     }
 
     /** 
-     * @param position
+     * 
+     * Removes the formdata element at the specified position in the formdata array
+     * 
+     * @param position The position in the array of formdata elements to remove.  This value is not bounds checked, so an ArrayOutOfBounds exception may occur.
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not FORMDATA or URLENCODED
      */
-    public void removeFormData(int position) {
+    public void removeFormData(int position) throws IllegalPropertyAccessException {
+        switch(this.getMode()) {
+            case FORMDATA: {
+                this.formdata.remove(position);
+                break;
+            }
+            case URLENCODED: {
+                this.urlencoded.remove(position);
+                break;
+            }
+            default: {
+                throw new IllegalPropertyAccessException("Mode must be FORMDATA or URLENCODED to access formdata");
+            }
 
+        }
     }
 
     /** 
-     * @param data
+     * 
+     * Removes the formdata element at the specified position in the formdata array
+     * 
+     * @param data The PostmanVariable to remove.  
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not FORMDATA or URLENCODED
      */
-    public void removeFormDAta(PostmanVariable data) {
+    public void removeFormData(PostmanVariable data) throws IllegalPropertyAccessException {
+        switch(this.getMode()) {
+            case FORMDATA: {
+                this.formdata.remove(data);
+                break;
+            }
+            case URLENCODED: {
+                this.urlencoded.remove(data);
+                break;
+            }
+            default: {
+                throw new IllegalPropertyAccessException("Mode must be FORMDATA or URLENCODED to access formdata");
+            }
 
+        }
     }
 
     //Inner Classes
