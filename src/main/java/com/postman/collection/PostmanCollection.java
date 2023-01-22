@@ -56,12 +56,37 @@ public class PostmanCollection extends PostmanItem {
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/")
                 .getAbsolutePath();
-        /* PostmanCollection pmcTest = PostmanCollection
-                .PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
-        PostmanCollection pmcTest2 = PostmanCollection
-                .PMCFactory(new File(resourcePath + "/body-test.postman_collection.json"));
-
-        System.out.println("Equals: " + pmcTest.equals(pmcTest2)); */
+                PostmanRequest req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+                PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
+                
+                try {
+                    JsonNode diffs = resp.getOriginalRequest().isEquivalentTo(req);
+                
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+        
+                
+                
+                PostmanRequest req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+                PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
+                
+                try {
+                    JsonNode diffs = newResp.getOriginalRequest().isEquivalentTo(req);
+                    
+                    for(JsonNode diff : diffs) {
+                        System.out.println(diff.toString());
+                    }
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+        
+                
+                
 
         
 

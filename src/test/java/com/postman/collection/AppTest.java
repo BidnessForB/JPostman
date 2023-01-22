@@ -964,6 +964,20 @@ public class AppTest {
             assertTrue("Equivalence test exception",false);
         }
 
+        resp = new PostmanResponse("Test Response",req, "Not authorize",401,"A completely different body" );
+        
+        PostmanRequest req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+        PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
+                
+        try {
+                    JsonNode diffs = newResp.getOriginalRequest().isEquivalentTo(req);
+                    assertTrue(diffs.size() > 0);
+        }
+        catch(Exception e)
+        {
+            assertTrue("Equivalence test exception",false);
+        }
+
         
         
 
