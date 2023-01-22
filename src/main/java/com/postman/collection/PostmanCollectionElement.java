@@ -112,10 +112,10 @@ public abstract class PostmanCollectionElement {
     
     /** 
      * 
-     * If an element is invalid, returns an ArrayList&#60ValidationMessage&#62 containing one or more diff messages describing the differences.  If the element is valid
+     * If an element is invalid, returns an ArrayList&#60;ValidationMessage&#62; containing one or more diff messages describing the differences.  If the element is valid
      * the size of the returned ArrayList will be zero.
      * 
-     * @return ArrayList<ValidationMessage> An ArrayList containing zero or more validatin messages.
+     * @return ArrayList&#60;ValidationMessage&#62; An ArrayList containing zero or more validatin messages.
      */
     public ArrayList<ValidationMessage> getValidationMessages() {
         return this.validationMessages;
@@ -178,11 +178,22 @@ public abstract class PostmanCollectionElement {
      * @return JsonNode
      * @throws Exception
      */
-    public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws Exception {
-        ObjectMapper jacksonObjectMapper = new ObjectMapper();
-        JsonNode beforeNode = jacksonObjectMapper.readTree(this.toJson());
-        JsonNode afterNode = jacksonObjectMapper.readTree(compare.toJson());
-        JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
+    public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws ValidationException {
+        ObjectMapper jacksonObjectMapper;
+        JsonNode beforeNode;
+        JsonNode afterNode;
+        JsonNode patch;
+        
+        jacksonObjectMapper = new ObjectMapper();
+        try {
+            beforeNode = jacksonObjectMapper.readTree(this.toJson());
+            afterNode = jacksonObjectMapper.readTree(compare.toJson());
+        }
+        catch(Exception e) {
+            throw new ValidationException(e);
+        }
+            
+        patch = JsonDiff.asJson(beforeNode, afterNode);
 
         return patch;
     }
