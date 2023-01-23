@@ -173,7 +173,7 @@ public class PostmanAuth extends PostmanCollectionElement {
 
     
     /** 
-     * Set the properties of the Auth object using a pre-created HashMap&#60;String,PostmanVariable&##62 of properties.
+     * Set the properties of the Auth object using a pre-created HashMap&#60;String,PostmanVariable&#62; of properties.
      * 
      * @param properties
      */
@@ -235,8 +235,8 @@ public class PostmanAuth extends PostmanCollectionElement {
     /** 
      * 
      * Convenience method create and then add a new property to this auth object
-     * 
-     * For example, to add the following JSON property to the array of properties:
+     * <p>
+     * For example, to add the following JSON property to the array of properties:</p>
      * <pre>
      *  {
      *      "key": "realm",
