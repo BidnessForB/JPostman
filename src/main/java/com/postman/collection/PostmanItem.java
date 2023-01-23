@@ -1,7 +1,133 @@
 package com.postman.collection;
 
 import java.util.ArrayList;
+    /**
+     * 
+     * Encapsulates the <code>item</code> object in the postman schema
+<p></p>
+     * <pre>
+     * {
+    "name": "Get a list of facts",
 
+    "event": [
+        {
+            "listen": "test",
+            "script": {
+                "exec": [
+                    "pm.test(\"Status code is 200\", function () {",
+                    "    pm.response.to.have.status(200);",
+                    "});",
+                    "",
+                    "var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+                    "",
+                    "pm.test(latencyTestName, function () {",
+                    "    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+                    "});",
+                    "",
+                    "pm.test(\"Response contains fact\", function () {",
+                    "    var jsonData = pm.response.json();",
+                    "    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
+                    "});"
+                ],
+                "type": "text/javascript"
+            }
+        },
+        {
+            "listen": "prerequest",
+            "script": {
+                "exec": [
+                    "console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
+                ],
+                "type": "text/javascript"
+            }
+        }
+    ],
+    
+    "request": {
+        "method": "GET",
+        "header": [
+            {
+                "key": "Accept",
+                "value": "application/json"
+            }
+        ],
+        "url": {
+            "raw": "{{baseUrl}}/facts?max_length=200&amp;limit=2",
+            "host": [
+                "{{baseUrl}}"
+            ],
+            "path": [
+                "facts"
+            ],
+            "query": [
+                {
+                    "key": "max_length",
+                    "value": "200"
+                },
+                {
+                    "key": "limit",
+                    "value": "2",
+                    "description": "limit the amount of results returned"
+                }
+            ]
+        },
+        "description": "Returns a a list of facts"
+    },
+    "response": [
+        {
+            "name": "successful operation",
+            "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/facts?max_length=200&amp;limit=2",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "facts"
+                    ],
+                    "query": [
+                        {
+                            "key": "max_length",
+                            "value": "200"
+                        },
+                        {
+                            "key": "limit",
+                            "value": "2"
+                        }
+                    ]
+                }
+            },
+            "status": "OK",
+            "code": 200,
+            "_postman_previewlanguage": "json",
+            "header": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "cookie": [],
+            "body": "[\n  {\n    \"fact\": \"ex ad\",\n    \"length\": 200\n  }, (...)}\n]"
+        }
+    ]
+}
+],
+"description": "Cat Facts"
+
+}
+</pre>
+        
+
+        <h3>Hierarchy</h3>
+
+        <p>Folders and requests are both items.  An item with no <code>request</code> property is rendered by the Postman UI as a Folder.  Items with a <code>request</code> property
+        are rendered as requests.  Folders can contain other items, both folders and requests.  Requests are always leaf nodes, they cannot contain other items.</p>
+
+        <p> A collection is the top level item in the hierarchy.  It can contain a tree of items, but cannot itself be contained.  </p>
+
+*/
 public class PostmanItem extends PostmanCollectionElement {
 
     private String description;
@@ -14,130 +140,9 @@ public class PostmanItem extends PostmanCollectionElement {
     private transient PostmanItem parent = null;
     
     
-    /**
-     * 
-     * Encapsulates the <code>item</code> object in the postman schema
-     * 
-     * <pre>
-     * {
-					"name": "Get a list of facts",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
-									"",
-									"pm.test(latencyTestName, function () {",
-									"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
-									"});",
-									"",
-									"pm.test(\"Response contains fact\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"facts"
-							],
-							"query": [
-								{
-									"key": "max_length",
-									"value": "200"
-								},
-								{
-									"key": "limit",
-									"value": "2",
-									"description": "limit the amount of results returned"
-								}
-							]
-						},
-						"description": "Returns a a list of facts"
-					},
-					"response": [
-						{
-							"name": "successful operation",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"facts"
-									],
-									"query": [
-										{
-											"key": "max_length",
-											"value": "200"
-										},
-										{
-											"key": "limit",
-											"value": "2"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"fact\": \"ex ad\",\n    \"length\": 200\n  }, (...)}\n]"
-						}
-					]
-				}
-			],
-			"description": "Cat Facts"
-		}
-        /<pre>
-
-        <h3>Hierarcy</h3>
-
-        <p>Folders and requests are both items.  An item with no <code>request</code> property is rendered by the Postman UI as a Folder.  Items with a <code>request</code> property
-        are rendered as requests.  Folders can contain other items, both folders and requests.  Requests are always leaf nodes, they cannot contain other items.</p>
-
-        <p> A collection is the top level item in the hierarchy.  It can contain a tree of items, but cannot itself be contained.  </p>
 
 
-
+        /**
      * 
      * 
      * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  

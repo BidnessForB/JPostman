@@ -11,7 +11,7 @@ import java.util.Arrays;
  * path variables.
  * <pre>
  * "url": {
-                    "raw": "https://foo.com:8080/bar/:path1/bat.json?foo\u003d1\u0026bar\u003d",
+                    "raw": "https://foo.com:8080/bar/:path1/bat.json?foo=1&amp;bar=2",
                     "host": [
                         "foo",
                         "com"
@@ -28,7 +28,7 @@ import java.util.Arrays;
                         },
                         {
                             "key": "bar",
-                            "value": ""
+                            "value": "2"
                         }
                     ],
                     "variable": [
