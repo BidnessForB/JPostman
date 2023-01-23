@@ -54,37 +54,18 @@ public class PostmanCollection extends PostmanItem {
      */
     public static void main(String[] args) throws Exception {
         String filePath = new java.io.File("").getAbsolutePath();
-        String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/")
-                .getAbsolutePath();
-                PostmanRequest req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
-                PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
-                
-                try {
-                    JsonNode diffs = resp.getOriginalRequest().isEquivalentTo(req);
-                
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-        
-                
-                
-                PostmanRequest req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
-                PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
-                
-                try {
-                    JsonNode diffs = newResp.getOriginalRequest().isEquivalentTo(req);
-                    
-                    for(JsonNode diff : diffs) {
-                        System.out.println(diff.toString());
-                    }
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-        
+        //String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/");
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        PostmanItem fact = pmcTest.getItem("Get a list of facts");
+        PostmanItem folder = pmcTest.getItem("get Breeds",true);
+
+        ArrayList<PostmanItem> folders = pmcTest.getItems(enumPostmanItemType.FOLDER);
+        ArrayList<PostmanItem> requests = pmcTest.getItems(enumPostmanItemType.REQUEST);
+        ArrayList<PostmanItem> all = pmcTest.getItems(null);
+
+        fact = pmcTest.getItem("Add Breed");
+
+        System.out.println("foo");
                 
                 
 
@@ -376,7 +357,7 @@ public class PostmanCollection extends PostmanItem {
     public PostmanCollection(String name) {
         // this.info = new PostmanInfo();
         // this.info.setName(name);
-        this.setName(name);
+        super(name);
 
     }
 
@@ -403,8 +384,8 @@ public class PostmanCollection extends PostmanItem {
     }
 
     private void setParents() {
-        ArrayList<PostmanItem> folders = this.getItemsOfType(enumPostmanItemType.FOLDER);
-        ArrayList<PostmanItem> requests = this.getItemsOfType(enumPostmanItemType.REQUEST);
+        ArrayList<PostmanItem> folders = this.getItems(enumPostmanItemType.FOLDER);
+        ArrayList<PostmanItem> requests = this.getItems(enumPostmanItemType.REQUEST);
         folders = folders == null ? new ArrayList<PostmanItem>() : folders;
         requests = requests == null ? new ArrayList<PostmanItem>() : requests;
         PostmanItem curParent = null;

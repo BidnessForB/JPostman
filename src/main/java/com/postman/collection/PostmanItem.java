@@ -12,36 +12,161 @@ public class PostmanItem extends PostmanCollectionElement {
     private String name;
 
     private transient PostmanItem parent = null;
-
     
-    /** 
-     * @return String
+    
+    /**
+     * 
+     * Encapsulates the <code>item</code> object in the postman schema
+     * 
+     * <pre>
+     * {
+					"name": "Get a list of facts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+									"",
+									"pm.test(latencyTestName, function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+									"});",
+									"",
+									"pm.test(\"Response contains fact\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "200"
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"facts"
+									],
+									"query": [
+										{
+											"key": "max_length",
+											"value": "200"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"fact\": \"ex ad\",\n    \"length\": 200\n  }, (...)}\n]"
+						}
+					]
+				}
+			],
+			"description": "Cat Facts"
+		}
+        /<pre>
+
+        <h3>Hierarcy</h3>
+
+        <p>Folders and requests are both items.  An item with no <code>request</code> property is rendered by the Postman UI as a Folder.  Items with a <code>request</code> property
+        are rendered as requests.  Folders can contain other items, both folders and requests.  Requests are always leaf nodes, they cannot contain other items.</p>
+
+        <p> A collection is the top level item in the hierarchy.  It can contain a tree of items, but cannot itself be contained.  </p>
+
+
+
+     * 
+     * 
+     * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  
+     * 
+     * @param name  The name of the object
+     * @param parent The PostmanItem containing this item. 
      */
-    @Override
-    public String getKey() {
-
-        // return this.key;
-        return this.name;
-    }
-
     public PostmanItem(String name, PostmanItem parent) {
         this(name);
         this.setParent(parent);
 
     }
+   /**
+    *  * Construct an empty item with only a <name> property </name>.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
 
+    * @param name The name of the object
+    */
+    
     public PostmanItem(String name) {
         this.setName(name);
-
     }
 
-    public PostmanItem() {
-
-    }
 
     
     /** 
-     * @return String
+     * 
+     * Return the value of the <code>description</code> property
+     * 
+     * @return String The description
      */
     public String getDescription() {
         return description;
@@ -49,7 +174,11 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param description
+     * 
+     * Set the value of the <code>description</code> property
+     * 
+     * 
+     * @param description The description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -57,6 +186,9 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Return the ArrayList&#60;PostmanEvent&#62; containing the objects comprising the <code>event</code> array
+     * 
      * @return ArrayList<PostmanEvent>
      */
     public ArrayList<PostmanEvent> getEvents() {
@@ -66,8 +198,12 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param evtType
-     * @return PostmanEvent
+     * 
+     * Get an event, specifying whether to return the pre-request script or test script associated with this item. 
+     * 
+     * 
+     * @param evtType Enumerated value for the event type, eg., pre-request or test.
+     * @return PostmanEvent The event, if it exists
      */
     public PostmanEvent getEvent(enumEventType evtType) {
         if (event == null) {
@@ -83,6 +219,8 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * Set the ArrayList&#60;PostmanEvent&#62; comprising the values in the <code>event</code> array.
+     * 
      * @param events
      */
     public void setEvents(ArrayList<PostmanEvent> events) {
@@ -91,7 +229,11 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @return PostmanRequest
+     * 
+     * Return the object containing the values in the <code>request</code> property, or null if this item does not contain a request (e.g., is a folder);
+     * 
+     * 
+     * @return PostmanRequest The request, or null if no request is defined.
      */
     public PostmanRequest getRequest() {
         return request;
@@ -99,6 +241,9 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Set the object containing the values in the <code>request</code> property
+     * 
      * @param request
      */
     public void setRequest(PostmanRequest request) {
@@ -107,7 +252,11 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanResponse>
+     * 
+     * Return an ArrayList&#60;PostmanResponse&#62; containing the values in the <code>response</code> property array, or null if none are defined.
+     * 
+     * 
+     * @return ArrayList<PostmanResponse>  The responses, or null if none are defined.
      */
     public ArrayList<PostmanResponse> getResponses() {
         return response;
@@ -115,6 +264,9 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Set the ArrayList&#60;PostmanResponse&#62;  containing the values in the <code>response</code> property array.  Passing null to this method removes the response array
+     * 
      * @param response
      */
     public void setResponses(ArrayList<PostmanResponse> response) {
@@ -123,14 +275,46 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanItem>
+     * 
+     * Return an ArrayList&#60;PostmanItem&#62; containing the tree of items owned by this item.
+     * 
+     * 
+     * @return ArrayList<PostmanItem>  The items
      */
     public ArrayList<PostmanItem> getItems() {
         return item;
     }
 
+    public ArrayList<PostmanItem> getItems(enumPostmanItemType filter) {
+        ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
+
+        if (item == null) {
+            return null;
+        }
+
+        for (PostmanItem curItem : item) {
+            if ((filter != null && curItem.getItemType() == filter) || (filter == null)) {
+                results.add(curItem);
+                
+            }
+            try {
+                results.addAll(curItem.getItems(filter));
+
+            } catch (Exception e) {
+
+            }
+
+        }
+
+        return results;
+    }
+
     
     /** 
+     * 
+     * Determine whether this item is a REQUEST or a FOLDER
+     * 
+     * 
      * @return enumPostmanItemType
      */
     public enumPostmanItemType getItemType() {
@@ -143,7 +327,10 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param items
+     * 
+     * Set the value of the <code>item</code> array with an ArrayList&#60;PostmanItem&#62;.  Passing null effectively removes all children from this item.
+     * 
+     * @param items  The items, or null to remove all items.
      */
     public void setItems(ArrayList<PostmanItem> items) {
         this.item = items;
@@ -151,39 +338,53 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param key
-     * @return PostmanItem
+     * 
+     * Recursively search the contents of the <code>item</code> array for the item with the specified key.  Generally this is the <code>name</code> property for requests and folders.
+     * 
+     * @param key  The key (name) of the desired item
+     * @return PostmanItem The item, if it is found in the <code>item</code> array, or null if it is not.
      */
     public PostmanItem getItem(String key) {
-        return this.getItem(key, false);
+        return this.getItem(key, false, null);
+    }
+
+    public PostmanItem getItem(String key, enumPostmanItemType filter) {
+        return this.getItem(key, false, filter);
+    }
+
+    public PostmanItem getItem(String key, boolean parent) {
+        return this.getItem(key,parent,null);
     }
 
     
-    /** 
-     * @param key
-     * @param parent
+    /**
+     * 
+     * Recursively search the contents of the <code>item</code> array for the item with the specified key, optionally returning the item or it's parent item. 
+     * 
+     * 
+     * @param key The key (name) of the desired item
+     * @param parent True to return the parent of the item, if found, false to return the item itself.  
      * @return PostmanItem
      */
-    public PostmanItem getItem(String key, boolean parent) {
+    
+    public PostmanItem getItem(String key, boolean parent, enumPostmanItemType filter) {
         PostmanItem result = null;
         if (this.item == null) {
             return null;
         }
         // recursively traverse items looking for name == key
         for (PostmanItem curItem : item) {
-            // System.out.println("Parsing: " + this.getName() + " PARENT: " + parent);
             if (item == null)
                 return null;
             if (curItem.getKey().equals(key)) {
-                if (!parent) {
+                if (!parent && (filter == null || filter == curItem.getItemType())) {
                     result = curItem;
-                } else {
+                } else if(parent && (filter == null || filter == curItem.getItemType())) {
                     result = (PostmanItem) this;
                 }
-
                 break;
             } else {
-                result = curItem.getItem(key, parent);
+                result = curItem.getItem(key, parent, filter);
                 if (result != null) {
                     break;
                 }
@@ -196,6 +397,9 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Add a PostmanResponse object to the <code>response</code> array
+     * 
      * @param resp
      * @throws Exception
      */
@@ -208,10 +412,13 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param newItems
-     * @throws Exception
+     * 
+     * Add multiple items to this item.  
+     * 
+     * @param newItems  The items to add
+     * 
      */
-    public void addItems(ArrayList<PostmanItem> newItems) throws Exception {
+    public void addItems(ArrayList<PostmanItem> newItems)  {
         if (this.item == null) {
             this.item = new ArrayList<PostmanItem>();
         }
@@ -219,8 +426,11 @@ public class PostmanItem extends PostmanCollectionElement {
     }
 
     
-    /** 
-     * @param parent
+    /**
+     * 
+     * Set the parent of this item.
+     *  
+     * @param parent  The parent item.
      */
     public void setParent(PostmanItem parent) {
         this.parent = parent;
@@ -228,26 +438,17 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @return PostmanItem
+     * 
+     * Get the parent of this item, or null if one is not defined (eg. this item is a collection);
+     * 
+     * @return PostmanItem The parent item.
      */
     public PostmanItem getParent() {
         return this.parent;
     }
 
     
-    /** 
-     * @param ofType
-     * @return ArrayList<PostmanItem>
-     */
-    public ArrayList<PostmanItem> getItemsOfType(enumPostmanItemType ofType) {
-        if (item == null) {
-            return null;
-        }
-        ArrayList<PostmanItem> alItems = this.getItemsOfTypeImpl(ofType);
-        return alItems;
-
-    }
-
+    
     
     /** 
      * @param theItem
@@ -264,36 +465,6 @@ public class PostmanItem extends PostmanCollectionElement {
         }
 
         return false;
-    }
-
-    
-    /** 
-     * @param ofType
-     * @return ArrayList<PostmanItem>
-     */
-    private ArrayList<PostmanItem> getItemsOfTypeImpl(enumPostmanItemType ofType) {
-        ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
-
-        if (item == null) {
-            return null;
-        }
-
-        for (PostmanItem curItem : item) {
-            if (curItem.getItemType() == ofType) {
-                results.add(curItem);
-                // System.out.println(curItem.getName());
-            }
-            try {
-                results.addAll(curItem.getItemsOfTypeImpl(ofType));
-
-            } catch (Exception e) {
-
-            }
-
-        }
-
-        return results;
-
     }
 
     
@@ -424,6 +595,15 @@ public class PostmanItem extends PostmanCollectionElement {
      */
     public void setName(String name) {
         this.name = name;
+    }
+/** 
+     * @return String
+     */
+    @Override
+    public String getKey() {
+
+        // return this.key;
+        return this.name;
     }
 
 }

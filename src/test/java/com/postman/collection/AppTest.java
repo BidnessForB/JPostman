@@ -1033,4 +1033,16 @@ public class AppTest {
         
         
     }
+    
+    @Test
+    public void testPostmanItem() throws Exception{
+        pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        PostmanItem fact = pmcTest.getItem("Get a list of facts");
+        PostmanItem folder = pmcTest.getItem("get Breeds",true);
+
+        assertTrue(fact != null || fact.getName().equals("Get a list of facts"));
+        assertTrue(folder != null || folder.getName().equals("Breeds"));
+
+        System.out.println("foo");
+    }
 }
