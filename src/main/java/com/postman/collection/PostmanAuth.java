@@ -98,7 +98,6 @@ public class PostmanAuth extends PostmanCollectionElement {
      * @param properties HashMap<String, PostmanVariable> containing the properties of this auth element
      */
     public PostmanAuth(enumAuthType type, HashMap<String, PostmanVariable> properties) {
-
         this(type);
         this.setType(type);
         this.setProperties(properties);
@@ -174,7 +173,7 @@ public class PostmanAuth extends PostmanCollectionElement {
 
     
     /** 
-     * Set the properties of the Auth object using a pre-created HashMap<String,PostmanVariable> of properties.
+     * Set the properties of the Auth object using a pre-created HashMap&#60;String,PostmanVariable&#62; of properties.
      * 
      * @param properties
      */
@@ -196,10 +195,10 @@ public class PostmanAuth extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return the complete array of properties as a HashMap<String,PostmanVariable>, or null if none are set. 
+     * Return the complete array of properties as a HashMap&#60;String,PostmanVariable&#62;, or null if none are set. 
      * 
      * 
-     * @return HashMap<String, PostmanVariable>
+     * @return HashMap&#60;String, PostmanVariable&#62;
      */
     public HashMap<String, PostmanVariable> getProperties() {
 
@@ -236,23 +235,24 @@ public class PostmanAuth extends PostmanCollectionElement {
     /** 
      * 
      * Convenience method create and then add a new property to this auth object
-     * 
-     * For example, to add the following JSON property to the array of properties:
-     * 
+     * <p>
+     * For example, to add the following JSON property to the array of properties:</p>
+     * <pre>
      *  {
      *      "key": "realm",
      *	    "value": "testoauth@test.com",
 	 *	    "type": "string"
      *  }
+     * </pre>
      *
      * 
-     * authObj.setProperty("realm","somerealm@foo.com")
+     * <code>authObj.setProperty("realm","somerealm@foo.com")</code>
      * 
      * Note that the type property always defaults to "string"
      * 
      * @param key  The key for the new property
      * @param value The value for the new property
-     * @throws Exception
+     * 
      */
     public void setProperty(String key, String value)  {
         if(this.properties == null) {

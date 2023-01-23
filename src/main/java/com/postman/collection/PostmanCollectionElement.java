@@ -7,7 +7,6 @@ import com.networknt.schema.JsonSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchemaFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Set;
 
@@ -23,8 +22,8 @@ import com.flipkart.zjsonpatch.*;
 public abstract class PostmanCollectionElement {
 
     private transient ArrayList<ValidationMessage> validationMessages;
-    public static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
-    public static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
+    private static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
+    private static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
     private transient UUID uuid = UUID.randomUUID();
 
     public abstract String getKey();
@@ -36,7 +35,7 @@ public abstract class PostmanCollectionElement {
      * Validate the gson produced by this element against the PostmanSchema.  Schema version is currently hardcoded to 
      * <a href="https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json">v2.1.0</a>.  Validation is provided by the <a href="https://github.com/networknt/json-schema-validator">NetworkNT json-schema-validator</a>
      * 
-     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, call getValidationMessages() will return a JsonElement containing the diffs
+     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, call {@link com.postman.collection.getValidationMessages() } will return an ArrayList&#60;<a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.html"ValidationMessage</a>&#62; containing the diffs
      * @throws ValidationException If an error is encountered accessing the schema or mapping the underlying JSON.  
      */
     public boolean validate() throws ValidationException {
@@ -49,15 +48,15 @@ public abstract class PostmanCollectionElement {
      * Convenience method allowing validation against a user-provided schema
      * 
      * @param altSchemaJSON  String containing the alternate schema JSON
-     * @return boolean True if valid, False if not.  If not valid, getValidationMessages() will return a JsonNode containing one or more diff messages.
-     * @throws Exception
+     * @return boolean True if valid, False if not.  If not valid, getValidationMessages() will return a JsonNode containing one or more <a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.html"}com.networknt.schema.ValidationMessage</a> messages containing diff data.
+     * @throws ValidationException If there is an error in the validation process
      */
     public boolean validate(String altSchemaJSON) throws ValidationException {
 
         ObjectMapper mapper = new ObjectMapper();
         JsonSchema schema;
 
-        String strSchemaRoot = PostmanCollectionElement.defaultValidationSchema;
+        String strSchemaRoot = PostmanCollectionElement.getDefaultValidationSchema();
         String strSubSchema = "";
         switch (this.getClass().getSimpleName()) {
             case "PostmanItem": {
@@ -115,7 +114,7 @@ public abstract class PostmanCollectionElement {
      * If an element is invalid, returns an ArrayList&#60;ValidationMessage&#62; containing one or more diff messages describing the differences.  If the element is valid
      * the size of the returned ArrayList will be zero.
      * 
-     * @return ArrayList&#60;ValidationMessage&#62; An ArrayList containing zero or more validatin messages.
+     * @return ArrayList&#60;{@link com.postman.collection.ValidationMessage}&#62; An ArrayList containing zero or more validatin messages.
      */
     public ArrayList<ValidationMessage> getValidationMessages() {
         return this.validationMessages;
@@ -171,12 +170,12 @@ public abstract class PostmanCollectionElement {
     
     /** 
      * 
-     * Determine whether 2 seperate instance of a JPostman class render the same JSON.  If the JSON is identical, the returned JsonNode will be empty (e.g., <code>size()</code> == 0).
+     * Determine whether 2 seperate instance of a JPostman class render semantically identical JSON.  If the JSON is identical, the returned JsonNode will be empty (e.g., <code>size()</code> == 0).
      * If the documents are different, the JsonNode returned contains information about the differences.  
      * 
-     * @param compare
-     * @return JsonNode
-     * @throws Exception
+     * @param compare The PostmanCollectionElement to compare to this one.
+     * @return JsonNode JsonNode containing an array of diff msgs.  size() will be zero if there are no validation messages.
+     * @throws ValidationException If there is an exception or error during the Validation process
      */
     public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws ValidationException {
         ObjectMapper jacksonObjectMapper;
@@ -196,5 +195,13 @@ public abstract class PostmanCollectionElement {
         patch = JsonDiff.asJson(beforeNode, afterNode);
 
         return patch;
+    }
+
+    public static String getDefaultCollectionSchema() {
+        return defaultCollectionSchema;
+    }
+
+    public static String getDefaultValidationSchema() {
+        return defaultValidationSchema;
     }
 }

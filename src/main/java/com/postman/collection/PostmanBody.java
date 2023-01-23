@@ -324,7 +324,7 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * Returns an ArrayList&#62;PostmanVariable&#60; containing formdata paramters:
+     * Returns an ArrayList&#60;PostmanVariable&#62; containing formdata paramters:
      * 
      * <pre>
      * {
@@ -343,8 +343,8 @@ public class PostmanBody extends PostmanCollectionElement {
      * 
      * 
      * 
-     * @return ArrayList<PostmanVariable> The data
-     * @throws IllegalPropertyAccessExceptoin If <code>mode</code> is not URLENCODED or FORMDATA
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The data
+     * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
         switch(this.getMode()) {
@@ -366,11 +366,11 @@ public class PostmanBody extends PostmanCollectionElement {
     
     /** 
      * 
-     * Returns a formdata property at the specified position in the array
+     * Returns a {@link com.postman.collection.PostmanVariable PostmanVariable} containing formdata property at the specified position in the array
      * 
      * @param position The position in the array
      * @return PostmanVariable The form data.
-     * @throws IllegalPropertyAcessException if <code>mode</code> is not URLENCODED or FORMDATA
+     * @throws IllegalPropertyAccessException if <code>mode</code> is not URLENCODED or FORMDATA
      */
     public PostmanVariable getFormdata(int position) throws IllegalPropertyAccessException {
         switch (this.getMode()) {
@@ -390,10 +390,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * Convenience method to set the formdata with an already filled ArrayList&#60;PostmanVariable&#62; of properties
+     * Convenience method to set the formdata with an already filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of properties
      * 
      * 
-     * @param formdata  The filled ArrayList&#60;PostmanVariable&#62;
+     * @param formdata  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {
@@ -435,7 +435,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * 
      * Sets an element of the formdata or urlencoded property array 
      * 
-     * @param PostmanVariable Populated PostmanVariable containing the formdata
+     * @param data Populated PostmanVariable containing the formdata
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(PostmanVariable data) throws IllegalPropertyAccessException  {
@@ -482,9 +482,9 @@ public class PostmanBody extends PostmanCollectionElement {
      * Sets the value of the <code>file/src</code> property, the path to the file
      * 
      * @param file The file path or name
-     * @throws IllegalPropertyAccessException If <code>mode</code> is not FILE
+     * 
      */
-    public void setFile(String file) {
+    public void setBinarySrc(String file) {
         if (this.getMode() == enumRequestBodyMode.FILE)
             this.file.setSrc(file);
     }

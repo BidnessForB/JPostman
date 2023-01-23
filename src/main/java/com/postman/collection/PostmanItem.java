@@ -120,7 +120,7 @@ import java.util.ArrayList;
 </pre>
         
 
-        <h3>Hierarchy</h3>
+        <strong>Hierarchy</strong>
 
         <p>Folders and requests are both items.  An item with no <code>request</code> property is rendered by the Postman UI as a Folder.  Items with a <code>request</code> property
         are rendered as requests.  Folders can contain other items, both folders and requests.  Requests are always leaf nodes, they cannot contain other items.</p>
@@ -142,10 +142,10 @@ public class PostmanItem extends PostmanCollectionElement {
     
 
 
-        /**
+     /**
      * 
      * 
-     * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  
+     * Construct an empty item with only a &#60;name&#62; property &#60;name&#62; and assign it as a child of <code>  
      * 
      * @param name  The name of the object
      * @param parent The PostmanItem containing this item. 
@@ -156,7 +156,7 @@ public class PostmanItem extends PostmanCollectionElement {
 
     }
    /**
-    *  * Construct an empty item with only a <name> property </name>.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
+    *  * Construct an empty item with only a <code>name</code>>; property.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
 
     * @param name The name of the object
     */
@@ -194,7 +194,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * Return the ArrayList&#60;PostmanEvent&#62; containing the objects comprising the <code>event</code> array
      * 
-     * @return ArrayList<PostmanEvent>
+     * @return ArrayList&#60;PostmanEvent&#62;
      */
     public ArrayList<PostmanEvent> getEvents() {
 
@@ -586,6 +586,7 @@ public class PostmanItem extends PostmanCollectionElement {
         for (PostmanItem curItem : item) {
             if (curItem.getKey().equals(key)) {
                 this.item.remove(curItem);
+                break;
             }
 
         }

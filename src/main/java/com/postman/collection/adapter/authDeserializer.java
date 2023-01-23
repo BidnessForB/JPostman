@@ -14,7 +14,7 @@ public class authDeserializer implements JsonDeserializer<PostmanAuth> {
     
     /** 
      * 
-     * Custom <a href="https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html>GSON deserializer</a> for the PostmanAuth object.
+     * Custom <a href="https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html"> GSON deserializer</a> for the PostmanAuth object.
      * 
      * 
      * @param jElement  

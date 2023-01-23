@@ -353,9 +353,9 @@ public class PostmanUrl extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return an ArrayList&#60;PostmanVariable&#62; of key value pairs comprising the <code>query</code> array
+     * Return an ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of key value pairs comprising the <code>query</code> array
      * 
-     * @return ArrayList&#60;PostmanVariable&#62; containing the key value paris
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value paris
      */
     public ArrayList<PostmanVariable> getQueries() {
         return query;
@@ -364,7 +364,7 @@ public class PostmanUrl extends PostmanCollectionElement {
     
     /** 
      * 
-     * Set the contents of the <code>query</code> array with a pre-populated ArrayList&#60;PostmanVariable&#62; containing the key value pairs
+     * Set the contents of the <code>query</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value pairs
      * 
      * @param query
      */
@@ -375,9 +375,9 @@ public class PostmanUrl extends PostmanCollectionElement {
     
     /** 
      * 
-     * Get an ArrayList&#60;PostmanVariable&#62; containing the key-value pairs comprising the <code>variable</code> array, or null if none exit.
+     * Get an ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array, or null if none exit.
      * 
-     * @return ArrayList&#60;PostmanVariable&#62; The ArrayList containing the key-value pairs, or null if there are none.
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The ArrayList containing the key-value pairs, or null if there are none.
      */
     public ArrayList<PostmanVariable> getVariables() {
         return variable;
@@ -386,9 +386,9 @@ public class PostmanUrl extends PostmanCollectionElement {
     
     /** 
      * 
-     * Set the values of the <code>variable</code> array with a pre-populated ArrayList&#60;PostmanVariable&#62; containing the key-value paris
+     * Set the values of the <code>variable</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
      * 
-     * @param variable the ArrayList&#60;PostmanVariable&#62; containing the key-value paris
+     * @param variable the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
      */
     public void setVariables(ArrayList<PostmanVariable> variable) {
         this.variable = variable;
