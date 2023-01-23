@@ -38,20 +38,22 @@ import java.util.Map;
 import java.util.HashMap;
 
 @SuppressWarnings("unused")
+
+/**
+ * Encapsulates a Postman collection
+ * 
+ * <more info here>
+ */
 public class PostmanCollection extends PostmanItem {
 
-    // private PostmanInfo info = null;
+    
     private ArrayList<PostmanVariable> variable = null;
     private PostmanAuth auth = null;
-
     public transient String tempSchemaJson;
     public HashMap<String, String> info;
 
     
-    /** 
-     * @param args
-     * @throws Exception
-     */
+    /*
     public static void main(String[] args) throws Exception {
         String filePath = new java.io.File("").getAbsolutePath();
         //String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/");
@@ -64,48 +66,18 @@ public class PostmanCollection extends PostmanItem {
         ArrayList<PostmanItem> all = pmcTest.getItems(null);
 
         fact = pmcTest.getItem("Add Breed");
-
-        
-
-                
-                
-
-        
-
-
-
-    }
+} */
 
     
-    /** 
-     * @return String
-     * @throws Exception
-     */
-    public static String getPostmanCollectionSchema() throws Exception {
-        BufferedReader brItem;
-        String strChunk = null;
-        String schemaJSON = null;
-        String filePath = new java.io.File("").getAbsolutePath();
-
-        brItem = new BufferedReader(new FileReader(
-                new File(filePath + "/src/main/resources/com/postman/collection/postman-collection-2.1-schema.json")));
-        while ((strChunk = brItem.readLine()) != null)
-            schemaJSON = schemaJSON + strChunk;
-        try {
-            brItem.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        schemaJSON = schemaJSON.substring(4);
-        return schemaJSON;
-    }
-
+    
     
     /** 
+     * Moves an item in the array of items contained by this collection from one parent to another.  
+     * 
+     * 
      * @param itemToMoveKey
      * @param parentKey
-     * @throws Exception
+     * @throws InvalidCollectionAction If either the parent or item to be moved aren't present in the <code>item</code> array
      */
     public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
         PostmanItem itemToMove = this.getItem(itemToMoveKey);
@@ -119,47 +91,51 @@ public class PostmanCollection extends PostmanItem {
 
     
     /** 
-     * @param schemaJSON
+     * 
+     * Add a response object to the request contained by this collection specified by <code>requestKey</code>
+     * 
+     * 
+     * @param requestKey Key identifying the request to add the response to
+     * @param response New response to add to the request
+     * @throws InvalidCollectionAction If the specifyed request is not contained by this collection
      */
-    public void setTemporarySchema(String schemaJSON) {
-        this.tempSchemaJson = schemaJSON;
-    }
-
-    
-    /** 
-     * @param requestKey
-     * @param response
-     * @throws Exception
-     */
-    public void addResponse(String requestKey, PostmanResponse response) throws Exception {
+    public void addResponse(String requestKey, PostmanResponse response) throws InvalidCollectionAction {
         PostmanItem req = this.getItem(requestKey);
+        if(req == null) {
+            throw new InvalidCollectionAction("Request with key [" + requestKey + "] not found");
+        }
         req.addResponse(response);
 
     }
 
     
     /** 
-     * @param newFolder
+     * 
+     * Convenience method to add an item with no child items to this collection.  
+     * 
+     * @param newFolder The new item to add
      * @throws Exception
      */
-    public void addFolder(PostmanItem newFolder) throws Exception {
-        if (newFolder.getItemType() != enumPostmanItemType.FOLDER) {
-            throw new Exception("Item is not a folder");
-        }
-
-        this.addItem(newFolder);
+    public PostmanItem addFolder(String name) throws RecursiveItemAddException, IllegalPropertyAccessException {
+        PostmanItem newItem = new PostmanItem(name);
+        this.addItem(newItem);
+        return newItem;
 
     }
 
     
     /** 
-     * @param newRequest
-     * @param name
-     * @param response
-     * @return PostmanItem
-     * @throws Exception
+     * 
+     * Create and add a new <code>request</code> as a top level child item of this collection.
+     * 
+     * 
+     * @param newRequest The new request to add
+     * @param name The name for the new item
+     * @param response A response to include in the request item, or null to ignore
+     * @return PostmanItem The new Request item
+     *  
      */
-    public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws Exception {
+    public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws RecursiveItemAddException, IllegalPropertyAccessException {
         PostmanItem newItem = this.addRequest(newRequest, name);
         newItem.addResponse(response);
         return newItem;
@@ -172,7 +148,7 @@ public class PostmanCollection extends PostmanItem {
      * @return PostmanItem
      * @throws Exception
      */
-    public PostmanItem addRequest(PostmanRequest newRequest, String name) throws Exception {
+    public PostmanItem addRequest(PostmanRequest newRequest, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
         PostmanItem newItem = new PostmanItem(name);
         newItem.setRequest(newRequest);
         super.addItem(newItem);
