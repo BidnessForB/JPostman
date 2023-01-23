@@ -55,7 +55,7 @@ public class PostmanCollection extends PostmanItem {
     public static void main(String[] args) throws Exception {
         String filePath = new java.io.File("").getAbsolutePath();
         //String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/");
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
         PostmanItem fact = pmcTest.getItem("Get a list of facts");
         PostmanItem folder = pmcTest.getItem("get Breeds",true);
 
