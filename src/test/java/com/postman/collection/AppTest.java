@@ -95,7 +95,7 @@ public class AppTest {
         PostmanItem folder;
         PostmanItem request;
 
-        PostmanEvent event;
+        PostmanEvent  event = null;
         PostmanRequest req;
 
         try {
@@ -265,9 +265,9 @@ public class AppTest {
             System.out.println("Skipping test: " + new Throwable().getStackTrace()[0].getMethodName());
             return;
         }
-        String curOutputPath;
+        
         PostmanCollection pmcTest2;
-        boolean outputDirCreated;
+        boolean outputDirCreated = false;
         try {
             outputDirCreated = new File(filePath  + "/test-output/compare").mkdirs();
         }
@@ -742,7 +742,7 @@ public class AppTest {
         pmcTest.addRequest(req, "Javascript body", resp);
 
         body = new PostmanBody(enumRequestBodyMode.FILE);
-        body.setFile("8vhckkNqZ/jenkins-small.png");
+        body.setBinarySrc("8vhckkNqZ/jenkins-small.png");
         req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
         resp = new PostmanResponse("NORMAL Binary", req, "OK", 200, "this is the expected response body");
@@ -795,7 +795,7 @@ public class AppTest {
 
 
         PostmanVariable prop;
-        HashMap<String, PostmanVariable> props = new HashMap<String,PostmanVariable>();
+        
         PostmanAuth auth = new PostmanAuth(enumAuthType.OAUTH1);
         prop = new PostmanVariable("addEmptyParamsToSign", "true");
         auth.setProperty(prop);
@@ -923,7 +923,7 @@ public class AppTest {
             body = new PostmanBody(enumRequestBodyMode.FILE);
             try {
                 String file = "some/path/to/file.png";
-                body.setFile(file);
+                body.setBinarySrc(file);
                 assertTrue(body.getFile().equals(file));
             }
             catch(Exception e)
@@ -1133,16 +1133,114 @@ public class AppTest {
 
     }
 
+    
+    
     @Test
-    public void testCollectionObject() {
-        //add request
-        //remove request
-        //add folder
-        //remove folder
-        //write to good path
-        //write to bad path
-        //add collection
-        //validate
+    public void TestCollectionRequests() {
+        pmcTest = PostmanCollection.PMCFactory();
+        pmcTest.setName("TEST Request Operations");
+
+        PostmanRequest req;
+        PostmanItem reqItem1 = null;
+        PostmanItem reqItem2 = null;
+        PostmanItem newFolder = null;
+
+        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
+       try {
+        reqItem1 = pmcTest.addRequest(req, "GET echo");
+       } 
+       catch(Exception e){
+        assertTrue("Unexpected exception " + e.getMessage(), false);
+       }
         
+       req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+       
+
+       try {
+        reqItem2 = pmcTest.addRequest(req,"POST echo");
+       } 
+       catch(Exception e){
+        assertTrue("Unexpected exception " + e.getMessage(), false);
+       }
+
+       
+
+
+       assertTrue(pmcTest.getItems(enumPostmanItemType.REQUEST).size() == 2);
+
+       try {
+        pmcTest.moveItem(reqItem1, reqItem1);
+       }
+       catch(RecursiveItemAddException e)
+       {
+        assertTrue("Recursive exception as expected",true);
+       }
+       catch(InvalidCollectionAction d) {
+        assertTrue("Unexpected exception: " + d.getMessage(), false);
+       }
+
+       try {
+        newFolder = pmcTest.addFolder("New Folder");
+       }
+       catch(Exception e)
+       {
+        assertTrue("Unexpected exception: " + e.getMessage(), false);
+       }
+       
+       try {
+        pmcTest.moveItem(reqItem1, newFolder);
+        assertTrue(pmcTest.getItem("GET echo", true).getName().equals("New Folder"));
+        assertTrue(pmcTest.getItems().size() == 2);
+       }
+       catch(Exception e)
+       {
+        assertTrue("Unexpected exception: " + e.getMessage(), false);
+       }
+       
+
+       
+       
+
+
+
+       pmcTest.removeItem("POST echo");
+       assertTrue(pmcTest.getItems(enumPostmanItemType.REQUEST).size() == 1);
+       assertTrue(pmcTest.getItem("GET echo") != null);
+
+
+    }
+
+    @Test
+    public void testCollectionFolder() {
+
+        pmcTest = PostmanCollection.PMCFactory();
+        pmcTest.setName("TEST Request Operations");
+
+        PostmanRequest req;
+        PostmanItem reqItem1 = null;
+        PostmanItem reqItem2 = null;
+        PostmanItem newFolder = null;
+
+        try {
+            
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo/get");
+            reqItem1 = pmcTest.addRequest(req, "GET test");
+            req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo/post");
+            reqItem2 = pmcTest.addRequest(req, "GET Post");
+            newFolder = pmcTest.addFolder("New Folder");
+            pmcTest.moveItem(reqItem1, newFolder);
+            pmcTest.moveItem(reqItem2, newFolder);
+            assertTrue(pmcTest.getItems(enumPostmanItemType.REQUEST).size() == 2);
+            assertTrue(pmcTest.getItems(enumPostmanItemType.FOLDER).size() == 1);
+            assertTrue(pmcTest.getItem("New Folder").getItems().size() == 2);
+            pmcTest.removeItem(newFolder);
+            assertTrue(pmcTest.getItems(enumPostmanItemType.REQUEST).size() == 0);
+            assertTrue(pmcTest.getItems(enumPostmanItemType.FOLDER).size() == 0);
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected exception: " + e.getMessage(), false);
+        }
+        
+
     }
 }

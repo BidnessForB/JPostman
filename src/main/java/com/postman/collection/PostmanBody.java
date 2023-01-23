@@ -324,7 +324,7 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * Returns an ArrayList&#62;PostmanVariable&#60; containing formdata paramters:
+     * Returns an ArrayList&#60;PostmanVariable&#62; containing formdata paramters:
      * 
      * <pre>
      * {
@@ -343,7 +343,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * 
      * 
      * 
-     * @return ArrayList&#60;PostmanVariable&#62; The data
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The data
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
@@ -366,7 +366,7 @@ public class PostmanBody extends PostmanCollectionElement {
     
     /** 
      * 
-     * Returns a formdata property at the specified position in the array
+     * Returns a {@link com.postman.collection.PostmanVariable PostmanVariable} containing formdata property at the specified position in the array
      * 
      * @param position The position in the array
      * @return PostmanVariable The form data.
@@ -390,10 +390,10 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     /** 
-     * Convenience method to set the formdata with an already filled ArrayList&#60;PostmanVariable&#62; of properties
+     * Convenience method to set the formdata with an already filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of properties
      * 
      * 
-     * @param formdata  The filled ArrayList&#60;PostmanVariable&#62;
+     * @param formdata  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {

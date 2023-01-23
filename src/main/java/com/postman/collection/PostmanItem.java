@@ -156,7 +156,7 @@ public class PostmanItem extends PostmanCollectionElement {
 
     }
    /**
-    *  * Construct an empty item with only a &#60;name&#62; property &#60;name&#62;.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
+    *  * Construct an empty item with only a <code>name</code>>; property.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
 
     * @param name The name of the object
     */
@@ -194,7 +194,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * Return the ArrayList&#60;PostmanEvent&#62; containing the objects comprising the <code>event</code> array
      * 
-     * @return ArrayList<PostmanEvent>
+     * @return ArrayList&#60;PostmanEvent&#62;
      */
     public ArrayList<PostmanEvent> getEvents() {
 
@@ -586,6 +586,7 @@ public class PostmanItem extends PostmanCollectionElement {
         for (PostmanItem curItem : item) {
             if (curItem.getKey().equals(key)) {
                 this.item.remove(curItem);
+                break;
             }
 
         }

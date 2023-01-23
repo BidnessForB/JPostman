@@ -50,8 +50,7 @@ public class PostmanCollection extends PostmanItem {
     
     private ArrayList<PostmanVariable> variable = null;
     private PostmanAuth auth = null;
-    public transient String tempSchemaJson;
-    public HashMap<String, String> info;
+    private HashMap<String, String> info;
 
     
     /*
@@ -169,7 +168,7 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * Convenience method to add a request with a pre-constructed ArrayList&#60;PostmanResponse&#62; of response items.
+     * Convenience method to add a request with a pre-constructed ArrayList&#60;{@link com.postman.collection.PostmanResponse}&#62; of response items.
      * 
      * @param newRequest The new Request to add
      * @param name The name of the request
@@ -237,7 +236,7 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Set the array of key-value pairs in this collections <code>variable</code> array element
      * 
-     * @param vars The ArrayList&#60PostmanVariable&#62 containing the variables
+     * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
      */
     public void setVariables(ArrayList<PostmanVariable> vars) {
         this.variable = vars;
@@ -273,11 +272,12 @@ public class PostmanCollection extends PostmanItem {
         if (this.variable == null) {
             return;
         }
-        for (int i = 0; i < this.variable.size(); i++)
+        for(int i = 0; i < this.variable.size(); i++) {
             if (this.variable.get(i).getKey().equals(key)) {
                 this.variable.remove(i);
-                return;
+                break;
             }
+        }
     }
 
       /** 
@@ -401,7 +401,7 @@ public class PostmanCollection extends PostmanItem {
 
     
     /** 
-     * Get the ArrayList&#60;PostmanVariable&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
+     * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
      * 
      * @return ArrayList<PostmanVariable>
      */
@@ -469,7 +469,7 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * STatic factory method to create the new collection.  Default constructor is undefined to avoid conflict with Gson.
+     * Static factory method to create the new collection.  Default constructor is undefined to avoid conflict with Gson.
      * 
      * @return PostmanCollection
      */
@@ -482,7 +482,7 @@ public class PostmanCollection extends PostmanItem {
         pmcRetVal.setName("New Collection");
         pmcRetVal.setDescription("Created by JPostman");
         try {
-            pmcRetVal.setSchemaURI(new URI(PostmanCollectionElement.defaultCollectionSchema));
+            pmcRetVal.setSchemaURI(new URI(PostmanCollectionElement.getDefaultCollectionSchema()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -596,11 +596,11 @@ public class PostmanCollection extends PostmanItem {
      * 
      * set all elements of the <code>info</code> property object of this collection.  Values are not validated
      * 
-     * @param name The name of the collection
-     * @param description A description of the collection
-     * @param postmanID The _postman_id of this collection
-     * @param exporterID The  _exporter_id of this colleciton
-     * @param schemaURI The URI for the schema of this collection
+     * @param name The <code>name</code> property of the collection
+     * @param description The <code>description</code> property of the collection
+     * @param postmanID The <code>_postman_id</code> property of this collection
+     * @param exporterID The  <code>_exporter_id</code> property of this colleciton
+     * @param schemaURI The URI for the <code>schema</code> of this collection
      * @throws URISyntaxException If the provided string for <code>schemaURI</code> is not a properly constructed URI
      */
     public void setInfo(String name, String description, String postmanID, String exporterID, String schemaURI) throws URISyntaxException
@@ -618,7 +618,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * 
      * Write this collections generated JSON to a file at the specified path.  Note that the order of elements in the resulting file is not guaranteed and may not match 
-     * a corresponding Postman generated file.  However, this does not affect the validity or functionality of the generated JSON>
+     * a corresponding Postman generated file.  However, this does not affect the validity or functionality of the generated JSON.
      * 
      * @param path The path to export JSON to.
      * @throws IOException If there is an error attempting to create or write to the specified path
@@ -633,7 +633,7 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * Set the <code>auth</code> object property of this collection with a PostmanAuth object containing the values.  
+     * Set the <code>auth</code> object property of this collection with a {@link com.postman.collection.PostmanAuth} object containing the values.  
      * 
      * @param auth The new auth values, or null to remove an existing auth.
      */
@@ -750,14 +750,6 @@ public class PostmanCollection extends PostmanItem {
     }
 
     
-    /** 
-     * @param key
-     * @return PostmanItem
-     */
-    public PostmanItem getItemParent(String key) {
-        return this.getItem(key, true);
-    }
-
     
     /** 
      * 

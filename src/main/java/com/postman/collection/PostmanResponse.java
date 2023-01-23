@@ -205,8 +205,8 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param PostmanPreviewlanguage The language
      */
-    public void SetPostmanPreviewlanguage(String PostmanPreviewlanguage) {
-        this._postman_previewlanguage = _postman_previewlanguage;
+    public void SetPostmanPreviewlanguage(String previewLanguage) {
+        this._postman_previewlanguage = previewLanguage;
     }
 
     
