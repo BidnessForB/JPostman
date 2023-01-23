@@ -1044,5 +1044,19 @@ public class AppTest {
         assertTrue(folder != null || folder.getName().equals("Breeds"));
 
         System.out.println("foo");
+
+        pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
+        
+        ArrayList<PostmanItem> folders = pmcTest.getItems(enumPostmanItemType.FOLDER);
+        assertTrue(folders.size() == 2);
+        ArrayList<PostmanItem> requests = pmcTest.getItems(enumPostmanItemType.REQUEST);
+        assertTrue(requests.size() == 5);
+        ArrayList<PostmanItem> all = pmcTest.getItems(null);
+        assertTrue(all.size() == 7);
+
+        fact = pmcTest.getItem("Add Breed");
+        assertTrue(fact != null);
+        assertTrue(fact.getName().equals("Add Breed"));
+
     }
 }

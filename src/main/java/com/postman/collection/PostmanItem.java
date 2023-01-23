@@ -285,6 +285,7 @@ public class PostmanItem extends PostmanCollectionElement {
         return item;
     }
 
+    
     public ArrayList<PostmanItem> getItems(enumPostmanItemType filter) {
         ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
 
