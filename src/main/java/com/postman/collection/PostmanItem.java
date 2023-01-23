@@ -285,7 +285,14 @@ public class PostmanItem extends PostmanCollectionElement {
         return item;
     }
 
-    
+    /**
+     * 
+     * Recursively search the entire tree of items in the <code>item</code> property, optionally filter by item type (eg. FOLDER or REQUEST)
+     * 
+     * 
+     * @param filter Enumerated value for the object type, eg., FOLDER or REQUEST.  Passing null returns all items.
+     * @return
+     */
     public ArrayList<PostmanItem> getItems(enumPostmanItemType filter) {
         ArrayList<PostmanItem> results = new ArrayList<PostmanItem>();
 
@@ -364,8 +371,9 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * 
      * @param key The key (name) of the desired item
-     * @param parent True to return the parent of the item, if found, false to return the item itself.  
-     * @return PostmanItem
+     * @param parent True to return the parent of the item, if found, false to return the item itself. 
+     * @param filter Optional, filter on object type, eg., FOLDER or REQUEST.  If null, do not filter 
+     * @return PostmanItem The item if present, or null
      */
     
     public PostmanItem getItem(String key, boolean parent, enumPostmanItemType filter) {
@@ -452,7 +460,10 @@ public class PostmanItem extends PostmanCollectionElement {
     
     
     /** 
-     * @param theItem
+     * 
+     * Searches the direct children of this item (eg., non-recursively) to find an entry in the array that is the same Java instance as this item (Object.equals())
+     * 
+     * @param theItem  The item to search for
      * @return boolean
      */
     public boolean hasItem(PostmanItem theItem) {
@@ -470,9 +481,12 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
+     * 
+     * Add an event to the array of items in the <code>event</code> property
+     * 
      * @param newEvent
      */
-    public void setEvent(PostmanEvent newEvent) {
+    private void setEvent(PostmanEvent newEvent) {
         if (event == null) {
             event = new ArrayList<PostmanEvent>();
         }
@@ -486,16 +500,20 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param newItem
-     * @throws Exception
+     * 
+     * Append a new direct child item to the array of items in the <code>item</code> property.  This method does not recursively check for circular additions/references.
+     * 
+     * @param newItem The item to add 
+     * @throws RecursiveItemAddException If newItem is the same item instance as this item.
+     * @throws IllegalPropertyAccessExeption If this item is a request
      */
     public void addItem(PostmanItem newItem) throws Exception {
 
         if (newItem.equals(this)) {
-            throw new Exception("Cannot add an object to itself, lolz");
+            throw new RecursiveItemAddException("Cannot add an object to itself, lolz");
         }
         if (this.getItemType() == enumPostmanItemType.REQUEST) {
-            throw new Exception("Cannot add items to Requests");
+            throw new IllegalPropertyAccessException("Cannot add items to Requests");
         }
         if (this.item == null) {
             this.item = new ArrayList<PostmanItem>();
@@ -506,70 +524,57 @@ public class PostmanItem extends PostmanCollectionElement {
 
     
     /** 
-     * @param newItem
-     * @param position
-     * @throws Exception
+     * 
+     * 
+     * Add a new direct child item to the array of items in the <code>item</code> property at the specified index.  This method does not recursively check for circular additions/references.
+     * 
+     * @param newItem  Item to add
+     * @param position Index for new item
+     * @throws IllegalPropertyAccessException If newItem is already a direct child of this item, or if position is < 0 or > the size of the existing array
+     * @throws RecursiveItemAddException If newItem is already a child of this item
+     *
      */
     public void addItem(PostmanItem newItem, int position) throws Exception {
+        if(this.item == null) {
+            this.item = new ArrayList<PostmanItem>();
+        }
         if (this.hasItem(newItem)) {
-            throw new Exception("Item is already present");
+            throw new IllegalPropertyAccessException("Item is already present");
         }
         // If the newitem already owns this item, it's a circular recursion
         if (newItem.getItem(this.getKey()) != null)
 
         {
-            throw new Exception("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey());
+            throw new RecursiveItemAddException("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey());
         }
+        if(position < 0 || position > this.item.size()) {
+            throw new IllegalPropertyAccessException("Position " + position + " is out of bounds");
+        }
+        
         this.item.add(position, newItem);
 
     }
 
     
     /** 
-     * @param oldItem
-     * @throws Exception
+     * 
+     * Removes an item from the tree of items comprising the <code>item</code> property
+     * 
+     * @param oldItem The item to remove
+     * 
      */
-    public void removeItem(PostmanItem oldItem) throws Exception {
+    public void removeItem(PostmanItem oldItem)  {
         this.removeItem(oldItem.getKey());
     }
 
-    
     /** 
-     * @param code
-     * @throws Exception
+     * 
+     * Removes an item with the specified key from the tree of items comprising the <code>item</code> property
+     * 
+     * @param key Key of the item to remove (ie. it's name)
+     * 
      */
-    public void setPreRequestScript(String code) throws Exception {
-
-        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, code);
-        this.setEvent(prEvent);
-    }
-
-    
-    /** 
-     * @param code
-     * @throws Exception
-     */
-    public void setTestScript(String code) throws Exception {
-
-        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, code);
-        this.setEvent(prEvent);
-    }
-
-    
-    /** 
-     * @param code
-     * @param type
-     */
-    public void setPreRequestScript(String code, String type) {
-
-    }
-
-    
-    /** 
-     * @param key
-     * @throws Exception
-     */
-    public void removeItem(String key) throws Exception {
+    public void removeItem(String key) {
         if (item == null) {
             return;
         }
@@ -581,7 +586,34 @@ public class PostmanItem extends PostmanCollectionElement {
         }
 
     }
+    
+    /** 
+     * 
+     * Set the pre-request script for this item in the <code>event</code> array
+     * 
+     * @param code The source code for the script
+     * 
+     */
+    public void setPreRequestScript(String code)  {
 
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, code);
+        this.setEvent(prEvent);
+    }
+
+    
+    /** 
+     * Set the test script for this item in the <code>event</code> array
+     * 
+     * @param code The source code for the script
+     * 
+     */
+    public void setTestScript(String code) throws Exception {
+
+        PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, code);
+        this.setEvent(prEvent);
+    }
+
+    
     
     /** 
      * @return String

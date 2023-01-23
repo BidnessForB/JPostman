@@ -81,30 +81,25 @@ public class AppTest {
             pmcTest.setName("TEST Scripts");
             folder = new PostmanItem("Scripts");
 
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the folder");
-            folder.setEvent(event);
+            
+            folder.setPreRequestScript("//PRE-REQUEST this is some source code for the folder");
             event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the folder");
-            folder.setEvent(event);
+            folder.setTestScript("//TEST this is some source code for the folder");
             pmcTest.addItem(folder);
 
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
 
             request = new PostmanItem("TEST Request with Scripts");
             request.setRequest(req);
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the request");
-            request.setEvent(event);
+            request.setPreRequestScript("//PRE-REQUEST this is some source code for the request");
 
-            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the request");
-            request.setEvent(event);
+            
+            request.setTestScript("//TEST this is some source code for the request");
             folder.addItem(request);
 
-            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the collection");
-            pmcTest.setEvent(event);
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the collection");
-            pmcTest.setEvent(event);
+            
+            pmcTest.setTestScript("//TEST this is some source code for the collection");
+            pmcTest.setPreRequestScript("//PRE-REQUEST this is some source code for the collection");
 
             boolean valid = pmcTest.validate();
             HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcTest,
