@@ -30,12 +30,8 @@ jobs:
         # cache: maven
     - name: Build with Maven
       run: mvn -B clean compile assembly:single 
-    - name: Generate javadocs
-      run: mvn javadoc:javadoc
-    - name: Tidy up the javadocs
-      uses: cicirello/javadoc-cleanup@v1
-      with:
-        path-to-root: docs
+    #- name: Generate javadocs
+    #  run: mvn javadoc:javadoc
         # base-url-path: https://www.example.com/
         # user-defined-block: |
           # <meta name="referrer" content="strict-origin-when-cross-origin">
