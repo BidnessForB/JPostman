@@ -417,7 +417,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * @param resp
      * @throws Exception
      */
-    public void addResponse(PostmanResponse resp) throws Exception {
+    public void addResponse(PostmanResponse resp)  {
         if (this.response == null) {
             this.response = new ArrayList<PostmanResponse>();
         }
@@ -510,9 +510,9 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * @param newItem The item to add 
      * @throws RecursiveItemAddException If newItem is the same item instance as this item.
-     * @throws IllegalPropertyAccessExeption If this item is a request
+     * @throws IllegalPropertyAccessException If this item is a request
      */
-    public void addItem(PostmanItem newItem) throws Exception {
+    public void addItem(PostmanItem newItem) throws RecursiveItemAddException, IllegalPropertyAccessException {
 
         if (newItem.equals(this)) {
             throw new RecursiveItemAddException("Cannot add an object to itself, lolz");
@@ -539,7 +539,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * @throws RecursiveItemAddException If newItem is already a child of this item
      *
      */
-    public void addItem(PostmanItem newItem, int position) throws Exception {
+    public void addItem(PostmanItem newItem, int position) throws IllegalPropertyAccessException, RecursiveItemAddException {
         if(this.item == null) {
             this.item = new ArrayList<PostmanItem>();
         }

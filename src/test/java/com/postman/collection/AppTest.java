@@ -1132,4 +1132,17 @@ public class AppTest {
         assertTrue(fact.getName().equals("Add Breed"));
 
     }
+
+    @Test
+    public void testCollectionObject() {
+        //add request
+        //remove request
+        //add folder
+        //remove folder
+        //write to good path
+        //write to bad path
+        //add collection
+        //validate
+        
+    }
 }
