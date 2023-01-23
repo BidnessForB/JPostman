@@ -36,7 +36,7 @@ jobs:
       uses: cicirello/javadoc-cleanup@v1
       with:
         path-to-root: docs
-        base-url-path: https://www.example.com/
+        # base-url-path: https://www.example.com/
         # user-defined-block: |
           # <meta name="referrer" content="strict-origin-when-cross-origin">
           # <link rel="icon" href="/images/favicon.svg" sizes="any" type="image/svg+xml">      

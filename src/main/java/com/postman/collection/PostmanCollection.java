@@ -43,7 +43,7 @@ import java.util.HashMap;
 /**
  * Encapsulates a Postman collection
  * 
- * <more info here>
+ * This is achange to the docs
  */
 public class PostmanCollection extends PostmanItem {
 
