@@ -1,0 +1,576 @@
+[INFO] Using jgitver configuration file: /Users/bryancross/dev/github/bidnessforb/JPostman/.mvn/jgitver.config.xml
+[INFO] Using jgitver-maven-plugin [1.8.0] (sha1: 3f3523c5f7540865e3ad66fc9ef1c9daa52a6e6b)
+[INFO]     version '0.9.6-35dad77f' computed in 486 ms
+[INFO] 
+[INFO] Scanning for projects...
+[INFO] jgitver-maven-plugin is about to change project(s) version(s)
+[INFO]     com.postman.collection::jpostman::0.9 -> 0.9.6-35dad77f
+[INFO] 
+[INFO] ------------------< com.postman.collection:jpostman >-------------------
+[INFO] Building jpostman 0.9.6-35dad77f
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> maven-javadoc-plugin:3.4.1:javadoc (default-cli) > generate-sources @ jpostman >>>
+[INFO] 
+[INFO] <<< maven-javadoc-plugin:3.4.1:javadoc (default-cli) < generate-sources @ jpostman <<<
+[INFO] 
+[INFO] 
+[INFO] --- maven-javadoc-plugin:3.4.1:javadoc (default-cli) @ jpostman ---
+[INFO] No previous run data found, generating javadoc.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.221 s
+[INFO] Finished at: 2023-01-23T14:44:39-06:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:3.4.1:javadoc (default-cli) on project jpostman: An error has occurred in Javadoc report generation: 
+[ERROR] Exit code: 1 - Loading source files for package com.postman.collection...
+[ERROR] Loading source files for package com.postman.collection.adapter...
+[ERROR] Constructing Javadoc information...
+[ERROR] Building index for all the packages and classes...
+[ERROR] Standard Doclet version 19.0.1
+[ERROR] Building tree for all the packages and classes...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:7: warning: empty <p> tag
+[ERROR] <p></p>
+[ERROR]    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/package-info.java:6: warning: no comment
+[ERROR] package com.postman.collection;
+[ERROR] ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/authDeserializer.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:20: warning: no description for @param
+[ERROR]      * @param jElement  
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:21: warning: no description for @param
+[ERROR]      * @param typeOfT
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:22: warning: no description for @param
+[ERROR]      * @param context
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:24: warning: no description for @throws
+[ERROR]      * @throws JsonParseException
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:12: warning: no comment
+[ERROR] public class authDeserializer implements JsonDeserializer<PostmanAuth> {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authDeserializer.java:12: warning: use of default constructor, which does not provide a comment
+[ERROR] public class authDeserializer implements JsonDeserializer<PostmanAuth> {
+[ERROR]        ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/authSerializer.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authSerializer.java:17: warning: no description for @param
+[ERROR]      * @param src
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authSerializer.java:18: warning: no description for @param
+[ERROR]      * @param typeOfSrc
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authSerializer.java:19: warning: no description for @param
+[ERROR]      * @param context
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authSerializer.java:13: warning: no comment
+[ERROR] public class authSerializer implements JsonSerializer<PostmanAuth> {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/adapter/authSerializer.java:13: warning: use of default constructor, which does not provide a comment
+[ERROR] public class authSerializer implements JsonSerializer<PostmanAuth> {
+[ERROR]        ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumAuthType.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:3: warning: no comment
+[ERROR] public enum enumAuthType {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]             ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                  ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                                 ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                                                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumAuthType.java:5: warning: no comment
+[ERROR]     AKAMAI, APIKEY, AWS, BEARER, BASIC, DIGEST, HAWK, OAUTH1, OAUTH2, NTLM
+[ERROR]                                                               ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumEventType.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumEventType.java:3: warning: no comment
+[ERROR] public enum enumEventType {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumEventType.java:4: warning: no comment
+[ERROR]     PRE_REQUEST,
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumEventType.java:5: warning: no comment
+[ERROR]     TEST
+[ERROR]     ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumHTTPRequestMethod.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:3: warning: no comment
+[ERROR] public enum enumHTTPRequestMethod {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                      ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]              ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                             ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                                  ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                              ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                               ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                                                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                           ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                                                                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                   ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                                        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumHTTPRequestMethod.java:5: warning: no comment
+[ERROR]         GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, COPY, LINK, UNLINK, PURGE, LOCK, UNLOCK, PROPFIND, VIEW, TRACE
+[ERROR]                                                                                                          ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumPostmanItemType.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumPostmanItemType.java:3: warning: no comment
+[ERROR] public enum enumPostmanItemType {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumPostmanItemType.java:4: warning: no comment
+[ERROR]     FOLDER,
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumPostmanItemType.java:5: warning: no comment
+[ERROR]     REQUEST
+[ERROR]     ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumRawBodyLanguage.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:3: warning: no comment
+[ERROR] public enum enumRawBodyLanguage {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]                                   ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]                          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]                     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRawBodyLanguage.java:4: warning: no comment
+[ERROR]     TEXT,JAVASCRIPT,JSON,HTML,XML,GRAPHQL;
+[ERROR]                               ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumRequestBodyMode.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:3: warning: no comment
+[ERROR] public enum enumRequestBodyMode {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]                            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]                   ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumRequestBodyMode.java:4: warning: no comment
+[ERROR]     TEXT,FORMDATA,RAW,FILE,GRAPHQL,URLENCODED;
+[ERROR]                                    ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/enumVariableResolution.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumVariableResolution.java:3: warning: no comment
+[ERROR] public enum enumVariableResolution {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumVariableResolution.java:4: warning: no comment
+[ERROR]     RESOLVE, TRANSFORM, NONE
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumVariableResolution.java:4: warning: no comment
+[ERROR]     RESOLVE, TRANSFORM, NONE
+[ERROR]     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/enumVariableResolution.java:4: warning: no comment
+[ERROR]     RESOLVE, TRANSFORM, NONE
+[ERROR]              ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/IllegalPropertyAccessException.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/IllegalPropertyAccessException.java:3: warning: no comment
+[ERROR] public class IllegalPropertyAccessException extends Exception  {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/IllegalPropertyAccessException.java:4: warning: no comment
+[ERROR]     public IllegalPropertyAccessException(String message) {
+[ERROR]            ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/InvalidCollectionAction.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/InvalidCollectionAction.java:3: warning: no comment
+[ERROR] public class InvalidCollectionAction extends Exception {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/InvalidCollectionAction.java:4: warning: no comment
+[ERROR]     public InvalidCollectionAction(String message) {
+[ERROR]            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/InvalidCollectionAction.java:8: warning: no comment
+[ERROR]     public InvalidCollectionAction(Throwable cause) {
+[ERROR]            ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/InvalidPropertyException.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/InvalidPropertyException.java:3: warning: no comment
+[ERROR] public class InvalidPropertyException extends Exception {
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/InvalidPropertyException.java:4: warning: no comment
+[ERROR]     public InvalidPropertyException(String msg) {
+[ERROR]            ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanAuth.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:53: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:53: warning: no description for @throws
+[ERROR]      * @throws Exception
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:55: warning: no @throws for com.postman.collection.ValidationException
+[ERROR]     public boolean validate(String altSchemaJSON) throws ValidationException {
+[ERROR]                    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:177: warning: no description for @param
+[ERROR]      * @param compare
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:179: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:179: warning: no description for @throws
+[ERROR]      * @throws Exception
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:181: warning: no @throws for com.postman.collection.ValidationException
+[ERROR]     public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws ValidationException {
+[ERROR]                     ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:98: error: malformed HTML
+[ERROR]      * @param properties HashMap<String, PostmanVariable> containing the properties of this auth element
+[ERROR]                                 ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:177: error: malformed HTML
+[ERROR]      * Set the properties of the Auth object using a pre-created HashMap<String,PostmanVariable> of properties.
+[ERROR]                                                                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:179: warning: no description for @param
+[ERROR]      * @param properties
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:199: error: malformed HTML
+[ERROR]      * Return the complete array of properties as a HashMap<String,PostmanVariable>, or null if none are set. 
+[ERROR]                                                            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:202: error: malformed HTML
+[ERROR]      * @return HashMap<String, PostmanVariable>
+[ERROR]                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:214: error: @param name not found
+[ERROR]      * @param property The new property
+[ERROR]               ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:216: warning: no @param for newElement
+[ERROR]     public void setProperty(PostmanVariable newElement)  {
+[ERROR]                 ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:255: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:255: warning: no description for @throws
+[ERROR]      * @throws Exception
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanAuth.java:47: warning: no comment
+[ERROR]     public HashMap<String, PostmanVariable> properties = new HashMap<String, PostmanVariable>();
+[ERROR]                                             ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollectionElement.java:30: warning: no comment
+[ERROR]     public abstract String getKey();
+[ERROR]                            ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanBody.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:188: warning: no description for @param
+[ERROR]      * @param raw
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:204: warning: no description for @param
+[ERROR]      * @param lang
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:282: warning: no main description
+[ERROR]      * @return HashMap&#60;String,String&#62; A HashMap with the following keys:
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:346: error: unknown tag: PostmanVariable
+[ERROR]      * @return ArrayList<PostmanVariable> The data
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:347: error: reference not found
+[ERROR]      * @throws IllegalPropertyAccessExceptoin If <code>mode</code> is not URLENCODED or FORMDATA
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:349: warning: no @throws for com.postman.collection.IllegalPropertyAccessException
+[ERROR]     public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
+[ERROR]                                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:373: error: reference not found
+[ERROR]      * @throws IllegalPropertyAcessException if <code>mode</code> is not URLENCODED or FORMDATA
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:375: warning: no @throws for com.postman.collection.IllegalPropertyAccessException
+[ERROR]     public PostmanVariable getFormdata(int position) throws IllegalPropertyAccessException {
+[ERROR]                            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:438: error: @param name not found
+[ERROR]      * @param PostmanVariable Populated PostmanVariable containing the formdata
+[ERROR]               ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:441: warning: no @param for data
+[ERROR]     public void setFormdata(PostmanVariable data) throws IllegalPropertyAccessException  {
+[ERROR]                 ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:485: error: exception not thrown: com.postman.collection.IllegalPropertyAccessException
+[ERROR]      * @throws IllegalPropertyAccessException If <code>mode</code> is not FILE
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:521: warning: no description for @param
+[ERROR]      * @param newMode
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:674: warning: no comment
+[ERROR]     public class PostmanBinaryFile {
+[ERROR]            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:626: warning: no comment
+[ERROR]     public class PostmanBodyRaw {
+[ERROR]            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:689: warning: no comment
+[ERROR]     public class PostmanGraphQL {
+[ERROR]            ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanBody.PostmanBinaryFile.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:677: warning: no comment
+[ERROR]         public PostmanBinaryFile(String src) {
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:681: warning: no comment
+[ERROR]         public String getSrc() {
+[ERROR]                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:685: warning: no comment
+[ERROR]         public void setSrc(String src) {
+[ERROR]                     ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanBody.PostmanBodyRaw.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:629: warning: no comment
+[ERROR]         public PostmanBodyRaw(enumRawBodyLanguage language) {
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:633: warning: no comment
+[ERROR]         public enumRawBodyLanguage getLanguage() {
+[ERROR]                                    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:652: warning: no comment
+[ERROR]         public void setLanguage(enumRawBodyLanguage newLanguage) {
+[ERROR]                     ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanBody.PostmanGraphQL.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:693: warning: no comment
+[ERROR]         public PostmanGraphQL(String query) {
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanBody.java:697: warning: no comment
+[ERROR]         public PostmanGraphQL(String query, String variables) {
+[ERROR]                ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanCollection.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:148: error: unknown tag: name
+[ERROR]      * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  
+[ERROR]                                            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:148: error: unknown tag: name
+[ERROR]      * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  
+[ERROR]                                                            ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:148: error: unknown tag: parent
+[ERROR]      * Construct an empty item with only a <name> property </name> and assign it as a child of <parent>  
+[ERROR]                                                                                                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:159: error: unknown tag: name
+[ERROR]     *  * Construct an empty item with only a <name> property </name>.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
+[ERROR]                                              ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:159: error: unknown tag: name
+[ERROR]     *  * Construct an empty item with only a <name> property </name>.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
+[ERROR]                                                              ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:197: error: unknown tag: PostmanEvent
+[ERROR]      * @return ArrayList<PostmanEvent>
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:264: error: unknown tag: PostmanResponse
+[ERROR]      * @return ArrayList<PostmanResponse>  The responses, or null if none are defined.
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:287: error: unknown tag: PostmanItem
+[ERROR]      * @return ArrayList<PostmanItem>  The items
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:418: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanItem.java:538: error: malformed HTML
+[ERROR]      * @throws IllegalPropertyAccessException If newItem is already a direct child of this item, or if position is < 0 or > the size of the existing array
+[ERROR]                                                                                                                    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:117: error: @param name not found
+[ERROR]      * @param newFolder The new item to add
+[ERROR]               ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:118: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:137: error: reference not found
+[ERROR]      * @throws RecursiveItemException If this collection already include this instance in it's array of items.
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:138: error: reference not found
+[ERROR]      * @throws IllegalPropertyException 
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:157: error: reference not found
+[ERROR]      * @throws RecursiveItemException If this collection already include this instance in it's array of items.
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:158: error: reference not found
+[ERROR]      * @throws IllegalPropertyException 
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:178: error: reference not found
+[ERROR]      * @throws RecursiveItemException If this collection already include this instance in it's array of items.
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:179: error: reference not found
+[ERROR]      * @throws IllegalPropertyException 
+[ERROR]        ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:196: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:240: error: semicolon missing
+[ERROR]      * @param vars The ArrayList&#60PostmanVariable&#62 containing the variables
+[ERROR]                                    ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:240: error: semicolon missing
+[ERROR]      * @param vars The ArrayList&#60PostmanVariable&#62 containing the variables
+[ERROR]                                                       ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:406: error: unknown tag: PostmanVariable
+[ERROR]      * @return ArrayList<PostmanVariable>
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCollection.java:766: error: malformed HTML
+[ERROR]      * @return Map<String, String> The key-value pairs.
+[ERROR]                   ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanCollectionElement.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanCookie.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanCookie.java:184: error: unknown tag: PostmanVariable
+[ERROR]      * @return ArrayList<PostmanVariable>
+[ERROR]                         ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanEvent.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanEvent.java:60: error: @param name not found
+[ERROR]      * @param scriptCode Source code for the script
+[ERROR]               ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanEvent.java:61: error: @param name not found
+[ERROR]      * @param type Content type of the script, always "text/javascript"
+[ERROR]               ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanEvent.PostmanScript.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanItem.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanRequest.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanRequest.java:127: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanRequest.java:186: error: unknown tag: PostmanVariable
+[ERROR]      * @return ArrayList<PostmanVariable>  The headers
+[ERROR]                         ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanResponse.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanResponse.java:91: error: unknown tag: PostmanVariable
+[ERROR]      * @return ArrayList<PostmanVariable>
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanResponse.java:217: error: unknown tag: PostmanCookie
+[ERROR]      * @return ArrayList<PostmanCookie> The cookies
+[ERROR]                         ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanUrl.html...
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:64: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:119: error: unknown tag: key
+[ERROR]      * @param key Value for the <code>key</key> property 
+[ERROR]                                          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:119: error: element not closed: code
+[ERROR]      * @param key Value for the <code>key</key> property 
+[ERROR]                                 ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:121: error: element not closed: code
+[ERROR]      * @param description Value for the <code>description<code> property
+[ERROR]                                                          ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:121: error: element not closed: code
+[ERROR]      * @param description Value for the <code>description<code> property
+[ERROR]                                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:138: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:315: error: unknown tag: String
+[ERROR]      * @return ArrayList<String>
+[ERROR]                         ^
+[ERROR] /Users/bryancross/dev/github/bidnessforb/JPostman/src/main/java/com/postman/collection/PostmanUrl.java:447: error: exception not thrown: java.lang.Exception
+[ERROR]      * @throws Exception
+[ERROR]                ^
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/PostmanVariable.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/RecursiveItemAddException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/ValidationException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/varMapSerializer.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/package-summary.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/package-tree.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/package-summary.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/package-tree.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/constant-values.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/serialized-form.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/ValidationException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanAuth.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumHTTPRequestMethod.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumEventType.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumRawBodyLanguage.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/InvalidCollectionAction.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumVariableResolution.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumRequestBodyMode.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanResponse.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanUrl.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanCookie.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/RecursiveItemAddException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumAuthType.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanBody.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanBody.PostmanGraphQL.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanBody.PostmanBinaryFile.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanBody.PostmanBodyRaw.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanCollectionElement.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanItem.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/enumPostmanItemType.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/InvalidPropertyException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/IllegalPropertyAccessException.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanVariable.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanRequest.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanEvent.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanEvent.PostmanScript.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/class-use/PostmanCollection.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/class-use/authDeserializer.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/class-use/authSerializer.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/class-use/varMapSerializer.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/package-use.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/com/postman/collection/adapter/package-use.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/overview-tree.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/index.html...
+[ERROR] Building index for all classes...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/allclasses-index.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/allpackages-index.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/index-all.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/search.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/overview-summary.html...
+[ERROR] Generating /Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs/help-doc.html...
+[ERROR] 51 errors
+[ERROR] 100 warnings
+[ERROR] 
+[ERROR] Command line was: /opt/homebrew/Cellar/openjdk/19.0.1/libexec/openjdk.jdk/Contents/Home/bin/javadoc @options @packages
+[ERROR] 
+[ERROR] Refer to the generated Javadoc files in '/Users/bryancross/dev/github/bidnessforb/JPostman/target/site/apidocs' dir.
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

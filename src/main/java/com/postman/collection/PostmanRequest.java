@@ -6,14 +6,14 @@ import java.util.ArrayList;
  * 
  * Encapsulates the <code>request</code> object property of a PostmanItem object
  * 
- * <pre>
+ * <pre>{@code 
 * {
     "name": "URL 7",
     "request": {
         "method": "GET",
         "header": [],
         "url": {
-            "raw": "{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=",
+            "raw": "{{baseUrl}}foo.com/bar/:path1/bat.json?foo&#61;1&bar&#61;",
             "host": [
                 "{{baseUrl}}foo",
                 "com"
@@ -43,8 +43,7 @@ import java.util.ArrayList;
     },
     "response": []
 }
-                </pre>
- * 
+}</pre> * 
  * 
  */
 public class PostmanRequest extends PostmanCollectionElement {

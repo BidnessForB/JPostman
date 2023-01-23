@@ -50,7 +50,7 @@ public abstract class PostmanCollectionElement {
      * 
      * @param altSchemaJSON  String containing the alternate schema JSON
      * @return boolean True if valid, False if not.  If not valid, getValidationMessages() will return a JsonNode containing one or more diff messages.
-     * @throws Exception
+     * @throws ValidationException If there is an error in the validation process
      */
     public boolean validate(String altSchemaJSON) throws ValidationException {
 
@@ -174,9 +174,9 @@ public abstract class PostmanCollectionElement {
      * Determine whether 2 seperate instance of a JPostman class render the same JSON.  If the JSON is identical, the returned JsonNode will be empty (e.g., <code>size()</code> == 0).
      * If the documents are different, the JsonNode returned contains information about the differences.  
      * 
-     * @param compare
-     * @return JsonNode
-     * @throws Exception
+     * @param compare The PostmanCollectionElement to compare to this one.
+     * @return JsonNode JsonNode containing an array of diff msgs.  size() will be zero if there are no validation messages.
+     * @throws ValidationException If there is an exception or error during the Validation process
      */
     public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws ValidationException {
         ObjectMapper jacksonObjectMapper;
