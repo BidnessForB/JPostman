@@ -1,5 +1,5 @@
 # JPostman
-sdf:sdfasdf
+
 A Java wrapper for Postman collection files.  
 ...
 ## Getting started
