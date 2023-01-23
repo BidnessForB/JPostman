@@ -11,6 +11,13 @@ import java.util.Iterator;
 import java.util.HashMap;
 
 public class varMapSerializer implements JsonSerializer<HashMap<String, PostmanVariable>> {
+    
+    /** 
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return JsonElement
+     */
     public JsonElement serialize(HashMap<String, PostmanVariable> src, Type typeOfSrc,
             JsonSerializationContext context) {
         JsonArray varArray = new JsonArray();

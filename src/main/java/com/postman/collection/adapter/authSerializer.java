@@ -12,6 +12,13 @@ import java.util.Iterator;
 
 public class authSerializer implements JsonSerializer<PostmanAuth> {
 
+    
+    /** 
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return JsonElement
+     */
     @Override
     public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonAuth = new JsonObject();
@@ -20,12 +27,12 @@ public class authSerializer implements JsonSerializer<PostmanAuth> {
         jsonAuth.addProperty("type", src.getAuthTypeAsString());
 
         JsonObject curJVar;
-        Iterator<String> keys = src.getAuthElements().keySet().iterator();
+        Iterator<String> keys = src.getProperties().keySet().iterator();
         String curKey;
         PostmanVariable curVar;
         while (keys.hasNext()) {
             curKey = (String) keys.next();
-            curVar = src.getAuthElement(curKey);
+            curVar = src.getProperty(curKey);
             curJVar = new JsonObject();
             curJVar.addProperty("key", curVar.getKey());
             curJVar.addProperty("value", curVar.getValue());

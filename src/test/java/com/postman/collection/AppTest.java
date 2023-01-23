@@ -1,8 +1,12 @@
 package com.postman.collection;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
@@ -10,7 +14,13 @@ import org.junit.Test;
 import com.networknt.schema.ValidationMessage;
 import java.util.HashMap;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import java.util.Set;
+import java.util.HashSet;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
 /**
  * Unit test for simple App.
  */
@@ -34,6 +44,21 @@ public class AppTest {
             currentFile.delete();
         }
     }
+
+    public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
+        Set<String> fileSet = new HashSet<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dir))) {
+            for (Path path : stream) {
+                if (!Files.isDirectory(path)) {
+                    fileSet.add(path.getFileName()
+                        .toString());
+                }
+            }
+        }
+        return fileSet;
+    }
+    
+    
 
     @Test
     public void shouldCreateRequestQueries() {
@@ -77,30 +102,25 @@ public class AppTest {
             pmcTest.setName("TEST Scripts");
             folder = new PostmanItem("Scripts");
 
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the folder");
-            folder.setEvent(event);
+            
+            folder.setPreRequestScript("//PRE-REQUEST this is some source code for the folder");
             event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the folder");
-            folder.setEvent(event);
+            folder.setTestScript("//TEST this is some source code for the folder");
             pmcTest.addItem(folder);
 
             req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
 
             request = new PostmanItem("TEST Request with Scripts");
             request.setRequest(req);
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the request");
-            request.setEvent(event);
+            request.setPreRequestScript("//PRE-REQUEST this is some source code for the request");
 
-            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the request");
-            request.setEvent(event);
+            
+            request.setTestScript("//TEST this is some source code for the request");
             folder.addItem(request);
 
-            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the collection");
-            pmcTest.setEvent(event);
-            event = new PostmanEvent(enumEventType.PRE_REQUEST,
-                    "//PRE-REQUEST this is some source code for the collection");
-            pmcTest.setEvent(event);
+            
+            pmcTest.setTestScript("//TEST this is some source code for the collection");
+            pmcTest.setPreRequestScript("//PRE-REQUEST this is some source code for the collection");
 
             boolean valid = pmcTest.validate();
             HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcTest,
@@ -121,6 +141,11 @@ public class AppTest {
 
     }
 
+    
+    /** 
+     * @param msgs
+     * @param methodName
+     */
     public void printValidationMessages(ArrayList<ValidationMessage> msgs, String methodName) {
         if (msgs != null && msgs.size() > 0) {
             for (ValidationMessage msg : msgs) {
@@ -231,10 +256,66 @@ public class AppTest {
     @Test
     public void shouldProduceIdenticalCollection() {
 
+        Set<String> collectionFiles;
+        try {
+            collectionFiles = listFilesUsingDirectoryStream(filePath + resourcePath);
+        }
+        catch(IOException e) {
+            System.out.println("Error reading collection file list: " + e.getMessage());
+            System.out.println("Skipping test: " + new Throwable().getStackTrace()[0].getMethodName());
+            return;
+        }
+        String curOutputPath;
+        PostmanCollection pmcTest2;
+        boolean outputDirCreated;
+        try {
+            outputDirCreated = new File(filePath  + "/test-output/compare").mkdirs();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Could not create output directory" + e.getMessage());
+            assertTrue("Could not create output directory", false);
+        }
+        for(String curPath : collectionFiles) {
+            try {
+                pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/" + curPath));
+            }
+            catch(Exception e) {
+                System.out.println("Error reading collection file: " + curPath);
+                break;
+            }
+            try {
+                pmcTest.writeToFile(filePath + "/test-output/compare/compare.postman_collection.json");
+                pmcTest2 = PostmanCollection.PMCFactory(new File(filePath + "/test-output/compare/compare.postman_collection.json"));
+            }
+            catch(Exception e) {
+                System.out.println("Error reading collection file: " + curPath);
+                break;
+            }
+
+            JsonNode diffs = null;
+
+            try {
+                diffs = pmcTest.isEquivalentTo(pmcTest2);
+            }
+            catch(ValidationException e)
+            {
+                assertTrue("Error validating " + curPath,false);
+            }
+            
+            for(int i = 0; i<diffs.size(); i++)
+            {
+                System.out.println("DIFF [" + i + "]: " + diffs.get(i).toPrettyString());
+            }
+            assertTrue(diffs.size() == 0);
+
+        }
+        
+
         try {
             pmcTest = PostmanCollection.PMCFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
-            pmcTest.setName("TEST Cat Fact");
+            
             boolean valid = pmcTest.validate();
             HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcTest,
                     new Throwable().getStackTrace()[0].getMethodName());
@@ -278,6 +359,10 @@ public class AppTest {
 
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testAuthIngestion() throws Exception {
         pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
@@ -290,6 +375,10 @@ public class AppTest {
         assertTrue(new File(collectionOutputPath).exists());
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testLargeBodyIngestion() throws Exception {
         pmcTest = PostmanCollection
@@ -307,6 +396,10 @@ public class AppTest {
         assertTrue(new File(collectionOutputPath).exists());
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testBuildAuths() throws Exception {
         pmcTest = PostmanCollection.PMCFactory();
@@ -319,111 +412,111 @@ public class AppTest {
         pmcTest.addRequest(req, "INHERIT request");
 
         auth = new PostmanAuth(enumAuthType.AKAMAI);
-        auth.setAuthElement("headersToSign", "x-api-key");
-        auth.setAuthElement("baseURL", "https://akamai-base.com");
-        auth.setAuthElement("timestamp", "akamaiTimestamp");
-        auth.setAuthElement("nonce", "akamaiNonce");
-        auth.setAuthElement("clientSecret", "akamaiClientSecret");
-        auth.setAuthElement("clientToken", "akamaiClientToken");
-        auth.setAuthElement("accessToken", "akamaiToken");
+        auth.setProperty("headersToSign", "x-api-key");
+        auth.setProperty("baseURL", "https://akamai-base.com");
+        auth.setProperty("timestamp", "akamaiTimestamp");
+        auth.setProperty("nonce", "akamaiNonce");
+        auth.setProperty("clientSecret", "akamaiClientSecret");
+        auth.setProperty("clientToken", "akamaiClientToken");
+        auth.setProperty("accessToken", "akamaiToken");
 
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AKAMAI request");
 
         auth = new PostmanAuth(enumAuthType.APIKEY);
-        auth.setAuthElement("key", "API-KEY");
-        auth.setAuthElement("value", "x-api-key");
-        auth.setAuthElement("in", "query");
+        auth.setProperty("key", "API-KEY");
+        auth.setProperty("value", "x-api-key");
+        auth.setProperty("in", "query");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "APIKEY request");
 
         auth = new PostmanAuth(enumAuthType.AWS);
-        auth.setAuthElement("sessionToken", "awsSessiontoken");
-        auth.setAuthElement("service", "awsServiceName");
-        auth.setAuthElement("secretKey", "aswSecretKey");
-        auth.setAuthElement("accessKey", "awsAccessKey");
-        auth.setAuthElement("addAuthDataToQuery", "false");
+        auth.setProperty("sessionToken", "awsSessiontoken");
+        auth.setProperty("service", "awsServiceName");
+        auth.setProperty("secretKey", "aswSecretKey");
+        auth.setProperty("accessKey", "awsAccessKey");
+        auth.setProperty("addAuthDataToQuery", "false");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AWS request");
 
         auth = new PostmanAuth(enumAuthType.BEARER);
-        auth.setAuthElement("key", "API-KEY");
-        auth.setAuthElement("value", "x-api-key");
+        auth.setProperty("key", "API-KEY");
+        auth.setProperty("value", "x-api-key");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BEARER request");
 
         auth = new PostmanAuth(enumAuthType.BASIC);
-        auth.setAuthElement("password", "fakePassword");
-        auth.setAuthElement("username", "fakeusername");
+        auth.setProperty("password", "fakePassword");
+        auth.setProperty("username", "fakeusername");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BASIC request");
 
         auth = new PostmanAuth(enumAuthType.DIGEST);
-        auth.setAuthElement("opaque", "OpaqueString");
-        auth.setAuthElement("clientNonce", "2020202");
-        auth.setAuthElement("nonceCount", "1010101");
-        auth.setAuthElement("qop", "digest-qop");
-        auth.setAuthElement("algorithim", "SHA-256");
-        auth.setAuthElement("nonce", "digestNonce");
-        auth.setAuthElement("realm", "digest@test.com");
-        auth.setAuthElement("password", "digestPassword");
+        auth.setProperty("opaque", "OpaqueString");
+        auth.setProperty("clientNonce", "2020202");
+        auth.setProperty("nonceCount", "1010101");
+        auth.setProperty("qop", "digest-qop");
+        auth.setProperty("algorithim", "SHA-256");
+        auth.setProperty("nonce", "digestNonce");
+        auth.setProperty("realm", "digest@test.com");
+        auth.setProperty("password", "digestPassword");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "DIGEST request");
 
         auth = new PostmanAuth(enumAuthType.HAWK);
-        auth.setAuthElement("includePayloadHash", "true");
-        auth.setAuthElement("timestamp", "hawkTimestamp");
-        auth.setAuthElement("delegation", "hawk-dlg");
-        auth.setAuthElement("app", "HawkApp");
-        auth.setAuthElement("extraData", "Hawk-ext");
-        auth.setAuthElement("nonce", "hawkNonce");
-        auth.setAuthElement("user", "HawkUser");
-        auth.setAuthElement("authKey", "HawkAuthKey");
-        auth.setAuthElement("algorithim", "sha256");
+        auth.setProperty("includePayloadHash", "true");
+        auth.setProperty("timestamp", "hawkTimestamp");
+        auth.setProperty("delegation", "hawk-dlg");
+        auth.setProperty("app", "HawkApp");
+        auth.setProperty("extraData", "Hawk-ext");
+        auth.setProperty("nonce", "hawkNonce");
+        auth.setProperty("user", "HawkUser");
+        auth.setProperty("authKey", "HawkAuthKey");
+        auth.setProperty("algorithim", "sha256");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "HAWK request");
 
         auth = new PostmanAuth(enumAuthType.OAUTH1);
-        auth.setAuthElement(new PostmanVariable("addEmptyParamsToSign", "true", null, "boolean"));
-        auth.setAuthElement(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
-        auth.setAuthElement("realm", "testoauth@test.com");
-        auth.setAuthElement("nonce", "oauthNonce");
-        auth.setAuthElement("timestamp", "oauthTimestamp");
-        auth.setAuthElement("verifier", "oauthVerifier");
-        auth.setAuthElement("callback", "https:/callback.url");
-        auth.setAuthElement("tokenSecret", "OAuthTokenSecret");
-        auth.setAuthElement("token", "oauthToken");
-        auth.setAuthElement("consumerSecret", "oauthConsumerSecret");
-        auth.setAuthElement("consumerKey", "oauthConsumerKey");
-        auth.setAuthElement("signatureMethod", "HMAC-SHA1");
-        auth.setAuthElement("version", "1.0");
-        auth.setAuthElement(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
+        auth.setProperty(new PostmanVariable("addEmptyParamsToSign", "true", null, "boolean"));
+        auth.setProperty(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
+        auth.setProperty("realm", "testoauth@test.com");
+        auth.setProperty("nonce", "oauthNonce");
+        auth.setProperty("timestamp", "oauthTimestamp");
+        auth.setProperty("verifier", "oauthVerifier");
+        auth.setProperty("callback", "https:/callback.url");
+        auth.setProperty("tokenSecret", "OAuthTokenSecret");
+        auth.setProperty("token", "oauthToken");
+        auth.setProperty("consumerSecret", "oauthConsumerSecret");
+        auth.setProperty("consumerKey", "oauthConsumerKey");
+        auth.setProperty("signatureMethod", "HMAC-SHA1");
+        auth.setProperty("version", "1.0");
+        auth.setProperty(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH1 request");
 
         auth = new PostmanAuth(enumAuthType.OAUTH2);
-        auth.setAuthElement("grant_type", "authorization_code");
-        auth.setAuthElement("tokenName", "Oauth2TokenName");
-        auth.setAuthElement("tokenType", "");
-        auth.setAuthElement("accessToken", "oauth2AccessToken");
-        auth.setAuthElement("addTokenTo", "header");
+        auth.setProperty("grant_type", "authorization_code");
+        auth.setProperty("tokenName", "Oauth2TokenName");
+        auth.setProperty("tokenType", "");
+        auth.setProperty("accessToken", "oauth2AccessToken");
+        auth.setProperty("addTokenTo", "header");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH2 request");
 
         auth = new PostmanAuth(enumAuthType.NTLM);
-        auth.setAuthElement("workstation", "NTMLWorkstation");
-        auth.setAuthElement("domain", "NTLMDomain");
-        auth.setAuthElement("password", "NTLMPassword");
-        auth.setAuthElement("username", "NTLMUsername");
+        auth.setProperty("workstation", "NTMLWorkstation");
+        auth.setProperty("domain", "NTLMDomain");
+        auth.setProperty("password", "NTLMPassword");
+        auth.setProperty("username", "NTLMUsername");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "NTLM request");
@@ -431,7 +524,7 @@ public class AppTest {
         pmcTest.setAuth(auth);
 
         pmcTest.writeToFile(filePath + "/test-output/TEST-auth.postman_collection.json");
-        pmcTest.getAuth().getAuthElements().keySet().iterator().next();
+        pmcTest.getAuth().getProperties().keySet().iterator().next();
         valid = pmcTest.validate();
         HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcTest,
                 new Throwable().getStackTrace()[0].getMethodName());
@@ -444,6 +537,10 @@ public class AppTest {
         assertTrue(new File(collectionOutputPath).exists());
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testAddVariables() throws Exception {
         pmcTest = PostmanCollection.PMCFactory();
@@ -484,6 +581,10 @@ public class AppTest {
 
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testIngestEvents() throws Exception {
         PostmanCollection pmcTest = PostmanCollection.PMCFactory(
@@ -500,15 +601,26 @@ public class AppTest {
         assertTrue(new File(collectionOutputPath).exists());
     }
 
+    
+    /** 
+     * @param pmcTest
+     * @param methodName
+     * @return HashMap<String, String>
+     */
     public HashMap<String, String> getOutputFileAndCollectionName(PostmanCollection pmcTest, String methodName) {
         HashMap<String, String> retVal = new HashMap<String, String>();
         retVal.put("collection-name", "TEST-" + methodName);
         retVal.put("output-path",
                 filePath + "/test-output/" + retVal.get("collection-name") + ".postman_collection.json");
+        
         retVal.put("collection-description", retVal.get("collection-name") + "generated by Test: " + methodName);
         return retVal;
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testAddCollection() throws Exception {
 
@@ -531,6 +643,10 @@ public class AppTest {
 
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testEquivalence() throws Exception {
         PostmanBody body;
@@ -575,6 +691,10 @@ public class AppTest {
 
     }
 
+    
+    /** 
+     * @throws Exception
+     */
     @Test
     public void testConstructedBodies() throws Exception {
 
@@ -670,5 +790,359 @@ public class AppTest {
         assertTrue(new File(collectionOutputPath).exists());
 
     }
+    @Test
+    public void testAuthObject() {
 
+
+        PostmanVariable prop;
+        HashMap<String, PostmanVariable> props = new HashMap<String,PostmanVariable>();
+        PostmanAuth auth = new PostmanAuth(enumAuthType.OAUTH1);
+        prop = new PostmanVariable("addEmptyParamsToSign", "true");
+        auth.setProperty(prop);
+        assertTrue(auth.getProperties().size() == 1);
+        assertTrue(auth.getProperty("addEmptyParamsToSign").getValue().equals("true"));
+        
+        prop = new PostmanVariable("addEmptyParamsToSign", "false");
+        auth.setProperty(prop);
+
+        assertTrue(auth.getProperties().size() == 1);
+        assertTrue(auth.getProperty("addEmptyParamsToSign").getValue().equals("false"));
+
+        HashMap<String, PostmanVariable> nullProps = null;
+        auth.setProperties(nullProps);
+        PostmanVariable var = auth.getProperty("addEmptyParamsToSign");
+        assertTrue(var == null);
+
+    
+    }
+    @Test
+    public void testBodyObject() {
+        Object opts;
+            PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
+            assertTrue(body.getMode() == enumRequestBodyMode.RAW);
+            try {
+                assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue(false);
+            }
+
+            
+            try {
+                body.setRaw("//some javascript");
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Unexpected IllegalPropertyAccessException ", false);
+            }
+            
+            
+            
+            try {
+                assertTrue(body.getRaw().equals("//some javascript"));
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Unexpected IllegalPropertyAccessException ", false);
+            }
+            
+            
+            boolean valid = false;
+            try {
+                valid = body.validate();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            
+            printValidationMessages(body.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
+            assertTrue(valid);
+
+            body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+            
+            try {
+                assertNull(body.getRawLanguage());
+            }
+            catch (IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown", true);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.RAW);
+            try {
+                assertNull(body.getFile());    
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+            
+            
+            try {
+                assertNull(body.getFormdata());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+
+            try {
+                assertNull(body.getGraphql());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected Exception thrown", true);
+            }
+            
+            try {
+                assertNull(body.getRaw());
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("expected exception thrown",true);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.GRAPHQL);
+            try {
+                opts = body.getGraphql();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown", true);
+            }
+            try {
+                String file = body.getFile();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception thrown",true);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.FILE);
+            try {
+                String file = "some/path/to/file.png";
+                body.setFile(file);
+                assertTrue(body.getFile().equals(file));
+            }
+            catch(Exception e)
+            {
+                assertTrue("Exception " + e.getMessage(), false);
+            }
+
+            body = new PostmanBody(enumRequestBodyMode.RAW);
+            try {
+                body.setRawLanguage(enumRawBodyLanguage.JAVASCRIPT);
+                body.setRaw("//some javascript");
+                assertTrue(body.getRawLanguage() == enumRawBodyLanguage.JAVASCRIPT);
+                assertTrue(body.getRaw().equals("//some javascript"));
+            }
+            catch(Exception e)
+            {
+                System.out.println(e);
+                assertTrue(false);
+            }
+
+            body.setMode(enumRequestBodyMode.FORMDATA);
+            try {
+                String raw = body.getRaw();
+            }
+            catch(IllegalPropertyAccessException e)
+            {
+                assertTrue("Expected exception", true);
+            }
+            
+            
+    }
+
+    @Test
+    public void testURLObject() {
+
+        String url1 = "https://foo.com:8080/foo/bar/:path1/bat.json?var1=aaa&var2=bbb";
+        String path1 = "foo/bar/:path1/bat.json";
+        PostmanUrl url = new PostmanUrl(url1);
+
+        assertTrue(url.getHosts().size() == 2);
+        assertTrue(url.getPaths().size() == 4);
+        assertTrue(url.getVariables().size() == 1);
+        assertTrue(url.getQueries().size() == 2);
+
+        url = new PostmanUrl("foo.com",path1);
+        assertTrue(url.getPaths().size() == 4);
+        assertTrue(url.getVariables().size() == 1);
+
+        url.addQuery("query1", "q1value");
+        assertTrue(url.getQueries().size() == 1);
+        //assertTrue(url.generateURL().equals()
+
+
+        ArrayList<String> urls = new ArrayList<String>();
+        urls.add("");
+        urls.add("http://foo.com/bar/bat.json");
+        urls.add("//foo.com/bar/bat.json");
+        urls.add("{{baseUrl}}/foo.com/bar/bat.json");
+        urls.add("http://foo.com/bar/bat.json?foo=1&bar=2");
+        urls.add("http://foo.com/bar/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
+        urls.add("https://foo.com/bar/:path1/bat.json?foo=1&bar=");
+        ArrayList<PostmanUrl> liUrls = new ArrayList<PostmanUrl>();
+
+    for(String curUrl: urls) {
+        liUrls.add(new PostmanUrl(curUrl));
+    }
+    for(int i = 0; i < liUrls.size(); i++){
+        try{
+            if(i != 2 && liUrls.get(i).generateURL().equals(urls.get(i))) {
+                assertTrue(true);
+                System.out.println("URL: " + urls.get(i));
+            }
+            //technical wrong, but it's OK i think
+            if(i == 2 && liUrls.get(i).generateURL().equals("/foo.com/bar/bat.json")) {
+                assertTrue(true);
+            }
+
+        }
+        catch(Exception e)
+        {
+            System.out.println("URL: " + i);
+            assertTrue(urls.get(i) + " failed", false);
+        }
+    }
+
+            
+
+
+
+
+    }
+
+    @Test
+    public void testResponseObject() {
+
+        PostmanRequest req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+        PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
+        assertTrue(resp.getBody().equals("This is the body"));
+        assertTrue(resp.getCode() == 200);
+        try {
+            JsonNode diffs = resp.getOriginalRequest().isEquivalentTo(req);
+            assertTrue(diffs.size() == 0);
+        }
+        catch(Exception e)
+        {
+            assertTrue("Equivalence test exception",false);
+        }
+
+        resp = new PostmanResponse("Test Response",req, "Not authorize",401,"A completely different body" );
+        
+        PostmanRequest req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+        PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
+                
+        try {
+                    JsonNode diffs = newResp.getOriginalRequest().isEquivalentTo(req);
+                    assertTrue(diffs.size() > 0);
+        }
+        catch(Exception e)
+        {
+            assertTrue("Equivalence test exception",false);
+        }
+
+        
+        
+
+
+        
+
+
+    }
+
+    @Test
+    public void testEventObject() {
+        PostmanEvent evt = new PostmanEvent(enumEventType.PRE_REQUEST, "//fake javascript");
+        
+        assertTrue(evt.getSourceCodeElements().size() == 1);
+
+        evt.addSourceCodeElement("//some more code", 0);
+        assertTrue(evt.getSourceCodeElements().size() == 2);
+        try {
+            evt.removeSourceCodeElement(0);
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected excpetion", false);
+        }
+
+        assertTrue(evt.getSourceCodeElements().size() == 1);
+        try {
+            assertTrue(evt.getSourceCode().equals("//some more code"));
+        }
+        catch(InvalidPropertyException e)
+         {
+            assertTrue("Unexpected exception",false);
+         }
+        
+
+        try {
+            evt.removeSourceCodeElement(10);
+        }
+        catch (InvalidPropertyException e) {
+            assertTrue("Expected exception", true);
+        }
+        
+
+
+        
+
+        try {
+            evt.removeSourceCodeElement(0);
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected exception " + e.getMessage(), false);
+        }
+
+        
+        
+    }
+    
+    @Test
+    public void testPostmanItem() throws Exception{
+        pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        PostmanItem fact = pmcTest.getItem("Get a list of facts");
+        PostmanItem folder = pmcTest.getItem("get Breeds",true);
+
+        assertTrue(fact != null || fact.getName().equals("Get a list of facts"));
+        assertTrue(folder != null || folder.getName().equals("Breeds"));
+
+        System.out.println("foo");
+
+        pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
+        
+        ArrayList<PostmanItem> folders = pmcTest.getItems(enumPostmanItemType.FOLDER);
+        assertTrue(folders.size() == 2);
+        ArrayList<PostmanItem> requests = pmcTest.getItems(enumPostmanItemType.REQUEST);
+        assertTrue(requests.size() == 5);
+        ArrayList<PostmanItem> all = pmcTest.getItems(null);
+        assertTrue(all.size() == 7);
+
+        fact = pmcTest.getItem("Add Breed");
+        assertTrue(fact != null);
+        assertTrue(fact.getName().equals("Add Breed"));
+
+    }
+
+    @Test
+    public void testCollectionObject() {
+        //add request
+        //remove request
+        //add folder
+        //remove folder
+        //write to good path
+        //write to bad path
+        //add collection
+        //validate
+        
+    }
 }

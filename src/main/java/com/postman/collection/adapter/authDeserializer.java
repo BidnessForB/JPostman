@@ -11,9 +11,20 @@ import java.lang.reflect.Type;
 
 public class authDeserializer implements JsonDeserializer<PostmanAuth> {
 
+    
+    /** 
+     * 
+     * Custom <a href="https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html>GSON deserializer</a> for the PostmanAuth object.
+     * 
+     * 
+     * @param jElement  
+     * @param typeOfT
+     * @param context
+     * @return PostmanAuth
+     * @throws JsonParseException
+     */
     @Override
-    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context)
-            throws JsonParseException {
+    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context)throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         JsonObject curVar;
         String type = jObject.get("type").getAsString();
@@ -26,13 +37,13 @@ public class authDeserializer implements JsonDeserializer<PostmanAuth> {
             var = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
                     curVar.get("type").getAsString());
             try {
-                auth.setAuthElement(var);
+                auth.setProperty(var);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
-        // auth.setAuthElements(context.deserialize(vars, PostmanVariable[].class));
+        // auth.setPropertys(context.deserialize(vars, PostmanVariable[].class));
         return auth;
 
     }
