@@ -52,7 +52,6 @@ public class PostmanUrl extends PostmanCollectionElement {
     private String protocol;
     private String port;
 
-    
     /** 
      * 
      * Sets the raw URL.  The host, path, query,protocl, query and port properties are parsed from the raw url.  
@@ -61,71 +60,13 @@ public class PostmanUrl extends PostmanCollectionElement {
      * <pre> {{baseUrl}}/{{theHost}}/foo/{{filename}}</pre>
      * 
      * @param rawURL The raw URL as a String.  The URL is not validated
-     * @throws Exception
+     *
      */
-    public void setRaw2(String rawURL)  {
-
-        //this.raw = rawURL;
-
-        //Is there a query string?
-
-
-
-        Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
-        Matcher maProtocol = pnProtocol.matcher(rawURL);
-        
-        Pattern pnHost = Pattern.compile("^([^:^/]*)(:([0-9]+))?");
-        Matcher maHost = pnHost.matcher(rawURL);
-        if (maProtocol.find()) {
-            this.setProtocol(maProtocol.group());
-            rawURL = rawURL.replace(maProtocol.group(0), "");
-        } else {
-            this.setProtocol(null);
-        };
-
-        // Pattern pnHost = Pattern.compile("([^:^/]*)" );
-        
-        if (maHost.find()) {
-            this.setHost(maHost.group(1));
-            if (maHost.groupCount() >= 3 && maHost.group(3) != null) {
-                this.setPort(maHost.group(3));
-                rawURL = rawURL.replace(maHost.group(2), "");
-            }
-            rawURL = rawURL.replace(maHost.group(1), "");
-        } else if (!maHost.find()) {
-            pnHost = Pattern.compile("([\\.]*)");
-            maHost = pnHost.matcher(rawURL);
-            if (maHost.find()) {
-                this.setHost(maHost.group());
-            }
-        } else {
-            this.setHost(null);
-        }
-
-        ArrayList<String> queryElements = new ArrayList<String>(Arrays.asList(rawURL.split("\\?")));
-        if (queryElements != null && queryElements.size() == 1) {
-            this.setPath(queryElements.get(0));
-        } else if (queryElements != null && queryElements.size() == 2) {
-            this.setPath(queryElements.get(0));
-            this.setQuery(queryElements.get(1));
-        } else {
-            this.setPath(null);
-            this.setQuery(null);
-        }
-
-    }
-
-    public String getProtocol() {
-        return this.protocol;
-    }
-
     public void setRaw(String rawUrl)  {
 
         //Is there a query String
         
         String queryString;
-        String rawProtocol;
-        String strPath;
         
         this.raw = rawUrl;
         
