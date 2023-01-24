@@ -41,7 +41,7 @@ public class PostmanVariable extends PostmanCollectionElement {
  * 
  * Constructs a PostmanVariable with all specified properties.
  * 
- * @param key Value for the <code>key</code> property
+ * @param key Value for the <code>key</code> property.  NOTE: If a null key is provided it will be transformed to an empty string ("");
  * @param value Value for the <code>value</code> property
  * @param description Value for the <code>description</code> property
  * @param type Value for the <code>type</code> property
@@ -57,7 +57,7 @@ public class PostmanVariable extends PostmanCollectionElement {
  * 
  * Constructs a PostmanVariable with with just <code>key</code> and <code>value</code> properties
  * 
- * @param key Value for the <code>key</code> property
+ * @param key Value for the <code>key</code> property.  NOTE: If a null key is provided it will be transformed to an empty string ("");
  * @param value Value for the <code>value</code> property
  */
     
