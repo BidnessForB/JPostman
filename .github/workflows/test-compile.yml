@@ -10,7 +10,8 @@ name: Compile and unit test
 
 on:
   push:
-   
+    branches: 
+      - main
 
 jobs:
   build:
