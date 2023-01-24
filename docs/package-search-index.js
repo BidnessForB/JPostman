@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.postman.collection"},{"l":"com.postman.collection.adapter"}];updateSearchResults();
