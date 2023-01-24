@@ -313,7 +313,7 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * <p>Add another collection and it's array of <code>item</code>,  <code>variable</code>, and  <code>event</code> arrays to this collection as children of <code>parent</code>
+     * <p>Add another foobar collection and it's array of <code>item</code>,  <code>variable</code>, and  <code>event</code> arrays to this collection as children of <code>parent</code>
      * 
      * 
      * @param newColl The collection to combine with this one
