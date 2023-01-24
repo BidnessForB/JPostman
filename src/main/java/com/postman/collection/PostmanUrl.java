@@ -63,27 +63,32 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param rawURL The raw URL as a String.  The URL is not validated
      * @throws Exception
      */
-    public void setRaw(String rawURL)  {
+    public void setRaw2(String rawURL)  {
 
-        this.raw = rawURL;
+        //this.raw = rawURL;
+
+        //Is there a query string?
+
+
 
         Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         Matcher maProtocol = pnProtocol.matcher(rawURL);
+        
+        Pattern pnHost = Pattern.compile("^([^:^/]*)(:([0-9]+))?");
+        Matcher maHost = pnHost.matcher(rawURL);
         if (maProtocol.find()) {
             this.setProtocol(maProtocol.group());
             rawURL = rawURL.replace(maProtocol.group(0), "");
         } else {
             this.setProtocol(null);
-        }
-        ;
+        };
 
         // Pattern pnHost = Pattern.compile("([^:^/]*)" );
-        Pattern pnHost = Pattern.compile("^([^:^/]*)(:([0-9]+))?");
-        Matcher maHost = pnHost.matcher(rawURL);
+        
         if (maHost.find()) {
             this.setHost(maHost.group(1));
             if (maHost.groupCount() >= 3 && maHost.group(3) != null) {
-                this.setPort(Integer.parseInt(maHost.group(3)));
+                this.setPort(maHost.group(3));
                 rawURL = rawURL.replace(maHost.group(2), "");
             }
             rawURL = rawURL.replace(maHost.group(1), "");
@@ -109,6 +114,66 @@ public class PostmanUrl extends PostmanCollectionElement {
         }
 
     }
+
+    public String getProtocol() {
+        return this.protocol;
+    }
+
+    public void setRaw(String rawUrl)  {
+
+        //Is there a query String
+        
+        String queryString;
+        String rawProtocol;
+        String strPath;
+        
+        this.raw = rawUrl;
+        
+
+        if(rawUrl.split("\\?").length == 2)
+        {
+            queryString = rawUrl.split("\\?")[1];
+            rawUrl = rawUrl.split("\\?")[0];
+            this.setQuery(queryString);
+        }
+
+        //Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
+        String regex = "^(https?)(://)(.*)";
+        Pattern pnProtocol = Pattern.compile(regex);
+        Matcher maProtocol = pnProtocol.matcher(rawUrl);
+        
+        if(maProtocol.matches() && maProtocol.groupCount() == 3)
+        {
+            this.setProtocol(maProtocol.group(1));
+            rawUrl = maProtocol.group(3);
+            
+        }
+
+        Pattern pnPort = Pattern.compile("(:)([0-9]{2,4})");
+        Matcher maPort = pnPort.matcher(rawUrl);
+        if(maPort.find()) {
+            this.setPort(maPort.group(2));
+            rawUrl = rawUrl.replace(":" + this.getPort(),"");
+        }
+
+        if(rawUrl.length() == 0) {
+            return;
+        }
+        
+        String strHost = rawUrl.split("/")[0];
+        this.setHost(strHost);
+        rawUrl = rawUrl.replace(strHost, "");
+        
+        
+
+        
+        if(rawUrl != null && rawUrl.length() > 0) {
+            this.setPath(rawUrl);
+        }
+    
+        System.out.println("foo");
+
+    };
 
     
     /** 
@@ -288,9 +353,10 @@ public class PostmanUrl extends PostmanCollectionElement {
     /**
      * Create a PostmanURL with the specified URL
      * @param rawURL The raw URL
+     
      */
 
-    public PostmanUrl(String rawURL) /*throws Exception*/ {
+    public PostmanUrl(String rawURL)  {
         this.setRaw(rawURL);
     }
 
@@ -374,11 +440,13 @@ public class PostmanUrl extends PostmanCollectionElement {
             return null;
         }
         String queryString = "";
+        String curQueryElement;
         for(PostmanVariable curVar : query) {
-            queryString = (queryString.length() > 0 ? "&" + curVar.getKey() : curVar.getKey()) + "=" + (curVar.getValue() + "");
+            curQueryElement = curVar.getKey() + "" + "=" + curVar.getValue() + "";
+            queryString = queryString + (queryString.length() > 0 ? "&" : "") + curQueryElement;
         }
 
-        return (queryString.length() > 0 ? "?" + queryString : queryString);
+        return queryString;
     }
 
     public void removeQueryElement(PostmanVariable queryElement) {
@@ -504,14 +572,15 @@ public class PostmanUrl extends PostmanCollectionElement {
     /** 
      * Set the value of the <code>port</code> property
      * 
-     * @param port The port
+     * @param port The port as a string.  
      */
-    public void setPort(int port) {
-        try {
-            this.port = Integer.toString(port);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void setPort(String port)  {
+        if(port == null) {
+            this.port = null;
         }
-
+        else {
+            this.port = port;
+            
+        }
     }
 }

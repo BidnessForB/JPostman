@@ -1017,11 +1017,11 @@ public class AppTest {
 
     url = new PostmanUrl("https://foo.com?var1=val1&var2=val2");
     assertTrue(url.getQueries().size() == 2);
-    assertTrue(url.getQueryString().equals("?var1=val1&var2=varl2"));
+    assertTrue(url.getQueryString().equals("var1=val1&var2=val2"));
     PostmanVariable varQ = url.getQueries().get(1);
     url.removeQueryElement(varQ);
     assertTrue(url.getQueries().size() == 1);
-    assertTrue(url.getQueryString().equals("?var1=val1"));
+    assertTrue(url.getQueryString().equals("var1=val1"));
     
 
 
