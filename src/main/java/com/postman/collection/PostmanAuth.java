@@ -212,7 +212,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * 
      * @param property The new property
      */
-    public void setProperty(PostmanVariable newElement)  {
+    public void addProperty(PostmanVariable newElement)  {
         if(this.properties == null) {
             this.properties = new HashMap<String, PostmanVariable>();
         }
@@ -254,7 +254,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * @param value The value for the new property
      * 
      */
-    public void setProperty(String key, String value)  {
+    public void addProperty(String key, String value)  {
         if(this.properties == null) {
             this.properties = new HashMap<String, PostmanVariable>();
         }

@@ -177,6 +177,7 @@ public class PostmanEvent extends PostmanCollectionElement {
         this.setScript(new PostmanScript("text/javascript", srcCode));
     }
 
+    
 
 
     /** 
@@ -216,7 +217,7 @@ public class PostmanEvent extends PostmanCollectionElement {
             this.setScript(new PostmanScript("text/javascript",code));
             return;
         }
-        this.getScript().setSourceCodeElement(code, position);
+        this.getScript().addSourceCodeElement(code, position);
         
     }
 
@@ -231,19 +232,19 @@ public class PostmanEvent extends PostmanCollectionElement {
         private String type = "";
         private ArrayList<String> exec;
 
-        public PostmanScript(String scriptType, ArrayList<String> Exec) {
+        public PostmanScript(String scriptType, ArrayList<String> sourceCode) {
             this.type = scriptType;
-            exec = Exec;
+            exec = sourceCode;
         }
 
-        public PostmanScript(String scriptType, String srcCode) {
+        public PostmanScript(String scriptType, String sourceCode) {
             this.exec = new ArrayList<String>();
-            this.exec.add(srcCode);
+            this.exec.add(sourceCode);
             this.type = scriptType;
 
         }
 
-        public void setSourceCodeElement(String code, int position) {
+        public void addSourceCodeElement(String code, int position) {
             if(this.getSourceCode() == null || position < 0 || position > this.getSourceCode().size())
             {
                 this.exec = new ArrayList<String>();

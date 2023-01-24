@@ -360,6 +360,30 @@ public class PostmanUrl extends PostmanCollectionElement {
     public ArrayList<PostmanVariable> getQueries() {
         return query;
     }
+    /**
+     * 
+     * Get the raw query string for this URL.  
+     * 
+     * 
+     * 
+     * @return
+     */
+    public String getQueryString() {
+        if (query == null)
+        {
+            return null;
+        }
+        String queryString = "";
+        for(PostmanVariable curVar : query) {
+            queryString = (queryString.length() > 0 ? "&" + curVar.getKey() : curVar.getKey()) + "=" + (curVar.getValue() + "");
+        }
+
+        return (queryString.length() > 0 ? "?" + queryString : queryString);
+    }
+
+    public void removeQueryElement(PostmanVariable queryElement) {
+        this.query.remove(queryElement);
+    }
 
     
     /** 

@@ -37,7 +37,7 @@ public class authDeserializer implements JsonDeserializer<PostmanAuth> {
             var = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
                     curVar.get("type").getAsString());
             try {
-                auth.setProperty(var);
+                auth.addProperty(var);
             } catch (Exception e) {
                 e.printStackTrace();
             }
