@@ -42,6 +42,25 @@ import java.util.HashMap;
 
 /**
  * Encapsulates a Postman collection
+ *<p>
+ * <strong>Ingest a collection file</strong></p>
+ * <p><code>PostmanCollection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
+ * <p>
+ * <p>
+ * 
+ * <p><strong>Get a request item</strong></p>
+ * <p><code>PostmanItem myReq = myCollection.getItem("Get Random Fact");</code></p>
+ * 
+ * <p><strong>Get pre-request script for the request</strong></p>
+ * <p/>
+ * <p><code>PostmanEvent preReq = myReq.getPreRequestScript();</code></p>
+ * <p/>
+ * <p><strong> Get source code for pre-request script</strong></p>
+ * <p><code>String myCode = preReq.getSourceCode();</code></p>
+ * 
+ * 
+ *  
+ * 
  * 
  * 
  */
