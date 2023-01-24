@@ -34,7 +34,7 @@ jobs:
           ref: docs
       - name: Update branch and javadocs
         run: |
-          git merge origin
+          git merge main
           mvn javadoc:javadoc
       - name: Setup Pages
         uses: actions/configure-pages@v2
