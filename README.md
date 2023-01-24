@@ -1,7 +1,9 @@
 # JPostman
 
 A Java wrapper for Postman collection files.  
-...
+
+[Docs](https://bidnessforb.github.io/JPostman)
+
 ## Getting started
 
 1. Download the JAR file from the releases tab
