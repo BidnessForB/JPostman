@@ -913,7 +913,8 @@ public class AppTest {
                 assertTrue("Expected exception thrown", true);
             }
             try {
-                String file = body.getFile();
+                String file = null;
+                file = body.getFile();
             }
             catch(IllegalPropertyAccessException e)
             {
