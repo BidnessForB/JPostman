@@ -43,7 +43,21 @@ import java.util.HashMap;
 /**
  * Encapsulates a Postman collection
  * 
- * <strong>Ingest a collection file</strong> fr
+ * <strong>Ingest a collection file</strong>
+ * PostmanCollection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");
+ * 
+ * <strong>Get a request item</strong>
+ * PostmanItem myReq = myCollection.getItem("Get Random Fact");
+ * 
+ * <strong>Get pre-request script for the request</strong>
+ * PostmanEvent preReq = myReq.getPreRequestScript();
+ * 
+ * <strong> Get source code for pre-request script</strong>[
+ * String myCode = preReq.getSourceCode();
+ * 
+ * 
+ *  
+ * 
  * 
  * 
  */
