@@ -295,7 +295,7 @@ public class PostmanBody extends PostmanCollectionElement {
             return null;
         }
         HashMap<String,String> retVal = new HashMap<String,String>();
-        retVal.put("query",this.graphql.getQuery());
+        retVal.put("query",this.graphql.getRawQueryString());
         retVal.put("variables",this.graphql.getVariables());
         return retVal;
     }
@@ -687,7 +687,7 @@ public class PostmanBody extends PostmanCollectionElement {
         }
     }
     public class PostmanGraphQL {
-        private String query;
+        private String rawQueryString;
         private String variables;
 
         public PostmanGraphQL(String query) {
@@ -695,16 +695,16 @@ public class PostmanBody extends PostmanCollectionElement {
         }
 
         public PostmanGraphQL(String query, String variables) {
-            this.query = query;
+            this.rawQueryString = query;
             this.variables = variables;
         }
 
-        public String getQuery() {
-            return query;
+        public String getRawQueryString() {
+            return rawQueryString;
         }
 
-        public void setQuery(String query) {
-            this.query = query;
+        public void setRawQueryString(String query) {
+            this.rawQueryString = query;
         }
 
         public String getVariables() {

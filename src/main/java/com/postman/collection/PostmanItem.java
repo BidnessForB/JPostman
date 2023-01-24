@@ -491,7 +491,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * @param newEvent
      */
-    private void setEvent(PostmanEvent newEvent) {
+    private void addEvent(PostmanEvent newEvent) {
         if (event == null) {
             event = new ArrayList<PostmanEvent>();
         }
@@ -603,7 +603,15 @@ public class PostmanItem extends PostmanCollectionElement {
     public void setPreRequestScript(String code)  {
 
         PostmanEvent prEvent = new PostmanEvent(enumEventType.PRE_REQUEST, code);
-        this.setEvent(prEvent);
+        this.addEvent(prEvent);
+    }
+
+    public PostmanEvent getPreRequestScript() {
+        return this.getEvent(enumEventType.PRE_REQUEST);
+    }
+
+    public PostmanEvent getTestScript() {
+        return this.getEvent(enumEventType.TEST);
     }
 
     
@@ -616,7 +624,7 @@ public class PostmanItem extends PostmanCollectionElement {
     public void setTestScript(String code) throws Exception {
 
         PostmanEvent prEvent = new PostmanEvent(enumEventType.TEST, code);
-        this.setEvent(prEvent);
+        this.addEvent(prEvent);
     }
 
     

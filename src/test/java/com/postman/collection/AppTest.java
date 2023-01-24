@@ -412,111 +412,111 @@ public class AppTest {
         pmcTest.addRequest(req, "INHERIT request");
 
         auth = new PostmanAuth(enumAuthType.AKAMAI);
-        auth.setProperty("headersToSign", "x-api-key");
-        auth.setProperty("baseURL", "https://akamai-base.com");
-        auth.setProperty("timestamp", "akamaiTimestamp");
-        auth.setProperty("nonce", "akamaiNonce");
-        auth.setProperty("clientSecret", "akamaiClientSecret");
-        auth.setProperty("clientToken", "akamaiClientToken");
-        auth.setProperty("accessToken", "akamaiToken");
+        auth.addProperty("headersToSign", "x-api-key");
+        auth.addProperty("baseURL", "https://akamai-base.com");
+        auth.addProperty("timestamp", "akamaiTimestamp");
+        auth.addProperty("nonce", "akamaiNonce");
+        auth.addProperty("clientSecret", "akamaiClientSecret");
+        auth.addProperty("clientToken", "akamaiClientToken");
+        auth.addProperty("accessToken", "akamaiToken");
 
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AKAMAI request");
 
         auth = new PostmanAuth(enumAuthType.APIKEY);
-        auth.setProperty("key", "API-KEY");
-        auth.setProperty("value", "x-api-key");
-        auth.setProperty("in", "query");
+        auth.addProperty("key", "API-KEY");
+        auth.addProperty("value", "x-api-key");
+        auth.addProperty("in", "query");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "APIKEY request");
 
         auth = new PostmanAuth(enumAuthType.AWS);
-        auth.setProperty("sessionToken", "awsSessiontoken");
-        auth.setProperty("service", "awsServiceName");
-        auth.setProperty("secretKey", "aswSecretKey");
-        auth.setProperty("accessKey", "awsAccessKey");
-        auth.setProperty("addAuthDataToQuery", "false");
+        auth.addProperty("sessionToken", "awsSessiontoken");
+        auth.addProperty("service", "awsServiceName");
+        auth.addProperty("secretKey", "aswSecretKey");
+        auth.addProperty("accessKey", "awsAccessKey");
+        auth.addProperty("addAuthDataToQuery", "false");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AWS request");
 
         auth = new PostmanAuth(enumAuthType.BEARER);
-        auth.setProperty("key", "API-KEY");
-        auth.setProperty("value", "x-api-key");
+        auth.addProperty("key", "API-KEY");
+        auth.addProperty("value", "x-api-key");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BEARER request");
 
         auth = new PostmanAuth(enumAuthType.BASIC);
-        auth.setProperty("password", "fakePassword");
-        auth.setProperty("username", "fakeusername");
+        auth.addProperty("password", "fakePassword");
+        auth.addProperty("username", "fakeusername");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BASIC request");
 
         auth = new PostmanAuth(enumAuthType.DIGEST);
-        auth.setProperty("opaque", "OpaqueString");
-        auth.setProperty("clientNonce", "2020202");
-        auth.setProperty("nonceCount", "1010101");
-        auth.setProperty("qop", "digest-qop");
-        auth.setProperty("algorithim", "SHA-256");
-        auth.setProperty("nonce", "digestNonce");
-        auth.setProperty("realm", "digest@test.com");
-        auth.setProperty("password", "digestPassword");
+        auth.addProperty("opaque", "OpaqueString");
+        auth.addProperty("clientNonce", "2020202");
+        auth.addProperty("nonceCount", "1010101");
+        auth.addProperty("qop", "digest-qop");
+        auth.addProperty("algorithim", "SHA-256");
+        auth.addProperty("nonce", "digestNonce");
+        auth.addProperty("realm", "digest@test.com");
+        auth.addProperty("password", "digestPassword");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "DIGEST request");
 
         auth = new PostmanAuth(enumAuthType.HAWK);
-        auth.setProperty("includePayloadHash", "true");
-        auth.setProperty("timestamp", "hawkTimestamp");
-        auth.setProperty("delegation", "hawk-dlg");
-        auth.setProperty("app", "HawkApp");
-        auth.setProperty("extraData", "Hawk-ext");
-        auth.setProperty("nonce", "hawkNonce");
-        auth.setProperty("user", "HawkUser");
-        auth.setProperty("authKey", "HawkAuthKey");
-        auth.setProperty("algorithim", "sha256");
+        auth.addProperty("includePayloadHash", "true");
+        auth.addProperty("timestamp", "hawkTimestamp");
+        auth.addProperty("delegation", "hawk-dlg");
+        auth.addProperty("app", "HawkApp");
+        auth.addProperty("extraData", "Hawk-ext");
+        auth.addProperty("nonce", "hawkNonce");
+        auth.addProperty("user", "HawkUser");
+        auth.addProperty("authKey", "HawkAuthKey");
+        auth.addProperty("algorithim", "sha256");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "HAWK request");
 
         auth = new PostmanAuth(enumAuthType.OAUTH1);
-        auth.setProperty(new PostmanVariable("addEmptyParamsToSign", "true", null, "boolean"));
-        auth.setProperty(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
-        auth.setProperty("realm", "testoauth@test.com");
-        auth.setProperty("nonce", "oauthNonce");
-        auth.setProperty("timestamp", "oauthTimestamp");
-        auth.setProperty("verifier", "oauthVerifier");
-        auth.setProperty("callback", "https:/callback.url");
-        auth.setProperty("tokenSecret", "OAuthTokenSecret");
-        auth.setProperty("token", "oauthToken");
-        auth.setProperty("consumerSecret", "oauthConsumerSecret");
-        auth.setProperty("consumerKey", "oauthConsumerKey");
-        auth.setProperty("signatureMethod", "HMAC-SHA1");
-        auth.setProperty("version", "1.0");
-        auth.setProperty(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
+        auth.addProperty(new PostmanVariable("addEmptyParamsToSign", "true", null, "boolean"));
+        auth.addProperty(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
+        auth.addProperty("realm", "testoauth@test.com");
+        auth.addProperty("nonce", "oauthNonce");
+        auth.addProperty("timestamp", "oauthTimestamp");
+        auth.addProperty("verifier", "oauthVerifier");
+        auth.addProperty("callback", "https:/callback.url");
+        auth.addProperty("tokenSecret", "OAuthTokenSecret");
+        auth.addProperty("token", "oauthToken");
+        auth.addProperty("consumerSecret", "oauthConsumerSecret");
+        auth.addProperty("consumerKey", "oauthConsumerKey");
+        auth.addProperty("signatureMethod", "HMAC-SHA1");
+        auth.addProperty("version", "1.0");
+        auth.addProperty(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH1 request");
 
         auth = new PostmanAuth(enumAuthType.OAUTH2);
-        auth.setProperty("grant_type", "authorization_code");
-        auth.setProperty("tokenName", "Oauth2TokenName");
-        auth.setProperty("tokenType", "");
-        auth.setProperty("accessToken", "oauth2AccessToken");
-        auth.setProperty("addTokenTo", "header");
+        auth.addProperty("grant_type", "authorization_code");
+        auth.addProperty("tokenName", "Oauth2TokenName");
+        auth.addProperty("tokenType", "");
+        auth.addProperty("accessToken", "oauth2AccessToken");
+        auth.addProperty("addTokenTo", "header");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH2 request");
 
         auth = new PostmanAuth(enumAuthType.NTLM);
-        auth.setProperty("workstation", "NTMLWorkstation");
-        auth.setProperty("domain", "NTLMDomain");
-        auth.setProperty("password", "NTLMPassword");
-        auth.setProperty("username", "NTLMUsername");
+        auth.addProperty("workstation", "NTMLWorkstation");
+        auth.addProperty("domain", "NTLMDomain");
+        auth.addProperty("password", "NTLMPassword");
+        auth.addProperty("username", "NTLMUsername");
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "NTLM request");
@@ -798,12 +798,12 @@ public class AppTest {
         
         PostmanAuth auth = new PostmanAuth(enumAuthType.OAUTH1);
         prop = new PostmanVariable("addEmptyParamsToSign", "true");
-        auth.setProperty(prop);
+        auth.addProperty(prop);
         assertTrue(auth.getProperties().size() == 1);
         assertTrue(auth.getProperty("addEmptyParamsToSign").getValue().equals("true"));
         
         prop = new PostmanVariable("addEmptyParamsToSign", "false");
-        auth.setProperty(prop);
+        auth.addProperty(prop);
 
         assertTrue(auth.getProperties().size() == 1);
         assertTrue(auth.getProperty("addEmptyParamsToSign").getValue().equals("false"));
@@ -960,6 +960,7 @@ public class AppTest {
     public void testURLObject() {
 
         String url1 = "https://foo.com:8080/foo/bar/:path1/bat.json?var1=aaa&var2=bbb";
+        //String url1 = "https://foo.com:8080/foo/bar/bat.json?var1=aaa&var2=bbb";
         String path1 = "foo/bar/:path1/bat.json";
         PostmanUrl url = new PostmanUrl(url1);
 
@@ -1013,6 +1014,17 @@ public class AppTest {
             assertTrue(urls.get(i) + " failed", false);
         }
     }
+
+    url = new PostmanUrl("https://foo.com?var1=val1&var2=val2");
+    assertTrue(url.getQueries().size() == 2);
+    assertTrue(url.getQueryString().equals("var1=val1&var2=val2"));
+    PostmanVariable varQ = url.getQueries().get(1);
+    url.removeQueryElement(varQ);
+    assertTrue(url.getQueries().size() == 1);
+    assertTrue(url.getQueryString().equals("var1=val1"));
+    
+
+
 
             
 
