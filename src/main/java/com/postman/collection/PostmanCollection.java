@@ -43,6 +43,8 @@ import java.util.HashMap;
 /**
  * Encapsulates a Postman collection
  * 
+ * <strong>Ingest a collection file</strong> fr
+ * 
  * 
  */
 public class PostmanCollection extends PostmanItem {
