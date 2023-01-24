@@ -112,7 +112,7 @@ public class PostmanUrl extends PostmanCollectionElement {
             this.setPath(rawUrl);
         }
     
-        System.out.println("foo");
+        
 
     };
 

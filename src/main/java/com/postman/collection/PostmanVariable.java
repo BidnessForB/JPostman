@@ -47,7 +47,7 @@ public class PostmanVariable extends PostmanCollectionElement {
  * @param type Value for the <code>type</code> property
  */
     public PostmanVariable(String key, String value, String description, String type) {
-        this.key = key;
+        this.key = (key == null ? "" : key);
         this.value = value;
         this.description = description;
         this.type = type;

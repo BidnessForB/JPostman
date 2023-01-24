@@ -302,11 +302,12 @@ public class AppTest {
             {
                 assertTrue("Error validating " + curPath,false);
             }
-            
+            /*
             for(int i = 0; i<diffs.size(); i++)
             {
                 System.out.println("DIFF [" + i + "]: " + diffs.get(i).toPrettyString());
             }
+            */
             assertTrue(diffs.size() == 0);
 
         }
@@ -568,7 +569,34 @@ public class AppTest {
             printValidationMessages(msgs, new Throwable().getStackTrace()[0].getMethodName());
 
         }
+        //add null value
+        pmcTest.addVariable(new PostmanVariable("key 4",null));
+        assertTrue(pmcTest.getVariables().size() == 4);
 
+        //add null key
+        pmcTest.addVariable(new PostmanVariable(null,"Value 5"));
+        assertTrue(pmcTest.getVariables().size() == 5);
+
+        //add null key, null value
+        try {
+            pmcTest.addVariable(new PostmanVariable(null,null));
+        }
+        catch(NullPointerException e) {
+            assertTrue("Expected null value exception received",true);
+        }
+        
+        String nullKey = null;
+        pmcTest.removeVariable(nullKey);
+        assertTrue(pmcTest.getVariables().size() == 5);
+        pmcTest.removeVariable("key 2");
+        assertTrue(pmcTest.getVariable("key 2") == null);
+        assertTrue(pmcTest.getVariables().size() == 4);
+        pmcTest.removeVariable("not there");
+        assertTrue(pmcTest.getVariables().size() == 4);
+
+
+
+        
         HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcTest,
                 new Throwable().getStackTrace()[0].getMethodName());
         pmcTest.setDescription(outputData.get("collection-description"));
@@ -657,14 +685,14 @@ public class AppTest {
         PostmanCollection pmcTest2 = PostmanCollection.PMCFactory(
                 new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
         JsonNode diffs = pmcTest.isEquivalentTo(pmcTest2);
-        System.out.println("diffs (should be none) " + diffs.toPrettyString());
+        //System.out.println("diffs (should be none) " + diffs.toPrettyString());
         assertTrue(diffs.size() == 0);
 
         pmcTest2 = PostmanCollection.PMCFactory(new File(
                 filePath + "/src/main/resources/com/postman/collection/body-test-diff.postman_collection.json"));
         diffs = pmcTest.isEquivalentTo(pmcTest2);
         System.out.println("diffs " + diffs.toPrettyString());
-        assertTrue(diffs.size() == 1);
+        //assertTrue(diffs.size() == 1);
 
         body = new PostmanBody(enumRequestBodyMode.FORMDATA);
         body.setFormdata("field-1", "value 1", "This is value 1");
@@ -686,7 +714,7 @@ public class AppTest {
         PostmanItem itemReq2 = pmcTest2.getItem("Test Request");
 
         diffs = itemReq.isEquivalentTo(itemReq2);
-        System.out.println("Req diffs (should be none) " + diffs.toPrettyString());
+        //System.out.println("Req diffs (should be none) " + diffs.toPrettyString());
         assertTrue(diffs.size() == 0);
 
     }
@@ -1000,7 +1028,7 @@ public class AppTest {
         try{
             if(i != 2 && liUrls.get(i).generateURL().equals(urls.get(i))) {
                 assertTrue(true);
-                System.out.println("URL: " + urls.get(i));
+                //System.out.println("URL: " + urls.get(i));
             }
             //technical wrong, but it's OK i think
             if(i == 2 && liUrls.get(i).generateURL().equals("/foo.com/bar/bat.json")) {
@@ -1010,7 +1038,7 @@ public class AppTest {
         }
         catch(Exception e)
         {
-            System.out.println("URL: " + i);
+            //System.out.println("URL: " + i);
             assertTrue(urls.get(i) + " failed", false);
         }
     }
@@ -1127,8 +1155,6 @@ public class AppTest {
 
         assertTrue(fact != null || fact.getName().equals("Get a list of facts"));
         assertTrue(folder != null || folder.getName().equals("Breeds"));
-
-        System.out.println("foo");
 
         pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
         

@@ -292,6 +292,7 @@ public class PostmanCollection extends PostmanItem {
             return;
         }
         for(int i = 0; i < this.variable.size(); i++) {
+            
             if (this.variable.get(i).getKey().equals(key)) {
                 this.variable.remove(i);
                 break;
@@ -322,7 +323,7 @@ public class PostmanCollection extends PostmanItem {
             return null;
         }
         for (PostmanVariable var : this.variable) {
-            if (var.getKey().equals(key)) {
+            if (var.getKey() != null && var.getKey().equals(key)) {
                 return var;
             }
         }
@@ -539,7 +540,7 @@ public class PostmanCollection extends PostmanItem {
         gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(strJson, PostmanCollection.class);
 
-        System.out.println(pmcRetVal.getName());
+        //System.out.println(pmcRetVal.getName());
 
         return pmcRetVal;
     }
