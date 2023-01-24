@@ -389,9 +389,16 @@ public class PostmanUrl extends PostmanCollectionElement {
 
         return queryString;
     }
-
+    /**
+     * 
+     * Remove a query element key-value pair from the array of query elements, if it exists.
+     * 
+     * @param queryElement
+     */
     public void removeQueryElement(PostmanVariable queryElement) {
-        this.query.remove(queryElement);
+        if(this.query != null){
+            this.query.remove(queryElement);
+        }
     }
 
     

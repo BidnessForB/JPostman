@@ -196,11 +196,26 @@ public abstract class PostmanCollectionElement {
 
         return patch;
     }
-
+    /**
+     * 
+     * <p>Return the default schema appearing in the <code>schema</code> property in exported collections.  </p>
+     * <p>
+     * <p>Current: https://schema.getpostman.com/json/collection/v2.1.0/collection.json</p>
+     * 
+     * @return The URI for default schema used to validate schemas
+     */
     public static String getDefaultCollectionSchema() {
         return defaultCollectionSchema;
     }
-
+    /**
+     * 
+     * <p>Return the default schema used to validate schemas.  NOTE: AS of version Version 10.8.9 this is not the same 
+     * appearing in the <code>schema</code> property in exported collections.  </p>
+     * <p>
+     * <p>Current: https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json</p>
+     * 
+     * @return The URI for default schema used to validate schemas
+     */
     public static String getDefaultValidationSchema() {
         return defaultValidationSchema;
     }

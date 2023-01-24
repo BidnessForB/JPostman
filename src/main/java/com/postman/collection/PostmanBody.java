@@ -277,8 +277,11 @@ public class PostmanBody extends PostmanCollectionElement {
     }
 }
 
-    //TODO: This should probably be handled by a typeadapter
+    
     /** 
+     * 
+     * Return an HashMap&#60;String, String&#62; containing the GraphQL query and variables source code. Either or both may be null if they don't exist.
+     * 
      * @return HashMap&#60;String,String&#62; A HashMap with the following keys:
      * <p><code>query</code> The graphql query</p>
      * <p><code>variables</code> The variables, or null if none are configured</p>
@@ -287,6 +290,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * 
      */
     public HashMap<String,String> getGraphql() throws IllegalPropertyAccessException {
+        //TODO: This should probably be handled by a typeadapter
         if (this.getMode() != enumRequestBodyMode.GRAPHQL) {
             throw new IllegalPropertyAccessException("Body mode must be GRAPHQL to access file property");
         }
