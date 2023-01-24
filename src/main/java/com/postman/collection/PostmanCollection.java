@@ -388,7 +388,7 @@ public class PostmanCollection extends PostmanItem {
         newFolder.addItems(newColl.getItems());
 
         if (copyVariables) {
-
+            
             
             if (newColl.getVariables() != null) {
                 if (this.variable == null) {
@@ -640,12 +640,12 @@ public class PostmanCollection extends PostmanItem {
      * Write this collections generated JSON to a file at the specified path.  Note that the order of elements in the resulting file is not guaranteed and may not match 
      * a corresponding Postman generated file.  However, this does not affect the validity or functionality of the generated JSON.
      * 
-     * @param path The path to export JSON to.
+     * @param outputFile The file into which to write the JSON
      * @throws IOException If there is an error attempting to create or write to the specified path
      */
-    public void writeToFile(String path) throws IOException {
+    public void writeToFile(File outputFile) throws IOException {
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
         writer.write(this.toJson());
         writer.close();
     }

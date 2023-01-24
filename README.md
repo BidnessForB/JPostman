@@ -21,6 +21,24 @@ PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported
 Java is common in Enterprise software development environments.  JPostman enables you to create a complete Java object model of a Postman collection from an exported collection JSON file.  This provides a bridge for integrating 
 with Java based applications and platforms such as JMeter.  
 
+### Create collections from exported `postman_collection.json` files
+```java
+  File jsonFile = new File("/path/to/your/exported/collection.json");
+  PostmanCollection pmcTest = PMCFactory(jsonFile);
+```
+
+You can experiment with example collections in the [Resources](https://github.com/BidnessForB/JPostman/tree/main/src/main/resources/com/postman/collection) folder.  
+
+### Create Collections from scratch
+
+You can create a new, empty collectino as well
+
+```java
+PostmanCollection newColl = PostmanFactory("New collection");
+```
+
+then create and add elements to your new collection
+
 ### Edit collections: add, remove, edit and move Collection elements
 
 JPostman allows you to add new Folders and Requests to your Postman Collections.  You can also add variables, Pre-Request and Test Scripts, requests, and responses.  In fact, 
@@ -36,7 +54,7 @@ For example, adding a new Folder as the third `item` in the collection:
   pmcTest.addItem(newFolder, 2);
   
   ```
-  ### Move collection elements
+### Move collection elements
   
 You can easily move elements from one parent to another.  For example, move a request to a new folder, or a folder to another folder or to the top level in the collection.
 
@@ -49,8 +67,6 @@ You can easily move elements from one parent to another.  For example, move a re
   pmcTest.moveItem(newFolder2, newFolder1);
  ```
 
-
-  
   ### Combining collections
   
   You can combine collections as well.  
@@ -61,11 +77,7 @@ You can easily move elements from one parent to another.  For example, move a re
   PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
- You can add a collection in this way either to the top level Collection itself or to any folder in the collection.  
- 
- All folders, requests, pre-request and test scripts are copied over.  Collection variables are appended to the target collections array of variables.
-  
-  **CAUTION** Currently there is no check for duplicate variables names between the two collections.
+ When a collection is added, a new Folder is created and all of the added collection's elements are linked to that folder.  The folder in turn is then linked to the target collection.  All folders, requests, pre-request and test scripts are copied over from the source to the target collection.  Collection variables are appended to the target collections array of variables.
   
 ### Write your edited collections to a JSON file
 
@@ -80,6 +92,27 @@ JPostman allows you to generate JSON for your collections.  You can also write y
   pmcTest.addItem(pmcSource, 2);
   pmcTest.writeToFile("new-collection.json");
  ```
+ 
+ ### Validate collections against the Postman Collection Schema
+
+ Use the `PostmanCollection.validate() method to ensure that the JSON emitted by your instance of PostmanCollection conforms with the Postman Collection schema:
+
+ ```java
+  boolean isValid = myCollection.validate()
+ ```
+
+JPostman uses the NetworkNT [json-schema-validator](https://github.com/networknt/json-schema-validator) to validate JSON against a JSON schema.  
+
+ If the `validate()` method returns `false`, call `getValidationMessages()` for an array of [ValidationMessage](https://javadoc.io/doc/com.networknt/json-schema-validator/1.0.51/com/networknt/schema/ValidationMessage.html) objects describing differences between your collections generated JSON and the Postman schema.  
+ 
+ ### Export collections to a `postman_collection.json` file
+
+ Call the `writeToFile` method to serialize your Collection object to the filesystem as a JSON file:
+
+ ```java
+ myCollection.writetoFile(new File("/desired/output/path.json"));
+ ```
+ 
  ## Implementation 
  
 Java does not natively support JSON llike NodeJS does.  Object models based on JSON must be manually constructed.  Forutnately the brilliant folks at Google came up with [GSON](https://github.com/google/gson) a library that does this automatically.  Basically you create Java classes with member variables that match the keys in the JSON file.  GSON then parses the file and builds out the object model.  GSON also allows for an object model to be written out to JSON.  
