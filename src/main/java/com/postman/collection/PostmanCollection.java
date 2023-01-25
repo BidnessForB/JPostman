@@ -7,31 +7,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
-import com.postman.collection.adapter.*;
-
-import java.util.Set;
 import java.util.Iterator;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
@@ -442,10 +429,17 @@ public class PostmanCollection extends PostmanItem {
      * Recursivel traverse the tree of <code>item</code> elements and link each item to it's parent explicitly
      * 
      */
-    public void init() {
+    private void init() {
         
         this.setParents();
-        this.info = new HashMap<String, String>();
+        if(this.info == null) {
+            this.info = new HashMap<String, String>();
+        }
+        if(this.getItems() == null) {
+            //the item element is required by the Collection schema, even if it is empty
+            this.setItems(new ArrayList<PostmanItem>());
+        }
+        
     }
 
     
@@ -525,7 +519,7 @@ public class PostmanCollection extends PostmanItem {
         String strChunk = "";
         BufferedReader brItem = null;
         String strJson = "";
-        com.google.gson.Gson gson = null;
+
         PostmanCollection pmcRetVal;
         brItem = new BufferedReader(new FileReader(jsonFile));
         while ((strChunk = brItem.readLine()) != null)
@@ -539,6 +533,7 @@ public class PostmanCollection extends PostmanItem {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(strJson, PostmanCollection.class);
+        pmcRetVal.init();
 
         //System.out.println(pmcRetVal.getName());
 
@@ -682,28 +677,7 @@ public class PostmanCollection extends PostmanItem {
     public String toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
-        JsonSerializer<ArrayList<PostmanVariable>> varSerializer = new JsonSerializer<ArrayList<PostmanVariable>>() {
-            public JsonElement serialize(ArrayList<PostmanVariable> src, Type typeOfSrc,
-                    JsonSerializationContext context) {
-                JsonArray varArray = new JsonArray();
-                JsonObject varElement;
-
-                for (PostmanVariable var : src) {
-                    varElement = new JsonObject();
-                    varElement.addProperty("key", var.getKey());
-                    varElement.addProperty("value", var.getValue());
-                    if (var.getDescription() != null) {
-                        varElement.addProperty("description", var.getDescription());
-                    }
-                    if (var.getType() != null) {
-                        varElement.addProperty("type", var.getType());
-                    }
-                    varArray.add(varElement);
-                }
-                return varArray;
-            }
-        };
-
+  
         JsonSerializer<HashMap<String, String>> mapSerializer = new JsonSerializer<HashMap<String, String>>() {
             public JsonElement serialize(HashMap<String, String> src, Type typeOfSrc,
                     JsonSerializationContext context) {
@@ -755,8 +729,7 @@ public class PostmanCollection extends PostmanItem {
         Type varMapType = new TypeToken<HashMap<String, PostmanVariable>>() {
         }.getType();
 
-        Type varType = new TypeToken<ArrayList<PostmanVariable>>() {
-        }.getType();
+        //Type varType = new TypeToken<ArrayList<PostmanVariable>>() {}.getType();
 
         // gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
         gsonBuilder.registerTypeAdapter(mapType, mapSerializer);
