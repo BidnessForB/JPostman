@@ -54,20 +54,7 @@ public class PostmanCollection extends PostmanItem {
     private HashMap<String, String> info;
 
     
-    /*
-    public static void main(String[] args) throws Exception {
-        String filePath = new java.io.File("").getAbsolutePath();
-        //String resourcePath = new java.io.File(filePath + "/src/main/resources/com/postman/collection/");
-        PostmanCollection pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
-        PostmanItem fact = pmcTest.getItem("Get a list of facts");
-        PostmanItem folder = pmcTest.getItem("get Breeds",true);
-
-        ArrayList<PostmanItem> folders = pmcTest.getItems(enumPostmanItemType.FOLDER);
-        ArrayList<PostmanItem> requests = pmcTest.getItems(enumPostmanItemType.REQUEST);
-        ArrayList<PostmanItem> all = pmcTest.getItems(null);
-
-        fact = pmcTest.getItem("Add Breed");
-} */
+    
 
     
     
@@ -80,12 +67,12 @@ public class PostmanCollection extends PostmanItem {
      * @param parentKey
      * @throws InvalidCollectionAction If either the parent or item to be moved aren't present in the <code>item</code> array
      */
-    public void moveItem(String itemToMoveKey, String parentKey) throws Exception {
+    public void moveItem(String itemToMoveKey, String parentKey) throws InvalidCollectionAction {
         PostmanItem itemToMove = this.getItem(itemToMoveKey);
         PostmanItem parent = this.getItem(parentKey);
 
         if (itemToMove == null || parent == null) {
-            throw new Exception("Couldn't find item to move and/or parent");
+            throw new InvalidCollectionAction("Attempt to move a null item, or an item to a null parent");
         }
 
     }
@@ -249,17 +236,17 @@ public class PostmanCollection extends PostmanItem {
      * Add or replace variable to the collection of variables comprising this collections <code>variable</code> array property.  If a variable with the same <code>key</code> already exists
      * in the collection it is replaced.
      * 
-     * @param var
+     * @param varNew
      */
-    public void addVariable(PostmanVariable var) {
+    public void addVariable(PostmanVariable varNew) {
         if (this.variable == null) {
             this.variable = new ArrayList<PostmanVariable>();
         }
-        if (this.getVariable(var.getKey()) != null) {
+        if (this.getVariable(varNew.getKey()) != null) {
             //easier than getting the variable lol
-            this.removeVariable(var.getKey());
+            this.removeVariable(varNew.getKey());
         }
-        this.variable.add(var);
+        this.variable.add(varNew);
     }
 
     
@@ -286,10 +273,10 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Remove variable from the array of key-value pairs comprising this collections <code>variable</code> array element.  
      * 
-     * @param var The variable to remove.  Matching is by the value of <code>key</code>
+     * @param varNew The variable to remove.  Matching is by the value of <code>key</code>
      */
-    public void removeVariable(PostmanVariable var) {
-        this.removeVariable(var.getKey());
+    public void removeVariable(PostmanVariable varNew) {
+        this.removeVariable(varNew.getKey());
     }
 
     
@@ -304,9 +291,9 @@ public class PostmanCollection extends PostmanItem {
         if (this.variable == null) {
             return null;
         }
-        for (PostmanVariable var : this.variable) {
-            if (var.getKey() != null && var.getKey().equals(key)) {
-                return var;
+        for (PostmanVariable curVar : this.variable) {
+            if (curVar.getKey() != null && curVar.getKey().equals(key)) {
+                return curVar;
             }
         }
         return null;
@@ -369,18 +356,15 @@ public class PostmanCollection extends PostmanItem {
         
         newFolder.addItems(newColl.getItems());
 
-        if (copyVariables) {
-            
-            
-            if (newColl.getVariables() != null) {
-                if (this.variable == null) {
-                    this.variable = new ArrayList<PostmanVariable>();
-                }
-                this.variable.addAll(newColl.getVariables());
+        if (copyVariables && newColl.getVariables() != null) {
+            if (this.variable == null) {
+                this.variable = new ArrayList<PostmanVariable>();
             }
+            this.variable.addAll(newColl.getVariables());    
         }
+        
 
-        if (copyScripts) {
+        if (copyScripts && newColl.getEvents() != null) {
             newFolder.setEvents(newColl.getEvents());
         }
     }
@@ -441,6 +425,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * @param newName
      */
+    @Override
     public void setName(String newName) {
         this.info.put("name", newName);
     }
@@ -463,6 +448,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * @param desc
      */
+    @Override
     public void setDescription(String desc) {
         this.info.put("description", desc);
     }
@@ -471,6 +457,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * @return String
      */
+    @Override
     public String getDescription() {
         return this.info.get("description");
     }
@@ -482,7 +469,7 @@ public class PostmanCollection extends PostmanItem {
      * 
      * @return PostmanCollection
      */
-    public static PostmanCollection PMCFactory() {
+    public static PostmanCollection pmcFactory() {
 
         String json = "{}";
         Gson gson = new Gson();
@@ -509,28 +496,27 @@ public class PostmanCollection extends PostmanItem {
      * @throws FileNotFoundException If the specified JSON file does not exist 
      * @throws IOException If an IO exception occurs attempting to read the file, eg., inadequate permissions, etc.  
      */
-    public static PostmanCollection PMCFactory(File jsonFile) throws FileNotFoundException, IOException {
+    public static PostmanCollection pmcFactory(File jsonFile) throws IOException {
 
         String strChunk = "";
-        BufferedReader brItem = null;
-        String strJson = "";
+        StringBuilder sbJson = new StringBuilder();
 
         PostmanCollection pmcRetVal;
-        brItem = new BufferedReader(new FileReader(jsonFile));
-        while ((strChunk = brItem.readLine()) != null)
-            strJson = strJson + strChunk;
-        try {
-            brItem.close();
+        try(FileReader fr = new FileReader(jsonFile);
+            BufferedReader brItem  =new BufferedReader(fr)) {
+            
+            while ((strChunk = brItem.readLine()) != null)
+                sbJson.append(strChunk);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authDeserializer());
-        pmcRetVal = gsonBuilder.create().fromJson(strJson, PostmanCollection.class);
-        pmcRetVal.init();
+        
 
-        //System.out.println(pmcRetVal.getName());
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.AuthDeserializer());
+        pmcRetVal = gsonBuilder.create().fromJson(sbJson.toString(), PostmanCollection.class);
+        pmcRetVal.init();
 
         return pmcRetVal;
     }
@@ -539,6 +525,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * @return String
      */
+    @Override
     public String getName() {
         return this.info.get("name");
     }
@@ -635,9 +622,15 @@ public class PostmanCollection extends PostmanItem {
      */
     public void writeToFile(File outputFile) throws IOException {
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+      
         writer.write(this.toJson());
-        writer.close();
+        
+        }
+        catch(IOException e)
+        {
+            throw(e);
+        }
     }
 
     
@@ -669,6 +662,7 @@ public class PostmanCollection extends PostmanItem {
      * 
      * @return String
      */
+    @Override
     public String toJson() {
         
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -681,12 +675,12 @@ public class PostmanCollection extends PostmanItem {
 
         gsonBuilder.registerTypeAdapter(mapType, new com.postman.collection.adapter.StringMapSerializer());
         gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.varMapSerializer());
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authSerializer());
+        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.AuthSerializer());
         gsonBuilder.registerTypeAdapter(com.postman.collection.PostmanCollection.class, new com.postman.collection.adapter.CollectionSerializer());
 
         Gson customGson = gsonBuilder.create();
-        String customJSON = customGson.toJson(this);
-        return customJSON;
+        return customGson.toJson(this);
+        
     }
 
     

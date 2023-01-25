@@ -9,42 +9,43 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonDeserializer;
 import java.lang.reflect.Type;
 
-public class authDeserializer implements JsonDeserializer<PostmanAuth> {
+public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
 
-    
-    /** 
+    /**
      * 
-     * Custom <a href="https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html"> GSON deserializer</a> for the PostmanAuth object.
+     * Custom <a href=
+     * "https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html">
+     * GSON deserializer</a> for the PostmanAuth object.
      * 
      * 
-     * @param jElement  
+     * @param jElement
      * @param typeOfT
      * @param context
      * @return PostmanAuth
      * @throws JsonParseException
      */
     @Override
-    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context)throws JsonParseException {
+    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         JsonObject curVar;
         String type = jObject.get("type").getAsString();
         JsonArray vars = jObject.get(type).getAsJsonArray();
-        PostmanVariable var;
+        PostmanVariable pvVar;
         PostmanAuth auth = new PostmanAuth(jObject.get("type").getAsString());
         for (int i = 0; i < vars.size(); i++) {
             curVar = vars.get(i).getAsJsonObject();
             curVar.get("key");
-            var = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
+            pvVar = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
                     curVar.get("type").getAsString());
             try {
-                auth.addProperty(var);
+                auth.addProperty(pvVar);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
-        // auth.setPropertys(context.deserialize(vars, PostmanVariable[].class));
+        
         return auth;
 
     }
-};
+}
