@@ -7,20 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSerializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import java.util.Map;
 import java.util.HashMap;
@@ -675,67 +670,19 @@ public class PostmanCollection extends PostmanItem {
      * @return String
      */
     public String toJson() {
+        
         GsonBuilder gsonBuilder = new GsonBuilder();
-
-  
-        JsonSerializer<HashMap<String, String>> mapSerializer = new JsonSerializer<HashMap<String, String>>() {
-            public JsonElement serialize(HashMap<String, String> src, Type typeOfSrc,
-                    JsonSerializationContext context) {
-                JsonObject jsonMap = new JsonObject();
-
-                Iterator<String> keys = src.keySet().iterator();
-                String curKey;
-                while (keys.hasNext()) {
-                    curKey = keys.next();
-                    jsonMap.addProperty(curKey, src.get(curKey));
-                }
-
-                return jsonMap;
-            }
-        };
-
-        /*
-        JsonSerializer<HashMap<String, PostmanVariable>> varMapSerializer = new JsonSerializer<HashMap<String, PostmanVariable>>() {
-            public JsonElement serialize(HashMap<String, PostmanVariable> src, Type typeOfSrc,
-                    JsonSerializationContext context) {
-                JsonArray varArray = new JsonArray();
-                JsonObject varElement;
-                String curKey;
-                PostmanVariable var = null;
-                Iterator<String> keys = src.keySet().iterator();
-                while (keys.hasNext()) {
-                    curKey = keys.next();
-                    varElement = new JsonObject();
-                    var = src.get(curKey);
-                    varElement.addProperty("key", var.getKey());
-                    varElement.addProperty("value", var.getValue());
-                    if (var.getDescription() != null) {
-                        varElement.addProperty("description", var.getDescription());
-                    }
-                    if (var.getType() != null) {
-                        varElement.addProperty("type", var.getType());
-                    }
-                    varArray.add(varElement);
-                }
-
-                return varArray;
-
-            }
-        };
-        */
 
         Type mapType = new TypeToken<HashMap<String, String>>() {
         }.getType();
         Type varMapType = new TypeToken<HashMap<String, PostmanVariable>>() {
         }.getType();
 
-        //Type varType = new TypeToken<ArrayList<PostmanVariable>>() {}.getType();
 
-        // gsonBuilder.registerTypeAdapter(PostmanAuth.class, serializer);
-        gsonBuilder.registerTypeAdapter(mapType, mapSerializer);
-        // gsonBuilder.registerTypeAdapter(varType, varSerializer);
+        gsonBuilder.registerTypeAdapter(mapType, new com.postman.collection.adapter.StringMapSerializer());
         gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.varMapSerializer());
         gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.authSerializer());
+        gsonBuilder.registerTypeAdapter(com.postman.collection.PostmanCollection.class, new com.postman.collection.adapter.CollectionSerializer());
 
         Gson customGson = gsonBuilder.create();
         String customJSON = customGson.toJson(this);

@@ -10,6 +10,9 @@ import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.HashMap;
 
+
+
+
 public class varMapSerializer implements JsonSerializer<HashMap<String, PostmanVariable>> {
     
     /** 

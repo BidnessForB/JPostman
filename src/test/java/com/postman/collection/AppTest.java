@@ -1,5 +1,6 @@
 package com.postman.collection;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import org.junit.Test;
-import org.junit.internal.runners.TestMethod;
 
 import com.networknt.schema.ValidationMessage;
 import java.util.HashMap;
@@ -34,17 +34,13 @@ public class AppTest {
 
     @Test
     public void clearOutput() {
-        File output = new File(filePath + "/test-output");
-        File currentFile;
-        if (!output.exists()) {
-            output.mkdir();
-            return;
-        }
-        String[] files = output.list();
-        for (String s : files) {
-            currentFile = new File(output.getPath(), s);
-            currentFile.delete();
-        }
+        File outputRoot = new File(filePath + "/test-output");
+        deleteDirectory(outputRoot);
+        boolean mkDirs = false;
+        mkDirs = new File(filePath + "/test-output/compare").mkdirs();
+        assertTrue(mkDirs);
+        
+        
     }
 
     public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
@@ -90,9 +86,11 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         PostmanItem folder;
         PostmanItem request;
 
-        PostmanEvent  event = null;
+        //generates spurious "variable not used" warning
+        PostmanEvent  event = null; 
         PostmanRequest req;
-
+        assertNull(event);
+      
         try {
             pmcTest.setName("TEST Scripts");
             folder = new PostmanItem("Scripts");
@@ -225,15 +223,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         }
         
         PostmanCollection pmcTest2;
-        boolean outputDirCreated = false;
-        try {
-            outputDirCreated = new File(filePath  + "/test-output/compare").mkdirs();
-        }
-        catch(Exception e)
-        {
-            System.out.println("Could not create output directory" + e.getMessage());
-            assertTrue("Could not create output directory", false);
-        }
+        
+        
+        
         for(String curPath : collectionFiles) {
             try {
                 pmcTest = PostmanCollection.PMCFactory(new File(filePath + resourcePath + "/" + curPath));
@@ -336,7 +328,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest.setName("TEST Auth");
         PostmanAuth auth;
         PostmanRequest req;
-        boolean valid;
+        
 
         req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         pmcTest.addRequest(req, "INHERIT request");
@@ -453,8 +445,6 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         pmcTest.setAuth(auth);
 
-        pmcTest.writeToFile(new File(filePath + "/test-output/TEST-auth.postman_collection.json"));
-        pmcTest.getAuth().getProperties().keySet().iterator().next();
         validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
 
@@ -723,7 +713,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
     @Test
     public void testBodyObject() {
-        Object opts;
+        
             PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
             assertTrue(body.getMode() == enumRequestBodyMode.RAW);
             try {
@@ -812,14 +802,14 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
             body = new PostmanBody(enumRequestBodyMode.GRAPHQL);
             try {
-                opts = body.getGraphql();
+                assertNull("GraphQL is not null", body.getGraphql());
             }
             catch(IllegalPropertyAccessException e)
             {
                 assertTrue("Expected exception thrown", true);
             }
             try {
-                String file = body.getFile();
+                assertNotNull("Body is not null", body.getFile());
             }
             catch(IllegalPropertyAccessException e)
             {
@@ -852,7 +842,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
             body.setMode(enumRequestBodyMode.FORMDATA);
             try {
-                String raw = body.getRaw();
+                body.getRaw();
             }
             catch(IllegalPropertyAccessException e)
             {
@@ -1025,12 +1015,17 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         
     }
     
-    @Test
+    
     public void testPostmanItem() throws Exception{
+        
         pmcTest = PostmanCollection.PMCFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        
+        
         PostmanItem fact = pmcTest.getItem("Get a list of facts");
         PostmanItem folder = pmcTest.getItem("get Breeds",true);
-
+        assertNotNull(fact);
+        assertNotNull(folder);
+        
         assertTrue(fact != null || fact.getName().equals("Get a list of facts"));
         assertTrue(folder != null || folder.getName().equals("Breeds"));
 
@@ -1058,6 +1053,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         PostmanRequest req;
         PostmanItem reqItem1 = null;
+        //generates spurious "not used" warning
         PostmanItem reqItem2 = null;
         PostmanItem newFolder = null;
 
@@ -1074,6 +1070,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
        try {
         reqItem2 = pmcTest.addRequest(req,"POST echo");
+        assertNotNull(reqItem2);
        } 
        catch(Exception e){
         assertTrue("Unexpected exception " + e.getMessage(), false);
@@ -1186,5 +1183,16 @@ public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceEleme
     assertTrue("Final validation test for: " + testMethodInfo.getMethodName(), valid);
     assertTrue("Validating output file was written: " + testMethodInfo.getMethodName(), new File(collectionOutputPath).exists());
     return valid;
+}
+
+
+boolean deleteDirectory(File directoryToBeDeleted) {
+    File[] allContents = directoryToBeDeleted.listFiles();
+    if (allContents != null) {
+        for (File file : allContents) {
+            deleteDirectory(file);
+        }
+    }
+    return directoryToBeDeleted.delete();
 }
 }
