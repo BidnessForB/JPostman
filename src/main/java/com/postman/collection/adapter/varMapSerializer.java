@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 
 
-public class varMapSerializer implements JsonSerializer<HashMap<String, PostmanVariable>> {
+public class VarMapSerializer implements JsonSerializer<HashMap<String, PostmanVariable>> {
     
     /** 
      * @param src
