@@ -35,7 +35,7 @@ public class AppTest {
     String collectionOutputPath;
 
     @Test
-    public void clearOutput() {
+        public void clearOutput() {
         File outputRoot = new File(filePath + "/test-output");
         deleteDirectory(outputRoot);
         boolean mkDirs = false;
@@ -1192,6 +1192,7 @@ public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceEleme
     collectionOutputPath = outputData.get("output-path");
     try {
         pmcColl.writeToFile(new File(collectionOutputPath));
+        System.out.println("Wrote to " + collectionOutputPath);
     }
     catch(IOException i) {
         assertTrue("IOException writing to file: [" + testMethodInfo.getMethodName() +":" + testMethodInfo.getLineNumber() + "]: " + i.getMessage(), false);
