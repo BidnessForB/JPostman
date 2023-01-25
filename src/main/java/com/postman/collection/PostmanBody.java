@@ -515,8 +515,10 @@ public class PostmanBody extends PostmanCollectionElement {
                 return enumRequestBodyMode.GRAPHQL;
             case "raw":
                 return enumRequestBodyMode.RAW;
+            default:
+                return null;
         }
-        return null;
+        
     }
 
     /** 
@@ -649,8 +651,10 @@ public class PostmanBody extends PostmanCollectionElement {
                     return enumRawBodyLanguage.XML;
                 case "graphql":
                     return enumRawBodyLanguage.GRAPHQL;
+                default:
+                    return null;
             }
-            return null;
+            
         }
 
         public void setLanguage(enumRawBodyLanguage newLanguage) {

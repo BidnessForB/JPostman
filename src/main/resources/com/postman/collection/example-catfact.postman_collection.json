@@ -390,7 +390,7 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"//Test PR Script"
+					"//Collection Test Script"
 				]
 			}
 		}

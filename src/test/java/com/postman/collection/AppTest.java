@@ -1161,6 +1161,20 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     }
 
+    @Test
+    public void testBooleanIntegerVariables() {
+        try {
+            pmcTest = PostmanCollection.pmcFactory(new File(filePath + "/" + resourcePath + "/test-variable-types.postman_collection.json"));
+            validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+
+    }
+
 
 public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceElement testMethodInfo) {
     boolean valid = false;

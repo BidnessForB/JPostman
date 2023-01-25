@@ -26,19 +26,19 @@ public class VarMapSerializer implements JsonSerializer<HashMap<String, PostmanV
         JsonArray varArray = new JsonArray();
         JsonObject varElement;
         String curKey;
-        PostmanVariable var = null;
+        PostmanVariable curVar = null;
         Iterator<String> keys = src.keySet().iterator();
         while (keys.hasNext()) {
             curKey = keys.next();
             varElement = new JsonObject();
-            var = src.get(curKey);
-            varElement.addProperty("key", var.getKey());
-            varElement.addProperty("value", var.getValue());
-            if (var.getDescription() != null) {
-                varElement.addProperty("description", var.getDescription());
+            curVar = src.get(curKey);
+            varElement.addProperty("key", curVar.getKey());
+            varElement.addProperty("value", curVar.getValue());
+            if (curVar.getDescription() != null) {
+                varElement.addProperty("description", curVar.getDescription());
             }
-            if (var.getType() != null) {
-                varElement.addProperty("type", var.getType());
+            if (curVar.getType() != null) {
+                varElement.addProperty("type", curVar.getType());
             }
             varArray.add(varElement);
         }
