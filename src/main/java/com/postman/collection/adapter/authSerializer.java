@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import java.lang.reflect.Type;
 import java.util.Iterator;
 
-public class authSerializer implements JsonSerializer<PostmanAuth> {
+public class AuthSerializer implements JsonSerializer<PostmanAuth> {
 
     
     /** 
