@@ -17,7 +17,7 @@ on:
 jobs:
   build:
     env: 
-        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,8 @@ jobs:
         distribution: 'temurin'
         # cache: maven
     - name: Build with Maven
-      
+      env: 
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
       run:  |
         mkdir ./test-output
         mvn -B -q package --file pom.xml        
