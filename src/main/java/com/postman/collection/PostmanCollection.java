@@ -572,7 +572,7 @@ public class PostmanCollection extends PostmanItem {
         // create a client
             var client = HttpClient.newHttpClient();
             String strColJson;
-            PostmanCollection pmcRetVal;ß
+            PostmanCollection pmcRetVal;
             String apiToken = System.getenv("POSTMAN_API_KEY");
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
