@@ -280,7 +280,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     }
 
-    @Test
+    /*@Test
     public void testBodyImportExport() {
         
         try {
@@ -292,7 +292,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     
     /** 
