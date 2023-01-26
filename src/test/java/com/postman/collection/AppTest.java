@@ -25,6 +25,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 /**
  * Unit test for simple App.
  */
@@ -922,15 +924,27 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     url.removeQueryElement(varQ);
     assertEquals(1, url.getQueries().size());
     assertEquals("var1=val1", url.getQueryString());
+
+    }
+    @Test
+    public void testIngestFromUrl() throws MalformedURLException {
+        //Good URL
+        try {
+            pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+            assertTrue("Valid collection ingested from URL",pmcTest.validate());
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected " + e.getClass().getName() +": " + e.getMessage(),false);
+        }
+        //Good URL, bad COllection ID
+//        try {
+
+  //      }
+
     
 
-
-
-            
-
-
-
-
+        
+        
     }
 
     @Test
@@ -1092,7 +1106,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        {
         assertTrue("Recursive exception as expected",true);
        }
-       catch(InvalidCollectionAction d) {
+       catch(InvalidCollectionActionException d) {
         assertTrue("Unexpected exception: " + d.getMessage(), false);
        }
 
