@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
@@ -19,6 +20,13 @@ import java.util.ArrayList;
 import com.google.gson.reflect.TypeToken;
 import java.util.Map;
 import java.util.HashMap;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse.BodyHandler;
+import java.net.http.HttpResponse.BodyHandlers;
+
+
+
 
 
 
@@ -55,8 +63,20 @@ public class PostmanCollection extends PostmanItem {
 
     
     
+    public static void main() {
+        PostmanCollection pmcTest;
+    try {
+        pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+    }
+    catch(Exception e) {
+        e.printStackTrace();
+    }
 
     
+    
+    
+
+}
     
     
     /** 
@@ -522,6 +542,24 @@ public class PostmanCollection extends PostmanItem {
         return pmcRetVal;
     }
 
+    public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException {
+        // create a client
+            var client = HttpClient.newHttpClient();
+
+            // create a request
+            var request = HttpRequest.newBuilder(
+                URI.create(collectionURL.toString()))
+            .header("accept", "application/json")
+            .build();
+
+            // use the client to send the request
+            var response = client.send(request, BodyHandlers.ofString());
+
+            // the response:
+            System.out.println(response.body());
+            return null;
+    }
+
     
     /** 
      * @return String
@@ -706,5 +744,7 @@ public class PostmanCollection extends PostmanItem {
 
         return null;
     }
+
+
 
 }
