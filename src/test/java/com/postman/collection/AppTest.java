@@ -181,13 +181,15 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             for (int i = 0; i < liUrls.size(); i++) {
                 try {
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
-                    validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+                    assertTrue(pmcTest.validate());
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                     assertTrue(false);
                 }
 
             }
+            validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -280,7 +282,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     @Test
     public void testBodyImportExport() {
-        String filePath = new java.io.File("").getAbsolutePath();
+        
         try {
             pmcTest = PostmanCollection.pmcFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
