@@ -34,8 +34,8 @@ public class AppTest {
     PostmanCollection pmcTest = null;
     String collectionOutputPath;
 
-    /*
-    @Test
+    
+   /*  @Test
         public void clearOutput() {
         File outputRoot = new File(filePath + "/test-output");
         deleteDirectory(outputRoot);
@@ -44,8 +44,8 @@ public class AppTest {
         assertTrue(mkDirs);
         
         
-    }
-    */
+    } */
+    
 
     public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
         Set<String> fileSet = new HashSet<>();
@@ -241,8 +241,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
                 break;
             }
             try {
-                pmcTest.writeToFile(new File(filePath + "/test-output/compare/compare.postman_collection.json"));
-                pmcTest2 = PostmanCollection.pmcFactory(new File(filePath + "/test-output/compare/compare.postman_collection.json"));
+                pmcTest.writeToFile(new File(filePath + "/test-output/compare-src.postman_collection.json"));
+                pmcTest2 = PostmanCollection.pmcFactory(new File(filePath + "/test-output/compare-src.postman_collection.json"));
             }
             catch(Exception e) {
                 System.out.println("Error reading collection file: " + curPath);
