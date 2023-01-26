@@ -1193,6 +1193,18 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     }
 
+    @Test
+    public void TestIngestionByID() {
+        try {
+            pmcTest = PostmanCollection.pmcFactory(new PostmanID("23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected exception: " + e.getMessage(), false);
+        }
+        validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+        
+    }
+
 
 public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceElement testMethodInfo) {
     boolean valid = false;

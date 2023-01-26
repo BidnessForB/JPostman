@@ -24,7 +24,7 @@ with Java based applications and platforms such as JMeter.
 ### Create collections from exported `postman_collection.json` files
 ```java
   File jsonFile = new File("/path/to/your/exported/collection.json");
-  PostmanCollection pmcTest = pmcFactory(jsonFile);
+  PostmanCollection pmcTest = PostmanCollection.pmcFactory(jsonFile);
 ```
 
 You can experiment with example collections in the [Resources](https://github.com/BidnessForB/JPostman/tree/main/src/main/resources/com/postman/collection) folder.  
