@@ -64,6 +64,7 @@ public class PostmanCollection extends PostmanItem {
     private ArrayList<PostmanVariable> variable = null;
     private PostmanAuth auth = null;
     private HashMap<String, String> info;
+    
 
     
     
@@ -559,14 +560,14 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Create a collection via the Postman API
      * 
-     * @param collectionURL
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws IllegalArgumentException
-     * @throws CollectionNotFoundException
-     * @throws ValidationException
-     * @throws InvalidCollectionActionException
+     * @param collectionURL  URL for the collection to ingest
+     * @return PostmanCollection The new collection
+     * @throws IOException  
+     * @throws InterruptedException 
+     * @throws IllegalArgumentException 
+     * @throws CollectionNotFoundException If there is no collection at the specified URL
+     * @throws ValidationException If the JSON returned by the specified URL does not conform to the Postman schema
+     * @throws InvalidCollectionActionException If any other error occurs during the generation of the collection
      */
     public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
         // create a client
@@ -608,6 +609,7 @@ public class PostmanCollection extends PostmanItem {
                pmcRetVal = PostmanCollection.pmcFactory(strColJson);
 
             if(pmcRetVal.validate()) {
+                
                 return pmcRetVal;
             }
             else {
