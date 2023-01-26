@@ -33,7 +33,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B -q package --file pom.xml        
     - name: Create output dir
-      run: mkdir test-output
+      run: mkdir ${GITHUB_WORKSPACE}/test-output
     - name: Run unit tests
       env: 
         POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
