@@ -12,12 +12,13 @@ on:
   push:
     branches: 
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   build:
-    env: 
-      POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +30,7 @@ jobs:
         java-version: '18'
         distribution: 'temurin'
         # cache: maven
+        # cache: maven   
     - name: Build with Maven
       env: 
         POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}

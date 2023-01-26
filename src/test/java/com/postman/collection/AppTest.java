@@ -36,7 +36,8 @@ public class AppTest {
     PostmanCollection pmcTest = null;
     String collectionOutputPath;
 
-    @Test
+    
+   /*  @Test
         public void clearOutput() {
         File outputRoot = new File(filePath + "/test-output");
         deleteDirectory(outputRoot);
@@ -45,7 +46,8 @@ public class AppTest {
         assertTrue(mkDirs);
         
         
-    }
+    } */
+    
 
     public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
         Set<String> fileSet = new HashSet<>();
@@ -183,13 +185,15 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             for (int i = 0; i < liUrls.size(); i++) {
                 try {
                     pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
-                    validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+                    assertTrue(pmcTest.validate());
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                     assertTrue(false);
                 }
 
             }
+            validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -239,8 +243,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
                 break;
             }
             try {
-                pmcTest.writeToFile(new File(filePath + "/test-output/compare/compare.postman_collection.json"));
-                pmcTest2 = PostmanCollection.pmcFactory(new File(filePath + "/test-output/compare/compare.postman_collection.json"));
+                pmcTest.writeToFile(new File(filePath + "/test-output/compare-src.postman_collection.json"));
+                pmcTest2 = PostmanCollection.pmcFactory(new File(filePath + "/test-output/compare-src.postman_collection.json"));
             }
             catch(Exception e) {
                 System.out.println("Error reading collection file: " + curPath);
@@ -282,7 +286,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     @Test
     public void testBodyImportExport() {
-        String filePath = new java.io.File("").getAbsolutePath();
+        
         try {
             pmcTest = PostmanCollection.pmcFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
