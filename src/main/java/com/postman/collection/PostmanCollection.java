@@ -575,7 +575,7 @@ public class PostmanCollection extends PostmanItem {
             String strColJson;
             PostmanCollection pmcRetVal;
             String apiToken = System.getenv("POSTMAN_API_KEY");
-            System.out.prinln("APIKEY LENGTH: " + (apiToken == null ? "null" : apiToken.length()));
+            System.out.println("APIKEY LENGTH: " + (apiToken == null ? "null" : apiToken.length()));
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
             }
