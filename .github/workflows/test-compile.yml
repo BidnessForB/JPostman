@@ -30,7 +30,11 @@ jobs:
     - name: Run unit tests
       run: mvn -B -q test
     - name: Build with Maven
-      run: mvn -B -q package --file pom.xml
+      env: 
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      run:  |
+        mkdir ./test-output
+        mvn -B -q package --file pom.xml        
     
     
 
