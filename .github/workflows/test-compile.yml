@@ -19,7 +19,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +29,7 @@ jobs:
       with:
         java-version: '18'
         distribution: 'temurin'
+        # cache: maven
         # cache: maven   
     - name: Build with Maven
       env: 
@@ -37,9 +37,6 @@ jobs:
       run:  |
         mkdir ./test-output
         mvn -B -q package --file pom.xml        
-      
-      
-    
     
     
 
