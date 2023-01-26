@@ -75,8 +75,8 @@ public class PostmanCollection extends PostmanItem {
     
     try {
         //pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
-        pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
-        
+        //pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+        pmcTest = PostmanCollection.pmcFactory(new PostmanID("23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
     }
     catch(Exception e) {
         e.printStackTrace();
@@ -617,6 +617,10 @@ public class PostmanCollection extends PostmanItem {
                 throw new ValidationException("Invalid JSON returned from server");
             }
             
+    }
+
+    public static PostmanCollection pmcFactory(PostmanID id) throws IOException, InterruptedException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
+        return PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
     }
 
     

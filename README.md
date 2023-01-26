@@ -11,7 +11,7 @@ A Java wrapper for Postman collection files.
 3. Instantiate a new collection by passing the path to a Postman collection .json file to the `PostmanCollection.pmcFactory` method
 
 ```java
-PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
+PostmanCollection pmcTest = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
 ```
 
 ## What you can do
@@ -24,10 +24,18 @@ with Java based applications and platforms such as JMeter.
 ### Create collections from exported `postman_collection.json` files
 ```java
   File jsonFile = new File("/path/to/your/exported/collection.json");
-  PostmanCollection pmcTest = PMCFactory(jsonFile);
+  PostmanCollection pmcTest = pmcFactory(jsonFile);
 ```
 
 You can experiment with example collections in the [Resources](https://github.com/BidnessForB/JPostman/tree/main/src/main/resources/com/postman/collection) folder.  
+
+### Import a collection directly from Postman
+
+Got a [Collection ID](https://support.postman.com/hc/en-us/articles/5063785095319-How-to-find-the-ID-of-an-element-in-Postman) and a [Postman API Key](https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key)?  Create PostmanCollection object directly from Postman: 
+
+```java
+PostmanCollection pmcTest = PostmanCollection.pmcFactory(new PostmanID("<your collection id>"));
+```
 
 ### Create Collections from scratch
 
@@ -49,7 +57,7 @@ For example, adding a new Folder as the third `item` in the collection:
 
 ```java
  // Add a new folder to the 3rd position beneath the root of the collection
-  PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
+  PostmanCollection pmcTest = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
   PostmanItem newFolder = new PostmanItem("new Folder");
   pmcTest.addItem(newFolder, 2);
   
@@ -59,7 +67,7 @@ For example, adding a new Folder as the third `item` in the collection:
 You can easily move elements from one parent to another.  For example, move a request to a new folder, or a folder to another folder or to the top level in the collection.
 
 ```java
-  PostmanCollection pmcTest = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
+  PostmanCollection pmcTest = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
   PostmanItem newFolder1 = new PostmanItem("new Folder One");
   PostmanItem newFolder2 = new PostmanItem("new Folder Two");
   pmcTest.addItem(newFolder1);
@@ -73,8 +81,8 @@ You can easily move elements from one parent to another.  For example, move a re
   
   ```java
   // Combine collections, inserting the source collection as a Folder in the 2d position from the root of the target collection
-  PostmanCollection pmcTarget = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
-  PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
+  PostmanCollection pmcTarget = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
+  PostmanCollection pmcSource = PostmanCollection.pmcFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   ```
  When a collection is added, a new Folder is created and all of the added collection's elements are linked to that folder.  The folder in turn is then linked to the target collection.  All folders, requests, pre-request and test scripts are copied over from the source to the target collection.  Collection variables are appended to the target collections array of variables.
@@ -87,8 +95,8 @@ JPostman allows you to generate JSON for your collections.  You can also write y
 
   // Combine collections, inserting the source collection as a Folder in the 2d position from the root of the target collection
   // Then set the value of a String variable to the JSON for the new, combined collection.  
-  PostmanCollection pmcTarget = PostmanCollection.PMCFactory("/path/to/your/exported/collection.json");
-  PostmanCollection pmcSource = PostmanCollection.PMCFactory("/path/to/another/collection.json");
+  PostmanCollection pmcTarget = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
+  PostmanCollection pmcSource = PostmanCollection.pmcFactory("/path/to/another/collection.json");
   pmcTest.addItem(pmcSource, 2);
   pmcTest.writeToFile("new-collection.json");
  ```
