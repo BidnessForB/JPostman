@@ -555,13 +555,24 @@ public class PostmanCollection extends PostmanItem {
 
         return pmcRetVal;
     }
-
+    /**
+     * 
+     * Create a collection via the Postman API
+     * 
+     * @param collectionURL
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws IllegalArgumentException
+     * @throws CollectionNotFoundException
+     * @throws ValidationException
+     * @throws InvalidCollectionActionException
+     */
     public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
         // create a client
             var client = HttpClient.newHttpClient();
             String strColJson;
-            PostmanCollection pmcRetVal;
-            //String apiToken = System.getenv("POSTMAN_API_KEY");
+            PostmanCollection pmcRetVal;ß
             String apiToken = System.getenv("POSTMAN_API_KEY");
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
