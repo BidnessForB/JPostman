@@ -32,6 +32,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 
 
+
+
 /**
  * Encapsulates a Postman collection
  *<p>
@@ -554,12 +556,13 @@ public class PostmanCollection extends PostmanItem {
         return pmcRetVal;
     }
 
-    public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, InvalidCollectionActionException {
+    public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
         // create a client
             var client = HttpClient.newHttpClient();
             String strColJson;
+            PostmanCollection pmcRetVal;
             //String apiToken = System.getenv("POSTMAN_API_KEY");
-            String apiToken = "foo";
+            String apiToken = System.getenv("POSTMAN_API_KEY");
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
             }
@@ -568,7 +571,7 @@ public class PostmanCollection extends PostmanItem {
             var request = HttpRequest.newBuilder(
                 URI.create(collectionURL.toString()))
             .header("accept", "application/json")
-            .header("x-api-key",apiToken);
+            .header("x-api-key",apiToken)
             .build();
 
             // use the client to send the request
@@ -583,15 +586,22 @@ public class PostmanCollection extends PostmanItem {
                 throw new InvalidCollectionActionException("An error occurred retrieving the collection" + (response.body() == null ? "[no response info]" : response.body()));
             }
             
+            
             // the response:
             
             //Strip out the top-level "collection" key and the trailing brace
             strColJson = response.body();
             strColJson = strColJson.substring(14);
             strColJson = strColJson.substring(0,strColJson.length() -1);
-                
+            
+               pmcRetVal = PostmanCollection.pmcFactory(strColJson);
 
-            return PostmanCollection.pmcFactory(strColJson);
+            if(pmcRetVal.validate()) {
+                return pmcRetVal;
+            }
+            else {
+                throw new ValidationException("Invalid JSON returned from server");
+            }
             
     }
 
