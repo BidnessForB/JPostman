@@ -34,6 +34,7 @@ public class AppTest {
     PostmanCollection pmcTest = null;
     String collectionOutputPath;
 
+    /*
     @Test
         public void clearOutput() {
         File outputRoot = new File(filePath + "/test-output");
@@ -44,6 +45,7 @@ public class AppTest {
         
         
     }
+    */
 
     public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
         Set<String> fileSet = new HashSet<>();
