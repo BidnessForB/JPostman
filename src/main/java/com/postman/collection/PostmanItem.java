@@ -261,7 +261,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * Return an ArrayList&#60;PostmanResponse&#62; containing the values in the <code>response</code> property array, or null if none are defined.
      * 
      * 
-     * @return ArrayList&#60{@link com.postman.collection.PostmanResponse PostmanResponse}&#62  The responses, or null if none are defined.
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanResponse PostmanResponse}&#62;  The responses, or null if none are defined.
      */
     public ArrayList<PostmanResponse> getResponses() {
         return response;
