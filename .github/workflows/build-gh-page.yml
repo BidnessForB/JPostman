@@ -40,6 +40,9 @@ jobs:
       - name: Update branch and javadocs
         run: |
           mvn javadoc:javadoc
+          tar cvf github-pages.tar ./target/site/apidocs
+          gzip github-pages.tar
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
