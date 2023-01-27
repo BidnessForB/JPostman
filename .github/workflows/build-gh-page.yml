@@ -39,6 +39,7 @@ jobs:
           ref: main
       - name: Update branch and javadocs
         run: |
+          mvn -B clean compile assembly:single
           mvn javadoc:javadoc
           tar cvf github-pages.tar ./target/site/apidocs
           gzip github-pages.tar
