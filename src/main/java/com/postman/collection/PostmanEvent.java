@@ -57,8 +57,8 @@ public class PostmanEvent extends PostmanCollectionElement {
      * 
      * 
      * @param evtType  Enumerated value of the event type, eg. pre-request or test
-     * @param scriptCode Source code for the script
-     * @param type Content type of the script, always "text/javascript"
+     * @param sourceCode Source code for the script
+     * @param evtType Content type of the script, always "text/javascript"
      * 
      */
     public PostmanEvent(enumEventType evtType, String sourceCode)  {

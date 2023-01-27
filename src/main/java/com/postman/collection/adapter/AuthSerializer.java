@@ -9,15 +9,21 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSerializationContext;
 import java.lang.reflect.Type;
 import java.util.Iterator;
-
+/**
+ * 
+ * 
+ * Custom serializer for the <code>auth</code> element.
+ * 
+ * 
+ */
 public class AuthSerializer implements JsonSerializer<PostmanAuth> {
 
     
     /** 
-     * @param src
-     * @param typeOfSrc
-     * @param context
-     * @return JsonElement
+     * @param src The PostmanAuth object to be deserialized
+     * @param typeOfSrc The type, PostmanAuth
+     * @param context Serialization context 
+     * @return JsonElement The JSON element returned by this serializer
      */
     @Override
     public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {

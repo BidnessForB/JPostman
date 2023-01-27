@@ -95,7 +95,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * Conveninence constructor to initialize an Auth object with a pre-created HashMap of authentication properties
      * 
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
-     * @param properties HashMap<String, PostmanVariable> containing the properties of this auth element
+     * @param properties HashMap&#60;String, PostmanVariable&#62; containing the properties of this auth element
      */
     public PostmanAuth(enumAuthType type, HashMap<String, PostmanVariable> properties) {
         this(type);
@@ -210,7 +210,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * 
      * Add a new property, or replace an existing property
      * 
-     * @param property The new property
+     * @param newElement The new property
      */
     public void addProperty(PostmanVariable newElement)  {
         if(this.properties == null) {

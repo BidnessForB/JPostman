@@ -8,7 +8,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonDeserializer;
 import java.lang.reflect.Type;
-
+/**
+ * 
+ * 
+ * 
+ * 
+ * Custom deserializer for the <code>auth</code> property object.  
+ * 
+ * 
+ * 
+ */
 public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
 
     /**
@@ -18,11 +27,11 @@ public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
      * GSON deserializer</a> for the PostmanAuth object.
      * 
      * 
-     * @param jElement
-     * @param typeOfT
-     * @param context
-     * @return PostmanAuth
-     * @throws JsonParseException
+     * @param jElement The JSON element passed in by Gson
+     * @param typeOfT The type for the adapter, PostmanAuth
+     * @param context Deserialization context
+     * @return PostmanAuth The assembed PostmanAuth object 
+     * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override
     public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

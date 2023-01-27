@@ -39,16 +39,15 @@ import java.net.http.HttpResponse.BodyHandlers;
  *<p>
  * <strong>Ingest a collection file</strong></p>
  * <p><code>PostmanCollection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
- * <p>
- * <p>
+ * 
  * 
  * <p><strong>Get a request item</strong></p>
  * <p><code>PostmanItem myReq = myCollection.getItem("Get Random Fact");</code></p>
  * 
  * <p><strong>Get pre-request script for the request</strong></p>
- * <p/>
+ * 
  * <p><code>PostmanEvent preReq = myReq.getPreRequestScript();</code></p>
- * <p/>
+ 
  * <p><strong> Get source code for pre-request script</strong></p>
  * <p><code>String myCode = preReq.getSourceCode();</code></p>
  * 
@@ -131,8 +130,9 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Convenience method to add an item with no child items to this collection.  
      * 
-     * @param newFolder The new item to add
-     * @throws Exception
+     * @param name The name for the new item
+     * @throws RecursiveItemAddException
+     * @throws IllegalPropertyAccessException
      */
     public PostmanItem addFolder(String name) throws RecursiveItemAddException, IllegalPropertyAccessException {
         PostmanItem newItem = new PostmanItem(name);
@@ -151,8 +151,8 @@ public class PostmanCollection extends PostmanItem {
      * @param name The name for the new item
      * @param response A response to include in the request item, or null to ignore
      * @return PostmanItem The new Request item
-     * @throws RecursiveItemException If this collection already include this instance in it's array of items.
-     * @throws IllegalPropertyException 
+     * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
+     * @throws IllegalPropertyAccessException 
      *  
      */
     public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws RecursiveItemAddException, IllegalPropertyAccessException {
@@ -171,8 +171,8 @@ public class PostmanCollection extends PostmanItem {
      * @param newRequest
      * @param name
      * @return PostmanItem
-     * @throws RecursiveItemException If this collection already include this instance in it's array of items.
-     * @throws IllegalPropertyException 
+     * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
+     * @throws IllegalPropertyAccessException 
      */
     public PostmanItem addRequest(PostmanRequest newRequest, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
         PostmanItem newItem = new PostmanItem(name);
@@ -192,8 +192,8 @@ public class PostmanCollection extends PostmanItem {
      * @param name The name of the request
      * @param responses Pre-constructed ArrayList of response objects.
      * @return PostmanItem The new request item.
-     * @throws RecursiveItemException If this collection already include this instance in it's array of items.
-     * @throws IllegalPropertyException 
+     * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
+     * @throws IllegalPropertyAccessException 
      */
     public PostmanItem addRequest(PostmanRequest newRequest, String name, ArrayList<PostmanResponse> responses) throws RecursiveItemAddException, IllegalPropertyAccessException 
              {
@@ -210,7 +210,8 @@ public class PostmanCollection extends PostmanItem {
      * @param newRequest
      * @param name
      * @param position
-     * @throws Exception
+     * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
+     * @throws IllegalPropertyAccessException 
      */
     public void addRequest(PostmanRequest newRequest, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
         PostmanItem newItem = new PostmanItem(name);
@@ -419,7 +420,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
      * 
-     * @return ArrayList<PostmanVariable>
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
     public ArrayList<PostmanVariable> getVariables() {
         return variable;
@@ -792,7 +793,7 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Return a Map&#60;String&#62; containing the key-value pairs comprising the <code>info</code> object property of this collection.
      * 
-     * @return Map<String, String> The key-value pairs.
+     * @return Map&#60;String&#62; The key-value pairs.
      */
     public Map<String, String> getInfo() {
         return this.info;

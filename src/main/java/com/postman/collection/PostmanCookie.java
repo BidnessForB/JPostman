@@ -181,7 +181,7 @@ public class PostmanCookie extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList<PostmanVariable>
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
     public ArrayList<PostmanVariable> getExtensions() {
         return extensions;

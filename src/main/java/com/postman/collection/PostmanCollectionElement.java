@@ -35,7 +35,7 @@ public abstract class PostmanCollectionElement {
      * Validate the gson produced by this element against the PostmanSchema.  Schema version is currently hardcoded to 
      * <a href="https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json">v2.1.0</a>.  Validation is provided by the <a href="https://github.com/networknt/json-schema-validator">NetworkNT json-schema-validator</a>
      * 
-     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, call {@link com.postman.collection.getValidationMessages() } will return an ArrayList&#60;<a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.html"ValidationMessage</a>&#62; containing the diffs
+     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.PostmanCollection.getValidationMessages() getValidationMessages() } will return an ArrayList&#60;<a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.htm">ValidationMessage&#62;</a> containing the diffs
      * @throws ValidationException If an error is encountered accessing the schema or mapping the underlying JSON.  
      */
     public boolean validate() throws ValidationException {
@@ -48,7 +48,7 @@ public abstract class PostmanCollectionElement {
      * Convenience method allowing validation against a user-provided schema
      * 
      * @param altSchemaJSON  String containing the alternate schema JSON
-     * @return boolean True if valid, False if not.  If not valid, getValidationMessages() will return a JsonNode containing one or more <a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.html"}com.networknt.schema.ValidationMessage</a> messages containing diff data.
+     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.PostmanCollection.getValidationMessages() getValidationMessages() } will return an ArrayList&#60;<a href="https://www.javadoc.io/doc/com.networknt/json-schema-validator/latest/index.htm">ValidationMessage&#62;</a> containing the diffs
      * @throws ValidationException If there is an error in the validation process
      */
     public boolean validate(String altSchemaJSON) throws ValidationException {
@@ -114,7 +114,7 @@ public abstract class PostmanCollectionElement {
      * If an element is invalid, returns an ArrayList&#60;ValidationMessage&#62; containing one or more diff messages describing the differences.  If the element is valid
      * the size of the returned ArrayList will be zero.
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.ValidationMessage}&#62; An ArrayList containing zero or more validatin messages.
+     * @return ArrayList&#60;<a href="https://javadoc.io/doc/com.networknt/json-schema-validator/1.0.51/com/networknt/schema/ValidationMessage.html">ValidationMessage&#62;</a> An ArrayList containing zero or more validatin messages.
      */
     public ArrayList<ValidationMessage> getValidationMessages() {
         return this.validationMessages;

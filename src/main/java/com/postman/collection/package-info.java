@@ -1,4 +1,4 @@
-/*
+/**
  * 
  * This is the documentation for the Collection package
  * 

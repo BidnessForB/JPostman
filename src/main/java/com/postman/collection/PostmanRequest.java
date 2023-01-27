@@ -182,7 +182,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * Return an ArrayList of PostmanVariable objects containing the key-value pair values for the <code>header</code> property array
      * 
      * 
-     * @return ArrayList<PostmanVariable>  The headers
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The headers, or null if none are present
      */
     public ArrayList<PostmanVariable> getHeader() {
         return header;

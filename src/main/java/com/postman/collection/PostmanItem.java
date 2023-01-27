@@ -4,7 +4,7 @@ import java.util.ArrayList;
     /**
      * 
      * Encapsulates the <code>item</code> object in the postman schema
-<p></p>
+
      * <pre>
      * {
     "name": "Get a list of facts",
@@ -145,7 +145,7 @@ public class PostmanItem extends PostmanCollectionElement {
      /**
      * 
      * 
-     * Construct an empty item with only a &#60;name&#62; property &#60;name&#62; and assign it as a child of <code>  
+     * Construct an empty item with only a <code>name</code> property and assign it as a child of <code>parent</code>  
      * 
      * @param name  The name of the object
      * @param parent The PostmanItem containing this item. 
@@ -261,7 +261,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * Return an ArrayList&#60;PostmanResponse&#62; containing the values in the <code>response</code> property array, or null if none are defined.
      * 
      * 
-     * @return ArrayList<PostmanResponse>  The responses, or null if none are defined.
+     * @return ArrayList&#60{@link com.postman.collection.PostmanResponse PostmanResponse}&#62  The responses, or null if none are defined.
      */
     public ArrayList<PostmanResponse> getResponses() {
         return response;
@@ -281,10 +281,9 @@ public class PostmanItem extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return an ArrayList&#60;PostmanItem&#62; containing the tree of items owned by this item.
+     * Return an ArrayList&#60;{@link com.postman.collection.PostmanItem PostmanItem}&#62; containing the tree of items owned by this item.
      * 
-     * 
-     * @return ArrayList<PostmanItem>  The items
+     *      * @return ArrayList&#60;{@link com.postman.collection.PostmanItem PostmanItem}&#62;  The items
      */
     public ArrayList<PostmanItem> getItems() {
         return item;
@@ -414,8 +413,8 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * Add a PostmanResponse object to the <code>response</code> array
      * 
-     * @param resp
-     * @throws Exception
+     * @param resp The new response
+     * 
      */
     public void addResponse(PostmanResponse resp)  {
         if (this.response == null) {
@@ -535,7 +534,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * @param newItem  Item to add
      * @param position Index for new item
-     * @throws IllegalPropertyAccessException If newItem is already a direct child of this item, or if position is < 0 or > the size of the existing array
+     * @throws IllegalPropertyAccessException If newItem is already a direct child of this item, or if position is &#60; 0 or &#62; the size of the existing array
      * @throws RecursiveItemAddException If newItem is already a child of this item
      *
      */
