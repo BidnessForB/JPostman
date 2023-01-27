@@ -59,7 +59,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * For example, URLs containing variables may not produce discrete values, eg.
      * <pre> {{baseUrl}}/{{theHost}}/foo/{{filename}}</pre>
      * 
-     * @param rawURL The raw URL as a String.  The URL is not validated
+     * @param rawUrl The raw URL as a String.  The URL is not validated
      *
      */
     public void setRaw(String rawUrl)  {
@@ -122,9 +122,9 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Add a variable to the array of query elements
      * 
-     * @param key Value for the <code>key</key> property 
+     * @param key Value for the <code>key</code> property 
      * @param value Value for the <code>value</code> property
-     * @param description Value for the <code>description<code> property
+     * @param description Value for the <code>description</code> property
      * 
      */
     public void addVariable(String key, String value, String description) {
@@ -141,9 +141,9 @@ public class PostmanUrl extends PostmanCollectionElement {
      * Set the path element using a String.  Elements of the <code>path</code> array are parsed out
      * 
      * @param rawPath the raw path, e.g., /foo/:path1/bat
-     * @throws Exception
+
      */
-    public void setPath(String rawPath) /*throws Exception*/ {
+    public void setPath(String rawPath)  {
 
         ArrayList<String> pathElements = new ArrayList<String>();
         ArrayList<String> liPath;
@@ -319,7 +319,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * Return the array of elements in the <code>host</code> array.
      * 
-     * @return ArrayList<String>
+     * @return ArrayList&#60;String&#62; Elements of the <code>host</code> property of this url.
      */
     public ArrayList<String> getHosts() {
         return host;
@@ -484,7 +484,6 @@ public class PostmanUrl extends PostmanCollectionElement {
      * Populate the elements of the <code>query</code> array with an http query string.  Replaces any existing query string.
      * 
      * @param queryString  The query string, e.g., foo=bar&amp;bat=bing
-     * @throws Exception
      */
     public void addQuery(String queryString)  {
 

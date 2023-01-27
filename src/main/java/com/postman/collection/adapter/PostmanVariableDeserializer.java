@@ -19,7 +19,7 @@ public class PostmanVariableDeserializer implements JsonDeserializer<PostmanVari
      * GSON deserializer</a> for the PostmanAuth object.
      * 
      * 
-     * @param jObj
+     * @param jElement
      * @param typeOfT
      * @param context
      * @return PostmanVariable

@@ -7,7 +7,11 @@ import com.google.gson.JsonSerializationContext;
 import com.postman.collection.*;
 import java.lang.reflect.Type;
 
-
+/**
+ * 
+ * Custom serializer for the collection element
+ * 
+ */
 public class CollectionSerializer implements JsonSerializer<PostmanCollection> {
     
     @Override

@@ -88,7 +88,7 @@ public class PostmanResponse extends PostmanCollectionElement {
     /** 
      * Get the ArrayList containing the key-value paris in the <code>header</code> element array
      * 
-     * @return ArrayList<PostmanVariable>
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
     public ArrayList<PostmanVariable> getHeader() {
         return this.header;
@@ -203,7 +203,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * Set the value of the <code>_postman_previewlanguage</code> property 
      * 
-     * @param PostmanPreviewlanguage The language
+     * @param previewLanguage The language
      */
     public void SetPostmanPreviewlanguage(String previewLanguage) {
         this._postman_previewlanguage = previewLanguage;
@@ -214,7 +214,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * Return an ArrayList containing the PostmanCookie objects comprising the value of the <code>cookie</code> array property
      * 
-     * @return ArrayList<PostmanCookie> The cookies
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanCookie}&#62; The cookies
      */
     public ArrayList<PostmanCookie> getCookies() {
         return cookie;
