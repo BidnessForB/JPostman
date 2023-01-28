@@ -137,7 +137,8 @@ public class PostmanItem extends PostmanCollectionElement {
     private ArrayList<PostmanResponse> response = null;
     private ArrayList<PostmanItem> item;
     private String name;
-    private ArrayList<PostmanVariable> variable = null;
+    //private ArrayList<PostmanVariable> variable = null;
+    private VariableListMap<PostmanVariable> variable = null;
 
     private transient PostmanItem parent = null;
     
@@ -661,7 +662,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
      */
     public void setVariables(ArrayList<PostmanVariable> vars) {
-        this.variable = vars;
+        this.variable = new VariableListMap<PostmanVariable>(vars);
     }
 
     
@@ -673,12 +674,8 @@ public class PostmanItem extends PostmanCollectionElement {
      * @param varNew
      */
     public void addVariable(PostmanVariable varNew) {
-        if (this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
-        }
-        if (this.getVariable(varNew.getKey()) != null) {
-            //easier than getting the variable lol
-            this.removeVariable(varNew.getKey());
+        if(this.variable == null) {
+            this.variable = new VariableListMap<PostmanVariable>();
         }
         this.variable.add(varNew);
     }
@@ -694,13 +691,9 @@ public class PostmanItem extends PostmanCollectionElement {
         if (this.variable == null) {
             return;
         }
-        for(int i = 0; i < this.variable.size(); i++) {
-            
-            if (this.variable.get(i).getKey().equals(key)) {
-                this.variable.remove(i);
-                break;
-            }
-        }
+        this.variable.remove(key);
+        
+
     }
 
       /** 
@@ -722,15 +715,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * @return PostmanVariable
      */
     public PostmanVariable getVariable(String key) {
-        if (this.variable == null) {
-            return null;
-        }
-        for (PostmanVariable curVar : this.variable) {
-            if (curVar.getKey() != null && curVar.getKey().equals(key)) {
-                return curVar;
-            }
-        }
-        return null;
+        return this.variable.get(key);
     }
 
     /** 
@@ -738,7 +723,7 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
-    public ArrayList<PostmanVariable> getVariables() {
+    public VariableListMap<PostmanVariable> getVariables() {
         return this.variable;
     }
 
@@ -747,7 +732,7 @@ public class PostmanItem extends PostmanCollectionElement {
             return;
         }
         if(this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
+            this.variable = new VariableListMap<PostmanVariable>();
         }
         this.variable.addAll(newVars);
     }

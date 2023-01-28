@@ -296,6 +296,22 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        PostmanCollection test2;
+        try {
+            test2 =PostmanCollection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
+            assertTrue(pmcTest.getItem("Raw-text XML").getRequest().getBody().getRaw().equals(test2.getItem("Raw-text XML").getRequest().getBody().getRaw()));
+            System.out.println(pmcTest.toJson());
+            System.out.println(test2.toJson());
+        }
+        catch(IOException e) {
+            assertTrue("Unexpected IOEXception: " + e.getMessage(), false);
+        }
+        catch(IllegalPropertyAccessException a) {
+            assertTrue("Unexpected IllegalPropertyAccessException: " + a.getMessage(), false);
+        }
+        
+
+        
 
     }
 
@@ -506,12 +522,12 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         
         String nullKey = null;
         pmcTest.removeVariable(nullKey);
-        assertEquals(5, pmcTest.getVariables().size());
+        assertEquals(4, pmcTest.getVariables().size());
         pmcTest.removeVariable("key 2");
         assertNull(pmcTest.getVariable("key 2"));
-        assertEquals(4, pmcTest.getVariables().size());
+        assertEquals(3, pmcTest.getVariables().size());
         pmcTest.removeVariable("not there");
-        assertEquals(4, pmcTest.getVariables().size());
+        assertEquals(3, pmcTest.getVariables().size());
 
 
 
@@ -726,6 +742,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         
             PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
             assertSame(enumRequestBodyMode.RAW,body.getMode());
+
+            System.out.println(body.toJson());
             
             try {
                 assertSame(enumRawBodyLanguage.JAVASCRIPT, body.getRawLanguage());
@@ -826,6 +844,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             {
                 assertTrue("Expected exception thrown",true);
             }
+
 
             body = new PostmanBody(enumRequestBodyMode.FILE);
             try {
@@ -1264,13 +1283,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
 public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceElement testMethodInfo) {
     boolean valid = false;
-    try {
-        valid = pmcColl.validate();
-    }
     
-    catch(ValidationException e) {
-        assertTrue("Validation exception [" + testMethodInfo.getMethodName() +":" + testMethodInfo.getLineNumber() + "]: " + e.getMessage(), false);
-    }
     HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcColl,
             testMethodInfo.getMethodName());
     pmcColl.setDescription(outputData.get("collection-description"));
@@ -1283,6 +1296,15 @@ public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceEleme
     catch(IOException i) {
         assertTrue("IOException writing to file: [" + testMethodInfo.getMethodName() +":" + testMethodInfo.getLineNumber() + "]: " + i.getMessage(), false);
     }
+
+    try {
+        valid = pmcColl.validate();
+    }
+    catch(ValidationException e) {
+        assertTrue("Validation exception [" + testMethodInfo.getMethodName() +":" + testMethodInfo.getLineNumber() + "]: " + e.getMessage(), false);
+    }
+    
+    
     
     printValidationMessages(pmcColl.getValidationMessages(),testMethodInfo.getMethodName());
     assertTrue("Final validation test for: " + testMethodInfo.getMethodName(), valid);
@@ -1352,6 +1374,22 @@ public void testPostmanVariable() {
 
     assertFalse(var1.equals(var2));
     assertTrue(var1.equals(var3));
+    ArrayList<PostmanVariable> alVars = new ArrayList<PostmanVariable>();
+    alVars.add(var1);
+    alVars.add(var2);
+    alVars.add(var3);
+
+
+    VariableListMap<PostmanVariable> vlMap = new VariableListMap<PostmanVariable>(alVars);
+
+    System.out.println(vlMap.contains(var1));
+    System.out.println(vlMap.get("var2").getValue());
+    System.out.println(vlMap instanceof Iterable);
+    for(PostmanVariable curVar : vlMap) {
+        System.out.println("KEY: " + curVar.getKey() + " VALUE: " + curVar.getValue());
+
+    }
+
 
 
 }
