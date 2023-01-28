@@ -153,5 +153,17 @@ public class PostmanVariable extends PostmanCollectionElement {
     public void setType(String type) {
         this.type = type;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(! (obj instanceof PostmanVariable)) {
+            return false;
+        }
+        PostmanVariable var = (PostmanVariable)obj;
+        return (this.getKey().equals(var.getKey())
+                && (this.getValue() + "").equals(var.getValue() + "")
+                && (this.getType() + "").equals(var.getType() + "")
+                && (this.getDescription() + "").equals(var.getDescription() + ""));
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -868,19 +869,34 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         String url1 = "https://foo.com:8080/foo/bar/:path1/bat.json?var1=aaa&var2=bbb";
         //String url1 = "https://foo.com:8080/foo/bar/bat.json?var1=aaa&var2=bbb";
         String path1 = "foo/bar/:path1/bat.json";
-        PostmanUrl url = new PostmanUrl(url1);
+        PostmanUrl url = null;
+        try {
+            url = new PostmanUrl(url1);
+        }
+        catch(DuplicateVariableKeyException e)
+        {
+            assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+        }
+        
 
         assertEquals(2, url.getHosts().size());
         assertEquals(4, url.getPaths().size());
-        assertEquals(1, url.getVariables().size());
-        assertEquals(2, url.getQueries().size());
+        assertEquals(1, url.getPathVariables().size());
+        assertEquals(2, url.getQueryElements().size());
 
-        url = new PostmanUrl("foo.com",path1);
+        try {
+            url = new PostmanUrl("foo.com",path1);
+        }
+        
+        catch(DuplicateVariableKeyException e)
+        {
+            assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+        }
         assertEquals(4, url.getPaths().size());
-        assertEquals(1, url.getVariables().size());
+        assertEquals(1, url.getPathVariables().size());
 
         url.addQuery("query1", "q1value");
-        assertEquals(1, url.getQueries().size());
+        assertEquals(1, url.getQueryElements().size());
         
 
 
@@ -900,7 +916,12 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         ArrayList<PostmanUrl> liUrls = new ArrayList<PostmanUrl>();
 
     for(String curUrl: urls) {
-        liUrls.add(new PostmanUrl(curUrl));
+        try {
+            liUrls.add(new PostmanUrl(curUrl));
+        }
+        catch(DuplicateVariableKeyException e) {
+            assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+        }
     }
     for(int i = 0; i < liUrls.size(); i++){
         try{
@@ -920,13 +941,18 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             assertTrue(urls.get(i) + " failed", false);
         }
     }
-
-    url = new PostmanUrl("https://foo.com?var1=val1&var2=val2");
-    assertEquals(2, url.getQueries().size());
+    try {
+        url = new PostmanUrl("https://foo.com?var1=val1&var2=val2");
+    }
+    
+    catch(DuplicateVariableKeyException e) {
+        assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+    }
+    assertEquals(2, url.getQueryElements().size());
     assertEquals("var1=val1&var2=val2", url.getQueryString());
-    PostmanVariable varQ = url.getQueries().get(1);
+    PostmanVariable varQ = url.getQueryElements().get(1);
     url.removeQueryElement(varQ);
-    assertEquals(1, url.getQueries().size());
+    assertEquals(1, url.getQueryElements().size());
     assertEquals("var1=val1", url.getQueryString());
 
     }
@@ -954,7 +980,14 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testResponseObject() {
 
-        PostmanRequest req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+        PostmanRequest req = null;
+        try {
+            new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+        }
+        catch(DuplicateVariableKeyException e)
+        {
+            assertTrue("Unexpected duplicate path key" + e.getMessage(), false);
+        }
         PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
         assertEquals("This is the body", resp.getBody());
         assertEquals(200, resp.getCode());
@@ -968,8 +1001,16 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         }
 
         resp = new PostmanResponse("Test Response",req, "Not authorize",401,"A completely different body" );
+        PostmanRequest req2 = null;
+        try {
+            req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+        }
+        catch(DuplicateVariableKeyException e)
+        {
+            assertTrue("Unexpected duplicate path key" + e.getMessage(), false);
+        }
         
-        PostmanRequest req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+        
         PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
                 
         try {
@@ -1073,13 +1114,21 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest = PostmanCollection.pmcFactory();
         pmcTest.setName("TEST Request Operations");
 
-        PostmanRequest req;
+        PostmanRequest req = null;
         PostmanItem reqItem1 = null;
         //generates spurious "not used" warning
         PostmanItem reqItem2 = null;
         PostmanItem newFolder = null;
 
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
+        try {
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
+        }
+        catch(DuplicateVariableKeyException e)
+        {
+            assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+        }
+        
+        
        try {
         reqItem1 = pmcTest.addRequest(req, "GET echo");
        } 
@@ -1087,7 +1136,14 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         assertTrue("Unexpected exception " + e.getMessage(), false);
        }
         
-       req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+       try {
+        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+    }
+    catch(DuplicateVariableKeyException e)
+    {
+        assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
+    }
+      
        
 
        try {
@@ -1243,5 +1299,60 @@ boolean deleteDirectory(File directoryToBeDeleted) {
         }
     }
     return directoryToBeDeleted.delete();
+}
+
+
+@Test
+public void testVariableResolution() {
+    List<PostmanUrl> liUrls = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
+    String url;
+    try {
+
+        liUrls.add(new PostmanUrl("{{baseUrl}}/{{var1}}.com/:path1/bat.json"));
+        liUrls.add(new PostmanUrl("https://{{var1}}.com/:path1/bat.json?{{var1}}={{var2}}"));
+
+        
+
+        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest.setName("TEST Resolve Variables");
+        pmcTest.addVariable(new PostmanVariable("baseUrl","http://test.com"));
+        pmcTest.addVariable(new PostmanVariable("var1", "var1value"));
+        pmcTest.addVariable(new PostmanVariable("var2","333"));
+        for (int i = 0; i < liUrls.size(); i++) {
+            try {
+                pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
+                assertTrue(pmcTest.validate());
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                assertTrue(false);
+            }
+        }
+
+        url = pmcTest.getItem("URL 1").getRequest().getUrl().getUrl(true);
+        url = pmcTest.resolveVariables(url);
+        assertTrue(url.equals("http://test.com/var1value.com/:path1/bat.json"));
+        url = pmcTest.getItem("URL 2").getRequest().getUrl().getUrl(true);
+        url = pmcTest.resolveVariables(url);
+        assertTrue(url.equals("https://var1value.com/:path1/bat.json?var1value=333"));
+
+        pmcTest.getItem("URL 1").getRequest().getUrl().setPathVariable(new PostmanVariable("path1", "path1value"));
+        assertTrue(pmcTest.resolveVariables(pmcTest.getItem("URL 1").getRequest().getUrl().getUrl(true)).equals("http://test.com/var1value.com/path1value/bat.json"));
+    }
+    catch(Exception e) {
+        assertTrue("Unexpected exception: " + e.getMessage(), false );
+    }
+}
+
+@Test
+public void testPostmanVariable() {
+    PostmanVariable var1 = new PostmanVariable("var1","var1value");
+    PostmanVariable var2 = new PostmanVariable("var2","var2value");
+    PostmanVariable var3 = new PostmanVariable("var1","var1value");
+
+    assertFalse(var1.equals(var2));
+    assertTrue(var1.equals(var3));
+
+
 }
 }

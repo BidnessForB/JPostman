@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import java.util.Objects;
+
 import java.util.HashMap;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -26,10 +30,8 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 
-
-
-
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 
 
@@ -60,7 +62,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 public class PostmanCollection extends PostmanItem {
 
     
-    private ArrayList<PostmanVariable> variable = null;
+    
     private PostmanAuth auth = null;
     private HashMap<String, String> info;
     
@@ -71,23 +73,47 @@ public class PostmanCollection extends PostmanItem {
         PostmanCollection pmcTest;
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = "/src/main/resources/com/postman/collection";
-    
-    try {
-        //pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
-        //pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
-        pmcTest = PostmanCollection.pmcFactory(new PostmanID("23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
-    }
-    catch(Exception e) {
-        e.printStackTrace();
-    }
+        ArrayList<PostmanVariable> test = new ArrayList<PostmanVariable>();
 
-    System.out.println("foo");
+        PostmanVariable var1 = new PostmanVariable("var1", "var1value");
+        PostmanVariable var2 = new PostmanVariable("var2", "var2value");
+        PostmanVariable var3 = new PostmanVariable("var1", "var1value");
+        
+        
+        System.out.println(Objects.equals(var1, var2));
+
+        System.out.println(var1.equals(var2));
+
+        test.add(var1);
+        test.add(var2);
+        test.remove(var3);
+
+        System.out.println("foo");
+
+        
+
+    
     
     
 
 }
     
     
+    public void uploadToPostman() {
+        //Do I have a postmanID? then I'm updating
+        if(this.getPostmanID() != null) {
+
+
+        }
+        //Otherwise I'm creating new
+    }
+
+    public void uploadToPostman(PostmanID workspaceID) {
+
+    }
+
+    
+
     /** 
      * Moves an item in the array of items contained by this collection from one parent to another.  
      * 
@@ -251,84 +277,7 @@ public class PostmanCollection extends PostmanItem {
     }
 
     
-    /** 
-     * 
-     * Set the array of key-value pairs in this collections <code>variable</code> array element
-     * 
-     * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
-     */
-    public void setVariables(ArrayList<PostmanVariable> vars) {
-        this.variable = vars;
-    }
-
     
-    /** 
-     * 
-     * Add or replace variable to the collection of variables comprising this collections <code>variable</code> array property.  If a variable with the same <code>key</code> already exists
-     * in the collection it is replaced.
-     * 
-     * @param varNew
-     */
-    public void addVariable(PostmanVariable varNew) {
-        if (this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
-        }
-        if (this.getVariable(varNew.getKey()) != null) {
-            //easier than getting the variable lol
-            this.removeVariable(varNew.getKey());
-        }
-        this.variable.add(varNew);
-    }
-
-    
-    /** 
-     * 
-     * Remove variable with the specified key from the array of key-value pairs comprising this collections <code>variable</code> array element.  
-     * 
-     * @param key Key of the variable to remove
-     */
-    public void removeVariable(String key) {
-        if (this.variable == null) {
-            return;
-        }
-        for(int i = 0; i < this.variable.size(); i++) {
-            
-            if (this.variable.get(i).getKey().equals(key)) {
-                this.variable.remove(i);
-                break;
-            }
-        }
-    }
-
-      /** 
-     * 
-     * Remove variable from the array of key-value pairs comprising this collections <code>variable</code> array element.  
-     * 
-     * @param varNew The variable to remove.  Matching is by the value of <code>key</code>
-     */
-    public void removeVariable(PostmanVariable varNew) {
-        this.removeVariable(varNew.getKey());
-    }
-
-    
-    /** 
-     * 
-     * Return the PostmanVariable key-value pair from this collection's <code>variable</code> array element, or null if it is not present.
-     * 
-     * @param key
-     * @return PostmanVariable
-     */
-    public PostmanVariable getVariable(String key) {
-        if (this.variable == null) {
-            return null;
-        }
-        for (PostmanVariable curVar : this.variable) {
-            if (curVar.getKey() != null && curVar.getKey().equals(key)) {
-                return curVar;
-            }
-        }
-        return null;
-    }
 
     
     /** 
@@ -387,11 +336,8 @@ public class PostmanCollection extends PostmanItem {
         
         newFolder.addItems(newColl.getItems());
 
-        if (copyVariables && newColl.getVariables() != null) {
-            if (this.variable == null) {
-                this.variable = new ArrayList<PostmanVariable>();
-            }
-            this.variable.addAll(newColl.getVariables());    
+        if (copyVariables) {
+            this.addVariables(newColl.getVariables());
         }
         
 
@@ -417,15 +363,7 @@ public class PostmanCollection extends PostmanItem {
     }
 
     
-    /** 
-     * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
-     * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
-     */
-    public ArrayList<PostmanVariable> getVariables() {
-        return variable;
-    }
-
+    
 
     /** 
      * Construct a new, empty collection with the specified name
@@ -624,6 +562,41 @@ public class PostmanCollection extends PostmanItem {
         return PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
     }
 
+    private HttpResponse executePostmanAPI(String endpoint) {
+        //String resolveURL = resolveVariables(endpoint);
+        return null;
+    }
+/*
+    public String resolveVariables(String src) throws VariableResolutionException {
+
+            Pattern pnVar = Pattern.compile("(?<!\\{)\\{\\{(?:([^{}]+)|\\{([^{}]+)})}}(?!})");
+            Matcher maVar = pnVar.matcher(src);
+            String curVarName;
+            String curVarValue;
+            String strResolved = src;
+            boolean found = false;
+            PostmanVariable curVar;
+            while(maVar.find()) {
+                found = true;
+                for(int i = 1; i < maVar.groupCount(); i = i + 2 ) {
+                    curVarName = maVar.group(i);
+                    curVar = this.getVariable(curVarName);
+                    {
+                        if(curVar == null) {
+                            throw new VariableResolutionException("No entry found for variable: " + curVarName);
+                        }
+                    }
+                    curVarValue = this.getVariable(curVarName).getValue();
+                    strResolved = strResolved.replace("{{" + curVarName + "}}",curVarValue);
+                }
+            }
+                
+            return strResolved;
+            
+
+
+    }
+*/
     
     /** 
      * @return String
@@ -808,6 +781,8 @@ public class PostmanCollection extends PostmanItem {
 
         return null;
     }
+
+    
 
 
 

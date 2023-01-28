@@ -73,10 +73,14 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param host  String containing the host portion of the URL.
      * @param path String containing the path portion of the URL.
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String host, String path) {
+    public PostmanRequest(enumHTTPRequestMethod method, String host, String path) throws DuplicateVariableKeyException {
 
         this.setMethod(method);
+        
         this.setUrl(new PostmanUrl(host, path));
+        
+        
+        
 
     }
 
@@ -125,7 +129,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param method  Enumerated value for the HTTP method
      * @param URL  The raw URL 
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) {
+    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
 
         this.setUrl(new PostmanUrl(URL));
         this.setMethod(method);

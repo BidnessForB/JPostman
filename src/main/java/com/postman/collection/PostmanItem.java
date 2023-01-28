@@ -1,5 +1,6 @@
 package com.postman.collection;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.ArrayList;
     /**
      * 
@@ -136,6 +137,7 @@ public class PostmanItem extends PostmanCollectionElement {
     private ArrayList<PostmanResponse> response = null;
     private ArrayList<PostmanItem> item;
     private String name;
+    private ArrayList<PostmanVariable> variable = null;
 
     private transient PostmanItem parent = null;
     
@@ -651,5 +653,136 @@ public class PostmanItem extends PostmanCollectionElement {
         // return this.key;
         return this.name;
     }
+
+    /** 
+     * 
+     * Set the array of key-value pairs in this collections <code>variable</code> array element
+     * 
+     * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
+     */
+    public void setVariables(ArrayList<PostmanVariable> vars) {
+        this.variable = vars;
+    }
+
+    
+    /** 
+     * 
+     * Add or replace variable to the collection of variables comprising this collections <code>variable</code> array property.  If a variable with the same <code>key</code> already exists
+     * in the collection it is replaced.
+     * 
+     * @param varNew
+     */
+    public void addVariable(PostmanVariable varNew) {
+        if (this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        if (this.getVariable(varNew.getKey()) != null) {
+            //easier than getting the variable lol
+            this.removeVariable(varNew.getKey());
+        }
+        this.variable.add(varNew);
+    }
+
+    
+    /** 
+     * 
+     * Remove variable with the specified key from the array of key-value pairs comprising this collections <code>variable</code> array element.  
+     * 
+     * @param key Key of the variable to remove
+     */
+    public void removeVariable(String key) {
+        if (this.variable == null) {
+            return;
+        }
+        for(int i = 0; i < this.variable.size(); i++) {
+            
+            if (this.variable.get(i).getKey().equals(key)) {
+                this.variable.remove(i);
+                break;
+            }
+        }
+    }
+
+      /** 
+     * 
+     * Remove variable from the array of key-value pairs comprising this collections <code>variable</code> array element.  
+     * 
+     * @param varNew The variable to remove.  Matching is by the value of <code>key</code>
+     */
+    public void removeVariable(PostmanVariable varNew) {
+        this.removeVariable(varNew.getKey());
+    }
+
+    
+    /** 
+     * 
+     * Return the PostmanVariable key-value pair from this collection's <code>variable</code> array element, or null if it is not present.
+     * 
+     * @param key
+     * @return PostmanVariable
+     */
+    public PostmanVariable getVariable(String key) {
+        if (this.variable == null) {
+            return null;
+        }
+        for (PostmanVariable curVar : this.variable) {
+            if (curVar.getKey() != null && curVar.getKey().equals(key)) {
+                return curVar;
+            }
+        }
+        return null;
+    }
+
+    /** 
+     * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
+     * 
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     */
+    public ArrayList<PostmanVariable> getVariables() {
+        return this.variable;
+    }
+
+    public void addVariables(ArrayList<PostmanVariable> newVars) {
+        if(newVars == null) {
+            return;
+        }
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        this.variable.addAll(newVars);
+    }
+
+    public  String resolveVariables(String src) throws VariableResolutionException {
+
+        Pattern pnVar = Pattern.compile("(?<!\\{)\\{\\{(?:([^{}]+)|\\{([^{}]+)})}}(?!})");
+        Matcher maVar = pnVar.matcher(src);
+        String curVarName;
+        String curVarValue;
+        String strResolved = src;
+        boolean found = false;
+        PostmanVariable curVar;
+        while(maVar.find()) {
+            found = true;
+            for(int i = 1; i < maVar.groupCount(); i = i + 2 ) {
+                curVarName = maVar.group(i);
+                curVar = this.getVariable(curVarName);
+                {
+                    if(curVar == null) {
+                        throw new VariableResolutionException("No entry found for variable: " + curVarName);
+                    }
+                }
+                curVarValue = this.getVariable(curVarName).getValue();
+                strResolved = strResolved.replace("{{" + curVarName + "}}",curVarValue);
+            }
+        }
+
+        
+            
+        return strResolved;
+        
+
+
+}
+
 
 }

@@ -62,7 +62,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param rawUrl The raw URL as a String.  The URL is not validated
      *
      */
-    public void setRaw(String rawUrl)  {
+    public void setRaw(String rawUrl) throws DuplicateVariableKeyException {
 
         //Is there a query String
         
@@ -116,7 +116,38 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     };
 
-    
+    private String resolvePathVariables() throws VariableResolutionException {
+        
+        String strResolved = this.getRaw();
+        Pattern pnPath = Pattern.compile(":([a-z]+[0-9]+)/?");
+        Matcher maPath = pnPath.matcher(this.getRaw());
+        String curVarName;
+        String curVarValue;
+        
+        boolean found = false;
+        PostmanVariable curVar;
+        while(maPath.find()) {
+            
+                curVarName = maPath.group(1);
+                curVar = this.getPathVariable(curVarName);
+
+                {
+                    if(curVar == null) {
+                        throw new VariableResolutionException("No entry found or null value for variable: " + curVarName);
+                    }
+                    
+                }
+                if(curVar.getValue() != null) {
+                    strResolved = strResolved.replace(":" + curVarName, curVar.getValue());
+                }
+                return strResolved;
+                
+                
+            
+        }
+        
+        return strResolved;
+    }
     /** 
      * 
      * 
@@ -127,14 +158,14 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param description Value for the <code>description</code> property
      * 
      */
-    public void addVariable(String key, String value, String description) {
+    public void addPathVariable(String key, String value, String description) throws DuplicateVariableKeyException {
 
-        if (this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
-        }
-        this.variable.add(new PostmanVariable(key, value, description));
+        this.addPathVariable(new PostmanVariable(key, value, description));
 
     }
+
+
+   
 
     
     /** 
@@ -143,7 +174,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param rawPath the raw path, e.g., /foo/:path1/bat
 
      */
-    public void setPath(String rawPath)  {
+    public void setPath(String rawPath)  throws DuplicateVariableKeyException {
 
         ArrayList<String> pathElements = new ArrayList<String>();
         ArrayList<String> liPath;
@@ -155,7 +186,7 @@ public class PostmanUrl extends PostmanCollectionElement {
                 if (pathElements.get(i) != null && pathElements.get(i).length() > 0) {
                     liPath.add(pathElements.get(i));
                     if (pathElements.get(i).substring(0, 1).equals(":")) {
-                        this.addVariable(pathElements.get(i).substring(1), null, null);
+                            this.addPathVariable(pathElements.get(i).substring(1), null, null);
                     }
                 }
             }
@@ -240,12 +271,12 @@ public class PostmanUrl extends PostmanCollectionElement {
             }
         }
         
-        if(this.getQueries() == null || this.getQueries().size() == 0) {
+        if(this.getQueryElements() == null || this.getQueryElements().size() == 0) {
             return url;
         }
         
         url = url + "?";
-        for(PostmanVariable query : this.getQueries()) {
+        for(PostmanVariable query : this.getQueryElements()) {
             url = url + query.getKey() + "=" + query.getValue() + "&";
         }
         if(url.substring(url.length() - 1).equals("&")) {
@@ -297,7 +328,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      
      */
 
-    public PostmanUrl(String rawURL)  {
+    public PostmanUrl(String rawURL) throws DuplicateVariableKeyException {
         this.setRaw(rawURL);
     }
 
@@ -307,7 +338,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * @param path The path, e.g., "/bar/bat"
      */
     
-    public PostmanUrl(String host, String path) {
+    public PostmanUrl(String host, String path) throws DuplicateVariableKeyException {
         this.host = new ArrayList<String>();
         this.setHost(host);
         this.path = new ArrayList<String>();
@@ -323,6 +354,36 @@ public class PostmanUrl extends PostmanCollectionElement {
      */
     public ArrayList<String> getHosts() {
         return host;
+    }
+
+    private void updateRaw() {
+        StringBuilder sbRaw = new StringBuilder();
+        sbRaw.append(this.protocol);
+        for(String curHost : this.getHosts()) {
+            sbRaw.append("/" + curHost);
+        }
+        for(String curPath : this.getPaths()) {
+            sbRaw.append("/" + curPath);
+        }
+
+        if(this.query != null) {
+            sbRaw.append("?" + this.getQueryString());
+        }
+        this.raw = sbRaw.toString();
+        
+    }
+
+    public String getProtocol() {
+        return this.protocol;
+    }
+
+    
+
+    public String getUrl(boolean resolveVariables) throws VariableResolutionException {
+        if(!resolveVariables) {
+            return this.raw;
+        }
+        return resolvePathVariables();
     }
 
     
@@ -364,9 +425,48 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value paris
      */
-    public ArrayList<PostmanVariable> getQueries() {
+    public ArrayList<PostmanVariable> getQueryElements() {
         return query;
     }
+
+
+    public PostmanVariable getQueryElement(String key) {
+        if(this.query == null) {
+            return null;
+        }
+        for(PostmanVariable curVar : this.query) {
+            if(curVar.getKey().equals(key)) {
+                return curVar;
+            }
+        }
+        return null;
+
+    }
+
+    public PostmanVariable getQueryElement(int index) throws IllegalPropertyAccessException {
+        {
+            if(this.query == null) {
+                return null;
+            }
+            if(index < 0 || index > this.query.size()) {
+                throw new IllegalPropertyAccessException("Index [" + index + "] is out of bounds");
+            }
+            return this.query.get(index);
+
+
+        }
+    }
+
+    public void setQueryELement(PostmanVariable var, int index) throws IllegalPropertyAccessException {
+        if(this.query == null) {
+            this.query = new ArrayList<PostmanVariable>();
+        }
+        if(index < 0 || index > this.query.size() + 1) {
+            throw new IllegalPropertyAccessException("Index [" + index + "] is out of bounds");
+        }
+        this.query.set(index, var);
+    }
+
     /**
      * 
      * Get the raw query string for this URL.  
@@ -419,8 +519,20 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The ArrayList containing the key-value pairs, or null if there are none.
      */
-    public ArrayList<PostmanVariable> getVariables() {
+    public ArrayList<PostmanVariable> getPathVariables() {
         return variable;
+    }
+
+    public PostmanVariable getPathVariable(String key) {
+        if(this.variable == null) {
+            return null;
+        }
+        for(PostmanVariable curVar : this.variable) {
+            if(curVar.getKey().equals(key)) {
+                return curVar;
+            }
+        }
+        return null;
     }
 
     
@@ -430,8 +542,39 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @param variable the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
      */
-    public void setVariables(ArrayList<PostmanVariable> variable) {
+    public void setPathVariables(ArrayList<PostmanVariable> variable) {
         this.variable = variable;
+    }
+
+
+
+    public void setPathVariable(PostmanVariable varPath) {
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        for(PostmanVariable var : this.variable) {
+            if (var.getKey().equals(varPath.getKey())) {
+                this.variable.set(this.variable.indexOf(var),varPath);
+            }
+        }
+    }
+
+    public void addPathVariable(PostmanVariable varPath) throws DuplicateVariableKeyException {
+        if(this.variable != null && this.variable.contains(varPath)){
+            throw new DuplicateVariableKeyException("Path variable [" + varPath.getKey() + "] already present in this collection");
+        }
+        if(this.variable == null) {
+            this.variable = new ArrayList<PostmanVariable>();
+        }
+        this.variable.add(varPath);
+    }
+
+    public void removePathVariable(String key) {
+        for(PostmanVariable var : this.variable) {
+            if(var.getKey().equals(key)) {
+                this.variable.remove(var);
+            }
+        }
     }
 
     
