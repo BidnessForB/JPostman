@@ -982,7 +982,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         PostmanRequest req = null;
         try {
-            new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+           req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
         }
         catch(DuplicateVariableKeyException e)
         {
