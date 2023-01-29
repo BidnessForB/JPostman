@@ -1374,17 +1374,22 @@ public void testPostmanVariable() {
 
     assertFalse(var1.equals(var2));
     assertTrue(var1.equals(var3));
-    ArrayList<PostmanVariable> alVars = new ArrayList<PostmanVariable>();
-    alVars.add(var1);
-    alVars.add(var2);
-    alVars.add(var3);
+
+
+    VariableListMap<PostmanVariable> alVars = new VariableListMap<PostmanVariable>();
+    boolean added = false;
+    added = alVars.add(var1);
+    assertTrue(added);
+    added = alVars.add(var2);
+    assertTrue(added);
+    added = alVars.add(var3);
+    assertFalse(added);
 
 
     VariableListMap<PostmanVariable> vlMap = new VariableListMap<PostmanVariable>(alVars);
-
-    System.out.println(vlMap.contains(var1));
-    System.out.println(vlMap.get("var2").getValue());
-    System.out.println(vlMap instanceof Iterable);
+    vlMap.addAll(alVars);
+    
+    
     for(PostmanVariable curVar : vlMap) {
         System.out.println("KEY: " + curVar.getKey() + " VALUE: " + curVar.getValue());
 

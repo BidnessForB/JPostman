@@ -80,13 +80,13 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
             throw new NullPointerException("Key and Value properties are both null");
         }
         if(this.containsKey(pvVar.getKey())) {
-            index = this.indexOf(pvVar);
-            this.remove(pvVar.getKey());
-            this.set(index, pvVar);
-
+            return false;
         }
-        super.add(pvVar);
-        return true;
+        else {
+            super.add(pvVar);
+            return true;
+        }
+        
     }
 
     public boolean addAll(VariableListMap<PostmanVariable> vars) {
@@ -103,10 +103,10 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
             }
             else {
                 this.remove(i);
-                this.set(i, vars.get(i));
+                this.add(i, vars.get(i));
                 changed = true;
             }
-            
+            this.size();
         }
         return changed;
 }
