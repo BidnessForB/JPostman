@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * 
  * 
- * Encapsulates the <code>request</code> object property of a PostmanItem object
+ * Encapsulates the <code>request</code> object property of a ItemElement object
  * 
  * <pre>{@code 
 * {
@@ -46,13 +46,13 @@ import java.util.ArrayList;
 }</pre> * 
  * 
  */
-public class PostmanRequest extends PostmanCollectionElement {
+public class RequestElement extends CollectionElement {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
-    private PostmanUrl url;
+    private UrlElement url;
     private VariableListMap<PostmanVariable> header;// = new PostmanVariable[0];
     private String description;
-    private PostmanBody body;
-    private PostmanAuth auth;
+    private BodyElement body;
+    private AuthElement auth;
     private String name;
 
     
@@ -67,29 +67,29 @@ public class PostmanRequest extends PostmanCollectionElement {
     }
 
     /**
-     * Construct a PostmanRequest with the specified HTTP method, host and path.  All URL components are constructed from the host and path strings.
+     * Construct a RequestElement with the specified HTTP method, host and path.  All URL components are constructed from the host and path strings.
      * 
      * @param method Enumerated value for the HTTP method
      * @param host  String containing the host portion of the URL.
      * @param path String containing the path portion of the URL.
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String host, String path) throws DuplicateVariableKeyException {
+    public RequestElement(enumHTTPRequestMethod method, String host, String path) throws DuplicateVariableKeyException {
 
         this.setMethod(method);
         
-        this.setUrlElement(new PostmanUrl(host, path));
+        this.setUrlElement(new UrlElement(host, path));
 
     }
 
 
      /**
-     * Construct a PostmanRequest with the specified HTTP method, and PostmanUrl. 
+     * Construct a RequestElement with the specified HTTP method, and PostmanUrl. 
      * 
      * @param method Enumerated value for the HTTP method
      * @param url  Pre-constructed PostmanUrl object
      * 
      */
-    public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
+    public RequestElement(enumHTTPRequestMethod method, UrlElement url) {
 
         this.setMethod(method);
         this.setUrlElement(url);
@@ -102,7 +102,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param auth  The auth
      */
-    public void setAuth(PostmanAuth auth) {
+    public void setAuth(AuthElement auth) {
         this.auth = auth;
         this.auth.setParent(this);
     }
@@ -114,22 +114,22 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return PostmanAuth The auth object containing the values.
      */
-    public PostmanAuth getAuth() {
+    public AuthElement getAuth() {
         return this.auth;
     }
 
 
     /**
      * 
-     * Construct a PostmanRequest object from a raw URL.  All path, host, URL, auth and other property array elements are parsed out and populated
+     * Construct a RequestElement object from a raw URL.  All path, host, URL, auth and other property array elements are parsed out and populated
      * 
      * 
      * @param method  Enumerated value for the HTTP method
      * @param URL  The raw URL 
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
+    public RequestElement(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
 
-        this.setUrlElement(new PostmanUrl(URL));
+        this.setUrlElement(new UrlElement(URL));
         this.setMethod(method);
 
     }
@@ -163,7 +163,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return PostmanUrl
      */
-    public PostmanUrl getUrlElement() {
+    public UrlElement getUrlElement() {
         return url;
     }
 
@@ -195,7 +195,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param url  PostmanUrl object containing the values
      */
-    public void setUrlElement(PostmanUrl url) {
+    public void setUrlElement(UrlElement url) {
         this.url = url;
         this.url.setParent(this);
     }
@@ -253,7 +253,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param bodyMode The body mode, eg. RAW
      * @return PostmanBody  The new body
      */
-    public PostmanBody setBody(enumRequestBodyMode bodyMode) {
+    public BodyElement setBody(enumRequestBodyMode bodyMode) {
         return this.setBody(bodyMode, null);
     }
 
@@ -269,8 +269,8 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param rawContent The raw content for the body
      * @return PostmanBody The new body
      */
-    public PostmanBody setBody(enumRequestBodyMode bodyMode, String rawContent) {
-        this.setBody(new PostmanBody(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
+    public BodyElement setBody(enumRequestBodyMode bodyMode, String rawContent) {
+        this.setBody(new BodyElement(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
         return this.getBody();
     }
 
@@ -280,7 +280,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return PostmanBody The body, or null.  
      */
-    public PostmanBody getBody() {
+    public BodyElement getBody() {
         return this.body;
     }
 
@@ -292,7 +292,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param body The new body values
      */
-    public void setBody(PostmanBody body) {
+    public void setBody(BodyElement body) {
         this.body = body;
         this.body.setParent(this);
     }

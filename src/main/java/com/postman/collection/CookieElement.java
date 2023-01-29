@@ -2,7 +2,7 @@ package com.postman.collection;
 
 import java.util.ArrayList;
 
-public class PostmanCookie extends PostmanCollectionElement {
+public class CookieElement extends CollectionElement {
     private String domain = "";
     private String expires = "";
     private String maxAge = "";
@@ -15,7 +15,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     private String value = "";
     private VariableListMap<PostmanVariable> extensions;
 
-    public PostmanCookie() {
+    public CookieElement() {
 
     }
 

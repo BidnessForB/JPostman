@@ -2,7 +2,7 @@ package com.postman.collection;
 /**
  * 
  * 
- * Enumerates valid HTTP methods, e.g, for the <code>method</code> property of a <code>{@link com.postman.collection.PostmanRequest}</code> element
+ * Enumerates valid HTTP methods, e.g, for the <code>method</code> property of a <code>{@link com.postman.collection.RequestElement}</code> element
  * 
  * 
  * 

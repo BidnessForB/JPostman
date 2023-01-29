@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
  * 
  * 
  */
-public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
+public class AuthDeserializer implements JsonDeserializer<AuthElement> {
 
     /**
      * 
@@ -34,13 +34,13 @@ public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
      * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override
-    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public AuthElement deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         JsonObject curVar;
         String type = jObject.get("type").getAsString();
         JsonArray vars = jObject.get(type).getAsJsonArray();
         PostmanVariable pvVar;
-        PostmanAuth auth = new PostmanAuth(jObject.get("type").getAsString());
+        AuthElement auth = new AuthElement(jObject.get("type").getAsString());
         for (int i = 0; i < vars.size(); i++) {
             curVar = vars.get(i).getAsJsonObject();
             curVar.get("key");

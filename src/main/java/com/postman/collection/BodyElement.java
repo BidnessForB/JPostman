@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 /**
  * 
- * <p>Encapsulates the <code>body</code> property of a <a href="./PostmanRequest.html">PostmanRequest</a> object.  There are several different permutations for this property depending on the 
+ * <p>Encapsulates the <code>body</code> property of a <a href="./RequestElement.html">RequestElement</a> object.  There are several different permutations for this property depending on the 
  * <code>mode</code> selected in Postman.  Some examples:
  * </p>
  * 
@@ -86,7 +86,7 @@ import java.util.HashMap;
  * 
  * 
  */
-public class PostmanBody extends PostmanCollectionElement {
+public class BodyElement extends CollectionElement {
   
 
     
@@ -109,7 +109,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * @param content The content in the body
      * @param language For bodies with <code>mode</code> RAW, the language of the body content, e.g., <code>javascript</code>
      */
-    public PostmanBody(enumRequestBodyMode mode, String content, enumRawBodyLanguage language)  {
+    public BodyElement(enumRequestBodyMode mode, String content, enumRawBodyLanguage language)  {
 
         this.setMode(mode);
 
@@ -137,7 +137,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * 
      * @param mode  Enumerated value for the <code>mode</code> property 
      */
-    public PostmanBody(enumRequestBodyMode mode) {
+    public BodyElement(enumRequestBodyMode mode) {
         this.setMode(mode);
     }
 

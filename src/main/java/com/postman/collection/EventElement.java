@@ -45,14 +45,14 @@ import java.util.ArrayList;
  * 
  * 
  */
-public class PostmanEvent extends PostmanCollectionElement {
+public class EventElement extends CollectionElement {
 
     private String listen = ""; // basically the name
     private PostmanScript script = null;
 
     /**
      * 
-     * Create a new PostmanEvent object with the specified EventType (eg., pre-request or test) and source code.  The <code>type</code> property is excluded because it is always 'text/javascript', 
+     * Create a new EventElement object with the specified EventType (eg., pre-request or test) and source code.  The <code>type</code> property is excluded because it is always 'text/javascript', 
      * although the schema does theoretically allow for different values
      * 
      * 
@@ -61,7 +61,7 @@ public class PostmanEvent extends PostmanCollectionElement {
      * @param evtType Content type of the script, always "text/javascript"
      * 
      */
-    public PostmanEvent(enumEventType evtType, String sourceCode)  {
+    public EventElement(enumEventType evtType, String sourceCode)  {
         this.setEventType(evtType);
         this.setScript(new PostmanScript(this.getScriptType(), sourceCode));
     }
@@ -237,7 +237,7 @@ public class PostmanEvent extends PostmanCollectionElement {
         this.getScript().removeSourceCodeElement(position);
     }
 
-    public class PostmanScript extends PostmanCollectionElement {
+    public class PostmanScript extends CollectionElement {
         private String type = "";
         private ArrayList<String> exec;
 

@@ -58,7 +58,7 @@ For example, adding a new Folder as the third `item` in the collection:
 ```java
  // Add a new folder to the 3rd position beneath the root of the collection
   PostmanCollection pmcTest = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
-  PostmanItem newFolder = new PostmanItem("new Folder");
+  ItemElement newFolder = new ItemElement("new Folder");
   pmcTest.addItem(newFolder, 2);
   
   ```
@@ -68,8 +68,8 @@ You can easily move elements from one parent to another.  For example, move a re
 
 ```java
   PostmanCollection pmcTest = PostmanCollection.pmcFactory("/path/to/your/exported/collection.json");
-  PostmanItem newFolder1 = new PostmanItem("new Folder One");
-  PostmanItem newFolder2 = new PostmanItem("new Folder Two");
+  ItemElement newFolder1 = new ItemElement("new Folder One");
+  ItemElement newFolder2 = new ItemElement("new Folder Two");
   pmcTest.addItem(newFolder1);
   pmcTest.addItem(newFolder2);
   pmcTest.moveItem(newFolder2, newFolder1);

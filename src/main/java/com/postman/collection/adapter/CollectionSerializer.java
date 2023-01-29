@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
  * This serializer replicates that order.
  * 
  */
-public class CollectionSerializer implements JsonSerializer<PostmanCollection> {
+public class CollectionSerializer implements JsonSerializer<Collection> {
     
     
     /** 
@@ -23,7 +23,7 @@ public class CollectionSerializer implements JsonSerializer<PostmanCollection> {
      * @return JsonElement The resulting Json
      */
     @Override
-    public JsonElement serialize(PostmanCollection src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(Collection src, Type typeOfSrc, JsonSerializationContext context) {
         
         JsonObject collJsonMap = new JsonObject();
         

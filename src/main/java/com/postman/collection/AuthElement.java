@@ -41,7 +41,7 @@ import java.util.HashMap;
      * 
      *
      */
-public class PostmanAuth extends PostmanCollectionElement {
+public class AuthElement extends CollectionElement {
 
     private String type = "";
     public HashMap<String, PostmanVariable> properties = new HashMap<String, PostmanVariable>();
@@ -57,7 +57,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * 
      */
 
-    public PostmanAuth() {
+    public AuthElement() {
         arrTypes[enumAuthType.AKAMAI.ordinal()] = "edgegrid";
         arrTypes[enumAuthType.APIKEY.ordinal()] = "apikey";
         arrTypes[enumAuthType.AWS.ordinal()] = "awsv4";
@@ -75,7 +75,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * 
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
      */
-    public PostmanAuth(String type) {
+    public AuthElement(String type) {
         this();
         this.type = type;
         this.setType(getType());
@@ -86,7 +86,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * 
      * @param type  The underlying type property of the new Auth object, as an enumeration
      */
-    public PostmanAuth(enumAuthType type) {
+    public AuthElement(enumAuthType type) {
         this();
         this.setType(type);
     }
@@ -96,7 +96,7 @@ public class PostmanAuth extends PostmanCollectionElement {
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
      * @param properties HashMap&#60;String, PostmanVariable&#62; containing the properties of this auth element
      */
-    public PostmanAuth(enumAuthType type, HashMap<String, PostmanVariable> properties) {
+    public AuthElement(enumAuthType type, HashMap<String, PostmanVariable> properties) {
         this(type);
         this.setType(type);
         this.setProperties(properties);

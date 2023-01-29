@@ -5,7 +5,7 @@ package com.postman.collection;
  * 
  * 
  */
-public class PostmanVariable extends PostmanCollectionElement {
+public class PostmanVariable extends CollectionElement {
     private String key = "";
     private String value = "";
     private String description;
