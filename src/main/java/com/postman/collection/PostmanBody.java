@@ -91,12 +91,8 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     private PostmanGraphQL graphql;
-    //private ArrayList<PostmanVariable> formdata;
     private VariableListMap<PostmanVariable> formdata;
-    
-    //private ArrayList<PostmanVariable> urlencoded;
     private VariableListMap<PostmanVariable> urlencoded;
-    
     private PostmanBinaryFile file;
     public String getKey() {
         return this.getUUID().toString();
