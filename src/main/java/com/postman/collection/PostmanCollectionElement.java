@@ -25,6 +25,7 @@ public abstract class PostmanCollectionElement {
     private static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
     private static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
     private transient UUID uuid = UUID.randomUUID();
+    private transient PostmanCollectionElement parent;
 
     public abstract String getKey();
 
@@ -43,6 +44,14 @@ public abstract class PostmanCollectionElement {
     }
 
     
+    public void setParent(PostmanCollectionElement parent) {
+        this.parent = parent;
+    }
+
+    public PostmanCollectionElement getParent() {
+        return this.parent;
+    }
+
     /** 
      * 
      * Convenience method allowing validation against a user-provided schema
@@ -165,6 +174,27 @@ public abstract class PostmanCollectionElement {
      */
     public void setUUID(UUID newID) {
         this.uuid = newID;
+    }
+
+    public PostmanCollection getCollection() {
+        PostmanCollectionElement result = null;
+        PostmanCollectionElement curItem = null;
+        // recursively traverse items looking for name == key
+        while(result == null) {
+            curItem = this.getParent();
+            if (curItem instanceof PostmanCollection) {
+                result = curItem;
+                break;
+            } else {
+                result = curItem.getCollection();
+                if (result instanceof PostmanCollection) {
+                    break;
+                }
+            }
+        }
+        
+
+        return (PostmanCollection)result;
     }
 
     

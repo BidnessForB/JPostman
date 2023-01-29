@@ -77,10 +77,7 @@ public class PostmanRequest extends PostmanCollectionElement {
 
         this.setMethod(method);
         
-        this.setUrl(new PostmanUrl(host, path));
-        
-        
-        
+        this.setUrlElement(new PostmanUrl(host, path));
 
     }
 
@@ -95,7 +92,7 @@ public class PostmanRequest extends PostmanCollectionElement {
     public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
 
         this.setMethod(method);
-        this.setUrl(url);
+        this.setUrlElement(url);
     }
 
     
@@ -131,7 +128,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      */
     public PostmanRequest(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
 
-        this.setUrl(new PostmanUrl(URL));
+        this.setUrlElement(new PostmanUrl(URL));
         this.setMethod(method);
 
     }
@@ -165,8 +162,16 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return PostmanUrl
      */
-    public PostmanUrl getUrl() {
+    public PostmanUrl getUrlElement() {
         return url;
+    }
+
+    public String getUrl(boolean resolveVariables) throws VariableResolutionException {
+        String url = this.url.getUrl(resolveVariables);
+        if(resolveVariables) {
+            url = this.getCollection().resolveVariables(url);
+        }
+        return "";
     }
 
     
@@ -176,7 +181,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param url  PostmanUrl object containing the values
      */
-    public void setUrl(PostmanUrl url) {
+    public void setUrlElement(PostmanUrl url) {
         this.url = url;
     }
 

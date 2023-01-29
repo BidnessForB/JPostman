@@ -18,8 +18,6 @@ import java.lang.Iterable;
  */
 public class VariableListMap<T> extends ArrayList<PostmanVariable> 
 {
-    private ArrayList<PostmanVariable> vars;
-
     public VariableListMap(ArrayList<PostmanVariable> vars) {
         super(vars);
     }

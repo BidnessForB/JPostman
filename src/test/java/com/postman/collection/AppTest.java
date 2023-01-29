@@ -71,7 +71,7 @@ public class AppTest {
             collectionOutputPath = filePath + "/test-output/TEST-constructed-queries.postman_collection.json";
             pmcTest = PostmanCollection.pmcFactory();
             PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
-            newReq.getUrl().addQuery("foo", "bar");
+            newReq.getUrlElement().addQuery("foo", "bar");
             pmcTest.addRequest(newReq, "Get Foo Bar");
             pmcTest.setName("TEST Constructed Queries");
             validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
@@ -1351,15 +1351,15 @@ public void testVariableResolution() {
             }
         }
 
-        url = pmcTest.getItem("URL 1").getRequest().getUrl().getUrl(true);
-        url = pmcTest.resolveVariables(url);
+        url = pmcTest.getItem("URL 1").getRequest().getUrl(true);
+        //url = pmcTest.resolveVariables(url);
         assertTrue(url.equals("http://test.com/var1value.com/:path1/bat.json"));
-        url = pmcTest.getItem("URL 2").getRequest().getUrl().getUrl(true);
-        url = pmcTest.resolveVariables(url);
+        url = pmcTest.getItem("URL 2").getRequest().getUrl(true);
+        //url = pmcTest.resolveVariables(url);
         assertTrue(url.equals("https://var1value.com/:path1/bat.json?var1value=333"));
 
-        pmcTest.getItem("URL 1").getRequest().getUrl().setPathVariable(new PostmanVariable("path1", "path1value"));
-        assertTrue(pmcTest.resolveVariables(pmcTest.getItem("URL 1").getRequest().getUrl().getUrl(true)).equals("http://test.com/var1value.com/path1value/bat.json"));
+        pmcTest.getItem("URL 1").getRequest().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
+        assertTrue(pmcTest.getItem("URL 1").getRequest().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
     }
     catch(Exception e) {
         assertTrue("Unexpected exception: " + e.getMessage(), false );

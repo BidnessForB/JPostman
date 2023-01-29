@@ -70,17 +70,24 @@ public class PostmanCollection extends PostmanItem {
     
     
     public static void main(String[] args) {
-        PostmanCollection pmcTest;
+        PostmanCollection pmcTest = null;
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = "/src/main/resources/com/postman/collection";
         
-        pmcTest = PostmanCollection.pmcFactory();
         try {
-            pmcTest.writeToFile(new File(filePath + "/test-output/empty.json"));
+            pmcTest = PostmanCollection.pmcFactory(new File(filePath + resourcePath + "/Nested.postman_collection.json"));
         }
-        catch(IOException e) {
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
+
+        PostmanItem req = pmcTest.getItem("URL 1");
+
+        System.out.println(req.getCollection().getName());
+        
+
+        
         
     
     
@@ -401,6 +408,8 @@ public class PostmanCollection extends PostmanItem {
             curItem.setParent(curParent);
         }
     }
+
+
 
     
     /** 
