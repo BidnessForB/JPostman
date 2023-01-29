@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import com.postman.collection.*;
 import java.lang.reflect.Type;
 
+
 /**
  * 
  * Custom serializer for the collection element.  JSON does not require a particular order in order to be valid.  However, Postman always outputs collections in the same order.  
@@ -28,7 +29,7 @@ public class CollectionSerializer implements JsonSerializer<Collection> {
         JsonObject collJsonMap = new JsonObject();
         
         collJsonMap.add("info", context.serialize(src.getInfo()));
-        collJsonMap.add("item",context.serialize(src.getItems()));
+        collJsonMap.add("item",context.serialize(src.getItemElements()));
         collJsonMap.add("event", context.serialize(src.getEvents()));
         collJsonMap.add("variable", context.serialize(src.getVariables()));
         collJsonMap.add("auth",context.serialize(src.getAuth()));

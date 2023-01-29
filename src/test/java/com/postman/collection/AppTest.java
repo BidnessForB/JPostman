@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 /**
  * Unit test for simple App.
  */
@@ -94,8 +95,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     public void shouldCreateScripts() {
 
         Collection pmcTest = Collection.pmcFactory();
-        ItemElement folder;
-        ItemElement request;
+        Folder folder;
+        Request request;
 
         //generates spurious "variable not used" warning
         EventElement  event = null; 
@@ -104,23 +105,20 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
       
         try {
             pmcTest.setName("TEST Scripts");
-            folder = new ItemElement("Scripts");
+            folder = new Folder("Scripts");
 
             
             folder.setPreRequestScript("//PRE-REQUEST this is some source code for the folder");
             event = new EventElement(enumEventType.TEST, "//TEST this is some source code for the folder");
             folder.setTestScript("//TEST this is some source code for the folder");
-            pmcTest.addItem(folder);
+            pmcTest.addItemElement(folder);
 
             req = new RequestElement(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
 
-            request = new ItemElement("TEST Request with Scripts");
-            request.setRequest(req);
+            request = new Request(req,"TEST Request with Scripts");
             request.setPreRequestScript("//PRE-REQUEST this is some source code for the request");
-
-            
             request.setTestScript("//TEST this is some source code for the request");
-            folder.addItem(request);
+            folder.addItemElement(request);
 
             
             pmcTest.setTestScript("//TEST this is some source code for the collection");
@@ -303,7 +301,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         Collection test2;
         try {
             test2 =Collection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
-            assertTrue(pmcTest.getItem("Raw-text XML").getRequest().getBody().getRaw().equals(test2.getItem("Raw-text XML").getRequest().getBody().getRaw()));
+            assertTrue(pmcTest.getRequest("Raw-text XML").getRequestElement().getBody().getRaw().equals(test2.getRequest("Raw-text XML").getRequestElement().getBody().getRaw()));
             
         }
         catch(IOException e) {
@@ -622,8 +620,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         resp = new ResponseElement("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
         pmcTest2.addRequest(req, "Test Request", resp);
 
-        ItemElement itemReq = pmcTest.getItem("Test Request");
-        ItemElement itemReq2 = pmcTest2.getItem("Test Request");
+        ItemElement itemReq = pmcTest.getItemElement("Test Request");
+        ItemElement itemReq2 = pmcTest2.getItemElement("Test Request");
 
         diffs = itemReq.isEquivalentTo(itemReq2);
         
@@ -1114,8 +1112,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest = Collection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
         
         
-        ItemElement fact = pmcTest.getItem("Get a list of facts");
-        ItemElement folder = pmcTest.getItem("get Breeds",true);
+        ItemElement fact = pmcTest.getItemElement("Get a list of facts");
+        Folder folder = pmcTest.getFolder("get Breeds");
         assertNotNull(fact);
         assertNotNull(folder);
         
@@ -1124,14 +1122,14 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         pmcTest = Collection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
         
-        ArrayList<ItemElement> folders = pmcTest.getItems(enumItemElementType.FOLDER);
+        ArrayList<ItemElement> folders = pmcTest.getItemElements(enumItemElementType.FOLDER);
         assertEquals(2, folders.size());
-        ArrayList<ItemElement> requests = pmcTest.getItems(enumItemElementType.REQUEST);
+        ArrayList<ItemElement> requests = pmcTest.getItemElements(enumItemElementType.REQUEST);
         assertEquals(5, requests.size());
-        ArrayList<ItemElement> all = pmcTest.getItems(null);
+        ArrayList<ItemElement> all = pmcTest.getItemElements(null);
         assertEquals(7, all.size());
 
-        fact = pmcTest.getItem("Add Breed");
+        fact = pmcTest.getItemElement("Add Breed");
         assertNotNull(fact);
         assertEquals("Add Breed", fact.getName());
 
@@ -1148,7 +1146,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         ItemElement reqItem1 = null;
         //generates spurious "not used" warning
         ItemElement reqItem2 = null;
-        ItemElement newFolder = null;
+        Folder newFolder = null;
 
         try {
             req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
@@ -1187,20 +1185,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
 
 
-       assertEquals(2, pmcTest.getItems(enumItemElementType.REQUEST).size());
+       assertEquals(2, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
 
-       try {
-        pmcTest.moveItem(reqItem1, reqItem1);
-       }
-       catch(RecursiveItemAddException e)
-       {
-        assertTrue("Recursive exception as expected",true);
-       }
-       catch(InvalidCollectionActionException d) {
-        assertTrue("Unexpected exception: " + d.getMessage(), false);
-       }
-
-       try {
+        try {
         newFolder = pmcTest.addFolder("New Folder");
        }
        catch(Exception e)
@@ -1210,8 +1197,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
        try {
         pmcTest.moveItem(reqItem1, newFolder);
-        assertEquals("New Folder", pmcTest.getItem("GET echo", true).getName());
-        assertEquals(2, pmcTest.getItems().size());
+        assertEquals("New Folder", pmcTest.getParent().getName());
+        assertEquals(2, pmcTest.getItemElements().size());
        }
        catch(Exception e)
        {
@@ -1224,9 +1211,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
 
 
-       pmcTest.removeItem("POST echo");
-       assertEquals(1, pmcTest.getItems(enumItemElementType.REQUEST).size());
-       assertNotNull(pmcTest.getItem("GET echo"));
+       pmcTest.removeItemElement("POST echo");
+       assertEquals(1, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+       assertNotNull(pmcTest.getItemElement("GET echo"));
 
 
     }
@@ -1240,7 +1227,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         RequestElement req;
         ItemElement reqItem1 = null;
         ItemElement reqItem2 = null;
-        ItemElement newFolder = null;
+        Folder newFolder = null;
 
         try {
             
@@ -1251,12 +1238,12 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             newFolder = pmcTest.addFolder("New Folder");
             pmcTest.moveItem(reqItem1, newFolder);
             pmcTest.moveItem(reqItem2, newFolder);
-            assertEquals(2, pmcTest.getItems(enumItemElementType.REQUEST).size());
-            assertEquals(1, pmcTest.getItems(enumItemElementType.FOLDER).size());
-            assertEquals(2, pmcTest.getItem("New Folder").getItems().size());
-            pmcTest.removeItem(newFolder);
-            assertEquals(0, pmcTest.getItems(enumItemElementType.REQUEST).size());
-            assertEquals(0, pmcTest.getItems(enumItemElementType.FOLDER).size());
+            assertEquals(2, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+            assertEquals(1, pmcTest.getItemElements(enumItemElementType.FOLDER).size());
+            assertEquals(2, pmcTest.getFolder("New Folder").getItemElements().size());
+            pmcTest.removeItemElement(newFolder);
+            assertEquals(0, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+            assertEquals(0, pmcTest.getItemElements(enumItemElementType.FOLDER).size());
         }
         catch(Exception e) {
             assertTrue("Unexpected exception: " + e.getMessage(), false);
@@ -1376,12 +1363,12 @@ public void testVariableResolution() {
         
         
         
-        url = pmcTest.getItem("URL 2").getRequest().getUrl(true);
+        url = pmcTest.getRequest("URL 2").getRequestElement().getUrl(true);
         //url = pmcTest.resolveVariables(url);
         assertTrue(url.equals("https://var1value.com/:path1/bat.json?var1value=333"));
 
-        pmcTest.getItem("URL 1").getRequest().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
-        assertTrue(pmcTest.getItem("URL 1").getRequest().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
+        pmcTest.getRequest("URL 1").getRequestElement().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
+        assertTrue(pmcTest.getRequest("URL 1").getRequestElement().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
     }
     catch(Exception e) {
         //assertTrue("Unexpected exception: " + e.getMessage(), false );
@@ -1422,8 +1409,8 @@ public void testPostmanVariable() {
         RequestElement req = null;
         CollectionElement parent = null;
         Collection col = null;
-        ItemElement folder = null;
-        ItemElement reqObj = null;
+        Folder folder = null;
+        Request reqObj = null;
         try {
             req = new RequestElement(enumHTTPRequestMethod.GET, "https://foo.com/bar/bat.json");
             parent = req.getParent();
