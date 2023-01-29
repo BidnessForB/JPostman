@@ -304,8 +304,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         try {
             test2 =PostmanCollection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
             assertTrue(pmcTest.getItem("Raw-text XML").getRequest().getBody().getRaw().equals(test2.getItem("Raw-text XML").getRequest().getBody().getRaw()));
-            System.out.println(pmcTest.toJson());
-            System.out.println(test2.toJson());
+            
         }
         catch(IOException e) {
             assertTrue("Unexpected IOEXception: " + e.getMessage(), false);
@@ -598,14 +597,14 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         PostmanCollection pmcTest2 = PostmanCollection.pmcFactory(
                 new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
         JsonNode diffs = pmcTest.isEquivalentTo(pmcTest2);
-        //System.out.println("diffs (should be none) " + diffs.toPrettyString());
+        
         assertEquals(0, diffs.size());
 
         pmcTest2 = PostmanCollection.pmcFactory(new File(
                 filePath + "/src/main/resources/com/postman/collection/body-test-diff.postman_collection.json"));
         diffs = pmcTest.isEquivalentTo(pmcTest2);
-        System.out.println("diffs " + diffs.toPrettyString());
-        //assertTrue(diffs.size() == 1);
+        
+        
 
         body = new PostmanBody(enumRequestBodyMode.FORMDATA);
         body.setFormdata("field-1", "value 1", "This is value 1");
@@ -627,7 +626,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         PostmanItem itemReq2 = pmcTest2.getItem("Test Request");
 
         diffs = itemReq.isEquivalentTo(itemReq2);
-        //System.out.println("Req diffs (should be none) " + diffs.toPrettyString());
+        
         assertEquals(0, diffs.size());
 
     }
@@ -747,7 +746,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
             assertSame(enumRequestBodyMode.RAW,body.getMode());
 
-            System.out.println(body.toJson());
+            
             
             try {
                 assertSame(enumRawBodyLanguage.JAVASCRIPT, body.getRawLanguage());
@@ -950,7 +949,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         try{
             if(i != 2 && liUrls.get(i).generateURL().equals(urls.get(i))) {
                 assertTrue(true);
-                //System.out.println("URL: " + urls.get(i));
+                
             }
             //technical wrong, but it's OK i think
             if(i == 2 && liUrls.get(i).generateURL().equals("/foo.com/bar/bat.json")) {
@@ -1414,10 +1413,7 @@ public void testPostmanVariable() {
     vlMap.addAll(alVars);
     
     
-    for(PostmanVariable curVar : vlMap) {
-        System.out.println("KEY: " + curVar.getKey() + " VALUE: " + curVar.getValue());
-
-    }
+    
 }
     @Test
     public void testParentChain() {
