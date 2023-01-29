@@ -64,9 +64,26 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         return false;
     }
 
+    public int indexOf(PostmanVariable pvVar) {
+        for(int i = 0; i < this.size(); i++)
+        {
+            if(this.get(i).getKey().equals(pvVar.getKey())){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public boolean add(PostmanVariable pvVar) {
+        int index;
         if(pvVar == null || (pvVar.getKey() == null && pvVar.getValue() == null)) {
             throw new NullPointerException("Key and Value properties are both null");
+        }
+        if(this.containsKey(pvVar.getKey())) {
+            index = this.indexOf(pvVar);
+            this.remove(pvVar.getKey());
+            this.set(index, pvVar);
+
         }
         super.add(pvVar);
         return true;
@@ -112,11 +129,21 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
         
     }
 
-    public void set(PostmanVariable pvVar, int position) throws DuplicateVariableKeyException, IndexOutOfBoundsException {
-        if(this.get(pvVar.getKey()) != null) {
-            throw new DuplicateVariableKeyException("Variable with key [" + pvVar.getKey() + "] exists in this set");
+    public PostmanVariable set(int index, PostmanVariable pvVar) throws IndexOutOfBoundsException {
+        //Disallow duplicate keys
+        PostmanVariable retVal = null;
+        int curIndex;
+
+        if((this.containsKey(pvVar.getKey())  && this.indexOf(pvVar) == index) || !this.containsKey(pvVar.getKey())) {
+            retVal = super.set(index, pvVar);
         }
-        super.set(position, pvVar);
+        else if(this.containsKey(pvVar.getKey()) && this.indexOf(pvVar) != index) {
+            curIndex = this.indexOf(pvVar.getKey());
+            retVal = super.remove(curIndex);
+            super.add(curIndex, pvVar);
+        }
+        return retVal;
+        
     }
     
     
