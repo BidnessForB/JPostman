@@ -6,10 +6,18 @@ public class PostmanID {
         this.ID = ID;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String toString() {
         return this.ID;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getID() {
         return this.ID;
     }

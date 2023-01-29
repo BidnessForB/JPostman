@@ -9,11 +9,19 @@ import java.lang.reflect.Type;
 
 /**
  * 
- * Custom serializer for the collection element
+ * Custom serializer for the collection element.  JSON does not require a particular order in order to be valid.  However, Postman always outputs collections in the same order.  
+ * This serializer replicates that order.
  * 
  */
 public class CollectionSerializer implements JsonSerializer<PostmanCollection> {
     
+    
+    /** 
+     * @param src The PostmanCollection passed in by Gson
+     * @param typeOfSrc The Java Type of the object being parsed
+     * @param context Serialization context passed in by Gson
+     * @return JsonElement The resulting Json
+     */
     @Override
     public JsonElement serialize(PostmanCollection src, Type typeOfSrc, JsonSerializationContext context) {
         

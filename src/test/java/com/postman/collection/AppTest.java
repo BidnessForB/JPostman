@@ -38,6 +38,10 @@ public class AppTest {
     String collectionOutputPath;
 
     
+   
+   /** 
+    * @return Set<String>
+    */
    /*  @Test
         public void clearOutput() {
         File outputRoot = new File(filePath + "/test-output");
@@ -975,6 +979,10 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     assertEquals("var1=val1", url.getQueryString());
 
     }
+    
+    /** 
+     * @throws MalformedURLException
+     */
     @Test
     public void testIngestFromUrl() throws MalformedURLException {
         //Good URL
@@ -1098,6 +1106,10 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
     
     
+    
+    /** 
+     * @throws Exception
+     */
     public void testPostmanItem() throws Exception{
         
         pmcTest = PostmanCollection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
@@ -1281,6 +1293,12 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
 
 
+
+/** 
+ * @param pmcColl
+ * @param testMethodInfo
+ * @return boolean
+ */
 public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceElement testMethodInfo) {
     boolean valid = false;
     
@@ -1313,6 +1331,11 @@ public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceEleme
 }
 
 
+
+/** 
+ * @param directoryToBeDeleted
+ * @return boolean
+ */
 boolean deleteDirectory(File directoryToBeDeleted) {
     File[] allContents = directoryToBeDeleted.listFiles();
     if (allContents != null) {
@@ -1395,8 +1418,49 @@ public void testPostmanVariable() {
         System.out.println("KEY: " + curVar.getKey() + " VALUE: " + curVar.getValue());
 
     }
-
-
-
 }
+    @Test
+    public void testParentChain() {
+
+        
+        PostmanRequest req = null;
+        PostmanCollectionElement parent = null;
+        PostmanCollection col = null;
+        PostmanItem folder = null;
+        PostmanItem reqObj = null;
+        try {
+            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://foo.com/bar/bat.json");
+            parent = req.getParent();
+            col = req.getCollection();
+            assertTrue(parent == null);
+            assertTrue(col == null);
+
+            pmcTest = PostmanCollection.pmcFactory();
+            pmcTest.setName("TEST parent chain");
+            reqObj = pmcTest.addRequest(req, "Req 1");
+
+            assertTrue(req.getParent() != null);
+            assertTrue(req.getCollection().getName().equals("TEST parent chain"));
+
+            folder = pmcTest.addFolder("Folder 1");
+            pmcTest.moveItem(reqObj, folder);
+            assertTrue(reqObj.getParent() != null);
+            assertTrue(((PostmanItem)reqObj).getParent().getName().equals("Folder 1"));
+            assertTrue(reqObj.getCollection().getName().equals("TEST parent chain"));
+
+        }
+        catch(Exception e) {
+            assertTrue("Unexpected exception: " + e.getMessage(), false);
+        }
+
+
+
+
+
+
+
+
+    }
+
+
 }

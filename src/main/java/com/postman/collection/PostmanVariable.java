@@ -154,6 +154,11 @@ public class PostmanVariable extends PostmanCollectionElement {
         this.type = type;
     }
     
+    
+    /** 
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if(! (obj instanceof PostmanVariable)) {

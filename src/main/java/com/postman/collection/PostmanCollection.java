@@ -69,6 +69,10 @@ public class PostmanCollection extends PostmanItem {
 
     
     
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         PostmanCollection pmcTest = null;
         String filePath = new java.io.File("").getAbsolutePath();
@@ -104,6 +108,10 @@ public class PostmanCollection extends PostmanItem {
         //Otherwise I'm creating new
     }
 
+    
+    /** 
+     * @param workspaceID
+     */
     public void uploadToPostman(PostmanID workspaceID) {
 
     }
@@ -485,6 +493,11 @@ public class PostmanCollection extends PostmanItem {
         
     }
 
+    
+    /** 
+     * @param json
+     * @return PostmanCollection
+     */
     public static PostmanCollection pmcFactory(String json) {
         PostmanCollection pmcRetVal;
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -558,10 +571,25 @@ public class PostmanCollection extends PostmanItem {
             
     }
 
+    
+    /** 
+     * @param id
+     * @return PostmanCollection
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws CollectionNotFoundException
+     * @throws ValidationException
+     * @throws InvalidCollectionActionException
+     */
     public static PostmanCollection pmcFactory(PostmanID id) throws IOException, InterruptedException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
         return PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
     }
 
+    
+    /** 
+     * @param endpoint
+     * @return HttpResponse
+     */
     private HttpResponse executePostmanAPI(String endpoint) {
         //String resolveURL = resolveVariables(endpoint);
         return null;
@@ -701,6 +729,12 @@ public class PostmanCollection extends PostmanItem {
     }
 
     
+    
+    /** 
+     * @param src
+     * @return String
+     * @throws VariableResolutionException
+     */
     public  String resolveVariables(String src) throws VariableResolutionException {
 
         Pattern pnVar = Pattern.compile("(?<!\\{)\\{\\{(?:([^{}]+)|\\{([^{}]+)})}}(?!})");
@@ -724,9 +758,7 @@ public class PostmanCollection extends PostmanItem {
                 strResolved = strResolved.replace("{{" + curVarName + "}}",curVarValue);
             }
         }
-
-        
-            
+    
         return strResolved;
         
 

@@ -156,6 +156,10 @@ public class PostmanEvent extends PostmanCollectionElement {
         return srcCode;
     }
 
+    
+    /** 
+     * @return ArrayList&#60;String&#62;
+     */
     public ArrayList<String> getSourceCodeElements() {
         if(this.getScript() == null || this.getScript().getSourceCode() == null)
         {
@@ -221,6 +225,11 @@ public class PostmanEvent extends PostmanCollectionElement {
         
     }
 
+    
+    /** 
+     * @param position
+     * @throws InvalidPropertyException
+     */
     public void removeSourceCodeElement(int position) throws InvalidPropertyException{
         if(this.getScript() == null || this.getScript().getSourceCode() == null || position < 0 || position > this.getScript().getSourceCode().size()) {
             throw new InvalidPropertyException("Source code null or position out of bounds");

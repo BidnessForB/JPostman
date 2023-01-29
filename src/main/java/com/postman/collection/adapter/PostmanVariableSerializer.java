@@ -13,6 +13,13 @@ import java.lang.reflect.Type;
 
 public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable> {
      
+    
+    /** 
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return JsonElement
+     */
     @Override
     public JsonElement serialize(PostmanVariable src, Type typeOfSrc, JsonSerializationContext context) {
         

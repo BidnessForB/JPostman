@@ -167,6 +167,12 @@ public class PostmanRequest extends PostmanCollectionElement {
         return url;
     }
 
+    
+    /** 
+     * @param resolveVariables
+     * @return String
+     * @throws VariableResolutionException
+     */
     public String getUrl(boolean resolveVariables) throws VariableResolutionException {
         String url = this.url.getUrl(resolveVariables);
         if(resolveVariables) {

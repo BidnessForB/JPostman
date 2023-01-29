@@ -94,6 +94,10 @@ public class PostmanBody extends PostmanCollectionElement {
     private VariableListMap<PostmanVariable> formdata;
     private VariableListMap<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
+    
+    /** 
+     * @return String
+     */
     public String getKey() {
         return this.getUUID().toString();
     }

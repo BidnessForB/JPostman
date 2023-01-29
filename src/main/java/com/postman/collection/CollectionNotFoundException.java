@@ -10,7 +10,7 @@ public class CollectionNotFoundException extends Exception{
     /**
      * 
      * Default constructor
-     * @param message
+     * @param message The message to pass with the exception
      */
     public CollectionNotFoundException(String message) {
         super(message);

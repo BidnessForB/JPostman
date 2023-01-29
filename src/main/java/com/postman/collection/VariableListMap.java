@@ -10,7 +10,19 @@ import java.lang.Iterable;
 /**
  * 
  * 
- * Extends ArrayList with the ability to retrieve objects by key, and also forbids duplicate entries.
+ * Extends ArrayList with Map like capabilities, including:
+ * <ul>
+ * <li>Support for retrieving by variable key which is always {@link com.postman.collection.PostmanVariable#getKey()}
+ * <li>Support for retrieving by index
+ * <li>Support for adding by index
+ * <li>Duplicate keys are not allowed
+ * <li>Null keys are allowed.
+ * <li>Contains returns results based on {@link com.postman.collection.PostmanVariable#equals(Object)}
+ * <li>Set will set the value of the variable in this ListMap if it exists, otherwise it will set the value of the specified <code>index</code>
+ * <li>the <code>add</code> method returns false if the specified key already exists in the collection and does not change the collection
+ * </ul>
+ * 
+ * 
  * 
  * 
  * 
@@ -18,14 +30,29 @@ import java.lang.Iterable;
  */
 public class VariableListMap<T> extends ArrayList<PostmanVariable> 
 {
+    /**
+     * Returns a VariableListMap populated with the contents of <code>vars</code>
+     * @param vars ArrayList&#60;PostmanVariable&#62; of variables
+     */
+    
     public VariableListMap(ArrayList<PostmanVariable> vars) {
         super(vars);
     }
 
+
+    /**
+     * 
+     * Returns an empty <code>VariableListMap</code>
+     */
     public VariableListMap() {
         super(new ArrayList<PostmanVariable>());
     }
 
+    
+    /** 
+     * @param key
+     * @return PostmanVariable
+     */
     public PostmanVariable get(String key) {
         
         
@@ -45,14 +72,29 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         return null;
     }
 
+    
+    /** 
+     * @param key
+     * @return boolean
+     */
     public boolean containsKey(String key) {
         return(this.get(key) != null);
     }
   
+    
+    /** 
+     * @param index
+     * @return PostmanVariable
+     */
     public PostmanVariable get(int index) {
         return super.get(index);
     }
 
+    
+    /** 
+     * @param compare
+     * @return boolean
+     */
     public boolean contains(PostmanVariable compare) {
         for(PostmanVariable curVar : this) {
             if(curVar.equals(compare)) {
@@ -62,6 +104,11 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         return false;
     }
 
+    
+    /** 
+     * @param pvVar
+     * @return int
+     */
     public int indexOf(PostmanVariable pvVar) {
         for(int i = 0; i < this.size(); i++)
         {
@@ -72,6 +119,11 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         return -1;
     }
 
+    
+    /** 
+     * @param pvVar
+     * @return boolean
+     */
     public boolean add(PostmanVariable pvVar) {
         int index;
         if(pvVar == null || (pvVar.getKey() == null && pvVar.getValue() == null)) {
@@ -87,10 +139,21 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         
     }
 
+    
+    /** 
+     * @param vars
+     * @return boolean
+     */
     public boolean addAll(VariableListMap<PostmanVariable> vars) {
         return this.addAll(this.size(), vars);
     }
 
+
+/** 
+ * @param index
+ * @param vars
+ * @return boolean
+ */
 public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
     boolean changed = false;
     
@@ -109,6 +172,10 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
         return changed;
 }
 
+    
+    /** 
+     * @param key
+     */
     public void remove(String key) {
         PostmanVariable curVar;
         for(int i = 0 ; i < this.size() ; i++) {
@@ -127,6 +194,13 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
         
     }
 
+    
+    /** 
+     * @param index
+     * @param pvVar
+     * @return PostmanVariable
+     * @throws IndexOutOfBoundsException
+     */
     public PostmanVariable set(int index, PostmanVariable pvVar) throws IndexOutOfBoundsException {
         //Disallow duplicate keys
         PostmanVariable retVal = null;

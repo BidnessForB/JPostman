@@ -68,7 +68,6 @@ public class PostmanAuth extends PostmanCollectionElement {
         arrTypes[enumAuthType.OAUTH1.ordinal()] = "oauth1";
         arrTypes[enumAuthType.OAUTH2.ordinal()] = "oauth2";
         arrTypes[enumAuthType.NTLM.ordinal()] = "ntlm";
-
     }
 
     /** 

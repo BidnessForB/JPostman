@@ -44,10 +44,25 @@ public abstract class PostmanCollectionElement {
     }
 
     
+    
+    /** 
+     * 
+     * Set the parent of this element, allowing for traversal up the chain of elements
+     * 
+     * 
+     * @param parent The parent element
+     */
     public void setParent(PostmanCollectionElement parent) {
         this.parent = parent;
     }
 
+    
+    /** 
+     * 
+     * Get the parent element, or null if it is not set.
+     * 
+     * @return PostmanCollectionElement The parent of this element
+     */
     public PostmanCollectionElement getParent() {
         return this.parent;
     }
@@ -176,10 +191,21 @@ public abstract class PostmanCollectionElement {
         this.uuid = newID;
     }
 
+    
+    /** 
+     * 
+     * Traverse the chain of parent elements upwards until a PostmanCollection is reached, or null if this element is not part of a collection.
+     * 
+     * 
+     * @return PostmanCollection The collection at the top of the parent tree, or null.
+     */
     public PostmanCollection getCollection() {
         PostmanCollectionElement result = null;
         PostmanCollectionElement curItem = null;
         // recursively traverse items looking for name == key
+        if(this.getParent() == null) {
+            return this instanceof PostmanCollection ? (PostmanCollection)this : null;
+        }
         while(result == null) {
             curItem = this.getParent();
             if (curItem instanceof PostmanCollection) {
@@ -188,6 +214,9 @@ public abstract class PostmanCollectionElement {
             } else {
                 try {
                     result = curItem.getCollection();
+                    if(result == null) {
+                        return null;
+                    }
                 }
                 catch(Exception e) {
                     e.printStackTrace();

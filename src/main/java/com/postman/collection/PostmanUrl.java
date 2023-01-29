@@ -116,6 +116,11 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     };
 
+    
+    /** 
+     * @return String
+     * @throws VariableResolutionException
+     */
     private String resolvePathVariables() throws VariableResolutionException {
         
         String strResolved = this.getRaw();
@@ -373,12 +378,22 @@ public class PostmanUrl extends PostmanCollectionElement {
         
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getProtocol() {
         return this.protocol;
     }
 
     
 
+    
+    /** 
+     * @param resolvePathVariables
+     * @return String
+     * @throws VariableResolutionException
+     */
     public String getUrl(boolean resolvePathVariables) throws VariableResolutionException {
         if(!resolvePathVariables) {
             return this.raw;
@@ -430,6 +445,11 @@ public class PostmanUrl extends PostmanCollectionElement {
     }
 
 
+    
+    /** 
+     * @param key
+     * @return PostmanVariable
+     */
     public PostmanVariable getQueryElement(String key) {
         if(this.query == null) {
             return null;
@@ -443,6 +463,12 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     }
 
+    
+    /** 
+     * @param index
+     * @return PostmanVariable
+     * @throws IllegalPropertyAccessException
+     */
     public PostmanVariable getQueryElement(int index) throws IllegalPropertyAccessException {
         {
             if(this.query == null) {
@@ -457,6 +483,12 @@ public class PostmanUrl extends PostmanCollectionElement {
         }
     }
 
+    
+    /** 
+     * @param var
+     * @param index
+     * @throws IllegalPropertyAccessException
+     */
     public void setQueryELement(PostmanVariable var, int index) throws IllegalPropertyAccessException {
         if(this.query == null) {
             this.query = new VariableListMap<PostmanVariable>();
@@ -523,6 +555,11 @@ public class PostmanUrl extends PostmanCollectionElement {
         return variable;
     }
 
+    
+    /** 
+     * @param key
+     * @return PostmanVariable
+     */
     public PostmanVariable getPathVariable(String key) {
         if(this.variable == null) {
             return null;
@@ -548,6 +585,10 @@ public class PostmanUrl extends PostmanCollectionElement {
 
 
 
+    
+    /** 
+     * @param varPath
+     */
     public void setPathVariable(PostmanVariable varPath) {
         if(this.variable == null) {
             this.variable = new VariableListMap<PostmanVariable>();
@@ -559,6 +600,11 @@ public class PostmanUrl extends PostmanCollectionElement {
         }
     }
 
+    
+    /** 
+     * @param varPath
+     * @throws DuplicateVariableKeyException
+     */
     public void addPathVariable(PostmanVariable varPath) throws DuplicateVariableKeyException {
         if(this.variable != null && this.variable.contains(varPath)){
             throw new DuplicateVariableKeyException("Path variable [" + varPath.getKey() + "] already present in this collection");
@@ -569,6 +615,10 @@ public class PostmanUrl extends PostmanCollectionElement {
         this.variable.add(varPath);
     }
 
+    
+    /** 
+     * @param key
+     */
     public void removePathVariable(String key) {
         for(PostmanVariable var : this.variable) {
             if(var.getKey().equals(key)) {

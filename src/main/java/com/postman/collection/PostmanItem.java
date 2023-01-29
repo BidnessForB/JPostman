@@ -362,10 +362,22 @@ public class PostmanItem extends PostmanCollectionElement {
         return this.getItem(key, false, null);
     }
 
+    
+    /** 
+     * @param key
+     * @param filter
+     * @return PostmanItem
+     */
     public PostmanItem getItem(String key, enumPostmanItemType filter) {
         return this.getItem(key, false, filter);
     }
 
+    
+    /** 
+     * @param key
+     * @param parent
+     * @return PostmanItem
+     */
     public PostmanItem getItem(String key, boolean parent) {
         return this.getItem(key,parent,null);
     }
@@ -612,10 +624,18 @@ public class PostmanItem extends PostmanCollectionElement {
         this.addEvent(prEvent);
     }
 
+    
+    /** 
+     * @return PostmanEvent
+     */
     public PostmanEvent getPreRequestScript() {
         return this.getEvent(enumEventType.PRE_REQUEST);
     }
 
+    
+    /** 
+     * @return PostmanEvent
+     */
     public PostmanEvent getTestScript() {
         return this.getEvent(enumEventType.TEST);
     }
@@ -732,6 +752,10 @@ public class PostmanItem extends PostmanCollectionElement {
         return this.variable;
     }
 
+    
+    /** 
+     * @param newVars
+     */
     public void addVariables(VariableListMap<PostmanVariable> newVars) {
         if(newVars == null) {
             return;
