@@ -104,6 +104,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      */
     public void setAuth(PostmanAuth auth) {
         this.auth = auth;
+        this.auth.setParent(this);
     }
 
     
@@ -277,6 +278,7 @@ public class PostmanRequest extends PostmanCollectionElement {
         return this.body;
     }
 
+
     
     /** 
      * 
@@ -286,6 +288,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      */
     public void setBody(PostmanBody body) {
         this.body = body;
+        this.body.setParent(this);
     }
 
 }

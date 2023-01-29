@@ -379,8 +379,8 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     
 
-    public String getUrl(boolean resolveVariables) throws VariableResolutionException {
-        if(!resolveVariables) {
+    public String getUrl(boolean resolvePathVariables) throws VariableResolutionException {
+        if(!resolvePathVariables) {
             return this.raw;
         }
         return resolvePathVariables();
