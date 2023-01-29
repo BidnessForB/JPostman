@@ -661,8 +661,8 @@ public class PostmanItem extends PostmanCollectionElement {
      * 
      * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
      */
-    public void setVariables(ArrayList<PostmanVariable> vars) {
-        this.variable = new VariableListMap<PostmanVariable>(vars);
+    public void setVariables(VariableListMap<PostmanVariable> vars) {
+        this.variable = vars;
     }
 
     
@@ -727,7 +727,7 @@ public class PostmanItem extends PostmanCollectionElement {
         return this.variable;
     }
 
-    public void addVariables(ArrayList<PostmanVariable> newVars) {
+    public void addVariables(VariableListMap<PostmanVariable> newVars) {
         if(newVars == null) {
             return;
         }
