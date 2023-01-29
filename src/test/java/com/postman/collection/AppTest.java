@@ -1197,7 +1197,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
        try {
         pmcTest.moveItem(reqItem1, newFolder);
-        assertEquals("New Folder", pmcTest.getParent().getName());
+        assertEquals("New Folder", pmcTest.getRequest("GET echo").getParent().getName());
         assertEquals(2, pmcTest.getItemElements().size());
        }
        catch(Exception e)

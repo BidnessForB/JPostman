@@ -485,6 +485,8 @@ public class Collection extends ItemContainer {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthDeserializer());
         gsonBuilder.registerTypeAdapter(PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableDeserializer());
+        gsonBuilder.registerTypeAdapter(ItemElement.class, new com.postman.collection.adapter.ItemElementDeserializer());
+        gsonBuilder.registerTypeAdapter(ItemContainer.class, new com.postman.collection.adapter.ItemContainerDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
         pmcRetVal.init();
 

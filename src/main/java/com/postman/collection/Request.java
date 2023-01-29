@@ -5,9 +5,13 @@ public class Request extends ItemElement {
     private ArrayList<ResponseElement> response = null;
     
     public Request(RequestElement req, String name) {
+        super(name);
         this.request = req;
         req.setParent(this);
-        this.setName(name);
+    }
+
+    public Request(String name) {
+        super(name);
     }
 
 

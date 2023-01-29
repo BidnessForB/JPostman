@@ -36,8 +36,10 @@ public abstract class ItemContainer extends ItemElement {
             else if(filter == null && curItem instanceof ItemContainer) {
                 results.addAll(((ItemContainer)curItem).getItemElements(filter));
             }
-            else if (filter != null && filter == enumItemElementType.FOLDER && curItem instanceof Folder) {
-                results.add(curItem);
+            else if (filter != null && curItem instanceof Folder) {
+                if(filter == enumItemElementType.FOLDER) {
+                    results.add(curItem);
+                }
                 try {
                 results.addAll(((Folder)curItem).getItemElements(filter));
     
@@ -110,7 +112,7 @@ public abstract class ItemContainer extends ItemElement {
                 if (filter != null && (filter == enumItemElementType.REQUEST) && curItem instanceof Request) {
                     result = curItem;
                 } else if(filter != null && filter == enumItemElementType.FOLDER &&  curItem instanceof Folder) {
-                    result = (ItemElement)this;
+                    result = (ItemElement)curItem;
                 }
                 break;
             } else if (curItem instanceof ItemContainer) {
@@ -261,6 +263,7 @@ public abstract class ItemContainer extends ItemElement {
 
     public Folder getFolder(String key) {
         return (Folder)this.getItemElement(key, enumItemElementType.FOLDER);
+    
     }
 
     
