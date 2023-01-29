@@ -60,7 +60,7 @@ public class PostmanResponse extends PostmanCollectionElement {
     private String _postman_previewlanguage = "";
     private ArrayList<PostmanCookie> cookie = null;
     private String body = "";
-    private ArrayList<PostmanVariable> header;
+    private VariableListMap<PostmanVariable> header;
 
     public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
             String _postman_previewlanguage, ArrayList<PostmanCookie> cookie, String body) {
@@ -80,7 +80,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param headers
      */
-    public void setHeader(ArrayList<PostmanVariable> headers) {
+    public void setHeader(VariableListMap<PostmanVariable> headers) {
         this.header = headers;
     }
 
@@ -90,7 +90,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
-    public ArrayList<PostmanVariable> getHeader() {
+    public VariableListMap<PostmanVariable> getHeader() {
         return this.header;
     }
 
