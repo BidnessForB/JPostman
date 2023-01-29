@@ -199,6 +199,7 @@ public class PostmanCollection extends PostmanItem {
     public PostmanItem addRequest(PostmanRequest newRequest, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
         PostmanItem newItem = new PostmanItem(name);
         newItem.setRequest(newRequest);
+        newRequest.setParent(newItem);
         super.addItem(newItem);
         return newItem;
         
@@ -238,6 +239,7 @@ public class PostmanCollection extends PostmanItem {
     public void addRequest(PostmanRequest newRequest, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
         PostmanItem newItem = new PostmanItem(name);
         newItem.setRequest(newRequest);
+        newRequest.setParent(newItem);
         super.addItem(newItem, position);
         
 
@@ -286,7 +288,7 @@ public class PostmanCollection extends PostmanItem {
      @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, PostmanItem parent) throws RecursiveItemAddException, InvalidCollectionActionException {
+    public void addCollection(PostmanCollection newColl, PostmanItem parent) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException{
         this.addCollection(newColl, parent, true, true);
     }
 
@@ -301,7 +303,7 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException  {
+    public void addCollection(PostmanCollection newColl, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
         this.addCollection(newColl, this, copyScripts, copyVariables);
     }
 
@@ -316,7 +318,7 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException
+    public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
              {
         if(parent == null || (!this.hasItem(parent))) {
             throw new InvalidCollectionActionException("Parent is null or not an item in this collection");
@@ -353,7 +355,7 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException
      */
-    public void addCollection(PostmanCollection newColl) throws RecursiveItemAddException, InvalidCollectionActionException  {
+    public void addCollection(PostmanCollection newColl) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
 
         this.addCollection(newColl, this, true, true);
     }

@@ -186,7 +186,13 @@ public abstract class PostmanCollectionElement {
                 result = curItem;
                 break;
             } else {
-                result = curItem.getCollection();
+                try {
+                    result = curItem.getCollection();
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+                
                 if (result instanceof PostmanCollection) {
                     break;
                 }

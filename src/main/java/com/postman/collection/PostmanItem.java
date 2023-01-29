@@ -433,11 +433,14 @@ public class PostmanItem extends PostmanCollectionElement {
      * @param newItems  The items to add
      * 
      */
-    public void addItems(ArrayList<PostmanItem> newItems)  {
+    public void addItems(ArrayList<PostmanItem> newItems) throws RecursiveItemAddException, IllegalPropertyAccessException {
         if (this.item == null) {
             this.item = new ArrayList<PostmanItem>();
         }
-        this.item.addAll(newItems);
+        for(PostmanItem curItem : newItems) {
+            this.addItem(curItem);
+        }
+        
     }
 
     
@@ -524,7 +527,9 @@ public class PostmanItem extends PostmanCollectionElement {
         if (this.item == null) {
             this.item = new ArrayList<PostmanItem>();
         }
+        newItem.setParent(this);
         this.item.add(newItem);
+        
 
     }
 
@@ -714,7 +719,8 @@ public class PostmanItem extends PostmanCollectionElement {
      * @return PostmanVariable
      */
     public PostmanVariable getVariable(String key) {
-        return this.variable.get(key);
+            return this.variable.get(key);
+        
     }
 
     /** 
