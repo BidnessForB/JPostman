@@ -3,6 +3,7 @@ package com.postman.collection.adapter;
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonSerializer;
 
 import com.google.gson.JsonSerializationContext;
@@ -18,6 +19,9 @@ public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable
         JsonObject jsonMap = new JsonObject();
         jsonMap.addProperty("key", src.getKey());
         String strKey = "value";
+        if(src.getKey() == null && src.getValue() == null) {
+            return null;
+        }
         if(src.getType() != null && src.getType().equals("boolean") && src.getValue() != null) {
             switch (src.getValue()) {
                 case "true": {
@@ -38,6 +42,9 @@ public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable
             
         }
         else {
+            if(src.getValue() == null) {
+                jsonMap.addProperty(strKey, "");
+            }
             jsonMap.addProperty(strKey, src.getValue());
         }
         if(src.getType() != null) {

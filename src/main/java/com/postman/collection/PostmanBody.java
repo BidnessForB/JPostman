@@ -91,11 +91,8 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     private PostmanGraphQL graphql;
-    private ArrayList<PostmanVariable> formdata;
-    
-    private ArrayList<PostmanVariable> urlencoded;
-
-    
+    private VariableListMap<PostmanVariable> formdata;
+    private VariableListMap<PostmanVariable> urlencoded;
     private PostmanBinaryFile file;
     public String getKey() {
         return this.getUUID().toString();
@@ -350,7 +347,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The data
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
+    public VariableListMap<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
                 return this.urlencoded;
@@ -397,18 +394,18 @@ public class PostmanBody extends PostmanCollectionElement {
      * Convenience method to set the formdata with an already filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of properties
      * 
      * 
-     * @param formdata  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @param data  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {
-        
+    public void setFormdata(VariableListMap<PostmanVariable> data) throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
-                this.urlencoded = formdata;
+                this.urlencoded = data;
                 break;
             }
             case FORMDATA: {
-                this.formdata = formdata;
+                this.formdata = data;
+                
                 break;
             }
             default: {
@@ -540,7 +537,7 @@ public class PostmanBody extends PostmanCollectionElement {
             case FORMDATA:
                 this.mode = "formdata";
                 this.file = null;
-                this.formdata = new ArrayList<PostmanVariable>();
+                this.formdata = new VariableListMap<PostmanVariable>();
                 this.urlencoded = null;
                 this.graphql = null;
                 this.options = null;
@@ -549,7 +546,7 @@ public class PostmanBody extends PostmanCollectionElement {
                 this.mode = "urlencoded";
                 this.file = null;
                 this.formdata = null;
-                this.urlencoded = new ArrayList<PostmanVariable>();
+                this.urlencoded = new VariableListMap<PostmanVariable>();
                 this.graphql = null;
                 this.options = null;
                 break;

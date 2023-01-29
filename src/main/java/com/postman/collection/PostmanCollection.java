@@ -566,37 +566,6 @@ public class PostmanCollection extends PostmanItem {
         //String resolveURL = resolveVariables(endpoint);
         return null;
     }
-/*
-    public String resolveVariables(String src) throws VariableResolutionException {
-
-            Pattern pnVar = Pattern.compile("(?<!\\{)\\{\\{(?:([^{}]+)|\\{([^{}]+)})}}(?!})");
-            Matcher maVar = pnVar.matcher(src);
-            String curVarName;
-            String curVarValue;
-            String strResolved = src;
-            boolean found = false;
-            PostmanVariable curVar;
-            while(maVar.find()) {
-                found = true;
-                for(int i = 1; i < maVar.groupCount(); i = i + 2 ) {
-                    curVarName = maVar.group(i);
-                    curVar = this.getVariable(curVarName);
-                    {
-                        if(curVar == null) {
-                            throw new VariableResolutionException("No entry found for variable: " + curVarName);
-                        }
-                    }
-                    curVarValue = this.getVariable(curVarName).getValue();
-                    strResolved = strResolved.replace("{{" + curVarName + "}}",curVarValue);
-                }
-            }
-                
-            return strResolved;
-            
-
-
-    }
-*/
     
     /** 
      * @return String
