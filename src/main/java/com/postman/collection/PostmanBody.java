@@ -397,9 +397,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * @param formdata  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {
-        VariableListMap<PostmanVariable> lmData = new VariableListMap<PostmanVariable>();
-        lmData.addAll(formdata);
+    public void setFormdata(VariableListMap<PostmanItem> formdata) throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
                 this.urlencoded = lmData;
