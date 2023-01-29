@@ -72,6 +72,28 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
         return true;
     }
 
+    public boolean addAll(VariableListMap<PostmanVariable> vars) {
+        return this.addAll(this.size(), vars);
+    }
+
+public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
+    boolean changed = false;
+    
+        for(int i = 0; i < vars.size(); i++) {
+            if(!this.containsKey(vars.get(i).getKey())) {
+                this.add(index, vars.get(i));
+                changed = true;
+            }
+            else {
+                this.remove(i);
+                this.set(i, vars.get(i));
+                changed = true;
+            }
+            
+        }
+        return changed;
+}
+
     public void remove(String key) {
         PostmanVariable curVar;
         for(int i = 0 ; i < this.size() ; i++) {
