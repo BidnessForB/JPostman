@@ -49,7 +49,7 @@ import java.util.ArrayList;
 public class PostmanRequest extends PostmanCollectionElement {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private PostmanUrl url;
-    private ArrayList<PostmanVariable> header;// = new PostmanVariable[0];
+    private VariableListMap<PostmanVariable> header;// = new PostmanVariable[0];
     private String description;
     private PostmanBody body;
     private PostmanAuth auth;
@@ -188,7 +188,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The headers, or null if none are present
      */
-    public ArrayList<PostmanVariable> getHeader() {
+    public VariableListMap<PostmanVariable> getHeader() {
         return header;
     }
 
@@ -199,7 +199,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param header  Header values
      */
-    public void setHeader(ArrayList<PostmanVariable> header) {
+    public void setHeader(VariableListMap<PostmanVariable> header) {
         this.header = header;
     }
 

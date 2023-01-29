@@ -137,7 +137,6 @@ public class PostmanItem extends PostmanCollectionElement {
     private ArrayList<PostmanResponse> response = null;
     private ArrayList<PostmanItem> item;
     private String name;
-    //private ArrayList<PostmanVariable> variable = null;
     private VariableListMap<PostmanVariable> variable = null;
 
     private transient PostmanItem parent = null;
