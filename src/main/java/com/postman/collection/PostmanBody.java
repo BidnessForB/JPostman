@@ -91,10 +91,11 @@ public class PostmanBody extends PostmanCollectionElement {
 
     
     private PostmanGraphQL graphql;
-    private ArrayList<PostmanVariable> formdata;
+    //private ArrayList<PostmanVariable> formdata;
+    private VariableListMap<PostmanVariable> formdata;
     
-    private ArrayList<PostmanVariable> urlencoded;
-
+    //private ArrayList<PostmanVariable> urlencoded;
+    private VariableListMap<PostmanVariable> urlencoded;
     
     private PostmanBinaryFile file;
     public String getKey() {
@@ -350,7 +351,7 @@ public class PostmanBody extends PostmanCollectionElement {
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The data
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public ArrayList<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
+    public VariableListMap<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
                 return this.urlencoded;
@@ -401,14 +402,16 @@ public class PostmanBody extends PostmanCollectionElement {
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(ArrayList<PostmanVariable> formdata) throws IllegalPropertyAccessException {
-        
+        VariableListMap<PostmanVariable> lmData = new VariableListMap<PostmanVariable>();
+        lmData.addAll(formdata);
         switch(this.getMode()) {
             case URLENCODED: {
-                this.urlencoded = formdata;
+                this.urlencoded = lmData;
                 break;
             }
             case FORMDATA: {
-                this.formdata = formdata;
+                this.formdata = lmData;
+                
                 break;
             }
             default: {
@@ -540,7 +543,7 @@ public class PostmanBody extends PostmanCollectionElement {
             case FORMDATA:
                 this.mode = "formdata";
                 this.file = null;
-                this.formdata = new ArrayList<PostmanVariable>();
+                this.formdata = new VariableListMap<PostmanVariable>();
                 this.urlencoded = null;
                 this.graphql = null;
                 this.options = null;
@@ -549,7 +552,7 @@ public class PostmanBody extends PostmanCollectionElement {
                 this.mode = "urlencoded";
                 this.file = null;
                 this.formdata = null;
-                this.urlencoded = new ArrayList<PostmanVariable>();
+                this.urlencoded = new VariableListMap<PostmanVariable>();
                 this.graphql = null;
                 this.options = null;
                 break;
