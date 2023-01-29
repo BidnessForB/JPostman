@@ -46,8 +46,8 @@ public class PostmanUrl extends PostmanCollectionElement {
     private String raw = "";
     private ArrayList<String> host;
     private ArrayList<String> path;
-    private ArrayList<PostmanVariable> query;
-    private ArrayList<PostmanVariable> variable = null;
+    private VariableListMap<PostmanVariable> query;
+    private VariableListMap<PostmanVariable> variable = null;
     @SuppressWarnings("unused")
     private String protocol;
     private String port;
@@ -425,7 +425,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value paris
      */
-    public ArrayList<PostmanVariable> getQueryElements() {
+    public VariableListMap<PostmanVariable> getQueryElements() {
         return query;
     }
 
@@ -459,7 +459,7 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     public void setQueryELement(PostmanVariable var, int index) throws IllegalPropertyAccessException {
         if(this.query == null) {
-            this.query = new ArrayList<PostmanVariable>();
+            this.query = new VariableListMap<PostmanVariable>();
         }
         if(index < 0 || index > this.query.size() + 1) {
             throw new IllegalPropertyAccessException("Index [" + index + "] is out of bounds");
@@ -508,7 +508,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @param query
      */
-    public void setQueries(ArrayList<PostmanVariable> query) {
+    public void setQueries(VariableListMap<PostmanVariable> query) {
         this.query = query;
     }
 
@@ -519,7 +519,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The ArrayList containing the key-value pairs, or null if there are none.
      */
-    public ArrayList<PostmanVariable> getPathVariables() {
+    public VariableListMap<PostmanVariable> getPathVariables() {
         return variable;
     }
 
@@ -542,7 +542,7 @@ public class PostmanUrl extends PostmanCollectionElement {
      * 
      * @param variable the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
      */
-    public void setPathVariables(ArrayList<PostmanVariable> variable) {
+    public void setPathVariables(VariableListMap<PostmanVariable> variable) {
         this.variable = variable;
     }
 
@@ -550,7 +550,7 @@ public class PostmanUrl extends PostmanCollectionElement {
 
     public void setPathVariable(PostmanVariable varPath) {
         if(this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
+            this.variable = new VariableListMap<PostmanVariable>();
         }
         for(PostmanVariable var : this.variable) {
             if (var.getKey().equals(varPath.getKey())) {
@@ -564,7 +564,7 @@ public class PostmanUrl extends PostmanCollectionElement {
             throw new DuplicateVariableKeyException("Path variable [" + varPath.getKey() + "] already present in this collection");
         }
         if(this.variable == null) {
-            this.variable = new ArrayList<PostmanVariable>();
+            this.variable = new VariableListMap<PostmanVariable>();
         }
         this.variable.add(varPath);
     }
@@ -615,7 +615,7 @@ public class PostmanUrl extends PostmanCollectionElement {
     public void addQuery(String key, String value, String description)  {
 
         if (this.query == null) {
-            this.query = new ArrayList<PostmanVariable>();
+            this.query = new VariableListMap<PostmanVariable>();
         }
         this.query.add(new PostmanVariable(key, value, description));
 
