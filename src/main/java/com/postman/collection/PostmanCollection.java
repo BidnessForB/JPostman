@@ -73,26 +73,15 @@ public class PostmanCollection extends PostmanItem {
         PostmanCollection pmcTest;
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = "/src/main/resources/com/postman/collection";
-        ArrayList<PostmanVariable> test = new ArrayList<PostmanVariable>();
-
-        PostmanVariable var1 = new PostmanVariable("var1", "var1value");
-        PostmanVariable var2 = new PostmanVariable("var2", "var2value");
-        PostmanVariable var3 = new PostmanVariable("var1", "var1value");
         
+        pmcTest = PostmanCollection.pmcFactory();
+        try {
+            pmcTest.writeToFile(new File(filePath + "/test-output/empty.json"));
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
         
-        System.out.println(Objects.equals(var1, var2));
-
-        System.out.println(var1.equals(var2));
-
-        test.add(var1);
-        test.add(var2);
-        test.remove(var3);
-
-        System.out.println("foo");
-
-        
-
-    
     
     
 

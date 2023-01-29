@@ -13,7 +13,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     private boolean secure;
     private boolean session;
     private String value = "";
-    private ArrayList<PostmanVariable> extensions;
+    private VariableListMap<PostmanVariable> extensions;
 
     public PostmanCookie() {
 
@@ -183,7 +183,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     /** 
      * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
      */
-    public ArrayList<PostmanVariable> getExtensions() {
+    public VariableListMap<PostmanVariable> getExtensions() {
         return extensions;
     }
 
@@ -191,7 +191,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     /** 
      * @param extensions
      */
-    public void setExtensions(ArrayList<PostmanVariable> extensions) {
+    public void setExtensions(VariableListMap<PostmanVariable> extensions) {
         this.extensions = extensions;
     }
 
