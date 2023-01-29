@@ -240,7 +240,7 @@ public class UrlElement extends CollectionElement {
     }
 
     /**
-     * Generate the raw URL from the component properties of this PostmanUrl.  If <code>raw</code> has been set, the output of this method
+     * Generate the raw URL from the component properties of this UrlElement.  If <code>raw</code> has been set, the output of this method
      * should equal the raw URL provided.  
      * 
      * @return The generated URL.  Note that this may not be a valid URL
@@ -328,7 +328,7 @@ public class UrlElement extends CollectionElement {
     }
 
     /**
-     * Create a PostmanURL with the specified URL
+     * Create a UrlElement with the specified URL
      * @param rawURL The raw URL
      
      */
@@ -338,7 +338,7 @@ public class UrlElement extends CollectionElement {
     }
 
     /**
-     * Create a PostmanURL with the specified host and path. 
+     * Create a UrlElement with the specified host and path. 
      * @param host The host, e.g., "foo.com"
      * @param path The path, e.g., "/bar/bat"
      */

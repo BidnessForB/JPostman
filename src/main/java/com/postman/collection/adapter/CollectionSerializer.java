@@ -17,7 +17,7 @@ public class CollectionSerializer implements JsonSerializer<Collection> {
     
     
     /** 
-     * @param src The PostmanCollection passed in by Gson
+     * @param src The Collection passed in by Gson
      * @param typeOfSrc The Java Type of the object being parsed
      * @param context Serialization context passed in by Gson
      * @return JsonElement The resulting Json

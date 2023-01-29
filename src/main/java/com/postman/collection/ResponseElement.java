@@ -212,7 +212,7 @@ public class ResponseElement extends CollectionElement {
     
     /** 
      * 
-     * Return an ArrayList containing the PostmanCookie objects comprising the value of the <code>cookie</code> array property
+     * Return an ArrayList containing the CookieElement objects comprising the value of the <code>cookie</code> array property
      * 
      * @return ArrayList&#60;{@link com.postman.collection.CookieElement}&#62; The cookies
      */

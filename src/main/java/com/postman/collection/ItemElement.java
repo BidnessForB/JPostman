@@ -158,7 +158,7 @@ public class ItemElement extends CollectionElement {
 
     }
    /**
-    *  * Construct an empty item with only a <code>name</code>>; property.  Once added to a PostmanCollection, the Postman UI will render this object as an empty folder.
+    *  * Construct an empty item with only a <code>name</code>>; property.  Once added to a Collection, the Postman UI will render this object as an empty folder.
 
     * @param name The name of the object
     */
@@ -260,10 +260,10 @@ public class ItemElement extends CollectionElement {
     
     /** 
      * 
-     * Return an ArrayList&#60;PostmanResponse&#62; containing the values in the <code>response</code> property array, or null if none are defined.
+     * Return an ArrayList&#60;ResponseElement&#62; containing the values in the <code>response</code> property array, or null if none are defined.
      * 
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.ResponseElement PostmanResponse}&#62;  The responses, or null if none are defined.
+     * @return ArrayList&#60;{@link com.postman.collection.ResponseElement ResponseElement}&#62;  The responses, or null if none are defined.
      */
     public ArrayList<ResponseElement> getResponses() {
         return response;
@@ -272,7 +272,7 @@ public class ItemElement extends CollectionElement {
     
     /** 
      * 
-     * Set the ArrayList&#60;PostmanResponse&#62;  containing the values in the <code>response</code> property array.  Passing null to this method removes the response array
+     * Set the ArrayList&#60;ResponseElement&#62;  containing the values in the <code>response</code> property array.  Passing null to this method removes the response array
      * 
      * @param response
      */
@@ -425,7 +425,7 @@ public class ItemElement extends CollectionElement {
     
     /** 
      * 
-     * Add a PostmanResponse object to the <code>response</code> array
+     * Add a ResponseElement object to the <code>response</code> array
      * 
      * @param resp The new response
      * 

@@ -83,10 +83,10 @@ public class RequestElement extends CollectionElement {
 
 
      /**
-     * Construct a RequestElement with the specified HTTP method, and PostmanUrl. 
+     * Construct a RequestElement with the specified HTTP method, and UrlElement. 
      * 
      * @param method Enumerated value for the HTTP method
-     * @param url  Pre-constructed PostmanUrl object
+     * @param url  Pre-constructed UrlElement object
      * 
      */
     public RequestElement(enumHTTPRequestMethod method, UrlElement url) {
@@ -159,9 +159,9 @@ public class RequestElement extends CollectionElement {
     
     /** 
      * 
-     * Return the PostmanUrl containing the values of the <code>url</code> property array
+     * Return the UrlElement containing the values of the <code>url</code> property array
      * 
-     * @return PostmanUrl
+     * @return UrlElement
      */
     public UrlElement getUrlElement() {
         return url;
@@ -193,7 +193,7 @@ public class RequestElement extends CollectionElement {
      * 
      * Set the values of the <code>url</code> property 
      * 
-     * @param url  PostmanUrl object containing the values
+     * @param url  UrlElement object containing the values
      */
     public void setUrlElement(UrlElement url) {
         this.url = url;

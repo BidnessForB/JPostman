@@ -61,7 +61,7 @@ public abstract class CollectionElement {
      * 
      * Get the parent element, or null if it is not set.
      * 
-     * @return PostmanCollectionElement The parent of this element
+     * @return CollectionElement The parent of this element
      */
     public CollectionElement getParent() {
         return this.parent;
@@ -87,7 +87,7 @@ public abstract class CollectionElement {
                 strSubSchema = "#/definitions/item";
                 break;
             }
-            case "PostmanCollection": {
+            case "Collection": {
                 strSubSchema = "";
                 break;
             }
@@ -194,10 +194,10 @@ public abstract class CollectionElement {
     
     /** 
      * 
-     * Traverse the chain of parent elements upwards until a PostmanCollection is reached, or null if this element is not part of a collection.
+     * Traverse the chain of parent elements upwards until a Collection is reached, or null if this element is not part of a collection.
      * 
      * 
-     * @return PostmanCollection The collection at the top of the parent tree, or null.
+     * @return Collection The collection at the top of the parent tree, or null.
      */
     public Collection getCollection() {
         CollectionElement result = null;
@@ -238,7 +238,7 @@ public abstract class CollectionElement {
      * Determine whether 2 seperate instance of a JPostman class render semantically identical JSON.  If the JSON is identical, the returned JsonNode will be empty (e.g., <code>size()</code> == 0).
      * If the documents are different, the JsonNode returned contains information about the differences.  
      * 
-     * @param compare The PostmanCollectionElement to compare to this one.
+     * @param compare The CollectionElement to compare to this one.
      * @return JsonNode JsonNode containing an array of diff msgs.  size() will be zero if there are no validation messages.
      * @throws ValidationException If there is an exception or error during the Validation process
      */

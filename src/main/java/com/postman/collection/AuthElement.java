@@ -3,7 +3,7 @@ package com.postman.collection;
 import java.util.HashMap;
     /** 
      * 
-     * Class encapsulating the "auth" property of a PostmanCollectionItem.  Collections and requests can each have a single auth property,
+     * Class encapsulating the "auth" property of a CollectionItem.  Collections and requests can each have a single auth property,
      * which consists of a type (e.g., 'oauth1') and an array of parameters for that authentication type.  For example, oauth2 looks like:
      * <pre>
      * auth": {
@@ -149,7 +149,7 @@ public class AuthElement extends CollectionElement {
 
     
     /** 
-     * Returns the key of this PostmanCollectionElement for use in retrieving from arrays, etc.  
+     * Returns the key of this CollectionElement for use in retrieving from arrays, etc.  
      * 
      * @return String
      */

@@ -40,7 +40,7 @@ import java.util.regex.Matcher;
  * Encapsulates a Postman collection
  *<p>
  * <strong>Ingest a collection file</strong></p>
- * <p><code>PostmanCollection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
+ * <p><code>Collection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
  * 
  * 
  * <p><strong>Get a request item</strong></p>
@@ -444,7 +444,7 @@ public class Collection extends ItemElement {
      * 
      * Static factory method to create the new collection.  Default constructor is undefined to avoid conflict with Gson.
      * 
-     * @return PostmanCollection
+     * @return Collection
      */
     public static Collection pmcFactory() {
 
@@ -466,10 +466,10 @@ public class Collection extends ItemElement {
     
     /** 
      * 
-     * Static factory method to create a new PostmanCollection from a Postman collection JSON file.  
+     * Static factory method to create a new Collection from a Postman collection JSON file.  
      * 
      * @param jsonFile  The Postman Collection JSON file to ingest
-     * @return PostmanCollection The new collection
+     * @return Collection The new collection
      * @throws FileNotFoundException If the specified JSON file does not exist 
      * @throws IOException If an IO exception occurs attempting to read the file, eg., inadequate permissions, etc.  
      */
@@ -496,7 +496,7 @@ public class Collection extends ItemElement {
     
     /** 
      * @param json
-     * @return PostmanCollection
+     * @return Collection
      */
     public static Collection pmcFactory(String json) {
         Collection pmcRetVal;
@@ -513,7 +513,7 @@ public class Collection extends ItemElement {
      * Create a collection via the Postman API
      * 
      * @param collectionURL  URL for the collection to ingest
-     * @return PostmanCollection The new collection
+     * @return Collection The new collection
      * @throws IOException  
      * @throws InterruptedException 
      * @throws IllegalArgumentException 
@@ -574,7 +574,7 @@ public class Collection extends ItemElement {
     
     /** 
      * @param id
-     * @return PostmanCollection
+     * @return Collection
      * @throws IOException
      * @throws InterruptedException
      * @throws CollectionNotFoundException
