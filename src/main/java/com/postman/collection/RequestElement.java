@@ -112,7 +112,7 @@ public class RequestElement extends CollectionElement {
      * 
      * Get the {@link com.postman.collection.AuthElement} object containing the values of the <code>auth</code> array, or null if it has not been set.
      * 
-     * @return PostmanAuth The auth object containing the values.
+     * @return AuthElement The auth object containing the values.
      */
     public AuthElement getAuth() {
         return this.auth;

@@ -629,7 +629,7 @@ public class BodyElement extends CollectionElement {
 
     //Inner Classes
 
-    public class BodyRaw {
+    private class BodyRaw {
         private String language;
 
         public BodyRaw(enumRawBodyLanguage language) {
@@ -679,7 +679,7 @@ public class BodyElement extends CollectionElement {
             }
         }
     }
-    public class BinaryFileElement {
+    private class BinaryFileElement {
         private String src;
 
         public BinaryFileElement(String src) {
@@ -694,7 +694,7 @@ public class BodyElement extends CollectionElement {
             this.src = src;
         }
     }
-    public class GraphQLElement {
+    private class GraphQLElement {
         private String rawQueryString;
         private String variables;
 
@@ -723,7 +723,7 @@ public class BodyElement extends CollectionElement {
             this.variables = variables;
         }
     }
-    class BodyOptions {
+    private class BodyOptions {
         private BodyRaw raw;
 
         public BodyOptions(BodyRaw raw) {

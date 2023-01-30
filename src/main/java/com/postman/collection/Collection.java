@@ -436,7 +436,7 @@ public class Collection extends ItemGroup {
         gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthDeserializer());
         gsonBuilder.registerTypeAdapter(PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableDeserializer());
         gsonBuilder.registerTypeAdapter(ItemElement.class, new com.postman.collection.adapter.ItemElementDeserializer());
-        gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemContainerDeserializer());
+        gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemGroupDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
         pmcRetVal.init();
 
@@ -645,7 +645,7 @@ public class Collection extends ItemGroup {
      * 
      * Return the values in the <code>auth</code> object property of this collection, or null if it has not been set.
      * 
-     * @return PostmanAuth The auth values, or null.  
+     * @return AuthElement The auth values, or null.  
      */
     public AuthElement getAuth() {
         return this.auth;
