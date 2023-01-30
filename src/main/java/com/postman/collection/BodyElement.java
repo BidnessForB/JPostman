@@ -89,10 +89,10 @@ public class BodyElement extends CollectionElement {
   
 
     
-    private PostmanGraphQL graphql;
+    private GraphQLElement graphql;
     private VariableListMap<PostmanVariable> formdata;
     private VariableListMap<PostmanVariable> urlencoded;
-    private PostmanBinaryFile file;
+    private BinaryFileElement file;
     
     /** 
      * @return String
@@ -114,7 +114,7 @@ public class BodyElement extends CollectionElement {
 
         if (this.getMode() == enumRequestBodyMode.RAW) {
             try {
-                this.setOptions(new PostmanBodyOptions(language));
+                this.setOptions(new BodyOptions(language));
                 this.setRaw(content);
             }
             catch(IllegalPropertyAccessException e)
@@ -145,12 +145,12 @@ public class BodyElement extends CollectionElement {
 
     /** 
      * 
-     * Returns the <code>options</code> property object as an instance of the inner class PostmanBodyOptions
+     * Returns the <code>options</code> property object as an instance of the inner class {@link com.postman.collection.BodyElement.BodyOptions}
      * 
      * 
-     * @return PostmanBodyOptions
+     * @return BodyOptions
      */
-    private PostmanBodyOptions getOptions()  {
+    private BodyOptions getOptions()  {
         if(this.getMode() == null || this.getMode() != enumRequestBodyMode.RAW) {
             return null;
         }
@@ -161,7 +161,7 @@ public class BodyElement extends CollectionElement {
     /** 
      * @param options
      */
-    private void setOptions(PostmanBodyOptions options) {
+    private void setOptions(BodyOptions options) {
         this.options = options;
     }
 
@@ -213,7 +213,7 @@ public class BodyElement extends CollectionElement {
             return;
         }
         try {
-            this.options = new PostmanBodyOptions(lang);
+            this.options = new BodyOptions(lang);
         }
         catch(Exception e)
         {
@@ -266,7 +266,7 @@ public class BodyElement extends CollectionElement {
                 break;
             }
             case RAW: {
-                this.options = new PostmanBodyOptions(new PostmanBodyRaw(language));
+                this.options = new BodyOptions(new BodyRaw(language));
                 this.raw = raw;
                 break;
             }
@@ -323,7 +323,7 @@ public class BodyElement extends CollectionElement {
      * @param variables  The <code>variables</code> property of the <code>graphql</code> element
      */
     public void setGraphql(String graphQL, String variables) {
-        this.graphql = (new PostmanGraphQL(graphQL, variables));
+        this.graphql = (new GraphQLElement(graphQL, variables));
     }
 
     
@@ -530,7 +530,7 @@ public class BodyElement extends CollectionElement {
         switch (newMode) {
             case FILE:
                 this.mode = "file";
-                this.file = new PostmanBinaryFile("");
+                this.file = new BinaryFileElement("");
                 this.formdata = null;
                 this.urlencoded = null;
                 this.graphql = null;
@@ -629,10 +629,10 @@ public class BodyElement extends CollectionElement {
 
     //Inner Classes
 
-    public class PostmanBodyRaw {
+    public class BodyRaw {
         private String language;
 
-        public PostmanBodyRaw(enumRawBodyLanguage language) {
+        public BodyRaw(enumRawBodyLanguage language) {
             this.setLanguage(language);
         }
 
@@ -679,10 +679,10 @@ public class BodyElement extends CollectionElement {
             }
         }
     }
-    public class PostmanBinaryFile {
+    public class BinaryFileElement {
         private String src;
 
-        public PostmanBinaryFile(String src) {
+        public BinaryFileElement(String src) {
             this.src = src;
         }
 
@@ -694,15 +694,15 @@ public class BodyElement extends CollectionElement {
             this.src = src;
         }
     }
-    public class PostmanGraphQL {
+    public class GraphQLElement {
         private String rawQueryString;
         private String variables;
 
-        public PostmanGraphQL(String query) {
+        public GraphQLElement(String query) {
             this(query, null);
         }
 
-        public PostmanGraphQL(String query, String variables) {
+        public GraphQLElement(String query, String variables) {
             this.rawQueryString = query;
             this.variables = variables;
         }
@@ -723,26 +723,26 @@ public class BodyElement extends CollectionElement {
             this.variables = variables;
         }
     }
-    class PostmanBodyOptions {
-        private PostmanBodyRaw raw;
+    class BodyOptions {
+        private BodyRaw raw;
 
-        public PostmanBodyOptions(PostmanBodyRaw raw) {
+        public BodyOptions(BodyRaw raw) {
             this.raw = raw;
         }
 
-        public PostmanBodyOptions(enumRawBodyLanguage language) {
-            this.raw = new PostmanBodyRaw(language);
+        public BodyOptions(enumRawBodyLanguage language) {
+            this.raw = new BodyRaw(language);
         }
 
-        public PostmanBodyRaw getRaw() {
+        public BodyRaw getRaw() {
             return raw;
         }
 
-        public void setRaw(PostmanBodyRaw raw) {
+        public void setRaw(BodyRaw raw) {
             this.raw = raw;
         }
     }
     private String mode;
-    private PostmanBodyOptions options;
+    private BodyOptions options;
     private String raw;
 }

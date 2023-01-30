@@ -24,13 +24,13 @@ public class AuthDeserializer implements JsonDeserializer<AuthElement> {
      * 
      * Custom <a href=
      * "https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html">
-     * GSON deserializer</a> for the PostmanAuth object.
+     * GSON deserializer</a> for the {@link com.postman.collection.AuthElement} object.
      * 
      * 
      * @param jElement The JSON element passed in by Gson
-     * @param typeOfT The type for the adapter, PostmanAuth
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.AuthElement}
      * @param context Deserialization context
-     * @return PostmanAuth The assembed PostmanAuth object 
+     * @return {@link com.postman.collection.AuthElement} The assembed {@link com.postman.collection.AuthElement} object 
      * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override

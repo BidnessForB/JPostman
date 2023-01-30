@@ -9,7 +9,31 @@ import com.google.gson.JsonDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import com.google.gson.reflect.TypeToken;
+
+
+/**
+ * 
+ * 
+ * Custom deserializer for writing out the ItemElement class, the <code>item</code> propertyList 
+ * 
+ * 
+ */
+
+
+
 public class ItemElementDeserializer implements JsonDeserializer<ItemElement> {
+    
+    /**
+     * 
+     * Deserialize a {@link com.postman.collection.ItemElement }
+     * 
+     * 
+     * @param jElement The JSON element passed in by Gson
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.AuthElement}
+     * @param context Deserialization context
+     * @return ItemAuth The assembed {@link com.postman.collection.ItemElement} object 
+     * @throws JsonParseException IF there are errors in the JSON element
+     */
     @Override
     public ItemElement deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();

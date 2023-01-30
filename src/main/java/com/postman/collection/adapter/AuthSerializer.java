@@ -20,8 +20,8 @@ public class AuthSerializer implements JsonSerializer<AuthElement> {
 
     
     /** 
-     * @param src The PostmanAuth object to be deserialized
-     * @param typeOfSrc The type, PostmanAuth
+     * @param src The {@link com.postman.collection.AuthElement} object to be deserialized
+     * @param typeOfSrc The type, {@link com.postman.collection.AuthElement}
      * @param context Serialization context 
      * @return JsonElement The JSON element returned by this serializer
      */

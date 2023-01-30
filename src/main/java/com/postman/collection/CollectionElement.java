@@ -94,9 +94,14 @@ public abstract class CollectionElement {
 
             case "AuthElement": {
                 strSubSchema = "#/definitions/auth";
+                break;
             }
             case "BodyElement": {
                 strSubSchema = "#/definitions/request/oneOf/0/properties/body";
+                break;
+            }
+            default: {
+                strSubSchema = "";
             }
         }
 

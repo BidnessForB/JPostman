@@ -98,7 +98,7 @@ public class RequestElement extends CollectionElement {
     
     /** 
      * 
-     * Set the values in the <code>auth</code> array with a pre-populated PostmanAuth object.
+     * Set the values in the <code>auth</code> array with a pre-populated {@link com.postman.collection.AuthElement} object.
      * 
      * @param auth  The auth
      */
@@ -110,7 +110,7 @@ public class RequestElement extends CollectionElement {
     
     /** 
      * 
-     * Get the PostmanAuth object containing the values of the <code>auth</code> array, or null if it has not been set.
+     * Get the {@link com.postman.collection.AuthElement} object containing the values of the <code>auth</code> array, or null if it has not been set.
      * 
      * @return PostmanAuth The auth object containing the values.
      */

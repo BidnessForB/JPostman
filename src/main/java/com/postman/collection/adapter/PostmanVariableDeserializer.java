@@ -14,7 +14,7 @@ public class PostmanVariableDeserializer implements JsonDeserializer<PostmanVari
      * 
      * Custom <a href=
      * "https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html">
-     * GSON deserializer</a> for the PostmanAuth object.
+     * GSON deserializer</a> for the {@link com.postman.collection.AuthElement} object.
      * 
      * 
      * @param jElement
