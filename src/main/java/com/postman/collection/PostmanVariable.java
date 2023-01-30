@@ -164,11 +164,11 @@ public class PostmanVariable extends CollectionElement {
         if(! (obj instanceof PostmanVariable)) {
             return false;
         }
-        PostmanVariable var = (PostmanVariable)obj;
-        return (this.getKey().equals(var.getKey())
-                && (this.getValue() + "").equals(var.getValue() + "")
-                && (this.getType() + "").equals(var.getType() + "")
-                && (this.getDescription() + "").equals(var.getDescription() + ""));
+        PostmanVariable varComp = (PostmanVariable)obj;
+        return (this.getKey().equals(varComp.getKey())
+                && (this.getValue() + "").equals(varComp.getValue() + "")
+                && (this.getType() + "").equals(varComp.getType() + "")
+                && (this.getDescription() + "").equals(varComp.getDescription() + ""));
     }
 
 }

@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSerializationContext;
 import java.lang.reflect.Type;
-import java.util.Iterator;
+
 /**
  * 
  * 

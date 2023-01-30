@@ -48,7 +48,7 @@ public class UrlElement extends CollectionElement {
     private ArrayList<String> path;
     private VariableListMap<PostmanVariable> query;
     private VariableListMap<PostmanVariable> variable = null;
-    @SuppressWarnings("unused")
+    
     private String protocol;
     private String port;
 
@@ -78,7 +78,6 @@ public class UrlElement extends CollectionElement {
             this.setQuery(queryString);
         }
 
-        //Pattern pnProtocol = Pattern.compile("^https?(:(/*)*)");
         String regex = "^(https?)(://)(.*)";
         Pattern pnProtocol = Pattern.compile(regex);
         Matcher maProtocol = pnProtocol.matcher(rawUrl);
@@ -114,7 +113,7 @@ public class UrlElement extends CollectionElement {
     
         
 
-    };
+    }
 
     
     /** 
@@ -127,9 +126,7 @@ public class UrlElement extends CollectionElement {
         Pattern pnPath = Pattern.compile(":([a-z]+[0-9]+)/?");
         Matcher maPath = pnPath.matcher(this.getRaw());
         String curVarName;
-        String curVarValue;
         
-        boolean found = false;
         PostmanVariable curVar;
         while(maPath.find()) {
             
@@ -145,10 +142,7 @@ public class UrlElement extends CollectionElement {
                 if(curVar.getValue() != null) {
                     strResolved = strResolved.replace(":" + curVarName, curVar.getValue());
                 }
-                return strResolved;
                 
-                
-            
         }
         
         return strResolved;
@@ -181,7 +175,7 @@ public class UrlElement extends CollectionElement {
      */
     public void setPath(String rawPath)  throws DuplicateVariableKeyException {
 
-        ArrayList<String> pathElements = new ArrayList<String>();
+        ArrayList<String> pathElements;
         ArrayList<String> liPath;
         this.path = new ArrayList<String>();
         if (rawPath != null && rawPath.length() > 0) {
@@ -247,49 +241,49 @@ public class UrlElement extends CollectionElement {
      */
     //TO-DO: Add resolve argument to allow resolving variables to their values.
     public String generateURL() {
-        String url = "";
-        url = this.protocol == null ? url : url + this.protocol + "://";
+        String retVal = "";
+        retVal = this.protocol == null ? retVal : retVal + this.protocol + "://";
         
         if(this.getHosts() != null) {
-            for(String host: this.getHosts()) {
-                url = url + host + ".";
+            for(String curHost: this.getHosts()) {
+                retVal = retVal + curHost + ".";
             }
-            if(url.substring(url.length() - 1).equals(".")) {
-                url = url.substring(0,url.length() -1);
+            if(retVal.substring(retVal.length() - 1).equals(".")) {
+                retVal = retVal.substring(0,retVal.length() -1);
             }
         }
 
         
-        if(this.getPort() != null) {
-            if(this.getPort() != null && this.getPort().length() > 0) {
-                url = url + ":" + this.getPort();
-            }
+        
+        if(this.getPort() != null && this.getPort().length() > 0) {
+            retVal = retVal + ":" + this.getPort();
         }
+    
         
         if(this.getPaths() != null && this.getPaths().size() > 0) {
-            for(String path: this.getPaths())
+            for(String curPath: this.getPaths())
             {
-                url = url + "/"+path;
+                retVal = retVal + "/"+curPath;
             }
-            if(url.substring(url.length() - 1).equals("/")) {
-                url = url.substring(0,url.length() -1);
+            if(retVal.substring(retVal.length() - 1).equals("/")) {
+                retVal = retVal.substring(0,retVal.length() -1);
             }
         }
         
         if(this.getQueryElements() == null || this.getQueryElements().size() == 0) {
-            return url;
+            return retVal;
         }
         
-        url = url + "?";
-        for(PostmanVariable query : this.getQueryElements()) {
-            url = url + query.getKey() + "=" + query.getValue() + "&";
+        retVal = retVal + "?";
+        for(PostmanVariable curQuery : this.getQueryElements()) {
+            retVal = retVal + curQuery.getKey() + "=" + curQuery.getValue() + "&";
         }
-        if(url.substring(url.length() - 1).equals("&")) {
-            url = url.substring(0,url.length() -1);
+        if(retVal.substring(retVal.length() - 1).equals("&")) {
+            retVal = retVal.substring(0,retVal.length() -1);
         }
         
 
-        return url;
+        return retVal;
     }
 
     
@@ -485,18 +479,18 @@ public class UrlElement extends CollectionElement {
 
     
     /** 
-     * @param var
+     * @param element
      * @param index
      * @throws IllegalPropertyAccessException
      */
-    public void setQueryELement(PostmanVariable var, int index) throws IllegalPropertyAccessException {
+    public void setQueryELement(PostmanVariable element, int index) throws IllegalPropertyAccessException {
         if(this.query == null) {
             this.query = new VariableListMap<PostmanVariable>();
         }
         if(index < 0 || index > this.query.size() + 1) {
             throw new IllegalPropertyAccessException("Index [" + index + "] is out of bounds");
         }
-        this.query.set(index, var);
+        this.query.set(index, element);
     }
 
     /**
@@ -593,9 +587,9 @@ public class UrlElement extends CollectionElement {
         if(this.variable == null) {
             this.variable = new VariableListMap<PostmanVariable>();
         }
-        for(PostmanVariable var : this.variable) {
-            if (var.getKey().equals(varPath.getKey())) {
-                this.variable.set(this.variable.indexOf(var),varPath);
+        for(PostmanVariable curVar : this.variable) {
+            if (curVar.getKey().equals(varPath.getKey())) {
+                this.variable.set(this.variable.indexOf(curVar),varPath);
             }
         }
     }
@@ -620,9 +614,9 @@ public class UrlElement extends CollectionElement {
      * @param key
      */
     public void removePathVariable(String key) {
-        for(PostmanVariable var : this.variable) {
-            if(var.getKey().equals(key)) {
-                this.variable.remove(var);
+        for(PostmanVariable curVar : this.variable) {
+            if(curVar.getKey().equals(key)) {
+                this.variable.remove(curVar);
             }
         }
     }
@@ -680,7 +674,7 @@ public class UrlElement extends CollectionElement {
      */
     public void addQuery(String queryString)  {
 
-        ArrayList<String> elements = new ArrayList<String>();
+        ArrayList<String> elements;
 
         if ((queryString == null || queryString.length() < 1)) {
             return;

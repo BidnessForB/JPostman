@@ -2,7 +2,6 @@ package com.postman.collection.adapter;
 
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;

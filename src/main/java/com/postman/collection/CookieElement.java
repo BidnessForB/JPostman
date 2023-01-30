@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-import java.util.ArrayList;
+
 
 public class CookieElement extends CollectionElement {
     private String domain = "";
@@ -16,7 +16,7 @@ public class CookieElement extends CollectionElement {
     private VariableListMap<PostmanVariable> extensions;
 
     public CookieElement() {
-
+        super();
     }
 
     
@@ -202,7 +202,7 @@ public class CookieElement extends CollectionElement {
     @Override
     public String getKey() {
 
-        return name;
+        return getName();
     }
 
 }

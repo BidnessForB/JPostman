@@ -1,6 +1,6 @@
 package com.postman.collection;
 
-import java.util.ArrayList;
+
 /**
  * 
  * 
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 public class RequestElement extends CollectionElement {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
     private UrlElement url;
-    private VariableListMap<PostmanVariable> header;// = new PostmanVariable[0];
+    private VariableListMap<PostmanVariable> header;
     private String description;
     private BodyElement body;
     private AuthElement auth;
@@ -174,10 +174,10 @@ public class RequestElement extends CollectionElement {
      * @throws VariableResolutionException
      */
     public String getUrl(boolean resolveVariables) throws VariableResolutionException {
-        String url = this.url.getUrl(resolveVariables);
+        String retVal = this.url.getUrl(resolveVariables);
         if(resolveVariables) {
             try {
-            url = this.getCollection().resolveVariables(url);
+            retVal = this.getCollection().resolveVariables(retVal);
             
             }
             catch(Exception e) {
@@ -185,7 +185,7 @@ public class RequestElement extends CollectionElement {
             }
         }
         
-        return url;
+        return retVal;
     }
 
     

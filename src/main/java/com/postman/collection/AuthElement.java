@@ -1,6 +1,5 @@
 package com.postman.collection;
 
-import java.util.HashMap;
 
     /** 
      * 
@@ -45,8 +44,7 @@ import java.util.HashMap;
 public class AuthElement extends CollectionElement {
 
     private String type = "";
-    //public VariableListMap<PostmanVariable> properties = new VariableListMap<PostmanVariable>();
-    private VariableListMap properties = null;
+    private VariableListMap<PostmanVariable> properties = null;
     private transient String[] arrTypes = new String[10];
 
     
@@ -80,7 +78,7 @@ public class AuthElement extends CollectionElement {
     public AuthElement(String type) {
         this();
         this.type = type;
-        this.setType(getType());
+        this.setAuthType(getAuthType());
     }
 
        /** 
@@ -90,7 +88,7 @@ public class AuthElement extends CollectionElement {
      */
     public AuthElement(enumAuthType type) {
         this();
-        this.setType(type);
+        this.setAuthType(type);
     }
    /** 
      * Conveninence constructor to initialize an Auth object with a pre-created HashMap of authentication properties
@@ -100,9 +98,23 @@ public class AuthElement extends CollectionElement {
      */
     public AuthElement(enumAuthType type, VariableListMap<PostmanVariable> properties) {
         this(type);
-        this.setType(type);
+        this.setAuthType(type);
         this.setProperties(properties);
 
+    }
+
+
+
+    
+    /** 
+     * Returns the key of this CollectionElement for use in retrieving from arrays, etc.  
+     * 
+     * @return String
+     */
+    @Override
+    public String getKey() {
+
+        return type;
     }
 
 /** 
@@ -112,7 +124,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @return enumAuthType The underlying type of this authentication object, e.g., `oauth1`
      */
-    public enumAuthType getType() {
+    public enumAuthType getAuthType() {
 
         switch (type) {
             case "apikey", "bearer": {
@@ -147,20 +159,6 @@ public class AuthElement extends CollectionElement {
             }
         }
     }
-
-
-    
-    /** 
-     * Returns the key of this CollectionElement for use in retrieving from arrays, etc.  
-     * 
-     * @return String
-     */
-    @Override
-    public String getKey() {
-
-        return type;
-    }
-
     
     /** 
      * 
@@ -169,7 +167,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @param type Enumerated value of the underlying type property
      */
-    public void setType(enumAuthType type) {
+    public void setAuthType(enumAuthType type) {
         this.type = arrTypes[(type.ordinal())];
         VariableListMap<PostmanVariable> newProps = new VariableListMap<PostmanVariable>();
         switch (type) {
@@ -275,7 +273,16 @@ public class AuthElement extends CollectionElement {
         this.properties = newProps;
     }
 
-    
+     /** 
+     * Convenience method to return the type property of this auth object as a String
+     * 
+     * 
+     * @return String  The 'type' property of this auth object, e.g., 'oauth1'
+     */
+    public String getAuthTypeAsString() {
+        return arrTypes[this.getAuthType().ordinal()];
+    }
+
     /** 
      * Set the properties of the Auth object using a pre-created HashMap&#60;String,PostmanVariable&#62; of properties.
      * 
@@ -286,16 +293,7 @@ public class AuthElement extends CollectionElement {
     }
 
     
-    /** 
-     * Convenience method to return the type property of this auth object as a String
-     * 
-     * 
-     * @return String  The 'type' property of this auth object, e.g., 'oauth1'
-     */
-    public String getAuthTypeAsString() {
-        return arrTypes[this.getType().ordinal()];
-    }
-
+   
     
     /** 
      * 
@@ -307,6 +305,17 @@ public class AuthElement extends CollectionElement {
     public VariableListMap<PostmanVariable> getProperties() {
 
         return this.properties;
+    }
+
+        /** 
+     * Retrieve a single element from the array of authentication elements comprising this authentication object.  
+     * 
+     * @param key A string matching the key of the Auth element to return.  Returns null if the specified element is not present. 
+     * @return PostmanVariable The auth element, or null if not found.
+     */
+    public PostmanVariable getProperty(String key) {
+        return this.properties == null ? null : this.properties.get(key);
+
     }
 
     
@@ -324,16 +333,7 @@ public class AuthElement extends CollectionElement {
     }
 
     
-    /** 
-     * Retrieve a single element from the array of authentication elements comprising this authentication object.  
-     * 
-     * @param key A string matching the key of the Auth element to return.  Returns null if the specified element is not present. 
-     * @return PostmanVariable The auth element, or null if not found.
-     */
-    public PostmanVariable getProperty(String key) {
-        return this.properties == null ? null : this.properties.get(key);
 
-    }
 
     
     /** 
@@ -362,7 +362,7 @@ public class AuthElement extends CollectionElement {
         if(this.properties == null) {
             this.properties = new VariableListMap<PostmanVariable>();
         }
-        this.properties.add(new PostmanVariable(key, value));
+        this.addProperty(new PostmanVariable(key, value));
 
     }
 
