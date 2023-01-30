@@ -11,9 +11,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import com.google.gson.reflect.TypeToken;
 
-public class ItemContainerDeserializer implements JsonDeserializer<ItemContainer> {
+public class ItemContainerDeserializer implements JsonDeserializer<ItemGroup> {
     @Override
-    public ItemContainer deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ItemGroup deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         Type typeItem = new TypeToken<ArrayList<ItemElement>>(){}.getType();
         Folder newFolder = null;

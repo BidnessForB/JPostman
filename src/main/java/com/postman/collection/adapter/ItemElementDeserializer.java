@@ -17,7 +17,7 @@ public class ItemElementDeserializer implements JsonDeserializer<ItemElement> {
         Request newRequest = null;
         
         if(jObject.get("request") == null) {
-            return context.deserialize(jElement.getAsJsonObject(), ItemContainer.class);
+            return context.deserialize(jElement.getAsJsonObject(), ItemGroup.class);
             
         }
         Type typeEvent = new TypeToken<ArrayList<EventElement>>(){}.getType();

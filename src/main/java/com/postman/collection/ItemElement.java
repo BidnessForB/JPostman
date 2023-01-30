@@ -136,7 +136,7 @@ public abstract class ItemElement extends CollectionElement {
     private String name;
     
 
-    private transient ItemContainer parent = null;
+    private transient ItemGroup parent = null;
     
     
 
@@ -151,7 +151,7 @@ public abstract class ItemElement extends CollectionElement {
      * @param name  The name of the object
      * @param parent The ItemElement containing this item. 
      */
-    public ItemElement(String name, ItemContainer parent) {
+    public ItemElement(String name, ItemGroup parent) {
         this(name);
         this.setParent(parent);
 
@@ -245,7 +245,7 @@ public abstract class ItemElement extends CollectionElement {
      *  
      * @param parent  The parent item.
      */
-    public void setParent(ItemContainer parent) {
+    public void setParent(ItemGroup parent) {
         this.parent = parent;
     }
 
@@ -256,7 +256,7 @@ public abstract class ItemElement extends CollectionElement {
      * 
      * @return ItemElement The parent item.
      */
-    public ItemContainer getParent() {
+    public ItemGroup getParent() {
         return this.parent;
     }
 

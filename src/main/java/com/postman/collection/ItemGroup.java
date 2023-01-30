@@ -1,6 +1,6 @@
 package com.postman.collection;
 import java.util.ArrayList;
-public abstract class ItemContainer extends ItemElement {
+public abstract class ItemGroup extends ItemElement {
     private ArrayList<ItemElement> item;
 
 
@@ -30,11 +30,11 @@ public abstract class ItemContainer extends ItemElement {
         }
 
         for (ItemElement curItem : item) {
-            if(filter == null && !(curItem instanceof ItemContainer) ) {
+            if(filter == null && !(curItem instanceof ItemGroup) ) {
                 results.add(curItem);
             }
-            else if(filter == null && curItem instanceof ItemContainer) {
-                results.addAll(((ItemContainer)curItem).getItemElements(filter));
+            else if(filter == null && curItem instanceof ItemGroup) {
+                results.addAll(((ItemGroup)curItem).getItemElements(filter));
             }
             else if (filter != null && curItem instanceof Folder) {
                 if(filter == enumItemElementType.FOLDER) {
@@ -115,8 +115,8 @@ public abstract class ItemContainer extends ItemElement {
                     result = (ItemElement)curItem;
                 }
                 break;
-            } else if (curItem instanceof ItemContainer) {
-                result = ((ItemContainer)curItem).getItemElement(key, filter);
+            } else if (curItem instanceof ItemGroup) {
+                result = ((ItemGroup)curItem).getItemElement(key, filter);
                 if (result != null) {
                     break;
                 }
@@ -186,7 +186,7 @@ public abstract class ItemContainer extends ItemElement {
 
     }
 
-    public ItemContainer(String name) {
+    public ItemGroup(String name) {
         super(name);
     }
 
@@ -210,7 +210,7 @@ public abstract class ItemContainer extends ItemElement {
             throw new IllegalPropertyAccessException("Item is already present");
         }
         // If the newitem already owns this item, it's a circular recursion
-        if (newItem instanceof ItemContainer && ((ItemContainer)newItem).getItemElement(this.getKey()) != null)
+        if (newItem instanceof ItemGroup && ((ItemGroup)newItem).getItemElement(this.getKey()) != null)
 
         {
             throw new RecursiveItemAddException("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey());

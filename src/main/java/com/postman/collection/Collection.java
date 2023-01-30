@@ -59,7 +59,7 @@ import java.util.regex.Matcher;
  * 
  * 
  */
-public class Collection extends ItemContainer {
+public class Collection extends ItemGroup {
 
     
     
@@ -244,8 +244,8 @@ public class Collection extends ItemContainer {
      * @param newParent The item's new parent
      * @throws RecursiveItemAddException If the parent item is the same as the new child item, or if the parent item already contains this item.
      */
-    public void moveItem(ItemElement itemToMove, ItemContainer newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
-        ItemContainer curParent = itemToMove.getParent();
+    public void moveItem(ItemElement itemToMove, ItemGroup newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
+        ItemGroup curParent = itemToMove.getParent();
         if (itemToMove.equals(newParent)) {
             throw new RecursiveItemAddException("Can't move item to itself, yo");
         }
@@ -278,7 +278,7 @@ public class Collection extends ItemContainer {
      @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(Collection newColl, ItemContainer parent) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException{
+    public void addCollection(Collection newColl, ItemGroup parent) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException{
         this.addCollection(newColl, parent, true, true);
     }
 
@@ -308,7 +308,7 @@ public class Collection extends ItemContainer {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(Collection newColl, ItemContainer parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
+    public void addCollection(Collection newColl, ItemGroup parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
              {
         if(parent == null || (!this.hasItemElement(parent))) {
             throw new InvalidCollectionActionException("Parent is null or not an item in this collection");
@@ -486,7 +486,7 @@ public class Collection extends ItemContainer {
         gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthDeserializer());
         gsonBuilder.registerTypeAdapter(PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableDeserializer());
         gsonBuilder.registerTypeAdapter(ItemElement.class, new com.postman.collection.adapter.ItemElementDeserializer());
-        gsonBuilder.registerTypeAdapter(ItemContainer.class, new com.postman.collection.adapter.ItemContainerDeserializer());
+        gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemContainerDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
         pmcRetVal.init();
 
