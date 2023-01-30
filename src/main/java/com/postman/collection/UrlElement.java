@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Class to encapsulate the properties in the <code>url</code> object of a <a href="./PostmanRequest.html">PostmanRequst</a> object.  
+ * Class to encapsulate the properties in the <code>url</code> object of a <a href="./RequestElement.html">PostmanRequst</a> object.  
  * The URL object properties contain the raw URL itself, the protocol, the port an array of strings for the individual host and path elements, arrays of key/value pairs for query parameters, as well as 
  * path variables.
  * <pre>
@@ -42,7 +42,7 @@ import java.util.Arrays;
                 </pre>                 
  */
 
-public class PostmanUrl extends PostmanCollectionElement {
+public class UrlElement extends CollectionElement {
     private String raw = "";
     private ArrayList<String> host;
     private ArrayList<String> path;
@@ -240,7 +240,7 @@ public class PostmanUrl extends PostmanCollectionElement {
     }
 
     /**
-     * Generate the raw URL from the component properties of this PostmanUrl.  If <code>raw</code> has been set, the output of this method
+     * Generate the raw URL from the component properties of this UrlElement.  If <code>raw</code> has been set, the output of this method
      * should equal the raw URL provided.  
      * 
      * @return The generated URL.  Note that this may not be a valid URL
@@ -328,22 +328,22 @@ public class PostmanUrl extends PostmanCollectionElement {
     }
 
     /**
-     * Create a PostmanURL with the specified URL
+     * Create a UrlElement with the specified URL
      * @param rawURL The raw URL
      
      */
 
-    public PostmanUrl(String rawURL) throws DuplicateVariableKeyException {
+    public UrlElement(String rawURL) throws DuplicateVariableKeyException {
         this.setRaw(rawURL);
     }
 
     /**
-     * Create a PostmanURL with the specified host and path. 
+     * Create a UrlElement with the specified host and path. 
      * @param host The host, e.g., "foo.com"
      * @param path The path, e.g., "/bar/bat"
      */
     
-    public PostmanUrl(String host, String path) throws DuplicateVariableKeyException {
+    public UrlElement(String host, String path) throws DuplicateVariableKeyException {
         this.host = new ArrayList<String>();
         this.setHost(host);
         this.path = new ArrayList<String>();

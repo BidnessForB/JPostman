@@ -28,13 +28,14 @@ import java.nio.file.Files;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 /**
  * Unit test for simple App.
  */
 public class AppTest {
     String filePath = new java.io.File("").getAbsolutePath();
     String resourcePath = "/src/main/resources/com/postman/collection";
-    PostmanCollection pmcTest = null;
+    Collection pmcTest = null;
     String collectionOutputPath;
 
     
@@ -73,8 +74,8 @@ public class AppTest {
     public void shouldCreateRequestQueries() {
         try {
             collectionOutputPath = filePath + "/test-output/TEST-constructed-queries.postman_collection.json";
-            pmcTest = PostmanCollection.pmcFactory();
-            PostmanRequest newReq = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+            pmcTest = Collection.pmcFactory();
+            RequestElement newReq = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
             newReq.getUrlElement().addQuery("foo", "bar");
             pmcTest.addRequest(newReq, "Get Foo Bar");
             pmcTest.setName("TEST Constructed Queries");
@@ -93,34 +94,31 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void shouldCreateScripts() {
 
-        PostmanCollection pmcTest = PostmanCollection.pmcFactory();
-        PostmanItem folder;
-        PostmanItem request;
+        Collection pmcTest = Collection.pmcFactory();
+        Folder folder;
+        Request request;
 
         //generates spurious "variable not used" warning
-        PostmanEvent  event = null; 
-        PostmanRequest req;
+        EventElement  event = null; 
+        RequestElement req;
         assertNull(event);
       
         try {
             pmcTest.setName("TEST Scripts");
-            folder = new PostmanItem("Scripts");
+            folder = new Folder("Scripts");
 
             
             folder.setPreRequestScript("//PRE-REQUEST this is some source code for the folder");
-            event = new PostmanEvent(enumEventType.TEST, "//TEST this is some source code for the folder");
+            event = new EventElement(enumEventType.TEST, "//TEST this is some source code for the folder");
             folder.setTestScript("//TEST this is some source code for the folder");
-            pmcTest.addItem(folder);
+            pmcTest.addItemElement(folder);
 
-            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+            req = new RequestElement(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
 
-            request = new PostmanItem("TEST Request with Scripts");
-            request.setRequest(req);
+            request = new Request(req,"TEST Request with Scripts");
             request.setPreRequestScript("//PRE-REQUEST this is some source code for the request");
-
-            
             request.setTestScript("//TEST this is some source code for the request");
-            folder.addItem(request);
+            folder.addItemElement(request);
 
             
             pmcTest.setTestScript("//TEST this is some source code for the collection");
@@ -155,7 +153,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         filePath = new java.io.File("").getAbsolutePath();
 
         try {
-            pmcTest = PostmanCollection.pmcFactory(new File(
+            pmcTest = Collection.pmcFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
             
 validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
@@ -170,26 +168,26 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void shouldCreateURLs() {
 
-        List<PostmanUrl> liUrls = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
+        List<UrlElement> liUrls = new ArrayList<UrlElement>(Arrays.asList(new UrlElement[0]));
         try {
 
-            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json"));
-            liUrls.add(new PostmanUrl("//foo.com/bar/bat.json"));
-            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json"));
-            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar=2"));
-            liUrls.add(new PostmanUrl("http://foo.com/bar/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
-            liUrls.add(new PostmanUrl("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("http://foo.com/bar/bat.json"));
+            liUrls.add(new UrlElement("//foo.com/bar/bat.json"));
+            liUrls.add(new UrlElement("{{baseUrl}}/foo.com/bar/bat.json"));
+            liUrls.add(new UrlElement("http://foo.com/bar/bat.json?foo=1&bar=2"));
+            liUrls.add(new UrlElement("http://foo.com/bar/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("{{baseUrl}}/foo.com/bar/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("{{baseUrl}}/foo.com/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar="));
+            liUrls.add(new UrlElement("https://foo.com/bar/:path1/bat.json?foo=1&bar="));
 
-            pmcTest = PostmanCollection.pmcFactory();
+            pmcTest = Collection.pmcFactory();
             pmcTest.setName("TEST Construct URLs");
             for (int i = 0; i < liUrls.size(); i++) {
                 try {
-                    pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
+                    pmcTest.addRequest(new RequestElement(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
                     assertTrue(pmcTest.validate());
                     
                 } catch (Exception e) {
@@ -235,13 +233,13 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             return;
         }
         
-        PostmanCollection pmcTest2;
+        Collection pmcTest2;
         
         
         
         for(String curPath : collectionFiles) {
             try {
-                pmcTest = PostmanCollection.pmcFactory(new File(filePath + resourcePath + "/" + curPath));
+                pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/" + curPath));
             }
             catch(Exception e) {
                 System.out.println("Error reading collection file: " + curPath);
@@ -249,7 +247,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             }
             try {
                 pmcTest.writeToFile(new File(filePath + "/test-output/compare-src.postman_collection.json"));
-                pmcTest2 = PostmanCollection.pmcFactory(new File(filePath + "/test-output/compare-src.postman_collection.json"));
+                pmcTest2 = Collection.pmcFactory(new File(filePath + "/test-output/compare-src.postman_collection.json"));
             }
             catch(Exception e) {
                 System.out.println("Error reading collection file: " + curPath);
@@ -277,7 +275,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         
 
         try {
-            pmcTest = PostmanCollection.pmcFactory(new File(
+            pmcTest = Collection.pmcFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
             
             
@@ -293,17 +291,17 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     public void testBodyImportExport() {
         
         try {
-            pmcTest = PostmanCollection.pmcFactory(new File(
+            pmcTest = Collection.pmcFactory(new File(
                     filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
             
             validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        PostmanCollection test2;
+        Collection test2;
         try {
-            test2 =PostmanCollection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
-            assertTrue(pmcTest.getItem("Raw-text XML").getRequest().getBody().getRaw().equals(test2.getItem("Raw-text XML").getRequest().getBody().getRaw()));
+            test2 =Collection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
+            assertTrue(pmcTest.getRequest("Raw-text XML").getRequestElement().getBody().getRaw().equals(test2.getRequest("Raw-text XML").getRequestElement().getBody().getRaw()));
             
         }
         catch(IOException e) {
@@ -324,7 +322,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testAuthIngestion() throws Exception {
-        pmcTest = PostmanCollection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
+        pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
         boolean valid = pmcTest.validate();
         collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
         pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
@@ -340,7 +338,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testLargeBodyIngestion() throws Exception {
-        pmcTest = PostmanCollection
+        pmcTest = Collection
                 .pmcFactory(new File(filePath + resourcePath + "/test-collection.postman_collection.json"));
         pmcTest.setName("TEST large body");
         validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
@@ -352,16 +350,16 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testBuildAuths() throws Exception {
-        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest = Collection.pmcFactory();
         pmcTest.setName("TEST Auth");
-        PostmanAuth auth;
-        PostmanRequest req;
+        AuthElement auth;
+        RequestElement req;
         
 
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         pmcTest.addRequest(req, "INHERIT request");
 
-        auth = new PostmanAuth(enumAuthType.AKAMAI);
+        auth = new AuthElement(enumAuthType.AKAMAI);
         auth.addProperty("headersToSign", "x-api-key");
         auth.addProperty("baseURL", "https://akamai-base.com");
         auth.addProperty("timestamp", "akamaiTimestamp");
@@ -370,43 +368,43 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         auth.addProperty("clientToken", "akamaiClientToken");
         auth.addProperty("accessToken", "akamaiToken");
 
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AKAMAI request");
 
-        auth = new PostmanAuth(enumAuthType.APIKEY);
+        auth = new AuthElement(enumAuthType.APIKEY);
         auth.addProperty("key", "API-KEY");
         auth.addProperty("value", "x-api-key");
         auth.addProperty("in", "query");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "APIKEY request");
 
-        auth = new PostmanAuth(enumAuthType.AWS);
+        auth = new AuthElement(enumAuthType.AWS);
         auth.addProperty("sessionToken", "awsSessiontoken");
         auth.addProperty("service", "awsServiceName");
         auth.addProperty("secretKey", "aswSecretKey");
         auth.addProperty("accessKey", "awsAccessKey");
         auth.addProperty("addAuthDataToQuery", "false");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "AWS request");
 
-        auth = new PostmanAuth(enumAuthType.BEARER);
-        auth.addProperty("key", "API-KEY");
-        auth.addProperty("value", "x-api-key");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        auth = new AuthElement(enumAuthType.BEARER);
+        auth.addProperty("key", "token");
+        auth.addProperty("value", "BearerTokenValue");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BEARER request");
 
-        auth = new PostmanAuth(enumAuthType.BASIC);
+        auth = new AuthElement(enumAuthType.BASIC);
         auth.addProperty("password", "fakePassword");
         auth.addProperty("username", "fakeusername");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BASIC request");
 
-        auth = new PostmanAuth(enumAuthType.DIGEST);
+        auth = new AuthElement(enumAuthType.DIGEST);
         auth.addProperty("opaque", "OpaqueString");
         auth.addProperty("clientNonce", "2020202");
         auth.addProperty("nonceCount", "1010101");
@@ -415,12 +413,12 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         auth.addProperty("nonce", "digestNonce");
         auth.addProperty("realm", "digest@test.com");
         auth.addProperty("password", "digestPassword");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "DIGEST request");
 
-        auth = new PostmanAuth(enumAuthType.HAWK);
-        auth.addProperty("includePayloadHash", "true");
+        auth = new AuthElement(enumAuthType.HAWK);
+        auth.addProperty(new PostmanVariable("includePayloadHash", "true","boolean"));
         auth.addProperty("timestamp", "hawkTimestamp");
         auth.addProperty("delegation", "hawk-dlg");
         auth.addProperty("app", "HawkApp");
@@ -429,11 +427,11 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         auth.addProperty("user", "HawkUser");
         auth.addProperty("authKey", "HawkAuthKey");
         auth.addProperty("algorithim", "sha256");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "HAWK request");
 
-        auth = new PostmanAuth(enumAuthType.OAUTH1);
+        auth = new AuthElement(enumAuthType.OAUTH1);
         auth.addProperty(new PostmanVariable("addEmptyParamsToSign", "true", null, "boolean"));
         auth.addProperty(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
         auth.addProperty("realm", "testoauth@test.com");
@@ -448,26 +446,26 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         auth.addProperty("signatureMethod", "HMAC-SHA1");
         auth.addProperty("version", "1.0");
         auth.addProperty(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH1 request");
 
-        auth = new PostmanAuth(enumAuthType.OAUTH2);
+        auth = new AuthElement(enumAuthType.OAUTH2);
         auth.addProperty("grant_type", "authorization_code");
         auth.addProperty("tokenName", "Oauth2TokenName");
         auth.addProperty("tokenType", "");
         auth.addProperty("accessToken", "oauth2AccessToken");
         auth.addProperty("addTokenTo", "header");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "OAUTH2 request");
 
-        auth = new PostmanAuth(enumAuthType.NTLM);
+        auth = new AuthElement(enumAuthType.NTLM);
         auth.addProperty("workstation", "NTMLWorkstation");
         auth.addProperty("domain", "NTLMDomain");
         auth.addProperty("password", "NTLMPassword");
         auth.addProperty("username", "NTLMUsername");
-        req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "NTLM request");
 
@@ -482,7 +480,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testAddVariables() throws Exception {
-        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest = Collection.pmcFactory();
         collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
         pmcTest.setName("TEST Constructed Variables");
         PostmanVariable var1 = new PostmanVariable("key 1", "value 1");
@@ -545,7 +543,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testIngestEvents() throws Exception {
-        PostmanCollection pmcTest = PostmanCollection.pmcFactory(
+        Collection pmcTest = Collection.pmcFactory(
                 new File(filePath + resourcePath + "/example-cat-facts-with-tests.postman_collection.json"));
         validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
@@ -556,7 +554,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      * @param methodName
      * @return HashMap<String, String>
      */
-    public HashMap<String, String> getOutputFileAndCollectionName(PostmanCollection pmcTest, String methodName) {
+    public HashMap<String, String> getOutputFileAndCollectionName(Collection pmcTest, String methodName) {
         HashMap<String, String> retVal = new HashMap<String, String>();
         retVal.put("collection-name", "TEST-" + methodName);
         retVal.put("output-path",
@@ -573,9 +571,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testAddCollection() throws Exception {
 
-        PostmanCollection pmcTest = PostmanCollection.pmcFactory(new File(
+        Collection pmcTest = Collection.pmcFactory(new File(
                 filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
-        PostmanCollection pmcTest2 = PostmanCollection.pmcFactory(new File(
+        Collection pmcTest2 = Collection.pmcFactory(new File(
                 filePath + "/src/main/resources/com/postman/collection/example-weather.postman_collection.json"));
         pmcTest.addCollection(pmcTest2, true, true);
         pmcTest.setName("TEST Cat-Weather ");
@@ -589,41 +587,41 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
      */
     @Test
     public void testEquivalence() throws Exception {
-        PostmanBody body;
-        PostmanRequest req;
-        PostmanResponse resp;
-        pmcTest = PostmanCollection.pmcFactory(
+        BodyElement body;
+        RequestElement req;
+        ResponseElement resp;
+        pmcTest = Collection.pmcFactory(
                 new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
-        PostmanCollection pmcTest2 = PostmanCollection.pmcFactory(
+        Collection pmcTest2 = Collection.pmcFactory(
                 new File(filePath + "/src/main/resources/com/postman/collection/body-test.postman_collection.json"));
         JsonNode diffs = pmcTest.isEquivalentTo(pmcTest2);
         
         assertEquals(0, diffs.size());
 
-        pmcTest2 = PostmanCollection.pmcFactory(new File(
+        pmcTest2 = Collection.pmcFactory(new File(
                 filePath + "/src/main/resources/com/postman/collection/body-test-diff.postman_collection.json"));
         diffs = pmcTest.isEquivalentTo(pmcTest2);
         
         
 
-        body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        body = new BodyElement(enumRequestBodyMode.FORMDATA);
         body.setFormdata("field-1", "value 1", "This is value 1");
         body.setFormdata("field-2", "value 2", "This is value 2");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Test Request", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        body = new BodyElement(enumRequestBodyMode.FORMDATA);
         body.setFormdata("field-1", "value 1", "This is value 1");
         body.setFormdata("field-2", "value 2", "This is value 2");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
         pmcTest2.addRequest(req, "Test Request", resp);
 
-        PostmanItem itemReq = pmcTest.getItem("Test Request");
-        PostmanItem itemReq2 = pmcTest2.getItem("Test Request");
+        ItemElement itemReq = pmcTest.getItemElement("Test Request");
+        ItemElement itemReq2 = pmcTest2.getItemElement("Test Request");
 
         diffs = itemReq.isEquivalentTo(itemReq2);
         
@@ -638,77 +636,77 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testConstructedBodies() throws Exception {
 
-        PostmanCollection pmcTest = PostmanCollection.pmcFactory();
+        Collection pmcTest = Collection.pmcFactory();
         pmcTest.setName("TEST Constructed Body with Responses");
-        PostmanBody body;
-        PostmanRequest req;
-        PostmanResponse resp;
+        BodyElement body;
+        RequestElement req;
+        ResponseElement resp;
 
-        body = new PostmanBody(enumRequestBodyMode.URLENCODED);
+        body = new BodyElement(enumRequestBodyMode.URLENCODED);
         body.setFormdata("x-field-1", "value 1", "This is value 1");
         body.setFormdata("x-field-2", "value 2", "This is value 2");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Urlencoded", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Urlencoded", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "URLEncoded body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.TEXT);
+        body = new BodyElement(enumRequestBodyMode.TEXT);
         body.setRaw("This is some plain text");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Plaintext", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Plaintext", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Plaintext body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+        body = new BodyElement(enumRequestBodyMode.FORMDATA);
         body.setFormdata("field-1", "value 1", "This is value 1");
         body.setFormdata("field-2", "value 2", "This is value 2");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Formdata", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Formdata body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}", enumRawBodyLanguage.JSON);
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        body = new BodyElement(enumRequestBodyMode.RAW, "{\"thing\":\"value\"}", enumRawBodyLanguage.JSON);
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL JSON", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL JSON", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "JSON body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.RAW,
+        body = new BodyElement(enumRequestBodyMode.RAW,
                 "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Response time is less than 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});",
                 enumRawBodyLanguage.JAVASCRIPT);
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Javascript", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Javascript", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Javascript body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.FILE);
+        body = new BodyElement(enumRequestBodyMode.FILE);
         body.setBinarySrc("8vhckkNqZ/jenkins-small.png");
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL Binary", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL Binary", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "Binary body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",
+        body = new BodyElement(enumRequestBodyMode.RAW, "{<html><body><p>This is some html</p</body></html>}",
                 enumRawBodyLanguage.HTML);
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL HTML", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL HTML", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "HTML body", resp);
 
-        body = new PostmanBody(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",
+        body = new BodyElement(enumRequestBodyMode.RAW, "{<xml><body><p>This is some XML</p</body></xml>}",
                 enumRawBodyLanguage.XML);
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL XML", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL XML", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "XML body", resp);
 
         String strGraphQL = "{ \n            launchesPast(limit: 10) {\n              mission_name\n              launch_date_local\n              launch_site {\n                site_name_long\n              }\n              links {\n                article_link\n                video_link\n              }\n              rocket {\n                rocket_name\n              }\n            }\n          }";
         String strVars = "{\"limit\":2}";
-        body = new PostmanBody(enumRequestBodyMode.GRAPHQL, strGraphQL, enumRawBodyLanguage.GRAPHQL);
+        body = new BodyElement(enumRequestBodyMode.GRAPHQL, strGraphQL, enumRawBodyLanguage.GRAPHQL);
         body.setGraphql(strGraphQL, strVars);
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
         req.setBody(body);
-        resp = new PostmanResponse("NORMAL GrapqhQL", req, "OK", 200, "this is the expected response body");
+        resp = new ResponseElement("NORMAL GrapqhQL", req, "OK", 200, "this is the expected response body");
         pmcTest.addRequest(req, "GraphQL body", resp);
 
         validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
@@ -720,20 +718,20 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         PostmanVariable prop;
         
-        PostmanAuth auth = new PostmanAuth(enumAuthType.OAUTH1);
+        AuthElement auth = new AuthElement(enumAuthType.OAUTH1);
         prop = new PostmanVariable("addEmptyParamsToSign", "true");
         auth.addProperty(prop);
-        assertEquals(1, auth.getProperties().size());
+        assertEquals(14, auth.getProperties().size());
         assertEquals("true", auth.getProperty("addEmptyParamsToSign").getValue());
         
         prop = new PostmanVariable("addEmptyParamsToSign", "false");
         auth.addProperty(prop);
 
-        assertEquals(1,auth.getProperties().size());
+        assertEquals(14,auth.getProperties().size());
         assertEquals("false", auth.getProperty("addEmptyParamsToSign").getValue());
         
 
-        HashMap<String, PostmanVariable> nullProps = null;
+        VariableListMap<PostmanVariable> nullProps = null;
         auth.setProperties(nullProps);
         PostmanVariable curVar = auth.getProperty("addEmptyParamsToSign");
         assertNull(curVar);
@@ -743,7 +741,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testBodyObject() {
         
-            PostmanBody body = new PostmanBody(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
+            BodyElement body = new BodyElement(enumRequestBodyMode.RAW,"//some javascript",enumRawBodyLanguage.JAVASCRIPT);
             assertSame(enumRequestBodyMode.RAW,body.getMode());
 
             
@@ -788,7 +786,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             printValidationMessages(body.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
             assertTrue(valid);
 
-            body = new PostmanBody(enumRequestBodyMode.FORMDATA);
+            body = new BodyElement(enumRequestBodyMode.FORMDATA);
             
             try {
                 assertNull(body.getRawLanguage());
@@ -798,7 +796,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
                 assertTrue("Expected exception thrown", true);
             }
 
-            body = new PostmanBody(enumRequestBodyMode.RAW);
+            body = new BodyElement(enumRequestBodyMode.RAW);
             try {
                 assertNull(body.getFile());    
             }
@@ -832,7 +830,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
                 assertTrue("expected exception thrown",true);
             }
 
-            body = new PostmanBody(enumRequestBodyMode.GRAPHQL);
+            body = new BodyElement(enumRequestBodyMode.GRAPHQL);
             try {
                 assertNull("GraphQL is not null", body.getGraphql());
             }
@@ -849,7 +847,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             }
 
 
-            body = new PostmanBody(enumRequestBodyMode.FILE);
+            body = new BodyElement(enumRequestBodyMode.FILE);
             try {
                 String file = "some/path/to/file.png";
                 body.setBinarySrc(file);
@@ -860,7 +858,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
                 assertTrue("Exception " + e.getMessage(), false);
             }
 
-            body = new PostmanBody(enumRequestBodyMode.RAW);
+            body = new BodyElement(enumRequestBodyMode.RAW);
             try {
                 body.setRawLanguage(enumRawBodyLanguage.JAVASCRIPT);
                 body.setRaw("//some javascript");
@@ -891,9 +889,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         String url1 = "https://foo.com:8080/foo/bar/:path1/bat.json?var1=aaa&var2=bbb";
         //String url1 = "https://foo.com:8080/foo/bar/bat.json?var1=aaa&var2=bbb";
         String path1 = "foo/bar/:path1/bat.json";
-        PostmanUrl url = null;
+        UrlElement url = null;
         try {
-            url = new PostmanUrl(url1);
+            url = new UrlElement(url1);
         }
         catch(DuplicateVariableKeyException e)
         {
@@ -907,7 +905,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         assertEquals(2, url.getQueryElements().size());
 
         try {
-            url = new PostmanUrl("foo.com",path1);
+            url = new UrlElement("foo.com",path1);
         }
         
         catch(DuplicateVariableKeyException e)
@@ -935,11 +933,11 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         urls.add("{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
         urls.add("https://foo.com:8080/bar/:path1/bat.json?foo=1&bar=");
         urls.add("https://foo.com/bar/:path1/bat.json?foo=1&bar=");
-        ArrayList<PostmanUrl> liUrls = new ArrayList<PostmanUrl>();
+        ArrayList<UrlElement> liUrls = new ArrayList<UrlElement>();
 
     for(String curUrl: urls) {
         try {
-            liUrls.add(new PostmanUrl(curUrl));
+            liUrls.add(new UrlElement(curUrl));
         }
         catch(DuplicateVariableKeyException e) {
             assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
@@ -964,7 +962,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         }
     }
     try {
-        url = new PostmanUrl("https://foo.com?var1=val1&var2=val2");
+        url = new UrlElement("https://foo.com?var1=val1&var2=val2");
     }
     
     catch(DuplicateVariableKeyException e) {
@@ -986,7 +984,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     public void testIngestFromUrl() throws MalformedURLException {
         //Good URL
         try {
-            pmcTest = PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+            pmcTest = Collection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
             assertTrue("Valid collection ingested from URL",pmcTest.validate());
         }
         catch(Exception e) {
@@ -1006,15 +1004,15 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testResponseObject() {
 
-        PostmanRequest req = null;
+        RequestElement req = null;
         try {
-           req = new PostmanRequest(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
+           req = new RequestElement(enumHTTPRequestMethod.GET, "https:/postman-echo.com/post?foo=bar");
         }
         catch(DuplicateVariableKeyException e)
         {
             assertTrue("Unexpected duplicate path key" + e.getMessage(), false);
         }
-        PostmanResponse resp = new PostmanResponse("Test Response",req, "OK",200,"This is the body" );
+        ResponseElement resp = new ResponseElement("Test Response",req, "OK",200,"This is the body" );
         assertEquals("This is the body", resp.getBody());
         assertEquals(200, resp.getCode());
         try {
@@ -1026,10 +1024,10 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             assertTrue("Equivalence test exception",false);
         }
 
-        resp = new PostmanResponse("Test Response",req, "Not authorize",401,"A completely different body" );
-        PostmanRequest req2 = null;
+        resp = new ResponseElement("Test Response",req, "Not authorize",401,"A completely different body" );
+        RequestElement req2 = null;
         try {
-            req2 = new PostmanRequest(enumHTTPRequestMethod.POST, "https://cnn.com");
+            req2 = new RequestElement(enumHTTPRequestMethod.POST, "https://cnn.com");
         }
         catch(DuplicateVariableKeyException e)
         {
@@ -1037,7 +1035,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         }
         
         
-        PostmanResponse newResp = new PostmanResponse("Test Response",req2, "Not authorize",401,"A completely different body" );
+        ResponseElement newResp = new ResponseElement("Test Response",req2, "Not authorize",401,"A completely different body" );
                 
         try {
                     JsonNode diffs = newResp.getOriginalRequest().isEquivalentTo(req);
@@ -1059,7 +1057,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
     @Test
     public void testEventObject() {
-        PostmanEvent evt = new PostmanEvent(enumEventType.PRE_REQUEST, "//fake javascript");
+        EventElement evt = new EventElement(enumEventType.PRE_REQUEST, "//fake javascript");
         
         assertEquals(1, evt.getSourceCodeElements().size());
 
@@ -1109,29 +1107,29 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     /** 
      * @throws Exception
      */
-    public void testPostmanItem() throws Exception{
+    public void testItemElement() throws Exception{
         
-        pmcTest = PostmanCollection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
+        pmcTest = Collection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-cat-facts-with-tests.postman_collection.json"));
         
         
-        PostmanItem fact = pmcTest.getItem("Get a list of facts");
-        PostmanItem folder = pmcTest.getItem("get Breeds",true);
+        ItemElement fact = pmcTest.getItemElement("Get a list of facts");
+        Folder folder = pmcTest.getFolder("get Breeds");
         assertNotNull(fact);
         assertNotNull(folder);
         
         assertTrue(fact != null || fact.getName().equals("Get a list of facts"));
         assertTrue(folder != null || folder.getName().equals("Breeds"));
 
-        pmcTest = PostmanCollection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
+        pmcTest = Collection.pmcFactory(new java.io.File(filePath + "/src/main/resources/com/postman/collection/example-catfact.postman_collection.json"));
         
-        ArrayList<PostmanItem> folders = pmcTest.getItems(enumPostmanItemType.FOLDER);
+        ArrayList<ItemElement> folders = pmcTest.getItemElements(enumItemElementType.FOLDER);
         assertEquals(2, folders.size());
-        ArrayList<PostmanItem> requests = pmcTest.getItems(enumPostmanItemType.REQUEST);
+        ArrayList<ItemElement> requests = pmcTest.getItemElements(enumItemElementType.REQUEST);
         assertEquals(5, requests.size());
-        ArrayList<PostmanItem> all = pmcTest.getItems(null);
+        ArrayList<ItemElement> all = pmcTest.getItemElements(null);
         assertEquals(7, all.size());
 
-        fact = pmcTest.getItem("Add Breed");
+        fact = pmcTest.getItemElement("Add Breed");
         assertNotNull(fact);
         assertEquals("Add Breed", fact.getName());
 
@@ -1141,17 +1139,17 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     
     @Test
     public void TestCollectionRequests() {
-        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest = Collection.pmcFactory();
         pmcTest.setName("TEST Request Operations");
 
-        PostmanRequest req = null;
-        PostmanItem reqItem1 = null;
+        RequestElement req = null;
+        ItemElement reqItem1 = null;
         //generates spurious "not used" warning
-        PostmanItem reqItem2 = null;
-        PostmanItem newFolder = null;
+        ItemElement reqItem2 = null;
+        Folder newFolder = null;
 
         try {
-            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
+            req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/get");
         }
         catch(DuplicateVariableKeyException e)
         {
@@ -1167,7 +1165,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        }
         
        try {
-        req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+        req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
     }
     catch(DuplicateVariableKeyException e)
     {
@@ -1187,20 +1185,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
 
 
-       assertEquals(2, pmcTest.getItems(enumPostmanItemType.REQUEST).size());
+       assertEquals(2, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
 
-       try {
-        pmcTest.moveItem(reqItem1, reqItem1);
-       }
-       catch(RecursiveItemAddException e)
-       {
-        assertTrue("Recursive exception as expected",true);
-       }
-       catch(InvalidCollectionActionException d) {
-        assertTrue("Unexpected exception: " + d.getMessage(), false);
-       }
-
-       try {
+        try {
         newFolder = pmcTest.addFolder("New Folder");
        }
        catch(Exception e)
@@ -1210,8 +1197,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
        try {
         pmcTest.moveItem(reqItem1, newFolder);
-        assertEquals("New Folder", pmcTest.getItem("GET echo", true).getName());
-        assertEquals(2, pmcTest.getItems().size());
+        assertEquals("New Folder", pmcTest.getRequest("GET echo").getParent().getName());
+        assertEquals(2, pmcTest.getItemElements().size());
        }
        catch(Exception e)
        {
@@ -1224,9 +1211,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
 
 
-       pmcTest.removeItem("POST echo");
-       assertEquals(1, pmcTest.getItems(enumPostmanItemType.REQUEST).size());
-       assertNotNull(pmcTest.getItem("GET echo"));
+       pmcTest.removeItemElement("POST echo");
+       assertEquals(1, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+       assertNotNull(pmcTest.getItemElement("GET echo"));
 
 
     }
@@ -1234,29 +1221,29 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testCollectionFolder() {
 
-        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest = Collection.pmcFactory();
         pmcTest.setName("TEST Request Operations");
 
-        PostmanRequest req;
-        PostmanItem reqItem1 = null;
-        PostmanItem reqItem2 = null;
-        PostmanItem newFolder = null;
+        RequestElement req;
+        ItemElement reqItem1 = null;
+        ItemElement reqItem2 = null;
+        Folder newFolder = null;
 
         try {
             
-            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://postman-echo/get");
+            req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo/get");
             reqItem1 = pmcTest.addRequest(req, "GET test");
-            req = new PostmanRequest(enumHTTPRequestMethod.POST, "https://postman-echo/post");
+            req = new RequestElement(enumHTTPRequestMethod.POST, "https://postman-echo/post");
             reqItem2 = pmcTest.addRequest(req, "GET Post");
             newFolder = pmcTest.addFolder("New Folder");
             pmcTest.moveItem(reqItem1, newFolder);
             pmcTest.moveItem(reqItem2, newFolder);
-            assertEquals(2, pmcTest.getItems(enumPostmanItemType.REQUEST).size());
-            assertEquals(1, pmcTest.getItems(enumPostmanItemType.FOLDER).size());
-            assertEquals(2, pmcTest.getItem("New Folder").getItems().size());
-            pmcTest.removeItem(newFolder);
-            assertEquals(0, pmcTest.getItems(enumPostmanItemType.REQUEST).size());
-            assertEquals(0, pmcTest.getItems(enumPostmanItemType.FOLDER).size());
+            assertEquals(2, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+            assertEquals(1, pmcTest.getItemElements(enumItemElementType.FOLDER).size());
+            assertEquals(2, pmcTest.getFolder("New Folder").getItemElements().size());
+            pmcTest.removeItemElement(newFolder);
+            assertEquals(0, pmcTest.getItemElements(enumItemElementType.REQUEST).size());
+            assertEquals(0, pmcTest.getItemElements(enumItemElementType.FOLDER).size());
         }
         catch(Exception e) {
             assertTrue("Unexpected exception: " + e.getMessage(), false);
@@ -1268,7 +1255,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testBooleanIntegerVariables() {
         try {
-            pmcTest = PostmanCollection.pmcFactory(new File(filePath + "/" + resourcePath + "/test-variable-types.postman_collection.json"));
+            pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath + "/test-variable-types.postman_collection.json"));
             validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         }
         catch(Exception e)
@@ -1282,7 +1269,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void TestIngestionByID() {
         try {
-            pmcTest = PostmanCollection.pmcFactory(new PostmanID("23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+            pmcTest = Collection.pmcFactory(new PostmanID("23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
         }
         catch(Exception e) {
             assertTrue("Unexpected exception: " + e.getMessage(), false);
@@ -1298,7 +1285,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
  * @param testMethodInfo
  * @return boolean
  */
-public boolean validateAndWriteToFile(PostmanCollection pmcColl, StackTraceElement testMethodInfo) {
+public boolean validateAndWriteToFile(Collection pmcColl, StackTraceElement testMethodInfo) {
     boolean valid = false;
     
     HashMap<String, String> outputData = getOutputFileAndCollectionName(pmcColl,
@@ -1348,23 +1335,23 @@ boolean deleteDirectory(File directoryToBeDeleted) {
 
 @Test
 public void testVariableResolution() {
-    List<PostmanUrl> liUrls = new ArrayList<PostmanUrl>(Arrays.asList(new PostmanUrl[0]));
+    List<UrlElement> liUrls = new ArrayList<UrlElement>(Arrays.asList(new UrlElement[0]));
     String url;
     try {
 
-        liUrls.add(new PostmanUrl("{{baseUrl}}/{{var1}}.com/:path1/bat.json"));
-        liUrls.add(new PostmanUrl("https://{{var1}}.com/:path1/bat.json?{{var1}}={{var2}}"));
+        liUrls.add(new UrlElement("{{baseUrl}}/{{var1}}.com/:path1/bat.json"));
+        liUrls.add(new UrlElement("https://{{var1}}.com/:path1/bat.json?{{var1}}={{var2}}"));
 
         
 
-        pmcTest = PostmanCollection.pmcFactory();
+        pmcTest = Collection.pmcFactory();
         pmcTest.setName("TEST Resolve Variables");
         pmcTest.addVariable(new PostmanVariable("baseUrl","http://test.com"));
         pmcTest.addVariable(new PostmanVariable("var1", "var1value"));
         pmcTest.addVariable(new PostmanVariable("var2","333"));
         for (int i = 0; i < liUrls.size(); i++) {
             try {
-                pmcTest.addRequest(new PostmanRequest(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
+                pmcTest.addRequest(new RequestElement(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
                 assertTrue(pmcTest.validate());
                 
             } catch (Exception e) {
@@ -1376,17 +1363,25 @@ public void testVariableResolution() {
         
         
         
-        url = pmcTest.getItem("URL 2").getRequest().getUrl(true);
+        url = pmcTest.getRequest("URL 2").getRequestElement().getUrl(true);
         //url = pmcTest.resolveVariables(url);
         assertTrue(url.equals("https://var1value.com/:path1/bat.json?var1value=333"));
 
-        pmcTest.getItem("URL 1").getRequest().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
-        assertTrue(pmcTest.getItem("URL 1").getRequest().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
+        pmcTest.getRequest("URL 1").getRequestElement().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
+        assertTrue(pmcTest.getRequest("URL 1").getRequestElement().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
     }
     catch(Exception e) {
         //assertTrue("Unexpected exception: " + e.getMessage(), false );
         e.printStackTrace();
     }
+}
+
+@Test
+public void testByRef() throws IOException {
+    pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath + "/example-catfact.postman_collection.json" ));
+    AuthElement auth = pmcTest.getAuth();
+    auth.setType(enumAuthType.BEARER);
+    System.out.println("Foo");
 }
 
 @Test
@@ -1406,7 +1401,7 @@ public void testPostmanVariable() {
     added = alVars.add(var2);
     assertTrue(added);
     added = alVars.add(var3);
-    assertFalse(added);
+    assertTrue(added);
 
 
     VariableListMap<PostmanVariable> vlMap = new VariableListMap<PostmanVariable>(alVars);
@@ -1419,19 +1414,19 @@ public void testPostmanVariable() {
     public void testParentChain() {
 
         
-        PostmanRequest req = null;
-        PostmanCollectionElement parent = null;
-        PostmanCollection col = null;
-        PostmanItem folder = null;
-        PostmanItem reqObj = null;
+        RequestElement req = null;
+        CollectionElement parent = null;
+        Collection col = null;
+        Folder folder = null;
+        Request reqObj = null;
         try {
-            req = new PostmanRequest(enumHTTPRequestMethod.GET, "https://foo.com/bar/bat.json");
+            req = new RequestElement(enumHTTPRequestMethod.GET, "https://foo.com/bar/bat.json");
             parent = req.getParent();
             col = req.getCollection();
             assertTrue(parent == null);
             assertTrue(col == null);
 
-            pmcTest = PostmanCollection.pmcFactory();
+            pmcTest = Collection.pmcFactory();
             pmcTest.setName("TEST parent chain");
             reqObj = pmcTest.addRequest(req, "Req 1");
 
@@ -1441,7 +1436,7 @@ public void testPostmanVariable() {
             folder = pmcTest.addFolder("Folder 1");
             pmcTest.moveItem(reqObj, folder);
             assertTrue(reqObj.getParent() != null);
-            assertTrue(((PostmanItem)reqObj).getParent().getName().equals("Folder 1"));
+            assertTrue(((ItemElement)reqObj).getParent().getName().equals("Folder 1"));
             assertTrue(reqObj.getCollection().getName().equals("TEST parent chain"));
 
         }

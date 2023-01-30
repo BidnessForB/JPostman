@@ -6,7 +6,7 @@ package com.postman.collection;
  * 
  * 
  */
-public enum enumPostmanItemType {
+public enum enumItemElementType {
     FOLDER,
     REQUEST
 }

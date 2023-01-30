@@ -106,7 +106,7 @@
             </descriptorRefs>
             <archive>
               <manifest>
-                <mainClass>com.postman.collection.PostmanCollection</mainClass>
+                <mainClass>com.postman.collection.Collection</mainClass>
               </manifest>
             </archive>
 

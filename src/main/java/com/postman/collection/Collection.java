@@ -40,15 +40,15 @@ import java.util.regex.Matcher;
  * Encapsulates a Postman collection
  *<p>
  * <strong>Ingest a collection file</strong></p>
- * <p><code>PostmanCollection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
+ * <p><code>Collection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
  * 
  * 
  * <p><strong>Get a request item</strong></p>
- * <p><code>PostmanItem myReq = myCollection.getItem("Get Random Fact");</code></p>
+ * <p><code>ItemElement myReq = myCollection.getItem("Get Random Fact");</code></p>
  * 
  * <p><strong>Get pre-request script for the request</strong></p>
  * 
- * <p><code>PostmanEvent preReq = myReq.getPreRequestScript();</code></p>
+ * <p><code>EventElement preReq = myReq.getPreRequestScript();</code></p>
  
  * <p><strong> Get source code for pre-request script</strong></p>
  * <p><code>String myCode = preReq.getSourceCode();</code></p>
@@ -59,12 +59,13 @@ import java.util.regex.Matcher;
  * 
  * 
  */
-public class PostmanCollection extends PostmanItem {
+public class Collection extends ItemGroup {
 
     
     
-    private PostmanAuth auth = null;
+    private AuthElement auth = null;
     private HashMap<String, String> info;
+    private VariableListMap<PostmanVariable> variable = null;
     
 
     
@@ -74,19 +75,19 @@ public class PostmanCollection extends PostmanItem {
      * @param args
      */
     public static void main(String[] args) {
-        PostmanCollection pmcTest = null;
+        Collection pmcTest = null;
         String filePath = new java.io.File("").getAbsolutePath();
         String resourcePath = "/src/main/resources/com/postman/collection";
         
         try {
-            pmcTest = PostmanCollection.pmcFactory(new File(filePath + resourcePath + "/Nested.postman_collection.json"));
+            pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/Nested.postman_collection.json"));
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
-        PostmanItem req = pmcTest.getItem("URL 1");
+        ItemElement req = pmcTest.getItemElement("URL 1");
 
         System.out.println(req.getCollection().getName());
         
@@ -126,34 +127,21 @@ public class PostmanCollection extends PostmanItem {
      * @param parentKey
      * @throws InvalidCollectionActionException If either the parent or item to be moved aren't present in the <code>item</code> array
      */
-    public void moveItem(String itemToMoveKey, String parentKey) throws InvalidCollectionActionException {
-        PostmanItem itemToMove = this.getItem(itemToMoveKey);
-        PostmanItem parent = this.getItem(parentKey);
+    public void moveItem(String itemToMoveKey, String parentKey) throws RecursiveItemAddException, InvalidCollectionActionException {
+        ItemElement itemToMove = this.getItemElement(itemToMoveKey);
+        Folder parent = this.getFolder(parentKey);
 
         if (itemToMove == null || parent == null) {
             throw new InvalidCollectionActionException("Attempt to move a null item, or an item to a null parent");
         }
 
+        
+        this.moveItem(itemToMove, parent);
+
     }
 
     
-    /** 
-     * 
-     * Add a response object to the request contained by this collection specified by <code>requestKey</code>
-     * 
-     * 
-     * @param requestKey Key identifying the request to add the response to
-     * @param response New response to add to the request
-     * @throws InvalidCollectionActionException If the specifyed request is not contained by this collection
-     */
-    public void addResponse(String requestKey, PostmanResponse response) throws InvalidCollectionActionException {
-        PostmanItem req = this.getItem(requestKey);
-        if(req == null) {
-            throw new InvalidCollectionActionException("Request with key [" + requestKey + "] not found");
-        }
-        req.addResponse(response);
-
-    }
+    
 
     
     /** 
@@ -164,10 +152,10 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException
      * @throws IllegalPropertyAccessException
      */
-    public PostmanItem addFolder(String name) throws RecursiveItemAddException, IllegalPropertyAccessException {
-        PostmanItem newItem = new PostmanItem(name);
-        this.addItem(newItem);
-        return newItem;
+    public Folder addFolder(String name) throws RecursiveItemAddException, IllegalPropertyAccessException {
+        Folder newFolder = new Folder(name);
+        this.addItemElement(newFolder);
+        return newFolder;
 
     }
 
@@ -180,17 +168,17 @@ public class PostmanCollection extends PostmanItem {
      * @param newRequest The new request to add
      * @param name The name for the new item
      * @param response A response to include in the request item, or null to ignore
-     * @return PostmanItem The new Request item
+     * @return ItemElement The new Request item
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      *  
      */
-    public PostmanItem addRequest(PostmanRequest newRequest, String name, PostmanResponse response) throws RecursiveItemAddException, IllegalPropertyAccessException {
-        PostmanItem newItem = this.addRequest(newRequest, name);
+    public Request addRequest(RequestElement reqElement, String name, ResponseElement response) throws RecursiveItemAddException, IllegalPropertyAccessException {
+        Request newReq = this.addRequest(reqElement,name);
         if(response != null) {
-            newItem.addResponse(response);
+            newReq.addResponseElement(response);
         }
-        return newItem;
+        return newReq;
     }
 
     
@@ -198,39 +186,35 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Convenience method to add a new <code>request</code> item as a top level child item of this collection
      * 
-     * @param newRequest
+     * @param reqElement
      * @param name
-     * @return PostmanItem
+     * @return ItemElement
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public PostmanItem addRequest(PostmanRequest newRequest, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
-        PostmanItem newItem = new PostmanItem(name);
-        newItem.setRequest(newRequest);
-        newRequest.setParent(newItem);
-        super.addItem(newItem);
-        return newItem;
-        
-
+    public Request addRequest(RequestElement reqElement, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
+        Request newReq = new Request(reqElement, name);
+        super.addItemElement(newReq);
+        return newReq;
     }
 
     
     /** 
      * 
-     * Convenience method to add a request with a pre-constructed ArrayList&#60;{@link com.postman.collection.PostmanResponse}&#62; of response items.
+     * Convenience method to add a request with a pre-constructed ArrayList&#60;{@link com.postman.collection.ResponseElement}&#62; of response items.
      * 
      * @param newRequest The new Request to add
      * @param name The name of the request
      * @param responses Pre-constructed ArrayList of response objects.
-     * @return PostmanItem The new request item.
+     * @return ItemElement The new request item.
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public PostmanItem addRequest(PostmanRequest newRequest, String name, ArrayList<PostmanResponse> responses) throws RecursiveItemAddException, IllegalPropertyAccessException 
+    public Request addRequest(RequestElement newRequest, String name, ArrayList<ResponseElement> responses) throws RecursiveItemAddException, IllegalPropertyAccessException 
              {
-        PostmanItem newItem = addRequest(newRequest, name);
-        newItem.setResponses(responses);
-        return newItem;
+        Request newReq = addRequest(newRequest, name);
+        newReq.setResponseElements(responses);
+        return newReq;
     }
 
     
@@ -238,17 +222,18 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Add a new request to this collection at the specified position in the array of <code>request</code> elements
      * 
-     * @param newRequest
+     * @param reqElement
      * @param name
      * @param position
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public void addRequest(PostmanRequest newRequest, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
-        PostmanItem newItem = new PostmanItem(name);
-        newItem.setRequest(newRequest);
-        newRequest.setParent(newItem);
-        super.addItem(newItem, position);
+    public Request addRequest(RequestElement reqElement, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
+        Request newReq = new Request(reqElement, name);
+        newReq.setRequestElement(reqElement);
+        reqElement.setParent(newReq);
+        super.addItemElement(newReq, position);
+        return newReq;
         
 
     }
@@ -262,8 +247,8 @@ public class PostmanCollection extends PostmanItem {
      * @param newParent The item's new parent
      * @throws RecursiveItemAddException If the parent item is the same as the new child item, or if the parent item already contains this item.
      */
-    public void moveItem(PostmanItem itemToMove, PostmanItem newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
-        PostmanItem curParent = this.getItem(itemToMove.getKey(), true);
+    public void moveItem(ItemElement itemToMove, ItemGroup newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
+        ItemGroup curParent = itemToMove.getParent();
         if (itemToMove.equals(newParent)) {
             throw new RecursiveItemAddException("Can't move item to itself, yo");
         }
@@ -271,9 +256,9 @@ public class PostmanCollection extends PostmanItem {
         if (curParent == null) {
             throw new InvalidCollectionActionException("Item parent not found");
         }
-        curParent.removeItem(itemToMove);
+        curParent.removeItemElement(itemToMove);
         try {
-            newParent.addItem(itemToMove);
+            newParent.addItemElement(itemToMove);
         }
         catch(IllegalPropertyAccessException e)
         {
@@ -296,7 +281,7 @@ public class PostmanCollection extends PostmanItem {
      @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, PostmanItem parent) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException{
+    public void addCollection(Collection newColl, ItemGroup parent) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException{
         this.addCollection(newColl, parent, true, true);
     }
 
@@ -311,7 +296,7 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
+    public void addCollection(Collection newColl, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
         this.addCollection(newColl, this, copyScripts, copyVariables);
     }
 
@@ -326,21 +311,21 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException If the specified parent is not a folder (e.g., contains a request element)
      */
-    public void addCollection(PostmanCollection newColl, PostmanItem parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
+    public void addCollection(Collection newColl, ItemGroup parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
              {
-        if(parent == null || (!this.hasItem(parent))) {
+        if(parent == null || (!this.hasItemElement(parent))) {
             throw new InvalidCollectionActionException("Parent is null or not an item in this collection");
         }
-        PostmanItem newFolder = new PostmanItem(newColl.getName());
+        Folder newFolder = new Folder(newColl.getName());
         try {
-            parent.addItem(newFolder);
+            parent.addItemElement(newFolder);
         }
         catch(IllegalPropertyAccessException e) {
             throw new InvalidCollectionActionException(e);
         }
         
         
-        newFolder.addItems(newColl.getItems());
+        newFolder.addItemElements(newColl.getItemElements());
 
         if (copyVariables) {
             this.addVariables(newColl.getVariables());
@@ -363,7 +348,7 @@ public class PostmanCollection extends PostmanItem {
      * @throws RecursiveItemAddException If the new collection is the same as this collection
      * @throws InvalidCollectionActionException
      */
-    public void addCollection(PostmanCollection newColl) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
+    public void addCollection(Collection newColl) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException  {
 
         this.addCollection(newColl, this, true, true);
     }
@@ -374,7 +359,7 @@ public class PostmanCollection extends PostmanItem {
     /** 
      * Construct a new, empty collection with the specified name
      */
-    public PostmanCollection(String name) {
+    public Collection(String name) {
         super(name);
 
     }
@@ -389,9 +374,9 @@ public class PostmanCollection extends PostmanItem {
         if(this.info == null) {
             this.info = new HashMap<String, String>();
         }
-        if(this.getItems() == null) {
+        if(this.getItemElements() == null) {
             //the item element is required by the Collection schema, even if it is empty
-            this.setItems(new ArrayList<PostmanItem>());
+            this.setItemElements(new ArrayList<ItemElement>());
         }
         
     }
@@ -406,15 +391,15 @@ public class PostmanCollection extends PostmanItem {
     }
 
     private void setParents() {
-        ArrayList<PostmanItem> folders = this.getItems(enumPostmanItemType.FOLDER);
-        ArrayList<PostmanItem> requests = this.getItems(enumPostmanItemType.REQUEST);
-        folders = folders == null ? new ArrayList<PostmanItem>() : folders;
-        requests = requests == null ? new ArrayList<PostmanItem>() : requests;
-        PostmanItem curParent = null;
+        ArrayList<ItemElement> folders = this.getItemElements(enumItemElementType.FOLDER);
+        ArrayList<ItemElement> requests = this.getItemElements(enumItemElementType.REQUEST);
+        folders = folders == null ? new ArrayList<ItemElement>() : folders;
+        requests = requests == null ? new ArrayList<ItemElement>() : requests;
+        ItemElement curParent = null;
         folders.addAll(requests);
 
-        for (PostmanItem curItem : folders) {
-            curParent = getItem(curItem.getKey(), true);
+        for (ItemElement curItem : folders) {
+            curParent = curItem.getParent();
             curItem.setParent(curParent);
         }
     }
@@ -444,18 +429,18 @@ public class PostmanCollection extends PostmanItem {
      * 
      * Static factory method to create the new collection.  Default constructor is undefined to avoid conflict with Gson.
      * 
-     * @return PostmanCollection
+     * @return Collection
      */
-    public static PostmanCollection pmcFactory() {
+    public static Collection pmcFactory() {
 
         String json = "{}";
         Gson gson = new Gson();
-        PostmanCollection pmcRetVal = gson.fromJson(json, PostmanCollection.class);
+        Collection pmcRetVal = gson.fromJson(json, Collection.class);
         pmcRetVal.init();
         pmcRetVal.setName("New Collection");
         pmcRetVal.setDescription("Created by JPostman");
         try {
-            pmcRetVal.setSchemaURI(new URI(PostmanCollectionElement.getDefaultCollectionSchema()));
+            pmcRetVal.setSchemaURI(new URI(CollectionElement.getDefaultCollectionSchema()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -466,19 +451,19 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * Static factory method to create a new PostmanCollection from a Postman collection JSON file.  
+     * Static factory method to create a new Collection from a Postman collection JSON file.  
      * 
      * @param jsonFile  The Postman Collection JSON file to ingest
-     * @return PostmanCollection The new collection
+     * @return Collection The new collection
      * @throws FileNotFoundException If the specified JSON file does not exist 
      * @throws IOException If an IO exception occurs attempting to read the file, eg., inadequate permissions, etc.  
      */
-    public static PostmanCollection pmcFactory(File jsonFile) throws IOException {
+    public static Collection pmcFactory(File jsonFile) throws IOException {
 
         String strChunk = "";
         StringBuilder sbJson = new StringBuilder();
 
-        PostmanCollection pmcRetVal;
+        Collection pmcRetVal;
         try(FileReader fr = new FileReader(jsonFile);
             BufferedReader brItem  =new BufferedReader(fr)) {
             
@@ -488,7 +473,7 @@ public class PostmanCollection extends PostmanItem {
             e.printStackTrace();
         }
 
-        return PostmanCollection.pmcFactory(sbJson.toString());
+        return Collection.pmcFactory(sbJson.toString());
 
         
     }
@@ -496,14 +481,16 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * @param json
-     * @return PostmanCollection
+     * @return Collection
      */
-    public static PostmanCollection pmcFactory(String json) {
-        PostmanCollection pmcRetVal;
+    public static Collection pmcFactory(String json) {
+        Collection pmcRetVal;
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.AuthDeserializer());
+        gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthDeserializer());
         gsonBuilder.registerTypeAdapter(PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableDeserializer());
-        pmcRetVal = gsonBuilder.create().fromJson(json, PostmanCollection.class);
+        gsonBuilder.registerTypeAdapter(ItemElement.class, new com.postman.collection.adapter.ItemElementDeserializer());
+        gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemContainerDeserializer());
+        pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
         pmcRetVal.init();
 
         return pmcRetVal;
@@ -513,7 +500,7 @@ public class PostmanCollection extends PostmanItem {
      * Create a collection via the Postman API
      * 
      * @param collectionURL  URL for the collection to ingest
-     * @return PostmanCollection The new collection
+     * @return Collection The new collection
      * @throws IOException  
      * @throws InterruptedException 
      * @throws IllegalArgumentException 
@@ -521,11 +508,11 @@ public class PostmanCollection extends PostmanItem {
      * @throws ValidationException If the JSON returned by the specified URL does not conform to the Postman schema
      * @throws InvalidCollectionActionException If any other error occurs during the generation of the collection
      */
-    public static PostmanCollection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
+    public static Collection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
         // create a client
             var client = HttpClient.newHttpClient();
             String strColJson;
-            PostmanCollection pmcRetVal;
+            Collection pmcRetVal;
             String apiToken = System.getenv("POSTMAN_API_KEY");
             System.out.println("APIKEY LENGTH: " + (apiToken == null ? "null" : apiToken.length()));
             if(apiToken == null) {
@@ -559,7 +546,7 @@ public class PostmanCollection extends PostmanItem {
             strColJson = strColJson.substring(14);
             strColJson = strColJson.substring(0,strColJson.length() -1);
             
-               pmcRetVal = PostmanCollection.pmcFactory(strColJson);
+               pmcRetVal = Collection.pmcFactory(strColJson);
 
             if(pmcRetVal.validate()) {
                 
@@ -574,15 +561,15 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * @param id
-     * @return PostmanCollection
+     * @return Collection
      * @throws IOException
      * @throws InterruptedException
      * @throws CollectionNotFoundException
      * @throws ValidationException
      * @throws InvalidCollectionActionException
      */
-    public static PostmanCollection pmcFactory(PostmanID id) throws IOException, InterruptedException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
-        return PostmanCollection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
+    public static Collection pmcFactory(PostmanID id) throws IOException, InterruptedException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {
+        return Collection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
     }
 
     
@@ -591,7 +578,6 @@ public class PostmanCollection extends PostmanItem {
      * @return HttpResponse
      */
     private HttpResponse executePostmanAPI(String endpoint) {
-        //String resolveURL = resolveVariables(endpoint);
         return null;
     }
     
@@ -709,11 +695,11 @@ public class PostmanCollection extends PostmanItem {
     
     /** 
      * 
-     * Set the <code>auth</code> object property of this collection with a {@link com.postman.collection.PostmanAuth} object containing the values.  
+     * Set the <code>auth</code> object property of this collection with a {@link com.postman.collection.AuthElement} object containing the values.  
      * 
      * @param auth The new auth values, or null to remove an existing auth.
      */
-    public void setAuth(PostmanAuth auth) {
+    public void setAuth(AuthElement auth) {
         this.auth = auth;
     }
 
@@ -724,7 +710,7 @@ public class PostmanCollection extends PostmanItem {
      * 
      * @return PostmanAuth The auth values, or null.  
      */
-    public PostmanAuth getAuth() {
+    public AuthElement getAuth() {
         return this.auth;
     }
 
@@ -785,8 +771,8 @@ public class PostmanCollection extends PostmanItem {
 
         gsonBuilder.registerTypeAdapter(mapType, new com.postman.collection.adapter.StringMapSerializer());
         gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.VarMapSerializer());
-        gsonBuilder.registerTypeAdapter(PostmanAuth.class, new com.postman.collection.adapter.AuthSerializer());
-        gsonBuilder.registerTypeAdapter(com.postman.collection.PostmanCollection.class, new com.postman.collection.adapter.CollectionSerializer());
+        gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthSerializer());
+        gsonBuilder.registerTypeAdapter(com.postman.collection.Collection.class, new com.postman.collection.adapter.CollectionSerializer());
         gsonBuilder.registerTypeAdapter(com.postman.collection.PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableSerializer());
 
         Gson customGson = gsonBuilder.create();
@@ -816,8 +802,92 @@ public class PostmanCollection extends PostmanItem {
         return null;
     }
 
+ /** 
+     * 
+     * Set the array of key-value pairs in this collections <code>variable</code> array element
+     * 
+     * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
+     */
+    public void setVariables(VariableListMap<PostmanVariable> vars) {
+        this.variable = vars;
+    }
+
     
+    /** 
+     * 
+     * Add or replace variable to the collection of variables comprising this collections <code>variable</code> array property.  If a variable with the same <code>key</code> already exists
+     * in the collection it is replaced.
+     * 
+     * @param varNew
+     */
+    public void addVariable(PostmanVariable varNew) {
+        if(this.variable == null) {
+            this.variable = new VariableListMap<PostmanVariable>();
+        }
+        this.variable.add(varNew);
+    }
 
+    
+    /** 
+     * 
+     * Remove variable with the specified key from the array of key-value pairs comprising this collections <code>variable</code> array element.  
+     * 
+     * @param key Key of the variable to remove
+     */
+    public void removeVariable(String key) {
+        if (this.variable == null) {
+            return;
+        }
+        this.variable.remove(key);
+        
 
+    }
 
+      /** 
+     * 
+     * Remove variable from the array of key-value pairs comprising this collections <code>variable</code> array element.  
+     * 
+     * @param varNew The variable to remove.  Matching is by the value of <code>key</code>
+     */
+    public void removeVariable(PostmanVariable varNew) {
+        this.removeVariable(varNew.getKey());
+    }
+
+    
+    /** 
+     * 
+     * Return the PostmanVariable key-value pair from this collection's <code>variable</code> array element, or null if it is not present.
+     * 
+     * @param key
+     * @return PostmanVariable
+     */
+    public PostmanVariable getVariable(String key) {
+            return this.variable.get(key);
+        
+    }
+
+    /** 
+     * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
+     * 
+     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     */
+    public VariableListMap<PostmanVariable> getVariables() {
+        return this.variable;
+    }
+
+    
+    /** 
+     * @param newVars
+     */
+    public void addVariables(VariableListMap<PostmanVariable> newVars) {
+        if(newVars == null) {
+            return;
+        }
+        if(this.variable == null) {
+            this.variable = new VariableListMap<PostmanVariable>();
+        }
+        this.variable.addAll(newVars);
+    }   
+
+    
 }

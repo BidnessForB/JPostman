@@ -125,18 +125,18 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @return boolean
      */
     public boolean add(PostmanVariable pvVar) {
-        int index;
+        
         if(pvVar == null || (pvVar.getKey() == null && pvVar.getValue() == null)) {
             throw new NullPointerException("Key and Value properties are both null");
         }
         if(this.containsKey(pvVar.getKey())) {
-            return false;
+            this.set(pvVar);
+            return true;
         }
         else {
             super.add(pvVar);
             return true;
         }
-        
     }
 
     
@@ -216,6 +216,13 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
         }
         return retVal;
         
+    }
+
+    public PostmanVariable set(PostmanVariable pvVar) {
+        if(!this.containsKey(pvVar.getKey())) {
+            return null;
+        }
+        return this.set(this.indexOf(pvVar), pvVar);
     }
     
     

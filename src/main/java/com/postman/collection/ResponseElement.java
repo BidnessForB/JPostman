@@ -3,9 +3,9 @@ package com.postman.collection;
 import java.util.ArrayList;
 /**
  * 
- * Class to encapsulate the <code>response</code> object property of a PostmanItem
+ * Class to encapsulate the <code>response</code> object property of a ItemElement
  * 
- * A PostmanRequest includes an optional array of expected responses: 
+ * A RequestElement includes an optional array of expected responses: 
  * <pre>
  *  "response": [
                 {
@@ -47,23 +47,23 @@ import java.util.ArrayList;
             ]
             </pre>
 
-The response object includes a PostmanRequest object describing the original request associated with this response.  
+The response object includes a RequestElement object describing the original request associated with this response.  
 
  * 
  * 
  */
-public class PostmanResponse extends PostmanCollectionElement {
+public class ResponseElement extends CollectionElement {
     private String name = "";
-    private PostmanRequest originalRequest = null;
+    private RequestElement originalRequest = null;
     private int code;
     private String status;
     private String _postman_previewlanguage = "";
-    private ArrayList<PostmanCookie> cookie = null;
+    private ArrayList<CookieElement> cookie = null;
     private String body = "";
     private VariableListMap<PostmanVariable> header;
 
-    public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
-            String _postman_previewlanguage, ArrayList<PostmanCookie> cookie, String body) {
+    public ResponseElement(String name, RequestElement originalRequest, int code, String status,
+            String _postman_previewlanguage, ArrayList<CookieElement> cookie, String body) {
         this.name = name;
         this.originalRequest = originalRequest;
         this.code = code;
@@ -94,7 +94,7 @@ public class PostmanResponse extends PostmanCollectionElement {
         return this.header;
     }
 
-    public PostmanResponse(String name, PostmanRequest req, String status, int code, String body) {
+    public ResponseElement(String name, RequestElement req, String status, int code, String body) {
         this.originalRequest = req;
         this.status = status;
         this.code = code;
@@ -126,11 +126,11 @@ public class PostmanResponse extends PostmanCollectionElement {
     
     /** 
      * 
-     * Get the value of the <code>originalRequest</code> for this response as a PostmanRequest, or null if it has not been set.
+     * Get the value of the <code>originalRequest</code> for this response as a RequestElement, or null if it has not been set.
      * 
-     * @return PostmanRequest
+     * @return RequestElement
      */
-    public PostmanRequest getOriginalRequest() {
+    public RequestElement getOriginalRequest() {
         return originalRequest;
     }
 
@@ -141,7 +141,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param originalRequest
      */
-    public void setOriginalRequest(PostmanRequest originalRequest) {
+    public void setOriginalRequest(RequestElement originalRequest) {
         this.originalRequest = originalRequest;
     }
 
@@ -212,11 +212,11 @@ public class PostmanResponse extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return an ArrayList containing the PostmanCookie objects comprising the value of the <code>cookie</code> array property
+     * Return an ArrayList containing the CookieElement objects comprising the value of the <code>cookie</code> array property
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanCookie}&#62; The cookies
+     * @return ArrayList&#60;{@link com.postman.collection.CookieElement}&#62; The cookies
      */
-    public ArrayList<PostmanCookie> getCookies() {
+    public ArrayList<CookieElement> getCookies() {
         return cookie;
     }
 
@@ -227,7 +227,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param cookie
      */
-    public void setCookies(ArrayList<PostmanCookie> cookie) {
+    public void setCookies(ArrayList<CookieElement> cookie) {
         this.cookie = cookie;
     }
 
