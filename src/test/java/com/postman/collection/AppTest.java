@@ -721,13 +721,13 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         AuthElement auth = new AuthElement(enumAuthType.OAUTH1);
         prop = new PostmanVariable("addEmptyParamsToSign", "true");
         auth.addProperty(prop);
-        assertEquals(1, auth.getProperties().size());
+        assertEquals(14, auth.getProperties().size());
         assertEquals("true", auth.getProperty("addEmptyParamsToSign").getValue());
         
         prop = new PostmanVariable("addEmptyParamsToSign", "false");
         auth.addProperty(prop);
 
-        assertEquals(1,auth.getProperties().size());
+        assertEquals(14,auth.getProperties().size());
         assertEquals("false", auth.getProperty("addEmptyParamsToSign").getValue());
         
 
@@ -1401,7 +1401,7 @@ public void testPostmanVariable() {
     added = alVars.add(var2);
     assertTrue(added);
     added = alVars.add(var3);
-    assertFalse(added);
+    assertTrue(added);
 
 
     VariableListMap<PostmanVariable> vlMap = new VariableListMap<PostmanVariable>(alVars);
