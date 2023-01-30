@@ -19,15 +19,14 @@ import java.util.ArrayList;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import java.util.Objects;
+
+
 
 import java.util.HashMap;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandler;
+
 import java.net.http.HttpResponse.BodyHandlers;
 
 import java.util.regex.Pattern;
@@ -67,58 +66,7 @@ public class Collection extends ItemGroup {
     private HashMap<String, String> info;
     private VariableListMap<PostmanVariable> variable = null;
     
-
-    
-    
-    
-    /** 
-     * @param args
-     */
-    public static void main(String[] args) {
-        Collection pmcTest = null;
-        String filePath = new java.io.File("").getAbsolutePath();
-        String resourcePath = "/src/main/resources/com/postman/collection";
-        
-        try {
-            pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/Nested.postman_collection.json"));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        ItemElement req = pmcTest.getItemElement("URL 1");
-
-        System.out.println(req.getCollection().getName());
-        
-
-        
-        
-    
-    
-
-}
-    
-    
-    public void uploadToPostman() {
-        //Do I have a postmanID? then I'm updating
-        if(this.getPostmanID() != null) {
-
-
-        }
-        //Otherwise I'm creating new
-    }
-
-    
-    /** 
-     * @param workspaceID
-     */
-    public void uploadToPostman(PostmanID workspaceID) {
-
-    }
-
-    
-
+ 
     /** 
      * Moves an item in the array of items contained by this collection from one parent to another.  
      * 
@@ -463,7 +411,6 @@ public class Collection extends ItemGroup {
         String strChunk = "";
         StringBuilder sbJson = new StringBuilder();
 
-        Collection pmcRetVal;
         try(FileReader fr = new FileReader(jsonFile);
             BufferedReader brItem  =new BufferedReader(fr)) {
             
@@ -514,7 +461,6 @@ public class Collection extends ItemGroup {
             String strColJson;
             Collection pmcRetVal;
             String apiToken = System.getenv("POSTMAN_API_KEY");
-            System.out.println("APIKEY LENGTH: " + (apiToken == null ? "null" : apiToken.length()));
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
             }
@@ -572,15 +518,6 @@ public class Collection extends ItemGroup {
         return Collection.pmcFactory(new URL("https://api.getpostman.com/collections/" + id));
     }
 
-    
-    /** 
-     * @param endpoint
-     * @return HttpResponse
-     */
-    private HttpResponse executePostmanAPI(String endpoint) {
-        return null;
-    }
-    
     /** 
      * @return String
      */
@@ -728,10 +665,10 @@ public class Collection extends ItemGroup {
         String curVarName;
         String curVarValue;
         String strResolved = src;
-        boolean found = false;
+        
         PostmanVariable curVar;
         while(maVar.find()) {
-            found = true;
+            
             for(int i = 1; i < maVar.groupCount(); i = i + 2 ) {
                 curVarName = maVar.group(i);
                 curVar = this.getVariable(curVarName);

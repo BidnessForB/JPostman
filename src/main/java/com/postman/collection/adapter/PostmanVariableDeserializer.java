@@ -2,13 +2,11 @@ package com.postman.collection.adapter;
 
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonDeserializer;
 import java.lang.reflect.Type;
-import com.google.gson.JsonNull;
 
 public class PostmanVariableDeserializer implements JsonDeserializer<PostmanVariable> {
 
@@ -31,24 +29,12 @@ public class PostmanVariableDeserializer implements JsonDeserializer<PostmanVari
         
         PostmanVariable pvVar = null;
         JsonObject jObj = jElement.getAsJsonObject();
-        
-        String curKey = "";
         String curVal = "";
+        
 
-
-
-        
-        
-        
-        
-        
-            try {
-                curVal = jObj.get("value") == null || jObj.get("value").isJsonNull() ? null : jObj.get("value").getAsString();
-                pvVar = new PostmanVariable(jObj.get("key").getAsString(), curVal);
-            }
-            catch(Exception e) {
-                System.out.println(e.getMessage());
-            }
+            curVal = jObj.get("value") == null || jObj.get("value").isJsonNull() ? null : jObj.get("value").getAsString();
+            pvVar = new PostmanVariable(jObj.get("key").getAsString(), curVal);
+            
             if(jObj.get("type") != null) {
                 pvVar.setType(jObj.get("type").getAsString());
             }
@@ -56,10 +42,6 @@ public class PostmanVariableDeserializer implements JsonDeserializer<PostmanVari
             {
                 pvVar.setDescription(jObj.get("description").getAsString());
             }
-            
-            
-
-        
         
         return pvVar;
 

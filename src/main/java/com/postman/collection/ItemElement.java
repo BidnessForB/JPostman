@@ -1,6 +1,4 @@
 package com.postman.collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.ArrayList;
     /**
      * 
@@ -140,7 +138,7 @@ public abstract class ItemElement extends CollectionElement {
     
     
 
-    public ItemElement() {
+    protected ItemElement() {
         
     }
      /**
@@ -151,7 +149,7 @@ public abstract class ItemElement extends CollectionElement {
      * @param name  The name of the object
      * @param parent The ItemElement containing this item. 
      */
-    public ItemElement(String name, ItemGroup parent) {
+    protected ItemElement(String name, ItemGroup parent) {
         this(name);
         this.setParent(parent);
 
@@ -162,7 +160,7 @@ public abstract class ItemElement extends CollectionElement {
     * @param name The name of the object
     */
     
-    public ItemElement(String name) {
+    protected ItemElement(String name) {
         this.setName(name);
     }
 
@@ -256,6 +254,7 @@ public abstract class ItemElement extends CollectionElement {
      * 
      * @return ItemElement The parent item.
      */
+    @Override
     public ItemGroup getParent() {
         return this.parent;
     }
@@ -321,7 +320,7 @@ public abstract class ItemElement extends CollectionElement {
      * @param code The source code for the script
      * 
      */
-    public void setTestScript(String code) throws Exception {
+    public void setTestScript(String code)  {
 
         EventElement prEvent = new EventElement(enumEventType.TEST, code);
         this.addEventElement(prEvent);
@@ -349,8 +348,7 @@ public abstract class ItemElement extends CollectionElement {
     @Override
     public String getKey() {
 
-        // return this.key;
-        return this.name;
+        return this.getName();
     }
 
     

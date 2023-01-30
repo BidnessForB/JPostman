@@ -1,9 +1,6 @@
 package com.postman.collection;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.lang.Iterable;
 
 
 
@@ -86,6 +83,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @param index
      * @return PostmanVariable
      */
+    @Override
     public PostmanVariable get(int index) {
         return super.get(index);
     }
@@ -109,6 +107,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @param pvVar
      * @return int
      */
+    
     public int indexOf(PostmanVariable pvVar) {
         for(int i = 0; i < this.size(); i++)
         {
@@ -124,6 +123,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @param pvVar
      * @return boolean
      */
+    @Override
     public boolean add(PostmanVariable pvVar) {
         
         if(pvVar == null || (pvVar.getKey() == null && pvVar.getValue() == null)) {
@@ -167,7 +167,7 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
                 this.add(i, vars.get(i));
                 changed = true;
             }
-            this.size();
+            
         }
         return changed;
 }
@@ -201,8 +201,14 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
      * @return PostmanVariable
      * @throws IndexOutOfBoundsException
      */
+    @Override
     public PostmanVariable set(int index, PostmanVariable pvVar) throws IndexOutOfBoundsException {
-        //Disallow duplicate keys
+        
+        if(index > this.size()) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index + "> " + this.size());
+        }
+
+
         PostmanVariable retVal = null;
         int curIndex;
 
@@ -210,7 +216,7 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
             retVal = super.set(index, pvVar);
         }
         else if(this.containsKey(pvVar.getKey()) && this.indexOf(pvVar) != index) {
-            curIndex = this.indexOf(pvVar.getKey());
+            curIndex = this.indexOf(pvVar);
             retVal = super.remove(curIndex);
             super.add(curIndex, pvVar);
         }

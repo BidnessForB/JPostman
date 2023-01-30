@@ -1,7 +1,7 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -301,7 +301,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         Collection test2;
         try {
             test2 =Collection.pmcFactory(new File(filePath + "/test-output/TEST-testBodyImportExport.postman_collection.json"));
-            assertTrue(pmcTest.getRequest("Raw-text XML").getRequestElement().getBody().getRaw().equals(test2.getRequest("Raw-text XML").getRequestElement().getBody().getRaw()));
+            assertEquals(pmcTest.getRequest("Raw-text XML").getRequestElement().getBody().getRaw(), test2.getRequest("Raw-text XML").getRequestElement().getBody().getRaw());
             
         }
         catch(IOException e) {
@@ -1341,7 +1341,10 @@ public void testVariableResolution() {
 
         liUrls.add(new UrlElement("{{baseUrl}}/{{var1}}.com/:path1/bat.json"));
         liUrls.add(new UrlElement("https://{{var1}}.com/:path1/bat.json?{{var1}}={{var2}}"));
-
+        //Multiple path variables
+        liUrls.add(new UrlElement("https://{{var1}}.com/:path1/more/path/:path2/bat.json?{{var1}}={{var2}}"));
+        //Missing path variable
+        liUrls.add(new UrlElement("{{baseUrl}}/{{var1}}.com/:path4/bat.json"));
         
 
         pmcTest = Collection.pmcFactory();
@@ -1349,6 +1352,7 @@ public void testVariableResolution() {
         pmcTest.addVariable(new PostmanVariable("baseUrl","http://test.com"));
         pmcTest.addVariable(new PostmanVariable("var1", "var1value"));
         pmcTest.addVariable(new PostmanVariable("var2","333"));
+        
         for (int i = 0; i < liUrls.size(); i++) {
             try {
                 pmcTest.addRequest(new RequestElement(enumHTTPRequestMethod.GET, liUrls.get(i)), "URL " + (i + 1));
@@ -1365,10 +1369,17 @@ public void testVariableResolution() {
         
         url = pmcTest.getRequest("URL 2").getRequestElement().getUrl(true);
         //url = pmcTest.resolveVariables(url);
-        assertTrue(url.equals("https://var1value.com/:path1/bat.json?var1value=333"));
+        assertEquals("https://var1value.com/:path1/bat.json?var1value=333", url);
 
         pmcTest.getRequest("URL 1").getRequestElement().getUrlElement().setPathVariable(new PostmanVariable("path1", "path1value"));
-        assertTrue(pmcTest.getRequest("URL 1").getRequestElement().getUrl(true).equals("http://test.com/var1value.com/path1value/bat.json"));
+        pmcTest.getRequest("URL 3").getRequestElement().getUrlElement().setPathVariable(new PostmanVariable("path2", "path2value"));
+
+        pmcTest.getRequest("URL 4").getRequestElement().getUrl(true);
+        assertEquals("https://var1value.com/:path1/more/path/path2value/bat.json?var1value=333", pmcTest.getRequest("URL 3").getRequestElement().getUrl(true));
+        assertEquals("http://test.com/var1value.com/:path4/bat.json", pmcTest.getRequest("URL 4").getRequestElement().getUrl(true));
+        
+        assertEquals("http://test.com/var1value.com/path1value/bat.json", pmcTest.getRequest("URL 1").getRequestElement().getUrl(true));
+        
     }
     catch(Exception e) {
         //assertTrue("Unexpected exception: " + e.getMessage(), false );
@@ -1376,13 +1387,6 @@ public void testVariableResolution() {
     }
 }
 
-@Test
-public void testByRef() throws IOException {
-    pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath + "/example-catfact.postman_collection.json" ));
-    AuthElement auth = pmcTest.getAuth();
-    auth.setType(enumAuthType.BEARER);
-    System.out.println("Foo");
-}
 
 @Test
 public void testPostmanVariable() {
@@ -1390,8 +1394,8 @@ public void testPostmanVariable() {
     PostmanVariable var2 = new PostmanVariable("var2","var2value");
     PostmanVariable var3 = new PostmanVariable("var1","var1value");
 
-    assertFalse(var1.equals(var2));
-    assertTrue(var1.equals(var3));
+    assertNotEquals(var1, var2);
+    assertEquals(var1, var3);
 
 
     VariableListMap<PostmanVariable> alVars = new VariableListMap<PostmanVariable>();
@@ -1406,8 +1410,35 @@ public void testPostmanVariable() {
 
     VariableListMap<PostmanVariable> vlMap = new VariableListMap<PostmanVariable>(alVars);
     vlMap.addAll(alVars);
+    vlMap.set(2, new PostmanVariable("var1", "newvalue"));
+    try {
+        vlMap.set(5, new PostmanVariable("var5", "value5"));
+    }
+    catch(IndexOutOfBoundsException e)
+    {
+        assertTrue("Expected exception caught", true);
+    }
+    try {
+        vlMap.remove(5);
+    }
+    catch(IndexOutOfBoundsException e)
+    {
+        assertTrue("Expected exception caught", true);
+    }
+    vlMap.remove(var3);
+    assertEquals(2, vlMap.size());
+
+    vlMap.remove(var2);
+    assertEquals(1, vlMap.size());
+
     
-    
+    //Shouldn't find due to different value
+    vlMap.remove(var1);
+    assertEquals(1, vlMap.size());
+    var1.setValue("newvalue");
+    vlMap.remove(var1);
+    assertEquals(0, vlMap.size());
+    vlMap.remove(var1);
     
 }
     @Test
@@ -1423,21 +1454,21 @@ public void testPostmanVariable() {
             req = new RequestElement(enumHTTPRequestMethod.GET, "https://foo.com/bar/bat.json");
             parent = req.getParent();
             col = req.getCollection();
-            assertTrue(parent == null);
-            assertTrue(col == null);
+            assertNull(parent);
+            assertNull(col);
 
             pmcTest = Collection.pmcFactory();
             pmcTest.setName("TEST parent chain");
             reqObj = pmcTest.addRequest(req, "Req 1");
 
-            assertTrue(req.getParent() != null);
-            assertTrue(req.getCollection().getName().equals("TEST parent chain"));
+            assertNotNull(req.getParent());
+            assertEquals("TEST parent chain", req.getCollection().getName());
 
             folder = pmcTest.addFolder("Folder 1");
             pmcTest.moveItem(reqObj, folder);
-            assertTrue(reqObj.getParent() != null);
-            assertTrue(((ItemElement)reqObj).getParent().getName().equals("Folder 1"));
-            assertTrue(reqObj.getCollection().getName().equals("TEST parent chain"));
+            assertNotNull(reqObj.getParent());
+            assertEquals("Folder 1", ((ItemElement)reqObj).getParent().getName());
+            assertEquals("TEST parent chain", reqObj.getCollection().getName());
 
         }
         catch(Exception e) {
