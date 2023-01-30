@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import java.util.HashMap;
+
     /** 
      * 
      * Class encapsulating the "auth" property of a CollectionItem.  Collections and requests can each have a single auth property,
@@ -44,7 +45,8 @@ import java.util.HashMap;
 public class AuthElement extends CollectionElement {
 
     private String type = "";
-    public HashMap<String, PostmanVariable> properties = new HashMap<String, PostmanVariable>();
+    //public VariableListMap<PostmanVariable> properties = new VariableListMap<PostmanVariable>();
+    private VariableListMap properties = null;
     private transient String[] arrTypes = new String[10];
 
     
@@ -61,7 +63,7 @@ public class AuthElement extends CollectionElement {
         arrTypes[enumAuthType.AKAMAI.ordinal()] = "edgegrid";
         arrTypes[enumAuthType.APIKEY.ordinal()] = "apikey";
         arrTypes[enumAuthType.AWS.ordinal()] = "awsv4";
-        arrTypes[enumAuthType.BEARER.ordinal()] = "apikey";
+        arrTypes[enumAuthType.BEARER.ordinal()] = "bearer";
         arrTypes[enumAuthType.BASIC.ordinal()] = "basic";
         arrTypes[enumAuthType.DIGEST.ordinal()] = "digest";
         arrTypes[enumAuthType.HAWK.ordinal()] = "hawk";
@@ -96,7 +98,7 @@ public class AuthElement extends CollectionElement {
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
      * @param properties HashMap&#60;String, PostmanVariable&#62; containing the properties of this auth element
      */
-    public AuthElement(enumAuthType type, HashMap<String, PostmanVariable> properties) {
+    public AuthElement(enumAuthType type, VariableListMap<PostmanVariable> properties) {
         this(type);
         this.setType(type);
         this.setProperties(properties);
@@ -162,12 +164,14 @@ public class AuthElement extends CollectionElement {
     
     /** 
      * 
-     * Set the underlying type property of this auth object using an enumerated value
+     * Set the underlying type property of this auth object using an enumerated value.  If the type was previously set to a different value, the properties collection
+     * is set to null.
      * 
      * @param type Enumerated value of the underlying type property
      */
     public void setType(enumAuthType type) {
         this.type = arrTypes[(type.ordinal())];
+        this.properties = AuthElement.getPropertiesForType(type);
     }
 
     
@@ -176,7 +180,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @param properties
      */
-    public void setProperties(HashMap<String, PostmanVariable> properties) {
+    public void setProperties(VariableListMap<PostmanVariable> properties) {
         this.properties = properties;
     }
 
@@ -199,7 +203,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @return HashMap&#60;String, PostmanVariable&#62;
      */
-    public HashMap<String, PostmanVariable> getProperties() {
+    public VariableListMap<PostmanVariable> getProperties() {
 
         return this.properties;
     }
@@ -213,9 +217,9 @@ public class AuthElement extends CollectionElement {
      */
     public void addProperty(PostmanVariable newElement)  {
         if(this.properties == null) {
-            this.properties = new HashMap<String, PostmanVariable>();
+            this.properties = new VariableListMap<PostmanVariable>();
         }
-        this.properties.put(newElement.getKey(), newElement);
+        this.properties.add(newElement);
     }
 
     
@@ -255,11 +259,117 @@ public class AuthElement extends CollectionElement {
      */
     public void addProperty(String key, String value)  {
         if(this.properties == null) {
-            this.properties = new HashMap<String, PostmanVariable>();
+            this.properties = new VariableListMap<PostmanVariable>();
         }
-        this.properties.put(key, new PostmanVariable(key, value));
+        this.properties.add(new PostmanVariable(key, value));
 
     }
+
+    private static VariableListMap<PostmanVariable> getPropertiesForType(enumAuthType authType) {
+        
+        VariableListMap<PostmanVariable> retVal = new VariableListMap<PostmanVariable>();
+        
+        switch (authType) {
+            case AKAMAI: {
+                retVal.add(new PostmanVariable("headersToSign", null));
+                retVal.add(new PostmanVariable("baseURL",null));
+                retVal.add(new PostmanVariable("timestamp",null));
+                retVal.add(new PostmanVariable("nonce",null));
+                retVal.add(new PostmanVariable("clientSecret",null));
+                retVal.add(new PostmanVariable("clientToken",null));
+                retVal.add(new PostmanVariable("accessToken",null));
+                break;
+            }
+            case APIKEY: {
+                retVal.add(new PostmanVariable("key",null));
+                retVal.add(new PostmanVariable("value",null));
+                retVal.add(new PostmanVariable("in",null));
+                break;
+            }
+            case AWS: { 
+                retVal.add(new PostmanVariable("sessionToken", null));
+                retVal.add(new PostmanVariable("service", null));
+                retVal.add(new PostmanVariable("secretKey", null));
+                retVal.add(new PostmanVariable("accessKey", null));
+                retVal.add(new PostmanVariable("addAuthDataToQuery", null));
+                break;
+            }
+            case BEARER:{
+                retVal.add(new PostmanVariable("key","token"));
+                retVal.add(new PostmanVariable("value",null));
+                retVal.add(new PostmanVariable("type","string"));
+                break;
+            }
+            case BASIC: {
+                retVal.add(new PostmanVariable("password",null));
+                retVal.add(new PostmanVariable("username",null));
+                break;
+            }
+            case DIGEST: {
+                retVal.add(new PostmanVariable("opaque",null));
+                retVal.add(new PostmanVariable("clientNonce",null));
+                retVal.add(new PostmanVariable("nonceCount",null));
+                retVal.add(new PostmanVariable("qop",null));
+                retVal.add(new PostmanVariable("algorithim",null));
+                retVal.add(new PostmanVariable("nonce",null));
+                retVal.add(new PostmanVariable("realm",null));
+                retVal.add(new PostmanVariable("password",null));
+                break;
+            }
+
+            case HAWK: {
+                retVal.add(new PostmanVariable("includePayloadHash",null));
+                retVal.add(new PostmanVariable("timestamp",null));
+                retVal.add(new PostmanVariable("delegation",null));
+                retVal.add(new PostmanVariable("app",null));
+                retVal.add(new PostmanVariable("extraData",null));
+                retVal.add(new PostmanVariable("nonce",null));
+                retVal.add(new PostmanVariable("user",null));
+                retVal.add(new PostmanVariable("authKey",null));
+                retVal.add(new PostmanVariable("algorithim",null));
+                break;
+            }
+
+            case OAUTH1: {
+                retVal.add(new PostmanVariable("addEmptyParamsToSign", null, null, "boolean"));
+                retVal.add(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
+                retVal.add(new PostmanVariable("realm", null));
+                retVal.add(new PostmanVariable("nonce",null));
+                retVal.add(new PostmanVariable("timestamp",null));
+                retVal.add(new PostmanVariable("verifier",null));
+                retVal.add(new PostmanVariable("callback",null));
+                retVal.add(new PostmanVariable("tokenSecret",null));
+                retVal.add(new PostmanVariable("token",null));
+                retVal.add(new PostmanVariable("consumerSecret",null));
+                retVal.add(new PostmanVariable("consumerKey",null));
+                retVal.add(new PostmanVariable("signatureMethod",null));
+                retVal.add(new PostmanVariable("version",null));
+                retVal.add(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
+                break;
+            }
+            case OAUTH2: {
+                retVal.add(new PostmanVariable("grant_type",null));
+                retVal.add(new PostmanVariable("tokenName",null));
+                retVal.add(new PostmanVariable("tokenType",null));
+                retVal.add(new PostmanVariable("accessToken", null));
+                retVal.add(new PostmanVariable("addTokenTo", null));
+                break;
+            }
+            case NTLM: {
+                retVal.add(new PostmanVariable("workstation",null));
+                retVal.add(new PostmanVariable("domain", null));
+                retVal.add(new PostmanVariable("password", null));
+                retVal.add(new PostmanVariable("username", null));
+                break;
+            }
+            default: {
+                retVal = null;
+            }
+        }
+            return retVal;
+
+    
+}
 
     
 

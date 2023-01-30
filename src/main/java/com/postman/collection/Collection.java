@@ -127,13 +127,16 @@ public class Collection extends ItemGroup {
      * @param parentKey
      * @throws InvalidCollectionActionException If either the parent or item to be moved aren't present in the <code>item</code> array
      */
-    public void moveItem(String itemToMoveKey, String parentKey) throws InvalidCollectionActionException {
+    public void moveItem(String itemToMoveKey, String parentKey) throws RecursiveItemAddException, InvalidCollectionActionException {
         ItemElement itemToMove = this.getItemElement(itemToMoveKey);
-        ItemElement parent = this.getItemElement(parentKey);
+        Folder parent = this.getFolder(parentKey);
 
         if (itemToMove == null || parent == null) {
             throw new InvalidCollectionActionException("Attempt to move a null item, or an item to a null parent");
         }
+
+        
+        this.moveItem(itemToMove, parent);
 
     }
 
@@ -575,7 +578,6 @@ public class Collection extends ItemGroup {
      * @return HttpResponse
      */
     private HttpResponse executePostmanAPI(String endpoint) {
-        //String resolveURL = resolveVariables(endpoint);
         return null;
     }
     

@@ -33,18 +33,17 @@ public class AuthSerializer implements JsonSerializer<AuthElement> {
         jsonAuth.addProperty("type", src.getAuthTypeAsString());
 
         JsonObject curJVar;
-        Iterator<String> keys = src.getProperties().keySet().iterator();
-        String curKey;
-        PostmanVariable curVar;
-        while (keys.hasNext()) {
-            curKey = (String) keys.next();
-            curVar = src.getProperty(curKey);
+        
+        
+        for (PostmanVariable curVar : src.getProperties()) {
+            
             curJVar = new JsonObject();
             curJVar.addProperty("key", curVar.getKey());
             curJVar.addProperty("value", curVar.getValue());
             curJVar.addProperty("type", "string");
             vars.add(curJVar);
         }
+        
 
         jsonAuth.add(src.getAuthTypeAsString(), vars);
         return jsonAuth;

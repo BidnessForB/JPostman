@@ -391,8 +391,8 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest.addRequest(req, "AWS request");
 
         auth = new AuthElement(enumAuthType.BEARER);
-        auth.addProperty("key", "API-KEY");
-        auth.addProperty("value", "x-api-key");
+        auth.addProperty("key", "token");
+        auth.addProperty("value", "BearerTokenValue");
         req = new RequestElement(enumHTTPRequestMethod.GET, "https://postman-echo.com/post");
         req.setAuth(auth);
         pmcTest.addRequest(req, "BEARER request");
@@ -418,7 +418,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest.addRequest(req, "DIGEST request");
 
         auth = new AuthElement(enumAuthType.HAWK);
-        auth.addProperty("includePayloadHash", "true");
+        auth.addProperty(new PostmanVariable("includePayloadHash", "true","boolean"));
         auth.addProperty("timestamp", "hawkTimestamp");
         auth.addProperty("delegation", "hawk-dlg");
         auth.addProperty("app", "HawkApp");
@@ -731,7 +731,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         assertEquals("false", auth.getProperty("addEmptyParamsToSign").getValue());
         
 
-        HashMap<String, PostmanVariable> nullProps = null;
+        VariableListMap<PostmanVariable> nullProps = null;
         auth.setProperties(nullProps);
         PostmanVariable curVar = auth.getProperty("addEmptyParamsToSign");
         assertNull(curVar);
@@ -1374,6 +1374,14 @@ public void testVariableResolution() {
         //assertTrue("Unexpected exception: " + e.getMessage(), false );
         e.printStackTrace();
     }
+}
+
+@Test
+public void testByRef() throws IOException {
+    pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath + "/example-catfact.postman_collection.json" ));
+    AuthElement auth = pmcTest.getAuth();
+    auth.setType(enumAuthType.BEARER);
+    System.out.println("Foo");
 }
 
 @Test
