@@ -1,0 +1,2587 @@
+{
+	"info": {
+		"_postman_id": "6b3a91c4-d89d-4755-bb95-e41ef28b969c",
+		"name": "Payment Initiation - 1 Copy",
+		"description": "This service domain provides a customer payment service. It captures the payer and payee details and other key properties of the payment and orchestrates the transaction. It provides support for repeating/scheduled payments\n\nContact Support:\n Name: BIAN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21868609"
+	},
+	"item": [
+		{
+			"name": "PaymentInitiation",
+			"item": [
+				{
+					"name": "{paymentinitiationid}",
+					"item": [
+						{
+							"name": "UpCR Update details of a payment transaction instruction",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"TestLibrary_folder\"));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"eval(pm.collectionVariables.get(\"TestLibrary_collection\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "{{response-code}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										":paymentinitiationid",
+										"Update"
+									],
+									"variable": [
+										{
+											"key": "paymentinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "UpCR Update details of a payment transaction instruction"
+							},
+							"response": [
+								{
+									"name": "UpdatePaymentInitiationTransactionResponse",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"aliquip eiusmod Lorem ex\",\n    \"RecurringPaymentRecord\": \"culpa Duis\",\n    \"RecurringPaymentCustomerReference\": \"irure adipisicing ex quis minim\",\n    \"RecurringPaymentReference\": \"deserunt cupidatat reprehenderit ut\",\n    \"PayerReference\": \"aliqua consequat elit proident veniam\",\n    \"PayerBankReference\": \"id qui\",\n    \"PayerProductInstanceReference\": \"elit cillum fugiat cupidatat sunt\",\n    \"PayeeReference\": \"ea aliquip elit et\",\n    \"PayeeBankReference\": \"dolore amet\",\n    \"PayeeProductInstanceReference\": \"est non\",\n    \"Amount\": \"sit mollit in velit nostrud\",\n    \"Currency\": \"adipisicing aute mollit deserunt\",\n    \"DateType\": \"dolore non fugiat\",\n    \"PaymentFeesCharges\": \"in Duis\",\n    \"PaymentMechanism\": \"amet Lorem adipisicing\",\n    \"PaymentPurpose\": \"ut sunt minim\",\n    \"DocumentDirectoryEntryInstanceReference\": \"fugiat laboris non\",\n    \"DocumentContent\": \"eiusmod ullamco dolore id\"\n  }\n}"
+								},
+								{
+									"name": "BadRequest",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "NotFound",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "TooManyRequests",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "InternalServerError",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Update"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								}
+							]
+						},
+						{
+							"name": "ReCR Retrieve details about a payment transaction",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const yaml =  pm.environment.get('js_yaml');",
+											"(new Function(yaml))();",
+											"",
+											"var api = 'Payment Initiation';",
+											"",
+											"var path = pm.environment.get(\"schema_path\");",
+											"//var method = 'get';",
+											"var method = pm.request.method.toLowerCase();",
+											"var status = 200;",
+											"//BRKC Let's make it dynamic with different responses.\u0010",
+											"if(pm.request.headers.has(\"x-mock-response-code\")) {",
+											"    var status = pm.request.headers.one(\"x-mock-response-code\").disabled ? 200 : parseInt(pm.request.headers.get(\"x-mock-response-code\"));",
+											"    ",
+											"    status = (status == undefined || isNaN(status)  ? 200 : status);",
+											"    console.log(\"STATUS: \" + status); ",
+											"}",
+											"",
+											"",
+											"// First Test - Baseline Status Code",
+											"pm.test(\"Status code is \" + status, function () {",
+											"    pm.response.to.have.status(status);",
+											"    ",
+											"});",
+											"",
+											"// Pull variables needed to pull the OpenAPI",
+											"var postman_api_key = pm.environment.get(\"postmanApiKey\");",
+											"var api_id = pm.environment.get(\"apiId\");",
+											"var api_version_id = pm.environment.get(\"apiVersionId\");",
+											"var schema_id = pm.environment.get(\"schemaId\");",
+											"",
+											"// Pull the OpenAPI from the Postman API",
+											"var api_url = 'https://api.getpostman.com/apis/' + api_id + '/versions/' + api_version_id + '/schemas/' + schema_id;",
+											"",
+											"const apiRequest = {",
+											"  url: api_url,",
+											"  method: 'GET',",
+											"  header: 'X-Api-Key:' + postman_api_key,",
+											"};",
+											"",
+											"pm.sendRequest(apiRequest, function (err, res) {",
+											"",
+											"    if (err) {",
+											"        console.log(err);",
+											"    } else {   ",
+											"",
+											"        // Pull Schema from API response        ",
+											"        var api_response = res.json();  ",
+											"        ",
+											"        ",
+											"        var openapi = jsyaml.load(api_response.schema.schema);",
+											"        ",
+											"        // Grab the Response",
+											"        console.log(\"METHOD: \" + method + \" STATUS: \" + status + \" PATH: \" + path);",
+											"        var res = openapi.paths[path][method].responses[status]['$ref'];",
+											"        ",
+											"        res = res.replace('#/components/responses/', '');",
+											"",
+											"        // Grab the Schema",
+											"        var ref = openapi.components.responses[res].content['application/json'].schema['$ref'];",
+											"        ref = ref.replace('#/components/schemas/', '');",
+											"        ",
+											"        var item = openapi.components.schemas[ref];",
+											"",
+											"        // Prepare what is needed for AJV",
+											"        var schema = {};",
+											"        schema.type = \"object\"",
+											"        schema.items = item;",
+											"        ",
+											"        // Validate the response with AJV",
+											"        var Ajv = require('ajv');",
+											"        ajv = new Ajv({logger: console});",
+											"        pm.test('Validating response against ' + ref + ' schema from the ' + api + ' OpenAPI', function() {",
+											"            var data = pm.response.json();",
+											"            pm.expect(ajv.validate(schema, data)).to.be.true;",
+											"        });",
+											"",
+											"    }    ",
+											"",
+											"});"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var path = pm.request.url.getPath(true);",
+											"var paths = pm.request.url.path;",
+											"var schemaPath = '';",
+											"",
+											"paths.forEach(path => {",
+											"    if(path.substring(0,1) === ':') {",
+											"        path = \"{\" + path.substring(1) + \"}\";",
+											"    }",
+											"        schemaPath = schemaPath + \"/\" + path;",
+											"});",
+											"",
+											"pm.environment.set(\"schema_path\", schemaPath);",
+											"",
+											"//Wouldn't it be cool if we could actually do this?",
+											"//pm.request.headers.upsert({\"key\":\"x-mock-response-code\",\"value\":\"{{response-code}}\",\"disabled\":(pm.environment.get(\"use_mock_response\") === \"false\") });",
+											"",
+											"",
+											"",
+											"",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "{{response-code}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										":paymentinitiationid",
+										"Retrieve"
+									],
+									"variable": [
+										{
+											"key": "paymentinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "ReCR Retrieve details about a payment transaction"
+							},
+							"response": [
+								{
+									"name": "RetrievePaymentInitiationTransactionResponse",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"minim id\",\n    \"RecurringPaymentRecord\": \"reprehenderit enim aute elit non\",\n    \"RecurringPaymentCustomerReference\": \"in nisi reprehenderit\",\n    \"RecurringPaymentReference\": \"dolor elit cupidatat sit\",\n    \"PayerReference\": \"eiusmod qui sed exercitation\",\n    \"PayerBankReference\": \"occaecat\",\n    \"PayerProductInstanceReference\": \"eiusmod nisi ullamco\",\n    \"PayeeReference\": \"in cillum anim elit\",\n    \"PayeeBankReference\": \"nulla eu dolor in aliquip\",\n    \"PayeeProductInstanceReference\": \"cillum Duis\",\n    \"Amount\": \"Ut ut aliqua ad\",\n    \"Currency\": \"incididunt deserunt nisi\",\n    \"DateType\": \"amet aute anim\",\n    \"PaymentFeesCharges\": \"adipisicing officia mollit\",\n    \"PaymentMechanism\": \"velit veni\",\n    \"PaymentPurpose\": \"ut deserunt in in\",\n    \"DocumentDirectoryEntryInstanceReference\": \"Excepteur magna labore\",\n    \"DocumentContent\": \"in et magna\"\n  }\n}"
+								},
+								{
+									"name": "BadRequest",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "NotFound",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "TooManyRequests",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "InternalServerError",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								}
+							]
+						},
+						{
+							"name": "ReBQ Retrieve details about a payment transaction compliance check",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var path = pm.request.url.getPath(true);",
+											"var paths = pm.request.url.path;",
+											"var schemaPath = '';",
+											"",
+											"paths.forEach(path => {",
+											"    if(path.substring(0,1) === ':') {",
+											"        path = \"{\" + path.substring(1) + \"}\";",
+											"    }",
+											"        schemaPath = schemaPath + \"/\" + path;",
+											"});",
+											"",
+											"pm.environment.set(\"schema_path\", schemaPath);",
+											"",
+											"//Wouldn't it be cool if we could actually do this?",
+											"//pm.request.headers.upsert({\"key\":\"x-mock-response-code\",\"value\":\"{{response-code}}\",\"disabled\":(pm.environment.get(\"use_mock_response\") === \"false\") });",
+											"",
+											"",
+											"",
+											"",
+											"",
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const yaml =  pm.environment.get('js_yaml');",
+											"(new Function(yaml))();",
+											"",
+											"var api = 'Payment Initiation';",
+											"",
+											"var path = pm.environment.get(\"schema_path\");",
+											"//var method = 'get';",
+											"var method = pm.request.method.toLowerCase();",
+											"var status = 200;",
+											"//BRKC Let's make it dynamic with different responses.\u0010",
+											"if(pm.request.headers.has(\"x-mock-response-code\")) {",
+											"    var status = pm.request.headers.one(\"x-mock-response-code\").disabled ? 200 : parseInt(pm.request.headers.get(\"x-mock-response-code\"));",
+											"    ",
+											"    status = (status == undefined || isNaN(status)  ? 200 : status);",
+											"    console.log(\"STATUS: \" + status); ",
+											"}",
+											"",
+											"",
+											"// First Test - Baseline Status Code",
+											"pm.test(\"Status code is \" + status, function () {",
+											"    pm.response.to.have.status(status);",
+											"    ",
+											"});",
+											"",
+											"// Pull variables needed to pull the OpenAPI",
+											"var postman_api_key = pm.environment.get(\"postmanApiKey\");",
+											"var api_id = pm.environment.get(\"apiId\");",
+											"var api_version_id = pm.environment.get(\"apiVersionId\");",
+											"var schema_id = pm.environment.get(\"schemaId\");",
+											"",
+											"// Pull the OpenAPI from the Postman API",
+											"var api_url = 'https://api.getpostman.com/apis/' + api_id + '/versions/' + api_version_id + '/schemas/' + schema_id;",
+											"",
+											"const apiRequest = {",
+											"  url: api_url,",
+											"  method: 'GET',",
+											"  header: 'X-Api-Key:' + postman_api_key,",
+											"};",
+											"",
+											"pm.sendRequest(apiRequest, function (err, res) {",
+											"",
+											"    if (err) {",
+											"        console.log(err);",
+											"    } else {   ",
+											"",
+											"        // Pull Schema from API response        ",
+											"        var api_response = res.json();  ",
+											"        ",
+											"        ",
+											"        var openapi = jsyaml.load(api_response.schema.schema);",
+											"        ",
+											"        // Grab the Response",
+											"        console.log(\"METHOD: \" + method + \" STATUS: \" + status + \" PATH: \" + path);",
+											"        var res = openapi.paths[path][method].responses[status]['$ref'];",
+											"        ",
+											"        res = res.replace('#/components/responses/', '');",
+											"",
+											"        // Grab the Schema",
+											"        var ref = openapi.components.responses[res].content['application/json'].schema['$ref'];",
+											"        ref = ref.replace('#/components/schemas/', '');",
+											"        ",
+											"        var item = openapi.components.schemas[ref];",
+											"",
+											"        // Prepare what is needed for AJV",
+											"        var schema = {};",
+											"        schema.type = \"object\"",
+											"        schema.items = item;",
+											"        ",
+											"        // Validate the response with AJV",
+											"        var Ajv = require('ajv');",
+											"        ajv = new Ajv({logger: console});",
+											"        pm.test('Validating response against ' + ref + ' schema from the ' + api + ' OpenAPI', function() {",
+											"            var data = pm.response.json();",
+											"            pm.expect(ajv.validate(schema, data)).to.be.true;",
+											"        });",
+											"",
+											"    }    ",
+											"",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "{{response-code}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										":paymentinitiationid",
+										"Compliance",
+										":complianceid",
+										"Retrieve"
+									],
+									"variable": [
+										{
+											"key": "paymentinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										},
+										{
+											"key": "complianceid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "ReBQ Retrieve details about a payment transaction compliance check"
+							},
+							"response": [
+								{
+									"name": "RetrieveComplianceResponse",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"cillum irure laborum Ut\",\n    \"CustomerReference\": \"ea Ut\",\n    \"PayerReference\": \"dolore laboris\",\n    \"PayerBankReference\": \"veniam officia eu\",\n    \"PayerProductInstanceReference\": \"dolor adipisicing mollit veniam\",\n    \"PayeeReference\": \"in qui nisi\",\n    \"PayeeBankReference\": \"Excepteur\",\n    \"PayeeProductInstanceReference\": \"magna cupidatat id\",\n    \"Amount\": \"cillum veniam occaecat quis ex\",\n    \"Currency\": \"adipisicing tempor\",\n    \"DateType\": \"amet mollit\",\n    \"PaymentPurpose\": \"mollit nisi in\",\n    \"DocumentDirectoryEntryInstanceReference\": \"culpa cillum Ut\",\n    \"DocumentContent\": \"mollit sit\"\n  },\n  \"Compliance\": {\n    \"PaymentTransactionComplianceCheckType\": \"sit nostrud\",\n    \"PaymentTransactionComplianceCheckResult\": \"do irure aute Duis\",\n    \"PaymentTransactionComplianceTaskResult\": \"Excepteur anim sed\"\n  }\n}"
+								},
+								{
+									"name": "BadRequest",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "NotFound",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "TooManyRequests",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "InternalServerError",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/Compliance/:complianceid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"Compliance",
+												":complianceid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "complianceid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								}
+							]
+						},
+						{
+							"name": "ReBQ Retrieve details about a payment transaction funds available",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var path = pm.request.url.getPath(true);",
+											"var paths = pm.request.url.path;",
+											"var schemaPath = '';",
+											"",
+											"paths.forEach(path => {",
+											"    if(path.substring(0,1) === ':') {",
+											"        path = \"{\" + path.substring(1) + \"}\";",
+											"    }",
+											"        schemaPath = schemaPath + \"/\" + path;",
+											"});",
+											"",
+											"pm.environment.set(\"schema_path\", schemaPath);",
+											"",
+											"//Wouldn't it be cool if we could actually do this?",
+											"//pm.request.headers.upsert({\"key\":\"x-mock-response-code\",\"value\":\"{{response-code}}\",\"disabled\":(pm.environment.get(\"use_mock_response\") === \"false\") });",
+											"",
+											"",
+											"",
+											"",
+											"",
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const yaml =  pm.environment.get('js_yaml');",
+											"(new Function(yaml))();",
+											"",
+											"var api = 'Payment Initiation';",
+											"",
+											"var path = pm.environment.get(\"schema_path\");",
+											"//var method = 'get';",
+											"var method = pm.request.method.toLowerCase();",
+											"var status = 200;",
+											"//BRKC Let's make it dynamic with different responses.\u0010",
+											"if(pm.request.headers.has(\"x-mock-response-code\")) {",
+											"    var status = pm.request.headers.one(\"x-mock-response-code\").disabled ? 200 : parseInt(pm.request.headers.get(\"x-mock-response-code\"));",
+											"    ",
+											"    status = (status == undefined || isNaN(status)  ? 200 : status);",
+											"    console.log(\"STATUS: \" + status); ",
+											"}",
+											"",
+											"",
+											"// First Test - Baseline Status Code",
+											"pm.test(\"Status code is \" + status, function () {",
+											"    pm.response.to.have.status(status);",
+											"    ",
+											"});",
+											"",
+											"// Pull variables needed to pull the OpenAPI",
+											"var postman_api_key = pm.environment.get(\"postmanApiKey\");",
+											"var api_id = pm.environment.get(\"apiId\");",
+											"var api_version_id = pm.environment.get(\"apiVersionId\");",
+											"var schema_id = pm.environment.get(\"schemaId\");",
+											"",
+											"// Pull the OpenAPI from the Postman API",
+											"var api_url = 'https://api.getpostman.com/apis/' + api_id + '/versions/' + api_version_id + '/schemas/' + schema_id;",
+											"",
+											"const apiRequest = {",
+											"  url: api_url,",
+											"  method: 'GET',",
+											"  header: 'X-Api-Key:' + postman_api_key,",
+											"};",
+											"",
+											"pm.sendRequest(apiRequest, function (err, res) {",
+											"",
+											"    if (err) {",
+											"        console.log(err);",
+											"    } else {   ",
+											"",
+											"        // Pull Schema from API response        ",
+											"        var api_response = res.json();  ",
+											"        ",
+											"        ",
+											"        var openapi = jsyaml.load(api_response.schema.schema);",
+											"        ",
+											"        // Grab the Response",
+											"        console.log(\"METHOD: \" + method + \" STATUS: \" + status + \" PATH: \" + path);",
+											"        var res = openapi.paths[path][method].responses[status]['$ref'];",
+											"        ",
+											"        res = res.replace('#/components/responses/', '');",
+											"",
+											"        // Grab the Schema",
+											"        var ref = openapi.components.responses[res].content['application/json'].schema['$ref'];",
+											"        ref = ref.replace('#/components/schemas/', '');",
+											"        ",
+											"        var item = openapi.components.schemas[ref];",
+											"",
+											"        // Prepare what is needed for AJV",
+											"        var schema = {};",
+											"        schema.type = \"object\"",
+											"        schema.items = item;",
+											"        ",
+											"        // Validate the response with AJV",
+											"        var Ajv = require('ajv');",
+											"        ajv = new Ajv({logger: console});",
+											"        pm.test('Validating response against ' + ref + ' schema from the ' + api + ' OpenAPI', function() {",
+											"            var data = pm.response.json();",
+											"            pm.expect(ajv.validate(schema, data)).to.be.true;",
+											"        });",
+											"",
+											"    }    ",
+											"",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "{{response-code}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										":paymentinitiationid",
+										"FundingCheck",
+										":fundingcheckid",
+										"Retrieve"
+									],
+									"variable": [
+										{
+											"key": "paymentinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										},
+										{
+											"key": "fundingcheckid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "ReBQ Retrieve details about a payment transaction funds available"
+							},
+							"response": [
+								{
+									"name": "RetrieveFundingCheckResponse",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"do occaecat sunt ipsum\",\n    \"CustomerReference\": \"ipsum u\",\n    \"PayerReference\": \"in ut anim\",\n    \"PayerBankReference\": \"consequat u\",\n    \"PayerProductInstanceReference\": \"eu do deserunt ut sunt\",\n    \"Amount\": \"dolor veniam\",\n    \"Currency\": \"Excepteur elit laborum amet\",\n    \"DateType\": \"cillum\",\n    \"PaymentFeesCharges\": \"ea dolor velit ex fugiat\"\n  },\n  \"FundingCheck\": {\n    \"PaymentTransactionFundingCheckResult\": \"id Duis labore\"\n  }\n}"
+								},
+								{
+									"name": "BadRequest",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "NotFound",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "TooManyRequests",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "InternalServerError",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/FundingCheck/:fundingcheckid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"FundingCheck",
+												":fundingcheckid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "fundingcheckid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								}
+							]
+						},
+						{
+							"name": "ReBQ Retrieve details about the payment order initiation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var path = pm.request.url.getPath(true);",
+											"var paths = pm.request.url.path;",
+											"var schemaPath = '';",
+											"",
+											"paths.forEach(path => {",
+											"    if(path.substring(0,1) === ':') {",
+											"        path = \"{\" + path.substring(1) + \"}\";",
+											"    }",
+											"        schemaPath = schemaPath + \"/\" + path;",
+											"});",
+											"",
+											"pm.environment.set(\"schema_path\", schemaPath);",
+											"",
+											"//Wouldn't it be cool if we could actually do this?",
+											"//pm.request.headers.upsert({\"key\":\"x-mock-response-code\",\"value\":\"{{response-code}}\",\"disabled\":(pm.environment.get(\"use_mock_response\") === \"false\") });",
+											"",
+											"",
+											"",
+											"",
+											"",
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const yaml =  pm.environment.get('js_yaml');",
+											"(new Function(yaml))();",
+											"",
+											"var api = 'Payment Initiation';",
+											"",
+											"var path = pm.environment.get(\"schema_path\");",
+											"//var method = 'get';",
+											"var method = pm.request.method.toLowerCase();",
+											"var status = 200;",
+											"//BRKC Let's make it dynamic with different responses.\u0010",
+											"if(pm.request.headers.has(\"x-mock-response-code\")) {",
+											"    var status = pm.request.headers.one(\"x-mock-response-code\").disabled ? 200 : parseInt(pm.request.headers.get(\"x-mock-response-code\"));",
+											"    ",
+											"    status = (status == undefined || isNaN(status)  ? 200 : status);",
+											"    console.log(\"STATUS: \" + status); ",
+											"}",
+											"",
+											"",
+											"// First Test - Baseline Status Code",
+											"pm.test(\"Status code is \" + status, function () {",
+											"    pm.response.to.have.status(status);",
+											"    ",
+											"});",
+											"",
+											"// Pull variables needed to pull the OpenAPI",
+											"var postman_api_key = pm.environment.get(\"postmanApiKey\");",
+											"var api_id = pm.environment.get(\"apiId\");",
+											"var api_version_id = pm.environment.get(\"apiVersionId\");",
+											"var schema_id = pm.environment.get(\"schemaId\");",
+											"",
+											"// Pull the OpenAPI from the Postman API",
+											"var api_url = 'https://api.getpostman.com/apis/' + api_id + '/versions/' + api_version_id + '/schemas/' + schema_id;",
+											"",
+											"const apiRequest = {",
+											"  url: api_url,",
+											"  method: 'GET',",
+											"  header: 'X-Api-Key:' + postman_api_key,",
+											"};",
+											"",
+											"pm.sendRequest(apiRequest, function (err, res) {",
+											"",
+											"    if (err) {",
+											"        console.log(err);",
+											"    } else {   ",
+											"",
+											"        // Pull Schema from API response        ",
+											"        var api_response = res.json();  ",
+											"        ",
+											"        ",
+											"        var openapi = jsyaml.load(api_response.schema.schema);",
+											"        ",
+											"        // Grab the Response",
+											"        console.log(\"METHOD: \" + method + \" STATUS: \" + status + \" PATH: \" + path);",
+											"        var res = openapi.paths[path][method].responses[status]['$ref'];",
+											"        ",
+											"        res = res.replace('#/components/responses/', '');",
+											"",
+											"        // Grab the Schema",
+											"        var ref = openapi.components.responses[res].content['application/json'].schema['$ref'];",
+											"        ref = ref.replace('#/components/schemas/', '');",
+											"        ",
+											"        var item = openapi.components.schemas[ref];",
+											"",
+											"        // Prepare what is needed for AJV",
+											"        var schema = {};",
+											"        schema.type = \"object\"",
+											"        schema.items = item;",
+											"        ",
+											"        // Validate the response with AJV",
+											"        var Ajv = require('ajv');",
+											"        ajv = new Ajv({logger: console});",
+											"        pm.test('Validating response against ' + ref + ' schema from the ' + api + ' OpenAPI', function() {",
+											"            var data = pm.response.json();",
+											"            pm.expect(ajv.validate(schema, data)).to.be.true;",
+											"        });",
+											"",
+											"    }    ",
+											"",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "{{response-code}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										":paymentinitiationid",
+										"OrderInitiation",
+										":orderinitiationid",
+										"Retrieve"
+									],
+									"variable": [
+										{
+											"key": "paymentinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										},
+										{
+											"key": "orderinitiationid",
+											"value": "ipsum aliqua minim",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "ReBQ Retrieve details about the payment order initiation"
+							},
+							"response": [
+								{
+									"name": "RetrieveOrderInitiationResponse",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"labore consectetur eiusmod\",\n    \"CustomerReference\": \"qui dolor\",\n    \"PayerReference\": \"eu proident quis\",\n    \"PayerBankReference\": \"velit\",\n    \"PayerProductInstanceReference\": \"ut laboris culpa\",\n    \"PayeeReference\": \"dolore ipsum nulla\",\n    \"PayeeBankReference\": \"commodo irure minim dolore\",\n    \"PayeeProductInstanceReference\": \"magna\",\n    \"Amount\": \"nulla cillum fugiat dolore in\",\n    \"Currency\": \"magna ut\",\n    \"DateType\": \"sint Lorem cillum do\",\n    \"PaymentFeesCharges\": \"sint sunt elit quis ex\",\n    \"PaymentMechanism\": \"velit quis\",\n    \"PaymentPurpose\": \"ut voluptate consequat incidid\",\n    \"DocumentDirectoryEntryInstanceReference\": \"nostrud\",\n    \"DocumentContent\": \"ut voluptate\"\n  },\n  \"OrderInitiation\": {\n    \"PaymentOrderProcedureInstanceReference\": \"ut aute\",\n    \"PaymentOrderProcedureInstanceStatus\": \"sit ullamco \",\n    \"OrderInitiationTaskResult\": \"eiusmod dolor dolore\"\n  }\n}"
+								},
+								{
+									"name": "BadRequest",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "NotFound",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "TooManyRequests",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								},
+								{
+									"name": "InternalServerError",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/PaymentInitiation/:paymentinitiationid/OrderInitiation/:orderinitiationid/Retrieve",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"PaymentInitiation",
+												":paymentinitiationid",
+												"OrderInitiation",
+												":orderinitiationid",
+												"Retrieve"
+											],
+											"variable": [
+												{
+													"key": "paymentinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												},
+												{
+													"key": "orderinitiationid",
+													"value": "ipsum aliqua minim",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "InCR Initiate a payment transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const yaml =  pm.environment.get('js_yaml');",
+									"(new Function(yaml))();",
+									"",
+									"var api = 'Payment Initiation';",
+									"",
+									"var path = pm.environment.get(\"schema_path\");",
+									"//var method = 'get';",
+									"var method = pm.request.method.toLowerCase();",
+									"var status = 200;",
+									"//BRKC Let's make it dynamic with different responses.\u0010",
+									"if(pm.request.headers.has(\"x-mock-response-code\")) {",
+									"    var status = pm.request.headers.one(\"x-mock-response-code\").disabled ? 200 : parseInt(pm.request.headers.get(\"x-mock-response-code\"));",
+									"    ",
+									"    status = (status == undefined || isNaN(status)  ? 200 : status);",
+									"    console.log(\"STATUS: \" + status); ",
+									"}",
+									"",
+									"",
+									"// First Test - Baseline Status Code",
+									"pm.test(\"Status code is \" + status, function () {",
+									"    pm.response.to.have.status(status);",
+									"    ",
+									"});",
+									"",
+									"// Pull variables needed to pull the OpenAPI",
+									"var postman_api_key = pm.environment.get(\"postmanApiKey\");",
+									"var api_id = pm.environment.get(\"apiId\");",
+									"var api_version_id = pm.environment.get(\"apiVersionId\");",
+									"var schema_id = pm.environment.get(\"schemaId\");",
+									"",
+									"// Pull the OpenAPI from the Postman API",
+									"var api_url = 'https://api.getpostman.com/apis/' + api_id + '/versions/' + api_version_id + '/schemas/' + schema_id;",
+									"",
+									"const apiRequest = {",
+									"  url: api_url,",
+									"  method: 'GET',",
+									"  header: 'X-Api-Key:' + postman_api_key,",
+									"};",
+									"",
+									"pm.sendRequest(apiRequest, function (err, res) {",
+									"",
+									"    if (err) {",
+									"        console.log(err);",
+									"    } else {   ",
+									"",
+									"        // Pull Schema from API response        ",
+									"        var api_response = res.json();  ",
+									"        ",
+									"        ",
+									"        var openapi = jsyaml.load(api_response.schema.schema);",
+									"        ",
+									"        // Grab the Response",
+									"        console.log(\"METHOD: \" + method + \" STATUS: \" + status + \" PATH: \" + path);",
+									"        var res = openapi.paths[path][method].responses[status]['$ref'];",
+									"        ",
+									"        res = res.replace('#/components/responses/', '');",
+									"",
+									"        // Grab the Schema",
+									"        var ref = openapi.components.responses[res].content['application/json'].schema['$ref'];",
+									"        ref = ref.replace('#/components/schemas/', '');",
+									"        ",
+									"        var item = openapi.components.schemas[ref];",
+									"",
+									"        // Prepare what is needed for AJV",
+									"        var schema = {};",
+									"        schema.type = \"object\"",
+									"        schema.items = item;",
+									"        ",
+									"        // Validate the response with AJV",
+									"        var Ajv = require('ajv');",
+									"        ajv = new Ajv({logger: console});",
+									"        pm.test('Validating response against ' + ref + ' schema from the ' + api + ' OpenAPI', function() {",
+									"            var data = pm.response.json();",
+									"            pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"        });",
+									"",
+									"    }    ",
+									"",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var path = pm.request.url.getPath(true);",
+									"var paths = pm.request.url.path;",
+									"var schemaPath = '';",
+									"",
+									"paths.forEach(path => {",
+									"    if(path.substring(0,1) === ':') {",
+									"        path = \"{\" + path.substring(1) + \"}\";",
+									"    }",
+									"        schemaPath = schemaPath + \"/\" + path;",
+									"});",
+									"",
+									"pm.environment.set(\"schema_path\", schemaPath);",
+									"",
+									"//Wouldn't it be cool if we could actually do this?",
+									"//pm.request.headers.upsert({\"key\":\"x-mock-response-code\",\"value\":\"{{response-code}}\",\"disabled\":(pm.environment.get(\"use_mock_response\") === \"false\") });",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "x-mock-response-code",
+								"value": "{{response-code}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"PaymentInitiationTransaction\": {\n    \"PaymentTransactionType\": \"labore\",\n    \"RecurringPaymentRecord\": \"proident sint\",\n    \"RecurringPaymentCustomerReference\": \"reprehenderit dolore Excepteur ex\",\n    \"RecurringPaymentReference\": \"quis Excepteur id\",\n    \"PayerReference\": \"irure aliqua enim do dolor\",\n    \"PayerBankReference\": \"in sint\",\n    \"PayerProductInstanceReference\": \"aute\",\n    \"PayeeReference\": \"veniam do\",\n    \"PayeeBankReference\": \"in mollit aliqua\",\n    \"PayeeProductInstanceReference\": \"in tempor culpa\",\n    \"Amount\": \"qui minim commodo\",\n    \"Currency\": \"Ut labore \",\n    \"DateType\": \"reprehenderit aliqua sed\",\n    \"PaymentMechanism\": \"aliquip nostrud Ut\",\n    \"PaymentPurpose\": \"nisi aliquip eu ipsum\",\n    \"DocumentDirectoryEntryInstanceReference\": \"incididunt\",\n    \"DocumentContent\": \"esse\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"PaymentInitiation",
+								"Initiate"
+							]
+						},
+						"description": "InCR Initiate a payment transaction"
+					},
+					"response": [
+						{
+							"name": "InitiatePaymentInitiationTransactionResponse",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"PaymentInitiationTransaction\": {\n    \"RecurringPaymentRecord\": \"consectetur\",\n    \"RecurringPaymentCustomerReference\": \"aliquip\",\n    \"RecurringPaymentReference\": \"ipsum officia pariatur\",\n    \"DateType\": \"anim dolore\",\n    \"PaymentFeesCharges\": \"sed est consequat\",\n    \"DocumentDirectoryEntryInstanceReference\": \"ut fugiat consequat non Duis\"\n  }\n}"
+						},
+						{
+							"name": "BadRequest",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						},
+						{
+							"name": "NotFound",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						},
+						{
+							"name": "TooManyRequests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						},
+						{
+							"name": "InternalServerError",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/PaymentInitiation/Initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"PaymentInitiation",
+										"Initiate"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status_code\": \"enim mollit ut\",\n  \"status\": \"consectetur nostrud\",\n  \"message\": \"sit laboris est\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{postmanApiKey}}",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"type": "any"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.collectionVariables.get(\"code_getFolderLevelTests\"));",
+					"eval(pm.collectionVariables.get(\"code_getCollectionLevelTests\"));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://virtserver.swaggerhub.com/BIAN-3/BIAN/PaymentInitiation/11.0.0",
+			"type": "string"
+		},
+		{
+			"key": "response-code",
+			"value": "401",
+			"type": "string"
+		},
+		{
+			"key": "TestLibrary_folder",
+			"value": "<<Set at runtime>>",
+			"type": "string"
+		},
+		{
+			"key": "TestLibrary_collection",
+			"value": "<<Set at runtime>>"
+		},
+		{
+			"key": "code_getFolderLevelTests",
+			"value": "/*\n * Example showing the code to retrieve snippets from GitHub\n * at the collection level.  Stored in the code_getCollectionLevelTests\n * environment variable\n*/\n//Setup the URL components\nvar owner = pm.collectionVariables.get(\"owner\");\nvar repoSlug = pm.collectionVariables.get(\"GitHub_repoSlug\");\nvar path = pm.collectionVariables.get(\"GitHub_folderTestsPath\");\nvar token = pm.environment.get(\"GitHubPAT\");\nvar baseUrl = pm.collectionVariables.get(\"GitHub_APIBaseURL\");\n//Build the URL\nvar url = baseUrl + \"/repos/\" + repoSlug + \"/contents/\" + path;\nconsole.log(\"URL: \" + url);\nconst postRequest = {\n  url: url,\n  method: 'get',\n  header: {\n    'Content-Type': 'application/json',\n    'Authorization': 'bearer ' + token\n  }\n};\npm.sendRequest(postRequest, (err, res) => {\n    var jsonData = JSON.parse(res.text());\nvar base64content = jsonData.content;\nvar buff = new Buffer(base64content, 'base64');\nvar content = buff.toString('ascii');\npm.collectionVariables.set(\"TestLibrary_folder\", content);\n});",
+			"type": "string"
+		},
+		{
+			"key": "code_getCollectionLevelTests",
+			"value": "/*\n * Example showing the code to retrieve snippets from GitHub\n * at the collection level.  Stored in the code_getCollectionLevelTests\n * environment variable\n*/\n//Setup the URL components\nvar owner = pm.collectionVariables.get(\"owner\");\nvar repoSlug = pm.collectionVariables.get(\"GitHub_repoSlug\");\nvar path = pm.collectionVariables.get(\"GitHub_collectionTestsPath\");\nvar token = pm.environment.get(\"GitHubPAT\");\nvar baseUrl = pm.collectionVariables.get(\"GitHub_APIBaseURL\");\n//Build the URL\nvar url = baseUrl + \"/repos/\" + repoSlug + \"/contents/\" + path;\nconsole.log(\"URL: \" + url);\nconst postRequest = {\n  url: url,\n  method: 'get',\n  header: {\n    'Content-Type': 'application/json',\n    'Authorization': 'bearer ' + token\n  }\n};\npm.sendRequest(postRequest, (err, res) => {\n    var jsonData = JSON.parse(res.text());\nvar base64content = jsonData.content;\nvar buff = new Buffer(base64content, 'base64');\nvar content = buff.toString('ascii');\npm.collectionVariables.set(\"TestLibrary_collection\", content);\n});",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_folderTestsPath",
+			"value": "scripts/request/pre-request.js",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_collectionTestsPath",
+			"value": "scripts/request/test.js",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_repoSlug",
+			"value": "bidnessforb/bian-validation",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_APIBaseURL",
+			"value": "https://api.github.com",
+			"type": "string"
+		}
+	]
+}

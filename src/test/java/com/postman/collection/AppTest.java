@@ -1483,6 +1483,26 @@ public void testPostmanVariable() {
 
 
     }
+@Test
+public void combinevars() throws Exception {
+    pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath +"/source-code.postman_collection.json"));
+    Collection pmcPayment = Collection.pmcFactory(new File(filePath + "/" + resourcePath +"/payment.postman_collection.json"));
 
+    //pmcPayment.addVariables(pmcTest.getVariables());
+
+    for(ItemElement req : pmcPayment.getItemElements(enumItemElementType.REQUEST)) {
+        req.setPreRequestScript("eval(pm.collectionVariables.get('TestLibrary_folder'))");
+        req.setTestScript("eval(pm.collectionVariables.get('TestLibrary_collection'))");
+    }
+
+
+
+    if(!pmcPayment.validate())
+        System.out.println("INVALID");
+    else
+        pmcPayment.writeToFile(new File(filePath + "/test-output/new-payment.postman_collection.json"));
+
+
+}
 
 }

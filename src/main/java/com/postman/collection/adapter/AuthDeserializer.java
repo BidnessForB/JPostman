@@ -8,6 +8,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonDeserializer;
 import java.lang.reflect.Type;
+
+import javax.lang.model.util.ElementScanner14;
 /**
  * 
  * 
@@ -41,11 +43,18 @@ public class AuthDeserializer implements JsonDeserializer<AuthElement> {
         JsonArray vars = jObject.get(type).getAsJsonArray();
         PostmanVariable pvVar;
         AuthElement auth = new AuthElement(jObject.get("type").getAsString());
+        String curKey;
+        String curVal;
+        String curType;
         for (int i = 0; i < vars.size(); i++) {
             curVar = vars.get(i).getAsJsonObject();
             curVar.get("key");
-            pvVar = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
-                    curVar.get("type").getAsString());
+            
+            curKey = curVar.get("key") == null ? null : curVar.get("key").getAsString();
+            curVal = curVar.get("value") == null ? null : curVar.get("value").getAsString();
+            curType = curVar.get("type") == null ? null : curVar.get("type").getAsString();
+            
+            pvVar = new PostmanVariable(curKey, curVal, null,curType);
             try {
                 auth.addProperty(pvVar);
             } catch (Exception e) {
