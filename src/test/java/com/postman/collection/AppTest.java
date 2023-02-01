@@ -40,21 +40,6 @@ public class AppTest {
 
     
    
-   /** 
-    * @return Set<String>
-    */
-   /*  @Test
-        public void clearOutput() {
-        File outputRoot = new File(filePath + "/test-output");
-        deleteDirectory(outputRoot);
-        boolean mkDirs = false;
-        mkDirs = new File(filePath + "/test-output/compare").mkdirs();
-        assertTrue(mkDirs);
-        
-        
-    } */
-    
-
     public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
         Set<String> fileSet = new HashSet<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dir))) {
@@ -69,6 +54,11 @@ public class AppTest {
     }
     
     
+@Test 
+public void testInvalidCollection() {
+    pmcTest = Collection.pmcFactory();
+    validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+}
 
     @Test
     public void shouldCreateRequestQueries() {
@@ -125,7 +115,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
             pmcTest.setPreRequestScript("//PRE-REQUEST this is some source code for the collection");
 
             
-validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+            validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -323,13 +313,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     @Test
     public void testAuthIngestion() throws Exception {
         pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
-        boolean valid = pmcTest.validate();
-        collectionOutputPath = filePath + "/test-output/TEST-" + pmcTest.getName();
-        pmcTest.setDescription("TEST-" + new Throwable().getStackTrace()[0].getMethodName());
-        pmcTest.writeToFile(new File(collectionOutputPath));
-        printValidationMessages(pmcTest.getValidationMessages(), new Throwable().getStackTrace()[0].getMethodName());
-        assertTrue(valid);
-        assertTrue(new File(collectionOutputPath).exists());
+        validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     }
 
     
@@ -489,9 +473,9 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
         pmcTest.addVariable(var1);
         pmcTest.addVariable(var2);
         pmcTest.addVariable(var3);
+
         boolean valid = pmcTest.validate();
         if (!valid)
-
         {
             ArrayList<ValidationMessage> msgs = pmcTest.getValidationMessages();
 
@@ -1483,26 +1467,5 @@ public void testPostmanVariable() {
 
 
     }
-@Test
-public void combinevars() throws Exception {
-    pmcTest = Collection.pmcFactory(new File(filePath + "/" + resourcePath +"/source-code.postman_collection.json"));
-    Collection pmcPayment = Collection.pmcFactory(new File(filePath + "/" + resourcePath +"/payment.postman_collection.json"));
-
-    //pmcPayment.addVariables(pmcTest.getVariables());
-
-    for(ItemElement req : pmcPayment.getItemElements(enumItemElementType.REQUEST)) {
-        req.setPreRequestScript("eval(pm.collectionVariables.get('TestLibrary_folder'))");
-        req.setTestScript("eval(pm.collectionVariables.get('TestLibrary_collection'))");
-    }
-
-
-
-    if(!pmcPayment.validate())
-        System.out.println("INVALID");
-    else
-        pmcPayment.writeToFile(new File(filePath + "/test-output/new-payment.postman_collection.json"));
-
-
-}
 
 }
