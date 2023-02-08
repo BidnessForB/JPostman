@@ -117,6 +117,23 @@ public class Collection extends ItemGroup {
 
     }
 
+    /** 
+     * 
+     * Convenience method to add an item with no child items to this collection.  
+     * 
+     * @param name The name for the new item
+     * @throws RecursiveItemAddException
+     * @throws IllegalPropertyAccessException
+     */
+    public Folder addFolder(String name, int index) throws RecursiveItemAddException, IllegalPropertyAccessException {
+        Folder newFolder = new Folder(name);
+        this.addItem(newFolder,index);
+        return newFolder;
+
+    }
+
+
+
     
     /** 
      * 

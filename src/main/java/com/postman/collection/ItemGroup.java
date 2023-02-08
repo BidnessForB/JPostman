@@ -190,7 +190,7 @@ public abstract class ItemGroup extends Item {
      * @throws IllegalPropertyAccessException If this item is a request
      */
     public void addItem(Item newItem) throws RecursiveItemAddException, IllegalPropertyAccessException {
-
+        //TODO: These should probably be private.
         if (newItem.equals(this)) {
             throw new RecursiveItemAddException("Cannot add an object to itself, lolz");
         }

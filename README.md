@@ -4,6 +4,10 @@ A Java wrapper for Postman collection files.
 
 [Docs](https://bidnessforb.github.io/JPostman)
 
+[Postman Collection Overview](https://collectionformat.gatsbyjs.io/docs/getting-started/overview/)
+
+[Postman Collection SDK (Node)](http://www.postmanlabs.com/postman-collection/index.html)
+
 ## Getting started
 
 1. Download the JAR file from the releases tab
@@ -39,7 +43,7 @@ Collection pmcTest = Collection.pmcFactory(new PostmanID("<your collection id>")
 
 ### Create Collections from scratch
 
-You can create a new, empty collectino as well
+You can create a new, empty collection as well
 
 ```java
 Collection newColl = PostmanFactory("New collection");
@@ -58,8 +62,8 @@ For example, adding a new Folder as the third `item` in the collection:
 ```java
  // Add a new folder to the 3rd position beneath the root of the collection
   Collection pmcTest = Collection.pmcFactory("/path/to/your/exported/collection.json");
-  Item newFolder = new Item("new Folder");
-  pmcTest.addItem(newFolder, 2);
+  Folder newFolder = new Folder("new Folder");
+  pmcTest.addFolder(newFolder, 2);
   
   ```
 ### Move collection elements
@@ -68,10 +72,10 @@ You can easily move elements from one parent to another.  For example, move a re
 
 ```java
   Collection pmcTest = Collection.pmcFactory("/path/to/your/exported/collection.json");
-  Item newFolder1 = new Item("new Folder One");
-  Item newFolder2 = new Item("new Folder Two");
-  pmcTest.addItem(newFolder1);
-  pmcTest.addItem(newFolder2);
+  Item newFolder1 = new Folder("new Folder One");
+  Item newFolder2 = new Folder("new Folder Two");
+  pmcTest.addFolder(newFolder1);
+  pmcTest.addFolder(newFolder2);
   pmcTest.moveItem(newFolder2, newFolder1);
  ```
 
@@ -83,25 +87,27 @@ You can easily move elements from one parent to another.  For example, move a re
   // Combine collections, inserting the source collection as a Folder in the 2d position from the root of the target collection
   Collection pmcTarget = Collection.pmcFactory("/path/to/your/exported/collection.json");
   Collection pmcSource = Collection.pmcFactory("/path/to/another/collection.json");
-  pmcTest.addItem(pmcSource, 2);
+  pmcTest.addCollection(pmcSource);
   ```
  When a collection is added, a new Folder is created and all of the added collection's elements are linked to that folder.  The folder in turn is then linked to the target collection.  All folders, requests, pre-request and test scripts are copied over from the source to the target collection.  Collection variables are appended to the target collections array of variables.
+
+There are options for copying (or not copying) the source collections scripts and variables as well.  You can also specify a specific parent to receive the source collection.
+
   
 ### Write your edited collections to a JSON file
 
 JPostman allows you to generate JSON for your collections.  You can also write your collections to a file which can then be imported into Postman.
-
 ```java
 
   // Combine collections, inserting the source collection as a Folder in the 2d position from the root of the target collection
   // Then set the value of a String variable to the JSON for the new, combined collection.  
   Collection pmcTarget = Collection.pmcFactory("/path/to/your/exported/collection.json");
   Collection pmcSource = Collection.pmcFactory("/path/to/another/collection.json");
-  pmcTest.addItem(pmcSource, 2);
+  pmcTest.addCollection(pmcSource);
   pmcTest.writeToFile("new-collection.json");
  ```
  
- ### Validate collections against the Postman Collection Schema
+ ### Validate collections (and any collection element) against the Postman Collection Schema
 
  Use the `Collection.validate() method to ensure that the JSON emitted by your instance of Collection conforms with the Postman Collection schema:
 
@@ -112,14 +118,15 @@ JPostman allows you to generate JSON for your collections.  You can also write y
 JPostman uses the NetworkNT [json-schema-validator](https://github.com/networknt/json-schema-validator) to validate JSON against a JSON schema.  
 
  If the `validate()` method returns `false`, call `getValidationMessages()` for an array of [ValidationMessage](https://javadoc.io/doc/com.networknt/json-schema-validator/1.0.51/com/networknt/schema/ValidationMessage.html) objects describing differences between your collections generated JSON and the Postman schema.  
+
+ #### Individual Elements
+ Since collections and the elements they contain all extend the <code><a href="https://github.com/BidnessForB/JPostman/blob/main/src/main/java/com/postman/collection/CollectionElement.java">CollectionElement</a></code> class they have the potential to be individually validated as well.  Currently, element validation is supported for: 
+  
+  - Collection
+  - Item
+  - RequestAuth
+  - BodyElement
  
- ### Export collections to a `postman_collection.json` file
-
- Call the `writeToFile` method to serialize your Collection object to the filesystem as a JSON file:
-
- ```java
- myCollection.writetoFile(new File("/desired/output/path.json"));
- ```
  
  ## Implementation 
  
@@ -131,7 +138,7 @@ GSON also works with arrays by default rather than more convenient Java collecti
 
 ## Postman Collection File Structure
 
-You can review the schema for the Postman Collection v2.1 formet [here](https://schema.getpostman.com/json/collection/v2.1.0/collection.json). 
+You can review the schema for the Postman Collection v2.1 format [here](https://schema.getpostman.com/json/collection/v2.1.0/collection.json). The Postman team have provided a comprehensive overview of the Collection format [here](https://collectionformat.gatsbyjs.io/docs/getting-started/overview/)
 
 In a nutshell, a Postman collection file consists of the following elements
 1. An `info` section containing collection metadata, including it's name, description, and Postman UID
