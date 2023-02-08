@@ -1,10 +1,12 @@
 package com.postman.collection;
 
-import java.util.ArrayList;
+
 /**
  * 
  * 
- * Encapsulates the <code>request</code> object property of a PostmanItem object
+ * Encapsulates the <code>request</code> object property of a {@link com.postman.collection.Request}
+ * 
+ * <p>Postman SDK analog: <code><a href = "http://www.postmanlabs.com/postman-collection/RequestBody.html">RequestBody</code</a>.</p>
  * 
  * <pre>{@code 
 * {
@@ -46,13 +48,13 @@ import java.util.ArrayList;
 }</pre> * 
  * 
  */
-public class PostmanRequest extends PostmanCollectionElement {
+public class RequestBody extends CollectionElement {
     private enumHTTPRequestMethod method = enumHTTPRequestMethod.GET;
-    private PostmanUrl url;
-    private ArrayList<PostmanVariable> header;// = new PostmanVariable[0];
+    private Url url;
+    private PropertyList<Property> header;
     private String description;
-    private PostmanBody body;
-    private PostmanAuth auth;
+    private BodyElement body;
+    private RequestAuth auth;
     private String name;
 
     
@@ -67,32 +69,29 @@ public class PostmanRequest extends PostmanCollectionElement {
     }
 
     /**
-     * Construct a PostmanRequest with the specified HTTP method, host and path.  All URL components are constructed from the host and path strings.
+     * Construct a RequestBody with the specified HTTP method, host and path.  All URL components are constructed from the host and path strings.
      * 
      * @param method Enumerated value for the HTTP method
      * @param host  String containing the host portion of the URL.
      * @param path String containing the path portion of the URL.
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String host, String path) throws DuplicateVariableKeyException {
+    public RequestBody(enumHTTPRequestMethod method, String host, String path) throws DuplicateVariableKeyException {
 
         this.setMethod(method);
         
-        this.setUrl(new PostmanUrl(host, path));
-        
-        
-        
+        this.setUrl(new Url(host, path));
 
     }
 
 
      /**
-     * Construct a PostmanRequest with the specified HTTP method, and PostmanUrl. 
+     * Construct a RequestBody with the specified HTTP method, and Url. 
      * 
      * @param method Enumerated value for the HTTP method
-     * @param url  Pre-constructed PostmanUrl object
+     * @param url  Pre-constructed Url object
      * 
      */
-    public PostmanRequest(enumHTTPRequestMethod method, PostmanUrl url) {
+    public RequestBody(enumHTTPRequestMethod method, Url url) {
 
         this.setMethod(method);
         this.setUrl(url);
@@ -101,37 +100,38 @@ public class PostmanRequest extends PostmanCollectionElement {
     
     /** 
      * 
-     * Set the values in the <code>auth</code> array with a pre-populated PostmanAuth object.
+     * Set the values in the <code>auth</code> array with a pre-populated {@link com.postman.collection.RequestAuth} object.
      * 
      * @param auth  The auth
      */
-    public void setAuth(PostmanAuth auth) {
+    public void setAuth(RequestAuth auth) {
         this.auth = auth;
+        this.auth.setParent(this);
     }
 
     
     /** 
      * 
-     * Get the PostmanAuth object containing the values of the <code>auth</code> array, or null if it has not been set.
+     * Get the {@link com.postman.collection.RequestAuth} object containing the values of the <code>auth</code> array, or null if it has not been set.
      * 
-     * @return PostmanAuth The auth object containing the values.
+     * @return RequestAuth The auth object containing the values.
      */
-    public PostmanAuth getAuth() {
+    public RequestAuth getAuth() {
         return this.auth;
     }
 
 
     /**
      * 
-     * Construct a PostmanRequest object from a raw URL.  All path, host, URL, auth and other property array elements are parsed out and populated
+     * Construct a RequestBody object from a raw URL.  All path, host, URL, auth and other property array elements are parsed out and populated
      * 
      * 
      * @param method  Enumerated value for the HTTP method
      * @param URL  The raw URL 
      */
-    public PostmanRequest(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
+    public RequestBody(enumHTTPRequestMethod method, String URL) throws DuplicateVariableKeyException {
 
-        this.setUrl(new PostmanUrl(URL));
+        this.setUrl(new Url(URL));
         this.setMethod(method);
 
     }
@@ -161,12 +161,33 @@ public class PostmanRequest extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return the PostmanUrl containing the values of the <code>url</code> property array
+     * Return the Url containing the values of the <code>url</code> property array
      * 
-     * @return PostmanUrl
+     * @return Url
      */
-    public PostmanUrl getUrl() {
+    public Url getUrl() {
         return url;
+    }
+
+    
+    /** 
+     * @param resolveVariables
+     * @return String
+     * @throws VariableResolutionException
+     */
+    public String getUrl(boolean resolveVariables) throws VariableResolutionException {
+        String retVal = this.url.getUrl(resolveVariables);
+        if(resolveVariables) {
+            try {
+            retVal = this.getCollection().resolveVariables(retVal);
+            
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return retVal;
     }
 
     
@@ -174,21 +195,22 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * Set the values of the <code>url</code> property 
      * 
-     * @param url  PostmanUrl object containing the values
+     * @param url  Url object containing the values
      */
-    public void setUrl(PostmanUrl url) {
+    public void setUrl(Url url) {
         this.url = url;
+        this.url.setParent(this);
     }
 
     
     /** 
      * 
-     * Return an ArrayList of PostmanVariable objects containing the key-value pair values for the <code>header</code> property array
+     * Return an ArrayList of Property objects containing the key-value pair values for the <code>header</code> property array
      * 
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The headers, or null if none are present
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62; The headers, or null if none are present
      */
-    public ArrayList<PostmanVariable> getHeader() {
+    public PropertyList<Property> getHeader() {
         return header;
     }
 
@@ -199,7 +221,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param header  Header values
      */
-    public void setHeader(ArrayList<PostmanVariable> header) {
+    public void setHeader(PropertyList<Property> header) {
         this.header = header;
     }
 
@@ -233,7 +255,7 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param bodyMode The body mode, eg. RAW
      * @return PostmanBody  The new body
      */
-    public PostmanBody setBody(enumRequestBodyMode bodyMode) {
+    public BodyElement setBody(enumRequestBodyMode bodyMode) {
         return this.setBody(bodyMode, null);
     }
 
@@ -249,8 +271,8 @@ public class PostmanRequest extends PostmanCollectionElement {
      * @param rawContent The raw content for the body
      * @return PostmanBody The new body
      */
-    public PostmanBody setBody(enumRequestBodyMode bodyMode, String rawContent) {
-        this.setBody(new PostmanBody(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
+    public BodyElement setBody(enumRequestBodyMode bodyMode, String rawContent) {
+        this.setBody(new BodyElement(bodyMode, rawContent, enumRawBodyLanguage.TEXT));
         return this.getBody();
     }
 
@@ -260,9 +282,10 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @return PostmanBody The body, or null.  
      */
-    public PostmanBody getBody() {
+    public BodyElement getBody() {
         return this.body;
     }
+
 
     
     /** 
@@ -271,8 +294,9 @@ public class PostmanRequest extends PostmanCollectionElement {
      * 
      * @param body The new body values
      */
-    public void setBody(PostmanBody body) {
+    public void setBody(BodyElement body) {
         this.body = body;
+        this.body.setParent(this);
     }
 
 }

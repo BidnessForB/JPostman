@@ -11,6 +11,13 @@ import java.lang.reflect.Type;
 
 public class StringMapSerializer implements JsonSerializer<HashMap<String, String>> {
      
+        
+        /** 
+         * @param src
+         * @param typeOfSrc
+         * @param context
+         * @return JsonElement
+         */
         @Override
         public JsonElement serialize(HashMap<String, String> src, Type typeOfSrc, JsonSerializationContext context) {
             

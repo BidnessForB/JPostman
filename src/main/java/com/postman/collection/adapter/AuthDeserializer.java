@@ -18,34 +18,41 @@ import java.lang.reflect.Type;
  * 
  * 
  */
-public class AuthDeserializer implements JsonDeserializer<PostmanAuth> {
+public class AuthDeserializer implements JsonDeserializer<RequestAuth> {
 
     /**
      * 
      * Custom <a href=
      * "https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html">
-     * GSON deserializer</a> for the PostmanAuth object.
+     * GSON deserializer</a> for the {@link com.postman.collection.RequestAuth} object.
      * 
      * 
      * @param jElement The JSON element passed in by Gson
-     * @param typeOfT The type for the adapter, PostmanAuth
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.RequestAuth}
      * @param context Deserialization context
-     * @return PostmanAuth The assembed PostmanAuth object 
+     * @return {@link com.postman.collection.RequestAuth} The assembed {@link com.postman.collection.RequestAuth} object 
      * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override
-    public PostmanAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public RequestAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         JsonObject curVar;
         String type = jObject.get("type").getAsString();
         JsonArray vars = jObject.get(type).getAsJsonArray();
-        PostmanVariable pvVar;
-        PostmanAuth auth = new PostmanAuth(jObject.get("type").getAsString());
+        Property pvVar;
+        RequestAuth auth = new RequestAuth(jObject.get("type").getAsString());
+        String curKey;
+        String curVal;
+        String curType;
         for (int i = 0; i < vars.size(); i++) {
             curVar = vars.get(i).getAsJsonObject();
             curVar.get("key");
-            pvVar = new PostmanVariable(curVar.get("key").getAsString(), curVar.get("value").getAsString(), null,
-                    curVar.get("type").getAsString());
+            
+            curKey = curVar.get("key") == null ? null : curVar.get("key").getAsString();
+            curVal = curVar.get("value") == null ? null : curVar.get("value").getAsString();
+            curType = curVar.get("type") == null ? null : curVar.get("type").getAsString();
+            
+            pvVar = new Property(curKey, curVal, null,curType);
             try {
                 auth.addProperty(pvVar);
             } catch (Exception e) {
