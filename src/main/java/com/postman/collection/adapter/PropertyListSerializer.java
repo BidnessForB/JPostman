@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 
 
-public class VarMapSerializer implements JsonSerializer<HashMap<String, PostmanVariable>> {
+public class PropertyListSerializer implements JsonSerializer<HashMap<String, Property>> {
     
     /** 
      * @param src
@@ -21,12 +21,12 @@ public class VarMapSerializer implements JsonSerializer<HashMap<String, PostmanV
      * @param context
      * @return JsonElement
      */
-    public JsonElement serialize(HashMap<String, PostmanVariable> src, Type typeOfSrc,
+    public JsonElement serialize(HashMap<String, Property> src, Type typeOfSrc,
             JsonSerializationContext context) {
         JsonArray varArray = new JsonArray();
         JsonObject varElement;
         String curKey;
-        PostmanVariable curVar = null;
+        Property curVar = null;
         Iterator<String> keys = src.keySet().iterator();
         while (keys.hasNext()) {
             curKey = keys.next();

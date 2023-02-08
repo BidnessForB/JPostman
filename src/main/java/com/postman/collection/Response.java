@@ -3,9 +3,11 @@ package com.postman.collection;
 import java.util.ArrayList;
 /**
  * 
- * Class to encapsulate the <code>response</code> object property of a PostmanItem
+ * Class to encapsulate the <code>response</code> object property of a {@link com.postman.collection.Request}.
  * 
- * A PostmanRequest includes an optional array of expected responses: 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Response.html">Response</a></code>.</p>
+ * 
+ * A RequestBody includes an optional array of expected responses: 
  * <pre>
  *  "response": [
                 {
@@ -47,23 +49,23 @@ import java.util.ArrayList;
             ]
             </pre>
 
-The response object includes a PostmanRequest object describing the original request associated with this response.  
+The response object includes a RequestBody object describing the original request associated with this response.  
 
  * 
  * 
  */
-public class PostmanResponse extends PostmanCollectionElement {
+public class Response extends CollectionElement {
     private String name = "";
-    private PostmanRequest originalRequest = null;
+    private RequestBody originalRequest = null;
     private int code;
     private String status;
     private String _postman_previewlanguage = "";
-    private ArrayList<PostmanCookie> cookie = null;
+    private ArrayList<Cookie> cookie = null;
     private String body = "";
-    private ArrayList<PostmanVariable> header;
+    private PropertyList<Property> header;
 
-    public PostmanResponse(String name, PostmanRequest originalRequest, int code, String status,
-            String _postman_previewlanguage, ArrayList<PostmanCookie> cookie, String body) {
+    public Response(String name, RequestBody originalRequest, int code, String status,
+            String _postman_previewlanguage, ArrayList<Cookie> cookie, String body) {
         this.name = name;
         this.originalRequest = originalRequest;
         this.code = code;
@@ -75,12 +77,12 @@ public class PostmanResponse extends PostmanCollectionElement {
 
     
     /** 
-     * Set the value of the <code>header</code> element array with a pre-populated ArrayList of PostmanVariable key-value pairs
+     * Set the value of the <code>header</code> element array with a pre-populated ArrayList of Property key-value pairs
      * 
      * 
      * @param headers
      */
-    public void setHeader(ArrayList<PostmanVariable> headers) {
+    public void setHeader(PropertyList<Property> headers) {
         this.header = headers;
     }
 
@@ -88,13 +90,13 @@ public class PostmanResponse extends PostmanCollectionElement {
     /** 
      * Get the ArrayList containing the key-value paris in the <code>header</code> element array
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62;
      */
-    public ArrayList<PostmanVariable> getHeader() {
+    public PropertyList<Property> getHeader() {
         return this.header;
     }
 
-    public PostmanResponse(String name, PostmanRequest req, String status, int code, String body) {
+    public Response(String name, RequestBody req, String status, int code, String body) {
         this.originalRequest = req;
         this.status = status;
         this.code = code;
@@ -126,11 +128,11 @@ public class PostmanResponse extends PostmanCollectionElement {
     
     /** 
      * 
-     * Get the value of the <code>originalRequest</code> for this response as a PostmanRequest, or null if it has not been set.
+     * Get the value of the <code>originalRequest</code> for this response as a RequestBody, or null if it has not been set.
      * 
-     * @return PostmanRequest
+     * @return RequestBody
      */
-    public PostmanRequest getOriginalRequest() {
+    public RequestBody getOriginalRequest() {
         return originalRequest;
     }
 
@@ -141,7 +143,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param originalRequest
      */
-    public void setOriginalRequest(PostmanRequest originalRequest) {
+    public void setOriginalRequest(RequestBody originalRequest) {
         this.originalRequest = originalRequest;
     }
 
@@ -212,11 +214,11 @@ public class PostmanResponse extends PostmanCollectionElement {
     
     /** 
      * 
-     * Return an ArrayList containing the PostmanCookie objects comprising the value of the <code>cookie</code> array property
+     * Return an ArrayList containing the Cookie objects comprising the value of the <code>cookie</code> array property
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanCookie}&#62; The cookies
+     * @return ArrayList&#60;{@link com.postman.collection.Cookie}&#62; The cookies
      */
-    public ArrayList<PostmanCookie> getCookies() {
+    public ArrayList<Cookie> getCookies() {
         return cookie;
     }
 
@@ -227,7 +229,7 @@ public class PostmanResponse extends PostmanCollectionElement {
      * 
      * @param cookie
      */
-    public void setCookies(ArrayList<PostmanCookie> cookie) {
+    public void setCookies(ArrayList<Cookie> cookie) {
         this.cookie = cookie;
     }
 

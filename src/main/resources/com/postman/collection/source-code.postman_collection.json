@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "49e47697-1cd5-4dbf-8b12-471539723168",
+		"name": "Reusable Test Code from GitHub",
+		"description": "## Overview\n\nRetrieve and execute Postman tests from a GitHub repo. Requires a [GitHub PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). If your organization uses SAML for Single Sign-On (SSO), you'll need to [authorize your PAT for SSO](https://docs.github.com/en/rest/overview/other-authentication-methods#authenticating-for-saml-sso). The pre-request script uses the [GitHub REST API](https://docs.github.com/en/rest/repos/contents#get-repository-content) to retrieve and decode the content.\n\nNOTE: At the moment only content on the default branch is retrieved.\n\nNOTE: This script assumes that the content residing in GitHub are a [text files < 1MB in size](https://docs.github.com/en/rest/repos/contents#size-limits).\n\n## Using the Collection\n\n1. Create or update an environment with a secret variable named `GitHubPAT`and set it to your GitHub Personal Access Token. Your PAT will need [repo](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes) scope.  \n    **CAUTION**: Update the **current value** only to prevent your token leaking!!\n    1. If you don't have a GitHub PAT, you can easily [create one](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).\n2. Create or update and environment variable called `postmanAPIKey` with your Postman API Key.\n3. Run the requests in the collection to demonstrate test code loaded from GitHub at the Collection, folder, and individual request level.\n    \n\n## Collection variables\n\nThe following collection variables are designed to be edited by the end user as required. Other collection variables are for runtime use and are populated by code.\n\n| **Variable** | **Desc** |\n| --- | --- |\n| repoSlug | GitHub repo \"slug\" of the repository containing the test script snippets.  <br>  <br>A \"slug\" is just the repo owner and repo name concatenated with a '/'  <br>**EXAMPLE:** byrancross/postman-demo |\n| GitHub_collectionTestsPath | Path of the file containing the collection level test script snippets within the repo. Path is relative to the root of the repo and does _not_ include a leading slash.  <br>  <br>**EXAMPLE**: code-snippets/my-code-snippet.js |\n| GitHub_folderTestsPath | Path of the file containing the collection level test script snippets within the repo.  <br>  <br>**EXAMPLE**: code-snippets/my-code-snippet.js |\n| GitHub_APIBaseUrl | GitHub API base URL, currently `https://api.github.com` |\n| code_getCollectionLevelTests | Code to retrieve collection level test code from GitHub |\n| code_getFolderLevelTests | Code to retrieve folder level test code from GitHub |\n| TestLibrary_collection | Code retrieved from GitHub and executed at runtime at the collection level. |\n| TestLibrary_folder | Code retrieved from GitHub and executed at runtime at the folder level. |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23889826"
+	},
+	"item": [
+		{
+			"name": "Folder level tests",
+			"item": [
+				{
+					"name": "Collection, Folder, and Request level scripts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"eval(pm.collectionVariables.get(\"code_getFolderLevelTests\"));",
+									"",
+									"//uncomment this line to load the Folder level tests",
+									"//eval(pm.collectionVariables.get(\"code_getFolderLevelTests\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Additional Request level tests go here",
+									"",
+									"pm.test(\"REQUEST Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/get",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"get"
+							]
+						},
+						"description": "Runs reusable tests defined at the collection and folder level. Folder level tests are practical at the moment until it becomes possible to [identify the current folder](https://github.com/postmanlabs/postman-app-support/issues/6926) at runtime."
+					},
+					"response": []
+				}
+			],
+			"description": "Shows the possibilities around defining different reusable test snippets at the Folder level.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//This will be much more useful once it becomes possible to determine the current folder name",
+							"// https://github.com/postmanlabs/postman-app-support/issues/6926",
+							"",
+							"eval(pm.collectionVariables.get(\"code_getFolderLevelTests\"));",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"eval(pm.collectionVariables.get(\"TestLibrary_folder\"));"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Collection and Request Level Tests",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"REQUEST Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Do nothing, the collection level tests will run"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/get",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{postmanAPIKey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.collectionVariables.get(\"code_getCollectionLevelTests\"));",
+					"",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"eval(pm.collectionVariables.get(\"TestLibrary_collection\"));",
+					"",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "GitHub_APIBaseURL",
+			"value": "https://api.github.com",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_repoSlug",
+			"value": "bryancross/postman-demo",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_collectionTestsPath",
+			"value": "test-snippets/collection-level-tests.js",
+			"type": "string"
+		},
+		{
+			"key": "GitHub_folderTestsPath",
+			"value": "test-snippets/folder-level-tests.js",
+			"type": "string"
+		},
+		{
+			"key": "code_getCollectionLevelTests",
+			"value": "/*\n * Example showing the code to retrieve snippets from GitHub\n * at the collection level.  Stored in the code_getCollectionLevelTests\n * environment variable\n*/\n//Setup the URL components\nvar owner = pm.collectionVariables.get(\"owner\");\nvar repoSlug = pm.collectionVariables.get(\"GitHub_repoSlug\");\nvar path = pm.collectionVariables.get(\"GitHub_collectionTestsPath\");\nvar token = pm.environment.get(\"GitHubPAT\");\nvar baseUrl = pm.collectionVariables.get(\"GitHub_APIBaseURL\");\n//Build the URL\nvar url = baseUrl + \"/repos/\" + repoSlug + \"/contents/\" + path;\nconsole.log(\"URL: \" + url);\nconst postRequest = {\n  url: url,\n  method: 'get',\n  header: {\n    'Content-Type': 'application/json',\n    'Authorization': 'bearer ' + token\n  }\n};\npm.sendRequest(postRequest, (err, res) => {\n    var jsonData = JSON.parse(res.text());\nvar base64content = jsonData.content;\nvar buff = new Buffer(base64content, 'base64');\nvar content = buff.toString('ascii');\npm.collectionVariables.set(\"TestLibrary_collection\", content);\n});",
+			"type": "string"
+		},
+		{
+			"key": "code_getFolderLevelTests",
+			"value": "/*\n * Example showing the code to retrieve snippets from GitHub\n * at the collection level.  Stored in the code_getCollectionLevelTests\n * environment variable\n*/\n//Setup the URL components\nvar owner = pm.collectionVariables.get(\"owner\");\nvar repoSlug = pm.collectionVariables.get(\"GitHub_repoSlug\");\nvar path = pm.collectionVariables.get(\"GitHub_folderTestsPath\");\nvar token = pm.environment.get(\"GitHubPAT\");\nvar baseUrl = pm.collectionVariables.get(\"GitHub_APIBaseURL\");\n//Build the URL\nvar url = baseUrl + \"/repos/\" + repoSlug + \"/contents/\" + path;\nconsole.log(\"URL: \" + url);\nconst postRequest = {\n  url: url,\n  method: 'get',\n  header: {\n    'Content-Type': 'application/json',\n    'Authorization': 'bearer ' + token\n  }\n};\npm.sendRequest(postRequest, (err, res) => {\n    var jsonData = JSON.parse(res.text());\nvar base64content = jsonData.content;\nvar buff = new Buffer(base64content, 'base64');\nvar content = buff.toString('ascii');\npm.collectionVariables.set(\"TestLibrary_folder\", content);\n});",
+			"type": "string"
+		},
+		{
+			"key": "TestLibrary_collection",
+			"value": "<<Set at runtime>>"
+		},
+		{
+			"key": "TestLibrary_folder",
+			"value": "<<Set at Runtime>>",
+			"type": "string"
+		}
+	]
+}
