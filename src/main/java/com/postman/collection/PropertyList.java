@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 /**
  * 
- * Analog to <a href="http://www.postmanlabs.com/postman-collection/PropertyList.html">PropertyList</a> in the Postman SDK
+ * <p>Postman SDK analog: <a href="http://www.postmanlabs.com/postman-collection/PropertyList.html">PropertyList</a></p>
  * 
  * 
- * Extends ArrayList with Map like capabilities, including:
+ * <p> Extends ArrayList with Map like capabilities, including:
  * <ul>
  * <li>Support for retrieving by variable key which is always {@link com.postman.collection.Property#getKey()}
  * <li>Support for retrieving by index

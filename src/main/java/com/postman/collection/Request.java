@@ -1,8 +1,30 @@
 package com.postman.collection;
 import java.util.ArrayList;
+
+/**
+ * 
+ * 
+ * Encapsulates a Postman collection request.  
+ * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Request.html">Request</a></code.</p>
+ * 
+ * 
+ * 
+ */
+
+
 public class Request extends Item {
     private RequestBody request = null;
     private ArrayList<Response> response = null;
+    
+    
+    /**
+     * 
+     * Create a request with the specific name and pre-populated {@link com.postman.collection.RequestBody}.
+     * @param req A {@link com.postman.collection.RequestBody} instance.
+     * @param name The name of the request.
+     */
+    
     
     public Request(RequestBody req, String name) {
         super(name);
@@ -10,6 +32,12 @@ public class Request extends Item {
         req.setParent(this);
     }
 
+    /**
+     * 
+     * Create an empety Request with the specific name
+     *
+     * @param name The name of the request.
+     */
     public Request(String name) {
         super(name);
     }

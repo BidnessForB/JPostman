@@ -1,6 +1,17 @@
 package com.postman.collection;
 
-
+/**
+ * 
+ * Encapsulates the <code>cookie</code> property of a Postman Collection.  
+ * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Cookie.html">Cookie</a></code>.</p>
+ * 
+ * <p>NOTE: Provided for serialization/de-serialization only, doesn't provide any method capability.</p>
+ * 
+ * 
+ * 
+ * 
+ */
 
 public class Cookie extends CollectionElement {
     private String domain = "";

@@ -3,9 +3,9 @@ package com.postman.collection;
 import java.util.ArrayList;
 /**
  * 
- * Class to encapsulate the <code>response</code> object property of a Item
+ * Class to encapsulate the <code>response</code> object property of a {@link com.postman.collection.Request}.
  * 
- * Analog to the <code><a href="http://www.postmanlabs.com/postman-collection/RequestBody.html">Response</a></code> class in the Postman SDK
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Response.html">Response</a></code>.</p>
  * 
  * A RequestBody includes an optional array of expected responses: 
  * <pre>

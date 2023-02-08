@@ -1,7 +1,11 @@
 package com.postman.collection;
 /**
  * 
- * Utility class to store key-value pairs with additional, optional <code>description</code> and <code>type</code> properties
+ * 
+ * Postman SDK analog: Not directly related, but probably close to <code><a href="http://www.postmanlabs.com/postman-collection/PropertyBase.html">PropertyBase</a></code>
+ * 
+ * 
+ * <p>Utility class to store key-value pairs with additional, optional <code>description</code> and <code>type</code> properties</p>
  * 
  * 
  */

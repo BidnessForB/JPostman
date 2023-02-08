@@ -36,10 +36,20 @@ import java.util.regex.Matcher;
 
 
 /**
- * Encapsulates a Postman collection
+ * <p>Encapsulates a Postman collection</p>
+ * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Collection.html">Collection</a></code>
+ * 
  *<p>
  * <strong>Ingest a collection file</strong></p>
- * <p><code>Collection myCollection = PMCFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
+ * <p><code>Collection myCollection = pmcFactory(new File("example-cat-facts-with-tests.postman_collection.json");</code></p>
+ * 
+ * <p>Ingest a collection from Postman</p>
+ * 
+ * <pre>
+ *  PostmanID myID = new PostmanID("<your-collection-id"); 
+ *  Collection myCollection = Collection.pmcFactory(myID);
+ * </pre>
  * 
  * 
  * <p><strong>Get a request item</strong></p>
@@ -144,6 +154,18 @@ public class Collection extends ItemGroup {
         Request newReq = new Request(reqElement, name);
         super.addItem(newReq);
         return newReq;
+    }
+
+    /**
+     * 
+     * Return a request from this Collections <code>item</code> property, or null if it doesn't exist.  
+     * 
+     * 
+     * 
+     */
+
+    public Request getRequest(String name) {
+        return (Request)this.getItem(name,enumItemType.REQUEST);
     }
 
     

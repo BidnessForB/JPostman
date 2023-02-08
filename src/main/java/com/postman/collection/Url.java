@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Class to encapsulate the properties in the <code>url</code> object of a <a href="./RequestBody.html">PostmanRequst</a> object.  
- * The URL object properties contain the raw URL itself, the protocol, the port an array of strings for the individual host and path elements, arrays of key/value pairs for query parameters, as well as 
- * path variables.
+ * Class to encapsulate the properties in the <code>url</code> object of a {@link com.postman.collection.RequestBody} object.  
+ * 
+ * <p>Postman SDK Analog: <code><a href="http://www.postmanlabs.com/postman-collection/Url.html">Url</a></code>.</p>
+ * 
+ * <p>The URL object properties contain the raw URL itself, the protocol, the port an array of strings for the individual host and path elements, arrays of key/value pairs for query parameters, as well as 
+ * path variables.</p>
  * <pre>
  * "url": {
                     "raw": "https://foo.com:8080/bar/:path1/bat.json?foo=1&amp;bar=2",

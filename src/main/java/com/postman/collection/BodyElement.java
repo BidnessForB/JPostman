@@ -5,7 +5,11 @@ import java.util.HashMap;
 
 /**
  * 
- * <p>Encapsulates the <code>body</code> property of a <a href="./RequestBody.html">RequestBody</a> object.  There are several different permutations for this property depending on the 
+ * <p>Encapsulates the <code>body</code> property of a {@link com.postman.collection.Request} object.  
+ * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/RequestBody.html">RequestBody</a></code></p>
+ * 
+ * <p>There are several different permutations for this property depending on the </p>
  * <code>mode</code> selected in Postman.  Some examples:
  * </p>
  * 

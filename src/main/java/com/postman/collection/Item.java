@@ -4,7 +4,7 @@ import java.util.ArrayList;
      * 
      * Encapsulates the <code>item</code> object in the postman schema
      * 
-     * Analog to the <code><a href=http://www.postmanlabs.com/postman-collection/Item.html>Item</a></code> class in the Postman SDK
+     * <p>Postman SDK analog: <code><a href=http://www.postmanlabs.com/postman-collection/Item.html>Item</a></code>.</p>
 
      * <pre>
      * {

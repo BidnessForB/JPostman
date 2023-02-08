@@ -1,5 +1,23 @@
 package com.postman.collection;
 import java.util.ArrayList;
+
+
+/**
+ * 
+ * 
+ * Abstract class encapsulating a Postman ItemGroup.  This class provides services for recursively finding, adding and removing child elements, eg., a request in a folder.
+ 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/ItemGroup.html">ItemGroup</a></code>.</p>
+ * 
+ 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 public abstract class ItemGroup extends Item {
     private ArrayList<Item> item;
 

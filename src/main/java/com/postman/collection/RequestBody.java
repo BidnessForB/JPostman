@@ -4,9 +4,9 @@ package com.postman.collection;
 /**
  * 
  * 
- * Encapsulates the <code>request</code> object property of a Item object
+ * Encapsulates the <code>request</code> object property of a {@link com.postman.collection.Request}
  * 
- * Analog to the <code><a href = "http://www.postmanlabs.com/postman-collection/RequestBody.html">RequestBody</code</a> class in the Postman SDK.
+ * <p>Postman SDK analog: <code><a href = "http://www.postmanlabs.com/postman-collection/RequestBody.html">RequestBody</code</a>.</p>
  * 
  * <pre>{@code 
 * {

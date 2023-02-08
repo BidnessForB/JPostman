@@ -2,7 +2,7 @@ package com.postman.collection;
 /**
  * 
  * 
- * Exception thrown when an attempt is made to add a Property to a PropertyList with a duplicate key
+ * Exception thrown when an attempt is made to add a {@link com.postman.collection.Property} to a {@link com.postman.collection.PropertyList} with a duplicate key
  * 
  * 
  * 
