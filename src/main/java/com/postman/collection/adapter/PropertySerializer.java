@@ -3,7 +3,6 @@ package com.postman.collection.adapter;
 import com.postman.collection.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonSerializer;
 
 import com.google.gson.JsonSerializationContext;
@@ -11,10 +10,17 @@ import com.google.gson.JsonSerializationContext;
 
 import java.lang.reflect.Type;
 
-public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable> {
+public class PropertySerializer implements JsonSerializer<Property> {
      
+    
+    /** 
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return JsonElement
+     */
     @Override
-    public JsonElement serialize(PostmanVariable src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(Property src, Type typeOfSrc, JsonSerializationContext context) {
         
         JsonObject jsonMap = new JsonObject();
         jsonMap.addProperty("key", src.getKey());

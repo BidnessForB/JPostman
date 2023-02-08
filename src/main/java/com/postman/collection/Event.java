@@ -5,6 +5,7 @@ import java.util.ArrayList;
  * 
  * Encapsulates members of the <code>event</code> array object.  Events contain pre-request and test scripts for Folders, Requests, and Collections
  * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Event.html">event</code>.</p>
  * 
  * <pre>
  * "event": [
@@ -45,14 +46,14 @@ import java.util.ArrayList;
  * 
  * 
  */
-public class PostmanEvent extends PostmanCollectionElement {
+public class Event extends CollectionElement {
 
     private String listen = ""; // basically the name
     private PostmanScript script = null;
 
     /**
      * 
-     * Create a new PostmanEvent object with the specified EventType (eg., pre-request or test) and source code.  The <code>type</code> property is excluded because it is always 'text/javascript', 
+     * Create a new Event object with the specified EventType (eg., pre-request or test) and source code.  The <code>type</code> property is excluded because it is always 'text/javascript', 
      * although the schema does theoretically allow for different values
      * 
      * 
@@ -61,7 +62,7 @@ public class PostmanEvent extends PostmanCollectionElement {
      * @param evtType Content type of the script, always "text/javascript"
      * 
      */
-    public PostmanEvent(enumEventType evtType, String sourceCode)  {
+    public Event(enumEventType evtType, String sourceCode)  {
         this.setEventType(evtType);
         this.setScript(new PostmanScript(this.getScriptType(), sourceCode));
     }
@@ -156,6 +157,10 @@ public class PostmanEvent extends PostmanCollectionElement {
         return srcCode;
     }
 
+    
+    /** 
+     * @return ArrayList&#60;String&#62;
+     */
     public ArrayList<String> getSourceCodeElements() {
         if(this.getScript() == null || this.getScript().getSourceCode() == null)
         {
@@ -221,6 +226,11 @@ public class PostmanEvent extends PostmanCollectionElement {
         
     }
 
+    
+    /** 
+     * @param position
+     * @throws InvalidPropertyException
+     */
     public void removeSourceCodeElement(int position) throws InvalidPropertyException{
         if(this.getScript() == null || this.getScript().getSourceCode() == null || position < 0 || position > this.getScript().getSourceCode().size()) {
             throw new InvalidPropertyException("Source code null or position out of bounds");
@@ -228,7 +238,7 @@ public class PostmanEvent extends PostmanCollectionElement {
         this.getScript().removeSourceCodeElement(position);
     }
 
-    public class PostmanScript extends PostmanCollectionElement {
+    public class PostmanScript extends CollectionElement {
         private String type = "";
         private ArrayList<String> exec;
 
