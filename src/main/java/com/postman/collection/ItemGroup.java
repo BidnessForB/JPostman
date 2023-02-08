@@ -1,16 +1,16 @@
 package com.postman.collection;
 import java.util.ArrayList;
-public abstract class ItemGroup extends ItemElement {
-    private ArrayList<ItemElement> item;
+public abstract class ItemGroup extends Item {
+    private ArrayList<Item> item;
 
 
     /** 
      * 
-     * Return an ArrayList&#60;{@link com.postman.collection.ItemElement ItemElement}&#62; containing the tree of items owned by this item.
+     * Return an ArrayList&#60;{@link com.postman.collection.Item Item}&#62; containing the tree of items owned by this item.
      * 
-     *      * @return ArrayList&#60;{@link com.postman.collection.ItemElement ItemElement}&#62;  The items
+     *      * @return ArrayList&#60;{@link com.postman.collection.Item Item}&#62;  The items
      */
-    public ArrayList<ItemElement> getItemElements() {
+    public ArrayList<Item> getItems() {
         return item;
     }
 
@@ -22,32 +22,32 @@ public abstract class ItemGroup extends ItemElement {
      * @param filter Enumerated value for the object type, eg., FOLDER or REQUEST.  Passing null returns all items.
      * @return
      */
-    public ArrayList<ItemElement> getItemElements(enumItemElementType filter) {
-        ArrayList<ItemElement> results = new ArrayList<ItemElement>();
+    public ArrayList<Item> getItems(enumItemType filter) {
+        ArrayList<Item> results = new ArrayList<Item>();
 
         if (item == null) {
             return null;
         }
 
-        for (ItemElement curItem : item) {
+        for (Item curItem : item) {
             if(filter == null && !(curItem instanceof ItemGroup) ) {
                 results.add(curItem);
             }
             else if(filter == null && curItem instanceof ItemGroup) {
-                results.addAll(((ItemGroup)curItem).getItemElements(filter));
+                results.addAll(((ItemGroup)curItem).getItems(filter));
             }
             else if (filter != null && curItem instanceof Folder) {
-                if(filter == enumItemElementType.FOLDER) {
+                if(filter == enumItemType.FOLDER) {
                     results.add(curItem);
                 }
                 try {
-                results.addAll(((Folder)curItem).getItemElements(filter));
+                results.addAll(((Folder)curItem).getItems(filter));
     
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            else if((filter != null && filter == enumItemElementType.REQUEST && curItem instanceof Request)) {
+            else if((filter != null && filter == enumItemType.REQUEST && curItem instanceof Request)) {
                 results.add(curItem);
             }
             
@@ -59,11 +59,11 @@ public abstract class ItemGroup extends ItemElement {
 
     /** 
      * 
-     * Set the value of the <code>item</code> array with an ArrayList&#60;ItemElement&#62;.  Passing null effectively removes all children from this item.
+     * Set the value of the <code>item</code> array with an ArrayList&#60;Item&#62;.  Passing null effectively removes all children from this item.
      * 
      * @param items  The items, or null to remove all items.
      */
-    public void setItemElements(ArrayList<ItemElement> items) {
+    public void setItems(ArrayList<Item> items) {
         this.item = items;
     }
 
@@ -73,10 +73,10 @@ public abstract class ItemGroup extends ItemElement {
      * Recursively search the contents of the <code>item</code> array for the item with the specified key.  Generally this is the <code>name</code> property for requests and folders.
      * 
      * @param key  The key (name) of the desired item
-     * @return ItemElement The item, if it is found in the <code>item</code> array, or null if it is not.
+     * @return Item The item, if it is found in the <code>item</code> array, or null if it is not.
      */
-    public ItemElement getItemElement(String key) {
-        return this.getItemElement(key,  null);
+    public Item getItem(String key) {
+        return this.getItem(key,  null);
     }
 
     
@@ -92,16 +92,16 @@ public abstract class ItemGroup extends ItemElement {
      * @param key The key (name) of the desired item
      * @param parent True to return the parent of the item, if found, false to return the item itself. 
      * @param filter Optional, filter on object type, eg., FOLDER or REQUEST.  If null, do not filter 
-     * @return ItemElement The item if present, or null
+     * @return Item The item if present, or null
      */
     
-    public ItemElement getItemElement(String key, enumItemElementType filter) {
-        ItemElement result = null;
+    public Item getItem(String key, enumItemType filter) {
+        Item result = null;
         if (this.item == null) {
             return null;
         }
         // recursively traverse items looking for name == key
-        for (ItemElement curItem : item) {
+        for (Item curItem : item) {
             if (item == null)
                 return null;
             if(filter == null && curItem.getKey().equals(key)) {
@@ -109,14 +109,14 @@ public abstract class ItemGroup extends ItemElement {
                 break;
             }
             if (curItem.getKey().equals(key)) {
-                if (filter != null && (filter == enumItemElementType.REQUEST) && curItem instanceof Request) {
+                if (filter != null && (filter == enumItemType.REQUEST) && curItem instanceof Request) {
                     result = curItem;
-                } else if(filter != null && filter == enumItemElementType.FOLDER &&  curItem instanceof Folder) {
-                    result = (ItemElement)curItem;
+                } else if(filter != null && filter == enumItemType.FOLDER &&  curItem instanceof Folder) {
+                    result = (Item)curItem;
                 }
                 break;
             } else if (curItem instanceof ItemGroup) {
-                result = ((ItemGroup)curItem).getItemElement(key, filter);
+                result = ((ItemGroup)curItem).getItem(key, filter);
                 if (result != null) {
                     break;
                 }
@@ -133,12 +133,12 @@ public abstract class ItemGroup extends ItemElement {
      * @param newItems  The items to add
      * 
      */
-    public void addItemElements(ArrayList<ItemElement> newItems) throws RecursiveItemAddException, IllegalPropertyAccessException {
+    public void addItems(ArrayList<Item> newItems) throws RecursiveItemAddException, IllegalPropertyAccessException {
         if (this.item == null) {
-            this.item = new ArrayList<ItemElement>();
+            this.item = new ArrayList<Item>();
         }
-        for(ItemElement curItem : newItems) {
-            this.addItemElement(curItem);
+        for(Item curItem : newItems) {
+            this.addItem(curItem);
         }
         
     }
@@ -150,11 +150,11 @@ public abstract class ItemGroup extends ItemElement {
      * @param theItem  The item to search for
      * @return boolean
      */
-    public boolean hasItemElement(ItemElement theItem) {
+    public boolean hasItem(Item theItem) {
         if (item == null) {
             return false;
         }
-        for (ItemElement curItem : item) {
+        for (Item curItem : item) {
             if (curItem.equals(theItem))
                 ;
             return true;
@@ -171,14 +171,14 @@ public abstract class ItemGroup extends ItemElement {
      * @throws RecursiveItemAddException If newItem is the same item instance as this item.
      * @throws IllegalPropertyAccessException If this item is a request
      */
-    public void addItemElement(ItemElement newItem) throws RecursiveItemAddException, IllegalPropertyAccessException {
+    public void addItem(Item newItem) throws RecursiveItemAddException, IllegalPropertyAccessException {
 
         if (newItem.equals(this)) {
             throw new RecursiveItemAddException("Cannot add an object to itself, lolz");
         }
         
         if (this.item == null) {
-            this.item = new ArrayList<ItemElement>();
+            this.item = new ArrayList<Item>();
         }
         newItem.setParent(this);
         this.item.add(newItem);
@@ -202,15 +202,15 @@ public abstract class ItemGroup extends ItemElement {
      * @throws RecursiveItemAddException If newItem is already a child of this item
      *
      */
-    public void addItemElement(ItemElement newItem, int position) throws IllegalPropertyAccessException, RecursiveItemAddException {
+    public void addItem(Item newItem, int position) throws IllegalPropertyAccessException, RecursiveItemAddException {
         if(this.item == null) {
-            this.item = new ArrayList<ItemElement>();
+            this.item = new ArrayList<Item>();
         }
-        if (this.hasItemElement(newItem)) {
+        if (this.hasItem(newItem)) {
             throw new IllegalPropertyAccessException("Item is already present");
         }
         // If the newitem already owns this item, it's a circular recursion
-        if (newItem instanceof ItemGroup && ((ItemGroup)newItem).getItemElement(this.getKey()) != null)
+        if (newItem instanceof ItemGroup && ((ItemGroup)newItem).getItem(this.getKey()) != null)
 
         {
             throw new RecursiveItemAddException("Item [" + newItem.getKey() + "] already contains this item [" + this.getKey());
@@ -232,8 +232,8 @@ public abstract class ItemGroup extends ItemElement {
      * @param oldItem The item to remove
      * 
      */
-    public void removeItemElement(ItemElement oldItem)  {
-        this.removeItemElement(oldItem.getKey());
+    public void removeItem(Item oldItem)  {
+        this.removeItem(oldItem.getKey());
     }
 
     /** 
@@ -243,11 +243,11 @@ public abstract class ItemGroup extends ItemElement {
      * @param key Key of the item to remove (ie. it's name)
      * 
      */
-    public void removeItemElement(String key) {
+    public void removeItem(String key) {
         if (item == null) {
             return;
         }
-        for (ItemElement curItem : item) {
+        for (Item curItem : item) {
             if (curItem.getKey().equals(key)) {
                 this.item.remove(curItem);
                 break;
@@ -258,11 +258,11 @@ public abstract class ItemGroup extends ItemElement {
     }
 
     public Request getRequest(String key) {
-        return (Request)this.getItemElement(key, enumItemElementType.REQUEST);
+        return (Request)this.getItem(key, enumItemType.REQUEST);
     }
 
     public Folder getFolder(String key) {
-        return (Folder)this.getItemElement(key, enumItemElementType.FOLDER);
+        return (Folder)this.getItem(key, enumItemType.FOLDER);
     
     }
 

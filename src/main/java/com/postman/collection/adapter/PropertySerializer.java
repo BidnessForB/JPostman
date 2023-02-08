@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializationContext;
 
 import java.lang.reflect.Type;
 
-public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable> {
+public class PropertySerializer implements JsonSerializer<Property> {
      
     
     /** 
@@ -20,7 +20,7 @@ public class PostmanVariableSerializer implements JsonSerializer<PostmanVariable
      * @return JsonElement
      */
     @Override
-    public JsonElement serialize(PostmanVariable src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(Property src, Type typeOfSrc, JsonSerializationContext context) {
         
         JsonObject jsonMap = new JsonObject();
         jsonMap.addProperty("key", src.getKey());

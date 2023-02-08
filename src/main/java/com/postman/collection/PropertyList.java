@@ -6,15 +6,17 @@ import java.util.ArrayList;
 
 /**
  * 
+ * Analog to <a href="http://www.postmanlabs.com/postman-collection/PropertyList.html">PropertyList</a> in the Postman SDK
+ * 
  * 
  * Extends ArrayList with Map like capabilities, including:
  * <ul>
- * <li>Support for retrieving by variable key which is always {@link com.postman.collection.PostmanVariable#getKey()}
+ * <li>Support for retrieving by variable key which is always {@link com.postman.collection.Property#getKey()}
  * <li>Support for retrieving by index
  * <li>Support for adding by index
  * <li>Duplicate keys are not allowed
  * <li>Null keys are allowed.
- * <li>Contains returns results based on {@link com.postman.collection.PostmanVariable#equals(Object)}
+ * <li>Contains returns results based on {@link com.postman.collection.Property#equals(Object)}
  * <li>Set will set the value of the variable in this ListMap if it exists, otherwise it will set the value of the specified <code>index</code>
  * <li>the <code>add</code> method returns false if the specified key already exists in the collection and does not change the collection
  * </ul>
@@ -25,35 +27,39 @@ import java.util.ArrayList;
  * 
  * 
  */
-public class VariableListMap<T> extends ArrayList<PostmanVariable> 
+public class PropertyList<T> extends ArrayList<Property> 
 {
     /**
-     * Returns a VariableListMap populated with the contents of <code>vars</code>
-     * @param vars ArrayList&#60;PostmanVariable&#62; of variables
+     * Returns a PropertyList populated with the contents of <code>vars</code>
+     * @param vars ArrayList&#60;Property&#62; of variables
      */
     
-    public VariableListMap(ArrayList<PostmanVariable> vars) {
+    public PropertyList(ArrayList<Property> vars) {
         super(vars);
     }
 
 
     /**
      * 
-     * Returns an empty <code>VariableListMap</code>
+     * Returns an empty <code>PropertyList</code>
      */
-    public VariableListMap() {
-        super(new ArrayList<PostmanVariable>());
+    public PropertyList() {
+        super(new ArrayList<Property>());
     }
 
     
     /** 
+     * 
+     * 
+     * Get a variable whose key matches <code>key</code>, or null if it is not present
+     * 
      * @param key
-     * @return PostmanVariable
+     * @return Property
      */
-    public PostmanVariable get(String key) {
+    public Property get(String key) {
         
         
-        for(PostmanVariable curVar : this) {
+        for(Property curVar : this) {
             String curVarKey;
             if(key == null) {
                 curVarKey = curVar.getKey();
@@ -81,10 +87,10 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
     
     /** 
      * @param index
-     * @return PostmanVariable
+     * @return Property
      */
     @Override
-    public PostmanVariable get(int index) {
+    public Property get(int index) {
         return super.get(index);
     }
 
@@ -93,8 +99,8 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @param compare
      * @return boolean
      */
-    public boolean contains(PostmanVariable compare) {
-        for(PostmanVariable curVar : this) {
+    public boolean contains(Property compare) {
+        for(Property curVar : this) {
             if(curVar.equals(compare)) {
                 return true;
             }
@@ -108,7 +114,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @return int
      */
     
-    public int indexOf(PostmanVariable pvVar) {
+    public int indexOf(Property pvVar) {
         for(int i = 0; i < this.size(); i++)
         {
             if(this.get(i).getKey().equals(pvVar.getKey())){
@@ -124,7 +130,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @return boolean
      */
     @Override
-    public boolean add(PostmanVariable pvVar) {
+    public boolean add(Property pvVar) {
         
         if(pvVar == null || (pvVar.getKey() == null && pvVar.getValue() == null)) {
             throw new NullPointerException("Key and Value properties are both null");
@@ -144,7 +150,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
      * @param vars
      * @return boolean
      */
-    public boolean addAll(VariableListMap<PostmanVariable> vars) {
+    public boolean addAll(PropertyList<Property> vars) {
         return this.addAll(this.size(), vars);
     }
 
@@ -154,7 +160,7 @@ public class VariableListMap<T> extends ArrayList<PostmanVariable>
  * @param vars
  * @return boolean
  */
-public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
+public boolean addAll(int index, PropertyList<Property> vars) {
     boolean changed = false;
     
         for(int i = 0; i < vars.size(); i++) {
@@ -177,7 +183,7 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
      * @param key
      */
     public void remove(String key) {
-        PostmanVariable curVar;
+        Property curVar;
         for(int i = 0 ; i < this.size() ; i++) {
             curVar = this.get(i);
             if(key == null) {
@@ -198,18 +204,18 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
     /** 
      * @param index
      * @param pvVar
-     * @return PostmanVariable
+     * @return Property
      * @throws IndexOutOfBoundsException
      */
     @Override
-    public PostmanVariable set(int index, PostmanVariable pvVar) throws IndexOutOfBoundsException {
+    public Property set(int index, Property pvVar) throws IndexOutOfBoundsException {
         
         if(index > this.size()) {
             throw new IndexOutOfBoundsException("Index out of bounds: " + index + "> " + this.size());
         }
 
 
-        PostmanVariable retVal = null;
+        Property retVal = null;
         int curIndex;
 
         if((this.containsKey(pvVar.getKey())  && this.indexOf(pvVar) == index) || !this.containsKey(pvVar.getKey())) {
@@ -224,7 +230,7 @@ public boolean addAll(int index, VariableListMap<PostmanVariable> vars) {
         
     }
 
-    public PostmanVariable set(PostmanVariable pvVar) {
+    public Property set(Property pvVar) {
         if(!this.containsKey(pvVar.getKey())) {
             return null;
         }

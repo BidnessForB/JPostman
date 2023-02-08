@@ -3,6 +3,8 @@ package com.postman.collection;
 
     /** 
      * 
+     * Analog to the <code><a href="http://www.postmanlabs.com/postman-collection/RequestAuth.html">RequestAuth</code></a> class in the Postman SDK
+     * 
      * Class encapsulating the "auth" property of a CollectionItem.  Collections and requests can each have a single auth property,
      * which consists of a type (e.g., 'oauth1') and an array of parameters for that authentication type.  For example, oauth2 looks like:
      * <pre>
@@ -37,14 +39,14 @@ package com.postman.collection;
         ]
     }
     </pre>
-     * Properties are stored as instances of PostmanVariable
+     * Properties are stored as instances of Property
      * 
      *
      */
-public class AuthElement extends CollectionElement {
+public class RequestAuth extends CollectionElement {
 
     private String type = "";
-    private VariableListMap<PostmanVariable> properties = null;
+    private PropertyList<Property> properties = null;
     private transient String[] arrTypes = new String[10];
 
     
@@ -57,7 +59,7 @@ public class AuthElement extends CollectionElement {
      * 
      */
 
-    public AuthElement() {
+    public RequestAuth() {
         arrTypes[enumAuthType.AKAMAI.ordinal()] = "edgegrid";
         arrTypes[enumAuthType.APIKEY.ordinal()] = "apikey";
         arrTypes[enumAuthType.AWS.ordinal()] = "awsv4";
@@ -75,7 +77,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
      */
-    public AuthElement(String type) {
+    public RequestAuth(String type) {
         this();
         this.type = type;
         this.setAuthType(getAuthType());
@@ -86,7 +88,7 @@ public class AuthElement extends CollectionElement {
      * 
      * @param type  The underlying type property of the new Auth object, as an enumeration
      */
-    public AuthElement(enumAuthType type) {
+    public RequestAuth(enumAuthType type) {
         this();
         this.setAuthType(type);
     }
@@ -94,9 +96,9 @@ public class AuthElement extends CollectionElement {
      * Conveninence constructor to initialize an Auth object with a pre-created HashMap of authentication properties
      * 
      * @param type  The underlying type property of the new Auth object, as a String, e.g., "oauth1"
-     * @param properties HashMap&#60;String, PostmanVariable&#62; containing the properties of this auth element
+     * @param properties HashMap&#60;String, Property&#62; containing the properties of this auth element
      */
-    public AuthElement(enumAuthType type, VariableListMap<PostmanVariable> properties) {
+    public RequestAuth(enumAuthType type, PropertyList<Property> properties) {
         this(type);
         this.setAuthType(type);
         this.setProperties(properties);
@@ -169,98 +171,98 @@ public class AuthElement extends CollectionElement {
      */
     public void setAuthType(enumAuthType type) {
         this.type = arrTypes[(type.ordinal())];
-        VariableListMap<PostmanVariable> newProps = new VariableListMap<PostmanVariable>();
+        PropertyList<Property> newProps = new PropertyList<Property>();
         switch (type) {
             case AKAMAI: {
-                newProps.add(new PostmanVariable("headersToSign", null));
-                newProps.add(new PostmanVariable("baseURL",null));
-                newProps.add(new PostmanVariable("timestamp",null));
-                newProps.add(new PostmanVariable("nonce",null));
-                newProps.add(new PostmanVariable("clientSecret",null));
-                newProps.add(new PostmanVariable("clientToken",null));
-                newProps.add(new PostmanVariable("accessToken",null));
+                newProps.add(new Property("headersToSign", null));
+                newProps.add(new Property("baseURL",null));
+                newProps.add(new Property("timestamp",null));
+                newProps.add(new Property("nonce",null));
+                newProps.add(new Property("clientSecret",null));
+                newProps.add(new Property("clientToken",null));
+                newProps.add(new Property("accessToken",null));
                 break;
             }
             case APIKEY: {
-                newProps.add(new PostmanVariable("key",null));
-                newProps.add(new PostmanVariable("value",null));
-                newProps.add(new PostmanVariable("in",null));
+                newProps.add(new Property("key",null));
+                newProps.add(new Property("value",null));
+                newProps.add(new Property("in",null));
                 break;
             }
             case AWS: { 
-                newProps.add(new PostmanVariable("sessionToken", null));
-                newProps.add(new PostmanVariable("service", null));
-                newProps.add(new PostmanVariable("secretKey", null));
-                newProps.add(new PostmanVariable("accessKey", null));
-                newProps.add(new PostmanVariable("addAuthDataToQuery", null));
+                newProps.add(new Property("sessionToken", null));
+                newProps.add(new Property("service", null));
+                newProps.add(new Property("secretKey", null));
+                newProps.add(new Property("accessKey", null));
+                newProps.add(new Property("addAuthDataToQuery", null));
                 break;
             }
             case BEARER:{
-                newProps.add(new PostmanVariable("key","token"));
-                newProps.add(new PostmanVariable("value",null));
-                newProps.add(new PostmanVariable("type","string"));
+                newProps.add(new Property("key","token"));
+                newProps.add(new Property("value",null));
+                newProps.add(new Property("type","string"));
                 break;
             }
             case BASIC: {
-                newProps.add(new PostmanVariable("password",null));
-                newProps.add(new PostmanVariable("username",null));
+                newProps.add(new Property("password",null));
+                newProps.add(new Property("username",null));
                 break;
             }
             case DIGEST: {
-                newProps.add(new PostmanVariable("opaque",null));
-                newProps.add(new PostmanVariable("clientNonce",null));
-                newProps.add(new PostmanVariable("nonceCount",null));
-                newProps.add(new PostmanVariable("qop",null));
-                newProps.add(new PostmanVariable("algorithim",null));
-                newProps.add(new PostmanVariable("nonce",null));
-                newProps.add(new PostmanVariable("realm",null));
-                newProps.add(new PostmanVariable("password",null));
+                newProps.add(new Property("opaque",null));
+                newProps.add(new Property("clientNonce",null));
+                newProps.add(new Property("nonceCount",null));
+                newProps.add(new Property("qop",null));
+                newProps.add(new Property("algorithim",null));
+                newProps.add(new Property("nonce",null));
+                newProps.add(new Property("realm",null));
+                newProps.add(new Property("password",null));
                 break;
             }
 
             case HAWK: {
-                newProps.add(new PostmanVariable("includePayloadHash",null));
-                newProps.add(new PostmanVariable("timestamp",null));
-                newProps.add(new PostmanVariable("delegation",null));
-                newProps.add(new PostmanVariable("app",null));
-                newProps.add(new PostmanVariable("extraData",null));
-                newProps.add(new PostmanVariable("nonce",null));
-                newProps.add(new PostmanVariable("user",null));
-                newProps.add(new PostmanVariable("authKey",null));
-                newProps.add(new PostmanVariable("algorithim",null));
+                newProps.add(new Property("includePayloadHash",null));
+                newProps.add(new Property("timestamp",null));
+                newProps.add(new Property("delegation",null));
+                newProps.add(new Property("app",null));
+                newProps.add(new Property("extraData",null));
+                newProps.add(new Property("nonce",null));
+                newProps.add(new Property("user",null));
+                newProps.add(new Property("authKey",null));
+                newProps.add(new Property("algorithim",null));
                 break;
             }
 
             case OAUTH1: {
-                newProps.add(new PostmanVariable("addEmptyParamsToSign", null, null, "boolean"));
-                newProps.add(new PostmanVariable("includeBodyHash", "true", null, "boolean"));
-                newProps.add(new PostmanVariable("realm", null));
-                newProps.add(new PostmanVariable("nonce",null));
-                newProps.add(new PostmanVariable("timestamp",null));
-                newProps.add(new PostmanVariable("verifier",null));
-                newProps.add(new PostmanVariable("callback",null));
-                newProps.add(new PostmanVariable("tokenSecret",null));
-                newProps.add(new PostmanVariable("token",null));
-                newProps.add(new PostmanVariable("consumerSecret",null));
-                newProps.add(new PostmanVariable("consumerKey",null));
-                newProps.add(new PostmanVariable("signatureMethod",null));
-                newProps.add(new PostmanVariable("version",null));
-                newProps.add(new PostmanVariable("addParamsToHeader", "false", null, "boolean"));
+                newProps.add(new Property("addEmptyParamsToSign", null, null, "boolean"));
+                newProps.add(new Property("includeBodyHash", "true", null, "boolean"));
+                newProps.add(new Property("realm", null));
+                newProps.add(new Property("nonce",null));
+                newProps.add(new Property("timestamp",null));
+                newProps.add(new Property("verifier",null));
+                newProps.add(new Property("callback",null));
+                newProps.add(new Property("tokenSecret",null));
+                newProps.add(new Property("token",null));
+                newProps.add(new Property("consumerSecret",null));
+                newProps.add(new Property("consumerKey",null));
+                newProps.add(new Property("signatureMethod",null));
+                newProps.add(new Property("version",null));
+                newProps.add(new Property("addParamsToHeader", "false", null, "boolean"));
                 break;
             }
             case OAUTH2: {
-                newProps.add(new PostmanVariable("grant_type",null));
-                newProps.add(new PostmanVariable("tokenName",null));
-                newProps.add(new PostmanVariable("tokenType",null));
-                newProps.add(new PostmanVariable("accessToken", null));
-                newProps.add(new PostmanVariable("addTokenTo", null));
+                newProps.add(new Property("grant_type",null));
+                newProps.add(new Property("tokenName",null));
+                newProps.add(new Property("tokenType",null));
+                newProps.add(new Property("accessToken", null));
+                newProps.add(new Property("addTokenTo", null));
                 break;
             }
             case NTLM: {
-                newProps.add(new PostmanVariable("workstation",null));
-                newProps.add(new PostmanVariable("domain", null));
-                newProps.add(new PostmanVariable("password", null));
-                newProps.add(new PostmanVariable("username", null));
+                newProps.add(new Property("workstation",null));
+                newProps.add(new Property("domain", null));
+                newProps.add(new Property("password", null));
+                newProps.add(new Property("username", null));
                 break;
             }
             default: {
@@ -284,11 +286,11 @@ public class AuthElement extends CollectionElement {
     }
 
     /** 
-     * Set the properties of the Auth object using a pre-created HashMap&#60;String,PostmanVariable&#62; of properties.
+     * Set the properties of the Auth object using a pre-created HashMap&#60;String,Property&#62; of properties.
      * 
      * @param properties
      */
-    public void setProperties(VariableListMap<PostmanVariable> properties) {
+    public void setProperties(PropertyList<Property> properties) {
         this.properties = properties;
     }
 
@@ -297,12 +299,12 @@ public class AuthElement extends CollectionElement {
     
     /** 
      * 
-     * Return the complete array of properties as a HashMap&#60;String,PostmanVariable&#62;, or null if none are set. 
+     * Return the complete array of properties as a HashMap&#60;String,Property&#62;, or null if none are set. 
      * 
      * 
-     * @return HashMap&#60;String, PostmanVariable&#62;
+     * @return HashMap&#60;String, Property&#62;
      */
-    public VariableListMap<PostmanVariable> getProperties() {
+    public PropertyList<Property> getProperties() {
 
         return this.properties;
     }
@@ -311,9 +313,9 @@ public class AuthElement extends CollectionElement {
      * Retrieve a single element from the array of authentication elements comprising this authentication object.  
      * 
      * @param key A string matching the key of the Auth element to return.  Returns null if the specified element is not present. 
-     * @return PostmanVariable The auth element, or null if not found.
+     * @return Property The auth element, or null if not found.
      */
-    public PostmanVariable getProperty(String key) {
+    public Property getProperty(String key) {
         return this.properties == null ? null : this.properties.get(key);
 
     }
@@ -325,9 +327,9 @@ public class AuthElement extends CollectionElement {
      * 
      * @param newElement The new property
      */
-    public void addProperty(PostmanVariable newElement)  {
+    public void addProperty(Property newElement)  {
         if(this.properties == null) {
-            this.properties = new VariableListMap<PostmanVariable>();
+            this.properties = new PropertyList<Property>();
         }
         this.properties.add(newElement);
     }
@@ -360,9 +362,9 @@ public class AuthElement extends CollectionElement {
      */
     public void addProperty(String key, String value)  {
         if(this.properties == null) {
-            this.properties = new VariableListMap<PostmanVariable>();
+            this.properties = new PropertyList<Property>();
         }
-        this.addProperty(new PostmanVariable(key, value));
+        this.addProperty(new Property(key, value));
 
     }
 

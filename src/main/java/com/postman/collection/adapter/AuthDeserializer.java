@@ -20,29 +20,29 @@ import javax.lang.model.util.ElementScanner14;
  * 
  * 
  */
-public class AuthDeserializer implements JsonDeserializer<AuthElement> {
+public class AuthDeserializer implements JsonDeserializer<RequestAuth> {
 
     /**
      * 
      * Custom <a href=
      * "https://www.javadoc.io/doc/com.google.code.gson/gson/2.6.2/com/google/gson/JsonDeserializer.html">
-     * GSON deserializer</a> for the {@link com.postman.collection.AuthElement} object.
+     * GSON deserializer</a> for the {@link com.postman.collection.RequestAuth} object.
      * 
      * 
      * @param jElement The JSON element passed in by Gson
-     * @param typeOfT The type for the adapter, {@link com.postman.collection.AuthElement}
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.RequestAuth}
      * @param context Deserialization context
-     * @return {@link com.postman.collection.AuthElement} The assembed {@link com.postman.collection.AuthElement} object 
+     * @return {@link com.postman.collection.RequestAuth} The assembed {@link com.postman.collection.RequestAuth} object 
      * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override
-    public AuthElement deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public RequestAuth deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         JsonObject curVar;
         String type = jObject.get("type").getAsString();
         JsonArray vars = jObject.get(type).getAsJsonArray();
-        PostmanVariable pvVar;
-        AuthElement auth = new AuthElement(jObject.get("type").getAsString());
+        Property pvVar;
+        RequestAuth auth = new RequestAuth(jObject.get("type").getAsString());
         String curKey;
         String curVal;
         String curType;
@@ -54,7 +54,7 @@ public class AuthDeserializer implements JsonDeserializer<AuthElement> {
             curVal = curVar.get("value") == null ? null : curVar.get("value").getAsString();
             curType = curVar.get("type") == null ? null : curVar.get("type").getAsString();
             
-            pvVar = new PostmanVariable(curKey, curVal, null,curType);
+            pvVar = new Property(curKey, curVal, null,curType);
             try {
                 auth.addProperty(pvVar);
             } catch (Exception e) {

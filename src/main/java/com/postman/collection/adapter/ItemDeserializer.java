@@ -14,28 +14,28 @@ import com.google.gson.reflect.TypeToken;
 /**
  * 
  * 
- * Custom deserializer for writing out the ItemElement class, the <code>item</code> propertyList 
+ * Custom deserializer for writing out the Item class, the <code>item</code> propertyList 
  * 
  * 
  */
 
 
 
-public class ItemElementDeserializer implements JsonDeserializer<ItemElement> {
+public class ItemDeserializer implements JsonDeserializer<Item> {
     
     /**
      * 
-     * Deserialize a {@link com.postman.collection.ItemElement }
+     * Deserialize a {@link com.postman.collection.Item }
      * 
      * 
      * @param jElement The JSON element passed in by Gson
-     * @param typeOfT The type for the adapter, {@link com.postman.collection.AuthElement}
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.RequestAuth}
      * @param context Deserialization context
-     * @return ItemAuth The assembed {@link com.postman.collection.ItemElement} object 
+     * @return ItemAuth The assembed {@link com.postman.collection.Item} object 
      * @throws JsonParseException IF there are errors in the JSON element
      */
     @Override
-    public ItemElement deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Item deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
         Request newRequest = null;
         
@@ -43,19 +43,19 @@ public class ItemElementDeserializer implements JsonDeserializer<ItemElement> {
             return context.deserialize(jElement.getAsJsonObject(), ItemGroup.class);
             
         }
-        Type typeEvent = new TypeToken<ArrayList<EventElement>>(){}.getType();
-        Type typeResponse = new TypeToken<ArrayList<ResponseElement>>(){}.getType();
+        Type typeEvent = new TypeToken<ArrayList<Event>>(){}.getType();
+        Type typeResponse = new TypeToken<ArrayList<Response>>(){}.getType();
             newRequest = new Request(jObject.get("name").getAsString());
             if(jObject.get("description") != null) {
                 newRequest.setDescription(jObject.get("description").getAsString());
             }
             
-            RequestElement req = context.deserialize(jObject.getAsJsonObject("request"),RequestElement.class);
-            newRequest.setRequestElement(req);
-            ArrayList<EventElement> events = context.deserialize(jObject.getAsJsonArray("event"), typeEvent);
+            RequestBody req = context.deserialize(jObject.getAsJsonObject("request"),RequestBody.class);
+            newRequest.setRequestBody(req);
+            ArrayList<Event> events = context.deserialize(jObject.getAsJsonArray("event"), typeEvent);
             newRequest.setEvents(events);
-            ArrayList<ResponseElement> responses = context.deserialize(jObject.getAsJsonArray("response"), typeResponse);
-            newRequest.setResponseElements(responses);
+            ArrayList<Response> responses = context.deserialize(jObject.getAsJsonArray("response"), typeResponse);
+            newRequest.setResponses(responses);
             return newRequest;
         
     }

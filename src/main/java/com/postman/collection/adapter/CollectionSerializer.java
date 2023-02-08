@@ -29,7 +29,7 @@ public class CollectionSerializer implements JsonSerializer<Collection> {
         JsonObject collJsonMap = new JsonObject();
         
         collJsonMap.add("info", context.serialize(src.getInfo()));
-        collJsonMap.add("item",context.serialize(src.getItemElements()));
+        collJsonMap.add("item",context.serialize(src.getItems()));
         collJsonMap.add("event", context.serialize(src.getEvents()));
         collJsonMap.add("variable", context.serialize(src.getVariables()));
         collJsonMap.add("auth",context.serialize(src.getAuth()));

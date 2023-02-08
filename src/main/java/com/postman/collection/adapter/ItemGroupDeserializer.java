@@ -24,7 +24,7 @@ public class ItemGroupDeserializer implements JsonDeserializer<ItemGroup> {
      * 
      * 
      * @param jElement The JSON element passed in by Gson
-     * @param typeOfT The type for the adapter, {@link com.postman.collection.AuthElement}
+     * @param typeOfT The type for the adapter, {@link com.postman.collection.RequestAuth}
      * @param context Deserialization context
      * @return ItemGroup The assembed {@link com.postman.collection.ItemGroup}
      * @throws JsonParseException IF there are errors in the JSON element
@@ -32,7 +32,7 @@ public class ItemGroupDeserializer implements JsonDeserializer<ItemGroup> {
     @Override
     public ItemGroup deserialize(JsonElement jElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jObject = jElement.getAsJsonObject();
-        Type typeItem = new TypeToken<ArrayList<ItemElement>>(){}.getType();
+        Type typeItem = new TypeToken<ArrayList<Item>>(){}.getType();
         Folder newFolder = null;
             newFolder = new Folder(jObject.getAsJsonPrimitive("name").getAsString());
             if(jObject.get("description") != null) {
@@ -41,8 +41,8 @@ public class ItemGroupDeserializer implements JsonDeserializer<ItemGroup> {
             if(jObject.get("item") == null) {
                 return newFolder;
             }
-            ArrayList<ItemElement> items = context.deserialize(jObject.getAsJsonArray("item"), typeItem);
-            newFolder.setItemElements(items);
+            ArrayList<Item> items = context.deserialize(jObject.getAsJsonArray("item"), typeItem);
+            newFolder.setItems(items);
             
             return newFolder;
         

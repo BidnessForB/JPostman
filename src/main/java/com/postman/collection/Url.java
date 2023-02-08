@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Class to encapsulate the properties in the <code>url</code> object of a <a href="./RequestElement.html">PostmanRequst</a> object.  
+ * Class to encapsulate the properties in the <code>url</code> object of a <a href="./RequestBody.html">PostmanRequst</a> object.  
  * The URL object properties contain the raw URL itself, the protocol, the port an array of strings for the individual host and path elements, arrays of key/value pairs for query parameters, as well as 
  * path variables.
  * <pre>
@@ -42,12 +42,12 @@ import java.util.Arrays;
                 </pre>                 
  */
 
-public class UrlElement extends CollectionElement {
+public class Url extends CollectionElement {
     private String raw = "";
     private ArrayList<String> host;
     private ArrayList<String> path;
-    private VariableListMap<PostmanVariable> query;
-    private VariableListMap<PostmanVariable> variable = null;
+    private PropertyList<Property> query;
+    private PropertyList<Property> variable = null;
     
     private String protocol;
     private String port;
@@ -127,7 +127,7 @@ public class UrlElement extends CollectionElement {
         Matcher maPath = pnPath.matcher(this.getRaw());
         String curVarName;
         
-        PostmanVariable curVar;
+        Property curVar;
         while(maPath.find()) {
             
                 curVarName = maPath.group(1);
@@ -159,7 +159,7 @@ public class UrlElement extends CollectionElement {
      */
     public void addPathVariable(String key, String value, String description) throws DuplicateVariableKeyException {
 
-        this.addPathVariable(new PostmanVariable(key, value, description));
+        this.addPathVariable(new Property(key, value, description));
 
     }
 
@@ -234,7 +234,7 @@ public class UrlElement extends CollectionElement {
     }
 
     /**
-     * Generate the raw URL from the component properties of this UrlElement.  If <code>raw</code> has been set, the output of this method
+     * Generate the raw URL from the component properties of this Url.  If <code>raw</code> has been set, the output of this method
      * should equal the raw URL provided.  
      * 
      * @return The generated URL.  Note that this may not be a valid URL
@@ -275,7 +275,7 @@ public class UrlElement extends CollectionElement {
         }
         
         retVal = retVal + "?";
-        for(PostmanVariable curQuery : this.getQueryElements()) {
+        for(Property curQuery : this.getQueryElements()) {
             retVal = retVal + curQuery.getKey() + "=" + curQuery.getValue() + "&";
         }
         if(retVal.substring(retVal.length() - 1).equals("&")) {
@@ -322,22 +322,22 @@ public class UrlElement extends CollectionElement {
     }
 
     /**
-     * Create a UrlElement with the specified URL
+     * Create a Url with the specified URL
      * @param rawURL The raw URL
      
      */
 
-    public UrlElement(String rawURL) throws DuplicateVariableKeyException {
+    public Url(String rawURL) throws DuplicateVariableKeyException {
         this.setRaw(rawURL);
     }
 
     /**
-     * Create a UrlElement with the specified host and path. 
+     * Create a Url with the specified host and path. 
      * @param host The host, e.g., "foo.com"
      * @param path The path, e.g., "/bar/bat"
      */
     
-    public UrlElement(String host, String path) throws DuplicateVariableKeyException {
+    public Url(String host, String path) throws DuplicateVariableKeyException {
         this.host = new ArrayList<String>();
         this.setHost(host);
         this.path = new ArrayList<String>();
@@ -430,11 +430,11 @@ public class UrlElement extends CollectionElement {
     
     /** 
      * 
-     * Return an ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of key value pairs comprising the <code>query</code> array
+     * Return an ArrayList&#60;{@link com.postman.collection.Property Property}&#62; of key value pairs comprising the <code>query</code> array
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value paris
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key value paris
      */
-    public VariableListMap<PostmanVariable> getQueryElements() {
+    public PropertyList<Property> getQueryElements() {
         return query;
     }
 
@@ -442,13 +442,13 @@ public class UrlElement extends CollectionElement {
     
     /** 
      * @param key
-     * @return PostmanVariable
+     * @return Property
      */
-    public PostmanVariable getQueryElement(String key) {
+    public Property getQueryElement(String key) {
         if(this.query == null) {
             return null;
         }
-        for(PostmanVariable curVar : this.query) {
+        for(Property curVar : this.query) {
             if(curVar.getKey().equals(key)) {
                 return curVar;
             }
@@ -460,10 +460,10 @@ public class UrlElement extends CollectionElement {
     
     /** 
      * @param index
-     * @return PostmanVariable
+     * @return Property
      * @throws IllegalPropertyAccessException
      */
-    public PostmanVariable getQueryElement(int index) throws IllegalPropertyAccessException {
+    public Property getQueryElement(int index) throws IllegalPropertyAccessException {
         {
             if(this.query == null) {
                 return null;
@@ -483,9 +483,9 @@ public class UrlElement extends CollectionElement {
      * @param index
      * @throws IllegalPropertyAccessException
      */
-    public void setQueryELement(PostmanVariable element, int index) throws IllegalPropertyAccessException {
+    public void setQueryELement(Property element, int index) throws IllegalPropertyAccessException {
         if(this.query == null) {
-            this.query = new VariableListMap<PostmanVariable>();
+            this.query = new PropertyList<Property>();
         }
         if(index < 0 || index > this.query.size() + 1) {
             throw new IllegalPropertyAccessException("Index [" + index + "] is out of bounds");
@@ -508,7 +508,7 @@ public class UrlElement extends CollectionElement {
         }
         String queryString = "";
         String curQueryElement;
-        for(PostmanVariable curVar : query) {
+        for(Property curVar : query) {
             curQueryElement = curVar.getKey() + "" + "=" + curVar.getValue() + "";
             queryString = queryString + (queryString.length() > 0 ? "&" : "") + curQueryElement;
         }
@@ -521,7 +521,7 @@ public class UrlElement extends CollectionElement {
      * 
      * @param queryElement
      */
-    public void removeQueryElement(PostmanVariable queryElement) {
+    public void removeQueryElement(Property queryElement) {
         if(this.query != null){
             this.query.remove(queryElement);
         }
@@ -530,35 +530,35 @@ public class UrlElement extends CollectionElement {
     
     /** 
      * 
-     * Set the contents of the <code>query</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key value pairs
+     * Set the contents of the <code>query</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key value pairs
      * 
      * @param query
      */
-    public void setQueries(VariableListMap<PostmanVariable> query) {
+    public void setQueries(PropertyList<Property> query) {
         this.query = query;
     }
 
     
     /** 
      * 
-     * Get an ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array, or null if none exit.
+     * Get an ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key-value pairs comprising the <code>variable</code> array, or null if none exit.
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The ArrayList containing the key-value pairs, or null if there are none.
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62; The ArrayList containing the key-value pairs, or null if there are none.
      */
-    public VariableListMap<PostmanVariable> getPathVariables() {
+    public PropertyList<Property> getPathVariables() {
         return variable;
     }
 
     
     /** 
      * @param key
-     * @return PostmanVariable
+     * @return Property
      */
-    public PostmanVariable getPathVariable(String key) {
+    public Property getPathVariable(String key) {
         if(this.variable == null) {
             return null;
         }
-        for(PostmanVariable curVar : this.variable) {
+        for(Property curVar : this.variable) {
             if(curVar.getKey().equals(key)) {
                 return curVar;
             }
@@ -569,11 +569,11 @@ public class UrlElement extends CollectionElement {
     
     /** 
      * 
-     * Set the values of the <code>variable</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
+     * Set the values of the <code>variable</code> array with a pre-populated ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key-value paris
      * 
-     * @param variable the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value paris
+     * @param variable the ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key-value paris
      */
-    public void setPathVariables(VariableListMap<PostmanVariable> variable) {
+    public void setPathVariables(PropertyList<Property> variable) {
         this.variable = variable;
     }
 
@@ -583,11 +583,11 @@ public class UrlElement extends CollectionElement {
     /** 
      * @param varPath
      */
-    public void setPathVariable(PostmanVariable varPath) {
+    public void setPathVariable(Property varPath) {
         if(this.variable == null) {
-            this.variable = new VariableListMap<PostmanVariable>();
+            this.variable = new PropertyList<Property>();
         }
-        for(PostmanVariable curVar : this.variable) {
+        for(Property curVar : this.variable) {
             if (curVar.getKey().equals(varPath.getKey())) {
                 this.variable.set(this.variable.indexOf(curVar),varPath);
             }
@@ -599,12 +599,12 @@ public class UrlElement extends CollectionElement {
      * @param varPath
      * @throws DuplicateVariableKeyException
      */
-    public void addPathVariable(PostmanVariable varPath) throws DuplicateVariableKeyException {
+    public void addPathVariable(Property varPath) throws DuplicateVariableKeyException {
         if(this.variable != null && this.variable.contains(varPath)){
             throw new DuplicateVariableKeyException("Path variable [" + varPath.getKey() + "] already present in this collection");
         }
         if(this.variable == null) {
-            this.variable = new VariableListMap<PostmanVariable>();
+            this.variable = new PropertyList<Property>();
         }
         this.variable.add(varPath);
     }
@@ -614,7 +614,7 @@ public class UrlElement extends CollectionElement {
      * @param key
      */
     public void removePathVariable(String key) {
-        for(PostmanVariable curVar : this.variable) {
+        for(Property curVar : this.variable) {
             if(curVar.getKey().equals(key)) {
                 this.variable.remove(curVar);
             }
@@ -659,9 +659,9 @@ public class UrlElement extends CollectionElement {
     public void addQuery(String key, String value, String description)  {
 
         if (this.query == null) {
-            this.query = new VariableListMap<PostmanVariable>();
+            this.query = new PropertyList<Property>();
         }
-        this.query.add(new PostmanVariable(key, value, description));
+        this.query.add(new Property(key, value, description));
 
     }
 

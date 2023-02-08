@@ -43,11 +43,11 @@ import java.util.regex.Matcher;
  * 
  * 
  * <p><strong>Get a request item</strong></p>
- * <p><code>ItemElement myReq = myCollection.getItem("Get Random Fact");</code></p>
+ * <p><code>Item myReq = myCollection.getItem("Get Random Fact");</code></p>
  * 
  * <p><strong>Get pre-request script for the request</strong></p>
  * 
- * <p><code>EventElement preReq = myReq.getPreRequestScript();</code></p>
+ * <p><code>Event preReq = myReq.getPreRequestScript();</code></p>
  
  * <p><strong> Get source code for pre-request script</strong></p>
  * <p><code>String myCode = preReq.getSourceCode();</code></p>
@@ -62,9 +62,9 @@ public class Collection extends ItemGroup {
 
     
     
-    private AuthElement auth = null;
+    private RequestAuth auth = null;
     private HashMap<String, String> info;
-    private VariableListMap<PostmanVariable> variable = null;
+    private PropertyList<Property> variable = null;
     
  
     /** 
@@ -76,7 +76,7 @@ public class Collection extends ItemGroup {
      * @throws InvalidCollectionActionException If either the parent or item to be moved aren't present in the <code>item</code> array
      */
     public void moveItem(String itemToMoveKey, String parentKey) throws RecursiveItemAddException, InvalidCollectionActionException {
-        ItemElement itemToMove = this.getItemElement(itemToMoveKey);
+        Item itemToMove = this.getItem(itemToMoveKey);
         Folder parent = this.getFolder(parentKey);
 
         if (itemToMove == null || parent == null) {
@@ -102,7 +102,7 @@ public class Collection extends ItemGroup {
      */
     public Folder addFolder(String name) throws RecursiveItemAddException, IllegalPropertyAccessException {
         Folder newFolder = new Folder(name);
-        this.addItemElement(newFolder);
+        this.addItem(newFolder);
         return newFolder;
 
     }
@@ -116,15 +116,15 @@ public class Collection extends ItemGroup {
      * @param newRequest The new request to add
      * @param name The name for the new item
      * @param response A response to include in the request item, or null to ignore
-     * @return ItemElement The new Request item
+     * @return Item The new Request item
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      *  
      */
-    public Request addRequest(RequestElement reqElement, String name, ResponseElement response) throws RecursiveItemAddException, IllegalPropertyAccessException {
+    public Request addRequest(RequestBody reqElement, String name, Response response) throws RecursiveItemAddException, IllegalPropertyAccessException {
         Request newReq = this.addRequest(reqElement,name);
         if(response != null) {
-            newReq.addResponseElement(response);
+            newReq.addResponse(response);
         }
         return newReq;
     }
@@ -136,32 +136,32 @@ public class Collection extends ItemGroup {
      * 
      * @param reqElement
      * @param name
-     * @return ItemElement
+     * @return Item
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public Request addRequest(RequestElement reqElement, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
+    public Request addRequest(RequestBody reqElement, String name) throws RecursiveItemAddException, IllegalPropertyAccessException  {
         Request newReq = new Request(reqElement, name);
-        super.addItemElement(newReq);
+        super.addItem(newReq);
         return newReq;
     }
 
     
     /** 
      * 
-     * Convenience method to add a request with a pre-constructed ArrayList&#60;{@link com.postman.collection.ResponseElement}&#62; of response items.
+     * Convenience method to add a request with a pre-constructed ArrayList&#60;{@link com.postman.collection.Response}&#62; of response items.
      * 
      * @param newRequest The new Request to add
      * @param name The name of the request
      * @param responses Pre-constructed ArrayList of response objects.
-     * @return ItemElement The new request item.
+     * @return Item The new request item.
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public Request addRequest(RequestElement newRequest, String name, ArrayList<ResponseElement> responses) throws RecursiveItemAddException, IllegalPropertyAccessException 
+    public Request addRequest(RequestBody newRequest, String name, ArrayList<Response> responses) throws RecursiveItemAddException, IllegalPropertyAccessException 
              {
         Request newReq = addRequest(newRequest, name);
-        newReq.setResponseElements(responses);
+        newReq.setResponses(responses);
         return newReq;
     }
 
@@ -176,11 +176,11 @@ public class Collection extends ItemGroup {
      * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
      * @throws IllegalPropertyAccessException 
      */
-    public Request addRequest(RequestElement reqElement, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
+    public Request addRequest(RequestBody reqElement, String name, int position) throws RecursiveItemAddException, IllegalPropertyAccessException {
         Request newReq = new Request(reqElement, name);
-        newReq.setRequestElement(reqElement);
+        newReq.setRequestBody(reqElement);
         reqElement.setParent(newReq);
-        super.addItemElement(newReq, position);
+        super.addItem(newReq, position);
         return newReq;
         
 
@@ -195,7 +195,7 @@ public class Collection extends ItemGroup {
      * @param newParent The item's new parent
      * @throws RecursiveItemAddException If the parent item is the same as the new child item, or if the parent item already contains this item.
      */
-    public void moveItem(ItemElement itemToMove, ItemGroup newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
+    public void moveItem(Item itemToMove, ItemGroup newParent) throws RecursiveItemAddException, InvalidCollectionActionException {
         ItemGroup curParent = itemToMove.getParent();
         if (itemToMove.equals(newParent)) {
             throw new RecursiveItemAddException("Can't move item to itself, yo");
@@ -204,9 +204,9 @@ public class Collection extends ItemGroup {
         if (curParent == null) {
             throw new InvalidCollectionActionException("Item parent not found");
         }
-        curParent.removeItemElement(itemToMove);
+        curParent.removeItem(itemToMove);
         try {
-            newParent.addItemElement(itemToMove);
+            newParent.addItem(itemToMove);
         }
         catch(IllegalPropertyAccessException e)
         {
@@ -261,19 +261,19 @@ public class Collection extends ItemGroup {
      */
     public void addCollection(Collection newColl, ItemGroup parent, boolean copyScripts, boolean copyVariables) throws RecursiveItemAddException, InvalidCollectionActionException, IllegalPropertyAccessException
              {
-        if(parent == null || (!this.hasItemElement(parent))) {
+        if(parent == null || (!this.hasItem(parent))) {
             throw new InvalidCollectionActionException("Parent is null or not an item in this collection");
         }
         Folder newFolder = new Folder(newColl.getName());
         try {
-            parent.addItemElement(newFolder);
+            parent.addItem(newFolder);
         }
         catch(IllegalPropertyAccessException e) {
             throw new InvalidCollectionActionException(e);
         }
         
         
-        newFolder.addItemElements(newColl.getItemElements());
+        newFolder.addItems(newColl.getItems());
 
         if (copyVariables) {
             this.addVariables(newColl.getVariables());
@@ -322,9 +322,9 @@ public class Collection extends ItemGroup {
         if(this.info == null) {
             this.info = new HashMap<String, String>();
         }
-        if(this.getItemElements() == null) {
+        if(this.getItems() == null) {
             //the item element is required by the Collection schema, even if it is empty
-            this.setItemElements(new ArrayList<ItemElement>());
+            this.setItems(new ArrayList<Item>());
         }
         
     }
@@ -339,14 +339,14 @@ public class Collection extends ItemGroup {
     }
 
     private void setParents() {
-        ArrayList<ItemElement> folders = this.getItemElements(enumItemElementType.FOLDER);
-        ArrayList<ItemElement> requests = this.getItemElements(enumItemElementType.REQUEST);
-        folders = folders == null ? new ArrayList<ItemElement>() : folders;
-        requests = requests == null ? new ArrayList<ItemElement>() : requests;
-        ItemElement curParent = null;
+        ArrayList<Item> folders = this.getItems(enumItemType.FOLDER);
+        ArrayList<Item> requests = this.getItems(enumItemType.REQUEST);
+        folders = folders == null ? new ArrayList<Item>() : folders;
+        requests = requests == null ? new ArrayList<Item>() : requests;
+        Item curParent = null;
         folders.addAll(requests);
 
-        for (ItemElement curItem : folders) {
+        for (Item curItem : folders) {
             curParent = curItem.getParent();
             curItem.setParent(curParent);
         }
@@ -433,9 +433,9 @@ public class Collection extends ItemGroup {
     public static Collection pmcFactory(String json) {
         Collection pmcRetVal;
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthDeserializer());
-        gsonBuilder.registerTypeAdapter(PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableDeserializer());
-        gsonBuilder.registerTypeAdapter(ItemElement.class, new com.postman.collection.adapter.ItemElementDeserializer());
+        gsonBuilder.registerTypeAdapter(RequestAuth.class, new com.postman.collection.adapter.AuthDeserializer());
+        gsonBuilder.registerTypeAdapter(Property.class, new com.postman.collection.adapter.PropertyDeserializer());
+        gsonBuilder.registerTypeAdapter(Item.class, new com.postman.collection.adapter.ItemDeserializer());
         gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemGroupDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
         pmcRetVal.init();
@@ -632,11 +632,11 @@ public class Collection extends ItemGroup {
     
     /** 
      * 
-     * Set the <code>auth</code> object property of this collection with a {@link com.postman.collection.AuthElement} object containing the values.  
+     * Set the <code>auth</code> object property of this collection with a {@link com.postman.collection.RequestAuth} object containing the values.  
      * 
      * @param auth The new auth values, or null to remove an existing auth.
      */
-    public void setAuth(AuthElement auth) {
+    public void setAuth(RequestAuth auth) {
         this.auth = auth;
     }
 
@@ -645,9 +645,9 @@ public class Collection extends ItemGroup {
      * 
      * Return the values in the <code>auth</code> object property of this collection, or null if it has not been set.
      * 
-     * @return AuthElement The auth values, or null.  
+     * @return RequestAuth The auth values, or null.  
      */
-    public AuthElement getAuth() {
+    public RequestAuth getAuth() {
         return this.auth;
     }
 
@@ -666,7 +666,7 @@ public class Collection extends ItemGroup {
         String curVarValue;
         String strResolved = src;
         
-        PostmanVariable curVar;
+        Property curVar;
         while(maVar.find()) {
             
             for(int i = 1; i < maVar.groupCount(); i = i + 2 ) {
@@ -702,15 +702,15 @@ public class Collection extends ItemGroup {
 
         Type mapType = new TypeToken<HashMap<String, String>>() {
         }.getType();
-        Type varMapType = new TypeToken<HashMap<String, PostmanVariable>>() {
+        Type varMapType = new TypeToken<HashMap<String, Property>>() {
         }.getType();
 
 
         gsonBuilder.registerTypeAdapter(mapType, new com.postman.collection.adapter.StringMapSerializer());
-        gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.VarMapSerializer());
-        gsonBuilder.registerTypeAdapter(AuthElement.class, new com.postman.collection.adapter.AuthSerializer());
+        gsonBuilder.registerTypeAdapter(varMapType, new com.postman.collection.adapter.PropertyListSerializer());
+        gsonBuilder.registerTypeAdapter(RequestAuth.class, new com.postman.collection.adapter.AuthSerializer());
         gsonBuilder.registerTypeAdapter(com.postman.collection.Collection.class, new com.postman.collection.adapter.CollectionSerializer());
-        gsonBuilder.registerTypeAdapter(com.postman.collection.PostmanVariable.class, new com.postman.collection.adapter.PostmanVariableSerializer());
+        gsonBuilder.registerTypeAdapter(com.postman.collection.Property.class, new com.postman.collection.adapter.PropertySerializer());
 
         Gson customGson = gsonBuilder.create();
         return customGson.toJson(this);
@@ -743,9 +743,9 @@ public class Collection extends ItemGroup {
      * 
      * Set the array of key-value pairs in this collections <code>variable</code> array element
      * 
-     * @param vars The ArrayList&#60;{@link com.postman.collection.PostmanVariable}&#62; containing the variables
+     * @param vars The ArrayList&#60;{@link com.postman.collection.Property}&#62; containing the variables
      */
-    public void setVariables(VariableListMap<PostmanVariable> vars) {
+    public void setVariables(PropertyList<Property> vars) {
         this.variable = vars;
     }
 
@@ -757,9 +757,9 @@ public class Collection extends ItemGroup {
      * 
      * @param varNew
      */
-    public void addVariable(PostmanVariable varNew) {
+    public void addVariable(Property varNew) {
         if(this.variable == null) {
-            this.variable = new VariableListMap<PostmanVariable>();
+            this.variable = new PropertyList<Property>();
         }
         this.variable.add(varNew);
     }
@@ -786,29 +786,29 @@ public class Collection extends ItemGroup {
      * 
      * @param varNew The variable to remove.  Matching is by the value of <code>key</code>
      */
-    public void removeVariable(PostmanVariable varNew) {
+    public void removeVariable(Property varNew) {
         this.removeVariable(varNew.getKey());
     }
 
     
     /** 
      * 
-     * Return the PostmanVariable key-value pair from this collection's <code>variable</code> array element, or null if it is not present.
+     * Return the Property key-value pair from this collection's <code>variable</code> array element, or null if it is not present.
      * 
      * @param key
-     * @return PostmanVariable
+     * @return Property
      */
-    public PostmanVariable getVariable(String key) {
+    public Property getVariable(String key) {
             return this.variable.get(key);
         
     }
 
     /** 
-     * Get the ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
+     * Get the ArrayList&#60;{@link com.postman.collection.Property Property}&#62; containing the key-value pairs comprising the <code>variable</code> array element of this collection
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62;
      */
-    public VariableListMap<PostmanVariable> getVariables() {
+    public PropertyList<Property> getVariables() {
         return this.variable;
     }
 
@@ -816,12 +816,12 @@ public class Collection extends ItemGroup {
     /** 
      * @param newVars
      */
-    public void addVariables(VariableListMap<PostmanVariable> newVars) {
+    public void addVariables(PropertyList<Property> newVars) {
         if(newVars == null) {
             return;
         }
         if(this.variable == null) {
-            this.variable = new VariableListMap<PostmanVariable>();
+            this.variable = new PropertyList<Property>();
         }
         this.variable.addAll(newVars);
     }   

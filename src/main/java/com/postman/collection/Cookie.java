@@ -2,7 +2,7 @@ package com.postman.collection;
 
 
 
-public class CookieElement extends CollectionElement {
+public class Cookie extends CollectionElement {
     private String domain = "";
     private String expires = "";
     private String maxAge = "";
@@ -13,9 +13,9 @@ public class CookieElement extends CollectionElement {
     private boolean secure;
     private boolean session;
     private String value = "";
-    private VariableListMap<PostmanVariable> extensions;
+    private PropertyList<Property> extensions;
 
-    public CookieElement() {
+    public Cookie() {
         super();
     }
 
@@ -181,9 +181,9 @@ public class CookieElement extends CollectionElement {
 
     
     /** 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62;
      */
-    public VariableListMap<PostmanVariable> getExtensions() {
+    public PropertyList<Property> getExtensions() {
         return extensions;
     }
 
@@ -191,7 +191,7 @@ public class CookieElement extends CollectionElement {
     /** 
      * @param extensions
      */
-    public void setExtensions(VariableListMap<PostmanVariable> extensions) {
+    public void setExtensions(PropertyList<Property> extensions) {
         this.extensions = extensions;
     }
 

@@ -3,6 +3,8 @@ import java.util.ArrayList;
     /**
      * 
      * Encapsulates the <code>item</code> object in the postman schema
+     * 
+     * Analog to the <code><a href=http://www.postmanlabs.com/postman-collection/Item.html>Item</a></code> class in the Postman SDK
 
      * <pre>
      * {
@@ -127,10 +129,10 @@ import java.util.ArrayList;
         <p> A collection is the top level item in the hierarchy.  It can contain a tree of items, but cannot itself be contained.  </p>
 
 */
-public abstract class ItemElement extends CollectionElement {
+public abstract class Item extends CollectionElement {
 
     private String description;
-    private ArrayList<EventElement> event = null;
+    private ArrayList<Event> event = null;
     private String name;
     
 
@@ -138,7 +140,7 @@ public abstract class ItemElement extends CollectionElement {
     
     
 
-    protected ItemElement() {
+    protected Item() {
         
     }
      /**
@@ -147,9 +149,9 @@ public abstract class ItemElement extends CollectionElement {
      * Construct an empty item with only a <code>name</code> property and assign it as a child of <code>parent</code>  
      * 
      * @param name  The name of the object
-     * @param parent The ItemElement containing this item. 
+     * @param parent The Item containing this item. 
      */
-    protected ItemElement(String name, ItemGroup parent) {
+    protected Item(String name, ItemGroup parent) {
         this(name);
         this.setParent(parent);
 
@@ -160,7 +162,7 @@ public abstract class ItemElement extends CollectionElement {
     * @param name The name of the object
     */
     
-    protected ItemElement(String name) {
+    protected Item(String name) {
         this.setName(name);
     }
 
@@ -191,11 +193,11 @@ public abstract class ItemElement extends CollectionElement {
     
     /** 
      * 
-     * Return the ArrayList&#60;EventElement&#62; containing the objects comprising the <code>event</code> array
+     * Return the ArrayList&#60;Event&#62; containing the objects comprising the <code>event</code> array
      * 
-     * @return ArrayList&#60;EventElement&#62;
+     * @return ArrayList&#60;Event&#62;
      */
-    public ArrayList<EventElement> getEvents() {
+    public ArrayList<Event> getEvents() {
 
         return event;
     }
@@ -207,9 +209,9 @@ public abstract class ItemElement extends CollectionElement {
      * 
      * 
      * @param evtType Enumerated value for the event type, eg., pre-request or test.
-     * @return EventElement The event, if it exists
+     * @return Event The event, if it exists
      */
-    public EventElement getEvent(enumEventType evtType) {
+    public Event getEvent(enumEventType evtType) {
         if (event == null) {
             return null;
         }
@@ -223,11 +225,11 @@ public abstract class ItemElement extends CollectionElement {
 
     
     /** 
-     * Set the ArrayList&#60;EventElement&#62; comprising the values in the <code>event</code> array.
+     * Set the ArrayList&#60;Event&#62; comprising the values in the <code>event</code> array.
      * 
      * @param events
      */
-    public void setEvents(ArrayList<EventElement> events) {
+    public void setEvents(ArrayList<Event> events) {
         this.event = events;
     }
 
@@ -252,7 +254,7 @@ public abstract class ItemElement extends CollectionElement {
      * 
      * Get the parent of this item, or null if one is not defined (eg. this item is a collection);
      * 
-     * @return ItemElement The parent item.
+     * @return Item The parent item.
      */
     @Override
     public ItemGroup getParent() {
@@ -270,9 +272,9 @@ public abstract class ItemElement extends CollectionElement {
      * 
      * @param newEvent
      */
-    private void addEventElement(EventElement newEvent) {
+    private void addEvent(Event newEvent) {
         if (event == null) {
-            event = new ArrayList<EventElement>();
+            event = new ArrayList<Event>();
         }
         if (this.getEvent(newEvent.getEventType()) == null) {
             event.add(newEvent);
@@ -293,23 +295,23 @@ public abstract class ItemElement extends CollectionElement {
      */
     public void setPreRequestScript(String code)  {
 
-        EventElement prEvent = new EventElement(enumEventType.PRE_REQUEST, code);
-        this.addEventElement(prEvent);
+        Event prEvent = new Event(enumEventType.PRE_REQUEST, code);
+        this.addEvent(prEvent);
     }
 
     
     /** 
-     * @return EventElement
+     * @return Event
      */
-    public EventElement getPreRequestScript() {
+    public Event getPreRequestScript() {
         return this.getEvent(enumEventType.PRE_REQUEST);
     }
 
     
     /** 
-     * @return EventElement
+     * @return Event
      */
-    public EventElement getTestScript() {
+    public Event getTestScript() {
         return this.getEvent(enumEventType.TEST);
     }
 
@@ -322,8 +324,8 @@ public abstract class ItemElement extends CollectionElement {
      */
     public void setTestScript(String code)  {
 
-        EventElement prEvent = new EventElement(enumEventType.TEST, code);
-        this.addEventElement(prEvent);
+        Event prEvent = new Event(enumEventType.TEST, code);
+        this.addEvent(prEvent);
     }
 
     

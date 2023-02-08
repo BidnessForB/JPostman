@@ -83,7 +83,7 @@ public abstract class CollectionElement {
         String strSchemaRoot = CollectionElement.getDefaultValidationSchema();
         String strSubSchema = "";
         switch (this.getClass().getSimpleName()) {
-            case "ItemElement": {
+            case "Item": {
                 strSubSchema = "#/definitions/item";
                 break;
             }
@@ -92,7 +92,7 @@ public abstract class CollectionElement {
                 break;
             }
 
-            case "AuthElement": {
+            case "RequestAuth": {
                 strSubSchema = "#/definitions/auth";
                 break;
             }

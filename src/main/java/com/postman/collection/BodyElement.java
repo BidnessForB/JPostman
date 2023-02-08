@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  * 
- * <p>Encapsulates the <code>body</code> property of a <a href="./RequestElement.html">RequestElement</a> object.  There are several different permutations for this property depending on the 
+ * <p>Encapsulates the <code>body</code> property of a <a href="./RequestBody.html">RequestBody</a> object.  There are several different permutations for this property depending on the 
  * <code>mode</code> selected in Postman.  Some examples:
  * </p>
  * 
@@ -19,7 +19,7 @@ import java.util.HashMap;
  * 
  * <strong>Form data</strong>
  * 
- *   Formdata and Urlencoded bodies comprise an array of key value pairs persisted as instance of PostmanVariable:
+ *   Formdata and Urlencoded bodies comprise an array of key value pairs persisted as instance of Property:
  * <pre>
     "body": {
         "mode": "urlencoded",
@@ -90,8 +90,8 @@ public class BodyElement extends CollectionElement {
 
     
     private GraphQLElement graphql;
-    private VariableListMap<PostmanVariable> formdata;
-    private VariableListMap<PostmanVariable> urlencoded;
+    private PropertyList<Property> formdata;
+    private PropertyList<Property> urlencoded;
     private BinaryFileElement file;
     
     /** 
@@ -328,7 +328,7 @@ public class BodyElement extends CollectionElement {
 
     
     /** 
-     * Returns an ArrayList&#60;PostmanVariable&#62; containing formdata paramters:
+     * Returns an ArrayList&#60;Property&#62; containing formdata paramters:
      * 
      * <pre>
      * {
@@ -347,10 +347,10 @@ public class BodyElement extends CollectionElement {
      * 
      * 
      * 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; The data
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62; The data
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public VariableListMap<PostmanVariable> getFormdata() throws IllegalPropertyAccessException {
+    public PropertyList<Property> getFormdata() throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
                 return this.urlencoded;
@@ -370,13 +370,13 @@ public class BodyElement extends CollectionElement {
     
     /** 
      * 
-     * Returns a {@link com.postman.collection.PostmanVariable PostmanVariable} containing formdata property at the specified position in the array
+     * Returns a {@link com.postman.collection.Property Property} containing formdata property at the specified position in the array
      * 
      * @param position The position in the array
-     * @return PostmanVariable The form data.
+     * @return Property The form data.
      * @throws IllegalPropertyAccessException if <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public PostmanVariable getFormdata(int position) throws IllegalPropertyAccessException {
+    public Property getFormdata(int position) throws IllegalPropertyAccessException {
         switch (this.getMode()) {
             case URLENCODED: {
                 return this.urlencoded.get(position);
@@ -394,13 +394,13 @@ public class BodyElement extends CollectionElement {
 
     
     /** 
-     * Convenience method to set the formdata with an already filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62; of properties
+     * Convenience method to set the formdata with an already filled ArrayList&#60;{@link com.postman.collection.Property Property}&#62; of properties
      * 
      * 
-     * @param data  The filled ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @param data  The filled ArrayList&#60;{@link com.postman.collection.Property Property}&#62;
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(VariableListMap<PostmanVariable> data) throws IllegalPropertyAccessException {
+    public void setFormdata(PropertyList<Property> data) throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case URLENCODED: {
                 this.urlencoded = data;
@@ -431,7 +431,7 @@ public class BodyElement extends CollectionElement {
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
     public void setFormdata(String key, String value, String description) throws IllegalPropertyAccessException {
-        this.setFormdata(new PostmanVariable(key, value, description));
+        this.setFormdata(new Property(key, value, description));
     }
 
     
@@ -439,10 +439,10 @@ public class BodyElement extends CollectionElement {
      * 
      * Sets an element of the formdata or urlencoded property array 
      * 
-     * @param data Populated PostmanVariable containing the formdata
+     * @param data Populated Property containing the formdata
      * @throws IllegalPropertyAccessException If <code>mode</code> is not URLENCODED or FORMDATA
      */
-    public void setFormdata(PostmanVariable data) throws IllegalPropertyAccessException  {
+    public void setFormdata(Property data) throws IllegalPropertyAccessException  {
         switch(this.getMode()) {
             case FORMDATA:
             {
@@ -540,7 +540,7 @@ public class BodyElement extends CollectionElement {
             case FORMDATA:
                 this.mode = "formdata";
                 this.file = null;
-                this.formdata = new VariableListMap<PostmanVariable>();
+                this.formdata = new PropertyList<Property>();
                 this.urlencoded = null;
                 this.graphql = null;
                 this.options = null;
@@ -549,7 +549,7 @@ public class BodyElement extends CollectionElement {
                 this.mode = "urlencoded";
                 this.file = null;
                 this.formdata = null;
-                this.urlencoded = new VariableListMap<PostmanVariable>();
+                this.urlencoded = new PropertyList<Property>();
                 this.graphql = null;
                 this.options = null;
                 break;
@@ -607,10 +607,10 @@ public class BodyElement extends CollectionElement {
      * 
      * Removes the formdata element at the specified position in the formdata array
      * 
-     * @param data The PostmanVariable to remove.  
+     * @param data The Property to remove.  
      * @throws IllegalPropertyAccessException If <code>mode</code> is not FORMDATA or URLENCODED
      */
-    public void removeFormData(PostmanVariable data) throws IllegalPropertyAccessException {
+    public void removeFormData(Property data) throws IllegalPropertyAccessException {
         switch(this.getMode()) {
             case FORMDATA: {
                 this.formdata.remove(data);

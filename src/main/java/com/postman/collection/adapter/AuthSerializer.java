@@ -16,17 +16,17 @@ import java.lang.reflect.Type;
  * 
  * 
  */
-public class AuthSerializer implements JsonSerializer<AuthElement> {
+public class AuthSerializer implements JsonSerializer<RequestAuth> {
 
     
     /** 
-     * @param src The {@link com.postman.collection.AuthElement} object to be deserialized
-     * @param typeOfSrc The type, {@link com.postman.collection.AuthElement}
+     * @param src The {@link com.postman.collection.RequestAuth} object to be deserialized
+     * @param typeOfSrc The type, {@link com.postman.collection.RequestAuth}
      * @param context Serialization context 
      * @return JsonElement The JSON element returned by this serializer
      */
     @Override
-    public JsonElement serialize(AuthElement src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(RequestAuth src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonAuth = new JsonObject();
         JsonArray vars = new JsonArray();
 
@@ -35,7 +35,7 @@ public class AuthSerializer implements JsonSerializer<AuthElement> {
         JsonObject curJVar;
         
         
-        for (PostmanVariable curVar : src.getProperties()) {
+        for (Property curVar : src.getProperties()) {
             
             curJVar = new JsonObject();
             curJVar.addProperty("key", curVar.getKey());
