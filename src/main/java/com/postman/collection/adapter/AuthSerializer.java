@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSerializationContext;
 import java.lang.reflect.Type;
-import java.util.Iterator;
+
 /**
  * 
  * 
@@ -16,35 +16,34 @@ import java.util.Iterator;
  * 
  * 
  */
-public class AuthSerializer implements JsonSerializer<PostmanAuth> {
+public class AuthSerializer implements JsonSerializer<RequestAuth> {
 
     
     /** 
-     * @param src The PostmanAuth object to be deserialized
-     * @param typeOfSrc The type, PostmanAuth
+     * @param src The {@link com.postman.collection.RequestAuth} object to be deserialized
+     * @param typeOfSrc The type, {@link com.postman.collection.RequestAuth}
      * @param context Serialization context 
      * @return JsonElement The JSON element returned by this serializer
      */
     @Override
-    public JsonElement serialize(PostmanAuth src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(RequestAuth src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonAuth = new JsonObject();
         JsonArray vars = new JsonArray();
 
         jsonAuth.addProperty("type", src.getAuthTypeAsString());
 
         JsonObject curJVar;
-        Iterator<String> keys = src.getProperties().keySet().iterator();
-        String curKey;
-        PostmanVariable curVar;
-        while (keys.hasNext()) {
-            curKey = (String) keys.next();
-            curVar = src.getProperty(curKey);
+        
+        
+        for (Property curVar : src.getProperties()) {
+            
             curJVar = new JsonObject();
             curJVar.addProperty("key", curVar.getKey());
             curJVar.addProperty("value", curVar.getValue());
             curJVar.addProperty("type", "string");
             vars.add(curJVar);
         }
+        
 
         jsonAuth.add(src.getAuthTypeAsString(), vars);
         return jsonAuth;
