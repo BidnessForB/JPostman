@@ -1,7 +1,15 @@
 package com.postman.collection;
 
-import java.util.ArrayList;
-import com.networknt.schema.ValidationMessage;
+/**
+ * 
+ * 
+ * Exception thrown if there is a system, syntax or other error/exception which interrupts or prevents actual validation of the element.
+ * 
+ * 
+ * 
+ * 
+ */
+
 
 public class ValidationException extends Exception {
     

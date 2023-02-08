@@ -1,0 +1,597 @@
+{
+	"info": {
+		"_postman_id": "42406d91-fefe-46b3-bc34-c3a9a8871a48",
+		"name": "Nested",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23889826"
+	},
+	"item": [
+		{
+			"name": "Breeds Copy",
+			"item": [
+				{
+					"name": "Facts Copy",
+					"item": [
+						{
+							"name": "Test URL Copy",
+							"item": [
+								{
+									"name": "URL 1",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://foo.com/bar/bat.json",
+											"protocol": "http",
+											"host": [
+												"foo",
+												"com"
+											],
+											"path": [
+												"bar",
+												"bat.json"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 2",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "/foo.com/bar/bat.json",
+											"path": [
+												"foo.com",
+												"bar",
+												"bat.json"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 3",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/foo.com/bar/bat.json",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"foo.com",
+												"bar",
+												"bat.json"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 4",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://foo.com/bar/bat.json?foo=1&bar=2",
+											"protocol": "http",
+											"host": [
+												"foo",
+												"com"
+											],
+											"path": [
+												"bar",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 5",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://foo.com/bar/bat.json?foo=1&bar=",
+											"protocol": "http",
+											"host": [
+												"foo",
+												"com"
+											],
+											"path": [
+												"bar",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 6",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}foo.com/bar/bat.json?foo=1&bar=",
+											"host": [
+												"{{baseUrl}}foo",
+												"com"
+											],
+											"path": [
+												"bar",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 7",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}foo.com/bar/:path1/bat.json?foo=1&bar=",
+											"host": [
+												"{{baseUrl}}foo",
+												"com"
+											],
+											"path": [
+												"bar",
+												":path1",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": ""
+												}
+											],
+											"variable": [
+												{
+													"key": "path1",
+													"value": "path-value"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 8",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}foo.com:8080/bar/:path1/bat.json?foo=1&bar=",
+											"host": [
+												"{{baseUrl}}foo",
+												"com"
+											],
+											"port": "8080",
+											"path": [
+												"bar",
+												":path1",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": ""
+												}
+											],
+											"variable": [
+												{
+													"key": "path1",
+													"value": "path-value"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "URL 9",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/foo.com:8080/bar/:path1/bat.json?foo=1&bar=",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"foo.com:8080",
+												"bar",
+												":path1",
+												"bat.json"
+											],
+											"query": [
+												{
+													"key": "foo",
+													"value": "1"
+												},
+												{
+													"key": "bar",
+													"value": ""
+												}
+											],
+											"variable": [
+												{
+													"key": "path1",
+													"value": "path-value"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get Random Fact",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+											"",
+											"pm.test(latencyTestName, function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+											"});",
+											"",
+											"pm.test(\"Response contains fact\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(pm.response.json().fact).not.to.be.null;",
+											"});",
+											"",
+											"pm.collectionVariables.set(\"curFact\",pm.response.json().fact);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/fact?max_length=200",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"fact"
+									],
+									"query": [
+										{
+											"key": "max_length",
+											"value": "200",
+											"description": "maximum length of returned fact"
+										}
+									]
+								},
+								"description": "## Get Random Fact:\n\nDoes what it says, returns a random fact"
+							},
+							"response": [
+								{
+									"name": "Normal response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/fact?max_length=200",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"fact"
+											],
+											"query": [
+												{
+													"key": "max_length",
+													"value": "200"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"fact\": \"in tempor Excepteur eiusmod\",\n  \"length\": 200\n}"
+								},
+								{
+									"name": "Fact not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/fact?max_length=200",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"fact"
+											],
+											"query": [
+												{
+													"key": "max_length",
+													"value": "200"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Get a list of facts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+											"",
+											"pm.test(latencyTestName, function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+											"});",
+											"",
+											"pm.test(\"Response contains fact\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(\"last fact: \" + pm.collectionVariables.get(\"curFact\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"facts"
+									],
+									"query": [
+										{
+											"key": "max_length",
+											"value": "200"
+										},
+										{
+											"key": "limit",
+											"value": "2",
+											"description": "limit the amount of results returned"
+										}
+									]
+								},
+								"description": "Returns a a list of facts"
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/facts?max_length=200&limit=2",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"facts"
+											],
+											"query": [
+												{
+													"key": "max_length",
+													"value": "200"
+												},
+												{
+													"key": "limit",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"fact\": \"ex ad\",\n    \"length\": 200\n  },\n  {\n    \"fact\": \"Ut dolor exercitation quis\",\n    \"length\": 200\n  }\n]"
+								}
+							]
+						}
+					],
+					"description": "Cat Facts"
+				},
+				{
+					"name": "get Breeds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var latencyTestName = \"Response time is less than \" + pm.collectionVariables.get(\"latencyLimit\") + \" ms\";",
+									"",
+									"pm.test(latencyTestName, function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(parseInt(pm.collectionVariables.get(\"latencyLimit\")));",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains fact\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(pm.response.json().length).to.be.greaterThan(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2",
+									"description": "This is a description"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": [
+						{
+							"name": "Normal operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/breeds?limit=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"breeds"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"breed\": \"nulla nisi mollit laborum\",\n    \"country\": \"anim et\",\n    \"origin\": \"esse in incididunt\",\n    \"coat\": \"aliqua amet sed pariatu\",\n    \"pattern\": \"sed\"\n  },\n  {\n    \"breed\": \"minim consectetur aliqua\",\n    \"country\": \"ullamco proident dolor dolor pariatur\",\n    \"origin\": \"dolor \",\n    \"coat\": \"anim incididunt\",\n    \"pattern\": \"nulla Excepteur in mollit\"\n  }\n]"
+						}
+					]
+				}
+			],
+			"description": "Breeds"
+		}
+	]
+}
