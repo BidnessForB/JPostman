@@ -5,6 +5,7 @@ package com.postman.collection;
  * <p>Enumeration listing variable resolution strategies</p>
  * 
  * <table>
+ * <tbody>
  * <tr>
  * <th>Strategy</th>
  * <th>Description</th>
@@ -20,6 +21,8 @@ package com.postman.collection;
  * <td>NONE</td>
  * <td>Return the literal value</td>
  * </tr>
+ * </tbody>
+ * </table>
  * 
  * 
  */
