@@ -19,12 +19,13 @@ import com.flipkart.zjsonpatch.*;
  * Abstract Base Class for all objects which are part of a collection
  * 
  */
-public abstract class PostmanCollectionElement {
+public abstract class CollectionElement {
 
     private transient ArrayList<ValidationMessage> validationMessages;
     private static final String defaultCollectionSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json";
     private static final String defaultValidationSchema = "https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json";
     private transient UUID uuid = UUID.randomUUID();
+    private transient CollectionElement parent;
 
     public abstract String getKey();
 
@@ -35,7 +36,7 @@ public abstract class PostmanCollectionElement {
      * Validate the gson produced by this element against the PostmanSchema.  Schema version is currently hardcoded to 
      * <a href="https://schema.postman.com/collection/json/v2.1.0/draft-07/collection.json">v2.1.0</a>.  Validation is provided by the <a href="https://github.com/networknt/json-schema-validator">NetworkNT json-schema-validator</a>
      * 
-     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.PostmanCollection#getValidationMessages()  } will return an  containing the diffs
+     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.Collection#getValidationMessages()  } will return an  containing the diffs
      * @throws ValidationException If an error is encountered accessing the schema or mapping the underlying JSON.  
      */
     public boolean validate() throws ValidationException {
@@ -43,12 +44,35 @@ public abstract class PostmanCollectionElement {
     }
 
     
+    
+    /** 
+     * 
+     * Set the parent of this element, allowing for traversal up the chain of elements
+     * 
+     * 
+     * @param parent The parent element
+     */
+    public void setParent(CollectionElement parent) {
+        this.parent = parent;
+    }
+
+    
+    /** 
+     * 
+     * Get the parent element, or null if it is not set.
+     * 
+     * @return CollectionElement The parent of this element
+     */
+    public CollectionElement getParent() {
+        return this.parent;
+    }
+
     /** 
      * 
      * Convenience method allowing validation against a user-provided schema
      * 
      * @param altSchemaJSON  String containing the alternate schema JSON
-     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.PostmanCollection#getValidationMessages()  } will return an  containing the diffs
+     * @return boolean <code>true</code> if valid, <code>false</code> if not.  If the schema is invalid, calling {@link com.postman.collection.Collection#getValidationMessages()  } will return an  containing the diffs
      * @throws ValidationException If there is an error in the validation process
      */
     public boolean validate(String altSchemaJSON) throws ValidationException {
@@ -56,23 +80,28 @@ public abstract class PostmanCollectionElement {
         ObjectMapper mapper = new ObjectMapper();
         JsonSchema schema;
 
-        String strSchemaRoot = PostmanCollectionElement.getDefaultValidationSchema();
+        String strSchemaRoot = CollectionElement.getDefaultValidationSchema();
         String strSubSchema = "";
         switch (this.getClass().getSimpleName()) {
-            case "PostmanItem": {
+            case "Item": {
                 strSubSchema = "#/definitions/item";
                 break;
             }
-            case "PostmanCollection": {
+            case "Collection": {
                 strSubSchema = "";
                 break;
             }
 
-            case "PostmanAuth": {
+            case "RequestAuth": {
                 strSubSchema = "#/definitions/auth";
+                break;
             }
-            case "PostmanBody": {
+            case "BodyElement": {
                 strSubSchema = "#/definitions/request/oneOf/0/properties/body";
+                break;
+            }
+            default: {
+                strSubSchema = "";
             }
         }
 
@@ -170,14 +199,55 @@ public abstract class PostmanCollectionElement {
     
     /** 
      * 
+     * Traverse the chain of parent elements upwards until a Collection is reached, or null if this element is not part of a collection.
+     * 
+     * 
+     * @return Collection The collection at the top of the parent tree, or null.
+     */
+    public Collection getCollection() {
+        CollectionElement result = null;
+        CollectionElement curItem = null;
+        // recursively traverse items looking for name == key
+        if(this.getParent() == null) {
+            return this instanceof Collection ? (Collection)this : null;
+        }
+        while(result == null) {
+            curItem = this.getParent();
+            if (curItem instanceof Collection) {
+                result = curItem;
+                break;
+            } else {
+                try {
+                    result = curItem.getCollection();
+                    if(result == null) {
+                        return null;
+                    }
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+                
+                if (result instanceof Collection) {
+                    break;
+                }
+            }
+        }
+        
+
+        return (Collection)result;
+    }
+
+    
+    /** 
+     * 
      * Determine whether 2 seperate instance of a JPostman class render semantically identical JSON.  If the JSON is identical, the returned JsonNode will be empty (e.g., <code>size()</code> == 0).
      * If the documents are different, the JsonNode returned contains information about the differences.  
      * 
-     * @param compare The PostmanCollectionElement to compare to this one.
+     * @param compare The CollectionElement to compare to this one.
      * @return JsonNode JsonNode containing an array of diff msgs.  size() will be zero if there are no validation messages.
      * @throws ValidationException If there is an exception or error during the Validation process
      */
-    public JsonNode isEquivalentTo(PostmanCollectionElement compare) throws ValidationException {
+    public JsonNode isEquivalentTo(CollectionElement compare) throws ValidationException {
         ObjectMapper jacksonObjectMapper;
         JsonNode beforeNode;
         JsonNode afterNode;

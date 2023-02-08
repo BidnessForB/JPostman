@@ -1,8 +1,19 @@
 package com.postman.collection;
 
-import java.util.ArrayList;
+/**
+ * 
+ * Encapsulates the <code>cookie</code> property of a Postman Collection.  
+ * 
+ * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Cookie.html">Cookie</a></code>.</p>
+ * 
+ * <p>NOTE: Provided for serialization/de-serialization only, doesn't provide any method capability.</p>
+ * 
+ * 
+ * 
+ * 
+ */
 
-public class PostmanCookie extends PostmanCollectionElement {
+public class Cookie extends CollectionElement {
     private String domain = "";
     private String expires = "";
     private String maxAge = "";
@@ -13,10 +24,10 @@ public class PostmanCookie extends PostmanCollectionElement {
     private boolean secure;
     private boolean session;
     private String value = "";
-    private ArrayList<PostmanVariable> extensions;
+    private PropertyList<Property> extensions;
 
-    public PostmanCookie() {
-
+    public Cookie() {
+        super();
     }
 
     
@@ -181,9 +192,9 @@ public class PostmanCookie extends PostmanCollectionElement {
 
     
     /** 
-     * @return ArrayList&#60;{@link com.postman.collection.PostmanVariable PostmanVariable}&#62;
+     * @return ArrayList&#60;{@link com.postman.collection.Property Property}&#62;
      */
-    public ArrayList<PostmanVariable> getExtensions() {
+    public PropertyList<Property> getExtensions() {
         return extensions;
     }
 
@@ -191,7 +202,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     /** 
      * @param extensions
      */
-    public void setExtensions(ArrayList<PostmanVariable> extensions) {
+    public void setExtensions(PropertyList<Property> extensions) {
         this.extensions = extensions;
     }
 
@@ -202,7 +213,7 @@ public class PostmanCookie extends PostmanCollectionElement {
     @Override
     public String getKey() {
 
-        return name;
+        return getName();
     }
 
 }
