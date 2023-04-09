@@ -968,7 +968,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     public void testIngestFromUrl() throws MalformedURLException {
         //Good URL
         try {
-            pmcTest = Collection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-a0a8f60c-36c9-4221-9c99-3aa90eb46abe"));
+            pmcTest = Collection.pmcFactory(new URL("https://api.getpostman.com/collections/23889826-2e2dc1e1-24a9-4167-a550-1167ee1aa389"));
             assertTrue("Valid collection ingested from URL",pmcTest.validate());
         }
         catch(Exception e) {

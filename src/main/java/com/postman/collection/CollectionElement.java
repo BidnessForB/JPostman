@@ -133,7 +133,22 @@ public abstract class CollectionElement {
 
         this.validationMessages = (errors == null || errors.size() == 0) ? new ArrayList<ValidationMessage>()
                 : new ArrayList<ValidationMessage>(errors);
-        return (this.validationMessages == null || this.validationMessages.size() == 0);
+                boolean ignoreValidationErrors = true;
+                
+                
+                //This hackery necessitated by the fact that collections returned from Postman can have 'default' as the type
+                //for a value in the collection variables, which is not in the schema.
+                //So we ignore it as an error if it is present.  
+                String valMsg = "";
+                String valPath = "";
+                for(ValidationMessage vm : this.validationMessages )
+                {
+                    valMsg = vm.getMessage();
+                    valPath = vm.getPath();
+
+                    ignoreValidationErrors = ignoreValidationErrors && valMsg.contains("$.variable[") && valMsg.contains(".type: does not have a value in the enumeration [string, boolean, any, number]");
+                }
+        return ((this.validationMessages == null || this.validationMessages.size() == 0) || ignoreValidationErrors);
 
     }
 
