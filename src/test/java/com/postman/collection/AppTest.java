@@ -1,6 +1,7 @@
 package com.postman.collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -1155,6 +1156,42 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
     {
         assertTrue("Unexpected duplicate key: " + e.getMessage(), false);
     }
+    Request reqItem3 = null;
+    try {
+       reqItem3 = pmcTest.addRequest("https://postman-echo.com/get");
+    }
+    catch (Exception e) {
+        assertTrue("Exception adding collection", false);
+    }
+    
+    assertEquals(reqItem3.getRequestBody().getUrl().getRaw(), "https://postman-echo.com/get");
+
+    try {
+        reqItem3 = pmcTest.addRequest("https://postman-echo.com/get?foo=bar&bat={{boo}}");
+    }
+    catch(Exception e) {
+        assertTrue("Exception adding collection", false);
+    }
+
+    assertEquals(reqItem3.getRequestBody().getUrl().getRaw(), "https://postman-echo.com/get?foo=bar&bat={{boo}}");
+    
+
+    try {
+        //should trigger a duplicate key exception?
+        reqItem3 = pmcTest.addRequest("https://postman-echo.com/:pathvar1/get?foo=bar&bat={{boo}}");
+    }
+    catch(Exception e) {
+        assertTrue("Exception adding collection", false);
+    }
+
+    assertEquals(reqItem3.getRequestBody().getUrl().getRaw(), "https://postman-echo.com/:pathvar1/get?foo=bar&bat={{boo}}");
+
+    assertEquals(reqItem3.getRequestBody().getUrl().getPathVariables().size(), 1);
+    assertNotNull(reqItem3.getRequestBody().getUrl().getPathVariable("pathvar1"));
+
+
+
+
       
        
 
@@ -1169,7 +1206,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        
 
 
-       assertEquals(2, pmcTest.getItems(enumItemType.REQUEST).size());
+       assertEquals(5, pmcTest.getItems(enumItemType.REQUEST).size());
 
         try {
         newFolder = pmcTest.addFolder("New Folder");
@@ -1182,7 +1219,7 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
        try {
         pmcTest.moveItem(reqItem1, newFolder);
         assertEquals("New Folder", pmcTest.getRequest("GET echo").getParent().getName());
-        assertEquals(2, pmcTest.getItems().size());
+        assertEquals(5, pmcTest.getItems().size());
        }
        catch(Exception e)
        {
@@ -1196,8 +1233,24 @@ validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
 
 
        pmcTest.removeItem("POST echo");
-       assertEquals(1, pmcTest.getItems(enumItemType.REQUEST).size());
+       assertEquals(4, pmcTest.getItems(enumItemType.REQUEST).size());
        assertNotNull(pmcTest.getItem("GET echo"));
+
+       //Should trigger duplicate variable key exception
+       try {
+           reqItem3 = pmcTest.addRequest("https://postman-echo.com/:pathvar1/:pathvar1/get?foo=bar&bat={{boo}}");
+       }
+       catch(DuplicateVariableKeyException e) {
+            assertTrue("Duplicate variable key exception expected", true);
+       }
+       catch(Exception e) {
+        assertTrue("Unexpected exception: " + e.getMessage(), false);
+       }
+
+
+       validateAndWriteToFile(pmcTest, new Throwable().getStackTrace()[0]);
+
+
 
 
     }

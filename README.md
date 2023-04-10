@@ -41,15 +41,27 @@ Got a [Collection ID](https://support.postman.com/hc/en-us/articles/506378509531
 Collection pmcTest = Collection.pmcFactory(new PostmanID("<your collection id>"));
 ```
 
+NOTE: You must set an environment variable named `POSTMAN_API_KEY` with the value of your Postman API key.  
+
 ### Create Collections from scratch
 
 You can create a new, empty collection as well
 
 ```java
-Collection newColl = PostmanFactory("New collection");
+Collection newColl = Collection.pmcFactory();
+newColl.setName("My new collection");
 ```
 
 then create and add elements to your new collection
+
+### Add requests
+
+You can add a new request just by providing a URL:
+
+```java
+  Collection newColl = Collection.pmcFactory();
+  newColl.addRequest("https://postman-echo.com/get");
+```
 
 ### Edit collections: add, remove, edit and move Collection elements
 
@@ -112,7 +124,7 @@ JPostman allows you to generate JSON for your collections.  You can also write y
  Use the `Collection.validate() method to ensure that the JSON emitted by your instance of Collection conforms with the Postman Collection schema:
 
  ```java
-  boolean isValid = myCollection.validate()
+  boolean isValid = myCollection.validate();
  ```
 
 JPostman uses the NetworkNT [json-schema-validator](https://github.com/networknt/json-schema-validator) to validate JSON against a JSON schema.  

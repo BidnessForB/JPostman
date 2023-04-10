@@ -156,6 +156,31 @@ public class Collection extends ItemGroup {
         return newReq;
     }
 
+       /** 
+     * 
+     * Create and add a new <code>request</code> as a top level child item of this collection.  The request will be named 'New Request'
+     * 
+     * 
+     * @param url The URL for the request.  Cannot be null or non-zero
+     * @return Item The new Request item
+     * @throws RecursiveItemAddException If this collection already include this instance in it's array of items.
+     * @throws DuplicateVariableKeyException If parsing the URL results in the creation of duplicate parameter variables.
+     * @throws IllegalPropertyAccessException 
+     * @throws InvalidCollectionActionExample If a null or zero-length string URL is passed.  
+     *  
+     */
+    public Request addRequest(String url) throws RecursiveItemAddException, IllegalPropertyAccessException, InvalidCollectionActionException, DuplicateVariableKeyException {
+
+        if(url == null || url.length() < 1) {
+            throw new InvalidCollectionActionException("Url must be a non-zero length string");
+        }
+
+        Request newReq = this.addRequest(new RequestBody(enumHTTPRequestMethod.GET, url), "New Request");
+       
+
+        return newReq;
+
+    }
     
     /** 
      * 
