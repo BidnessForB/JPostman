@@ -518,7 +518,7 @@ public class Collection extends ItemGroup {
      * @throws CollectionNotFoundException If there is no collection at the specified URL
      * @throws ValidationException If the JSON returned by the specified URL does not conform to the Postman schema
      * @throws InvalidCollectionActionException If any other error occurs during the generation of the collection
-     
+     asdfasdf
      
      */
     public static Collection pmcFactory(URL collectionURL) throws IOException, InterruptedException, IllegalArgumentException, CollectionNotFoundException, ValidationException, InvalidCollectionActionException {

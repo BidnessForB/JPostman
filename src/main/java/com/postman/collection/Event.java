@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Event.html">event</code>.</p>
  *   
  * <pre>
- * "event": [
+ * "event": [  
     {
         "listen": "test",
         "script": {
