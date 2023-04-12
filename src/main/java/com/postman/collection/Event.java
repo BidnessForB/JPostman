@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Encapsulates members of the <code>event</code> array object.  Events contain pre-request and test scripts for Folders, Requests, and Collections
  * 
  * <p>Postman SDK analog: <code><a href="http://www.postmanlabs.com/postman-collection/Event.html">event</code>.</p>
- * 
+ *   
  * <pre>
  * "event": [
     {
