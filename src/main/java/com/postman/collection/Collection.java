@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 
 import java.net.http.HttpResponse.BodyHandlers;
 
@@ -530,7 +532,7 @@ public class Collection extends ItemGroup {
             if(apiToken == null) {
                 throw new IllegalArgumentException("No Postman API Key configured");
             }
-
+            
             // create a request
             var request = HttpRequest.newBuilder(
                 URI.create(collectionURL.toString()))
@@ -694,6 +696,65 @@ public class Collection extends ItemGroup {
             throw(e);
         }
     }
+    public void updateInPostman(PostmanID workspaceID) {
+
+    }
+    /** 
+     * 
+     * Write this collections generated JSON to a file at the specified path.  Note that the order of elements in the resulting file is not guaranteed and may not match 
+     * a corresponding Postman generated file.  However, this does not affect the validity or functionality of the generated JSON.
+     * 
+     * @param outputFile The file into which to write the JSON
+     * @throws IOException If there is an error attempting to create or write to the specified path
+     */
+    public PostmanID writeToPostman(PostmanID workspaceID) throws IOException, InterruptedException {
+        String colData = this.toJson();
+        colData = colData.substring(colData.indexOf("\"item\":"));
+        String apiURL = "https://api.getpostman.com/collections/?workspace=" + workspaceID;
+        var client = HttpClient.newHttpClient();
+        String colHeaderJSON = "{\"collection\": { \"info\": {\"name\": \"" + this.getName() + "\", \"schema\": \"https://schema.getpostman.com/json/collection/v2.1.0/collection.json\"},";
+        
+        String bodyJSON = colHeaderJSON + colData + "}";
+
+        String apiToken = System.getenv("POSTMAN_API_KEY");
+            if(apiToken == null) {
+                throw new IllegalArgumentException("No Postman API Key configured");
+            }
+
+            // create a request
+            var request = HttpRequest.newBuilder(
+                URI.create(apiURL))
+            .header("accept", "application/json")
+            .header("x-api-key",apiToken)
+            
+            .POST(HttpRequest.BodyPublishers.ofString(bodyJSON))
+            .build();
+        
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson customGson = gsonBuilder.create();
+            
+
+            // use the client to send the request
+            var response = client.send(request, BodyHandlers.ofString());
+            Type hashType = new TypeToken<HashMap<String,HashMap<String, String>>>() {}.getType();  
+            HashMap<String, HashMap> respJSON = customGson.fromJson(response.body(), hashType);
+            /* 
+            if(response.statusCode() == 404) {
+                throw new CollectionNotFoundException("Collection not found or invalid endopint");
+            }
+            else if(response.statusCode() != 200)
+            {
+                throw new InvalidCollectionActionException("An error occurred retrieving the collection" + (response.body() == null ? "[no response info]" : response.body()));
+            }
+            */
+            
+            this.setPostmanID(respJSON.get("collection").get("id").toString());
+            
+            return new PostmanID(this.getPostmanID());
+       
+    }
+
+
 
     
     /** 

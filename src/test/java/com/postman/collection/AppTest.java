@@ -1521,4 +1521,27 @@ public void testProperty() {
 
     }
 
+    @Test
+    public void testWriteToPostman() {
+        Collection pmcTest = null;
+
+        try {
+          pmcTest  = Collection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
+        }
+        catch(IOException e)
+        {
+            assertTrue("IOException: " + e.getMessage(), false);
+        }
+
+        try {
+            pmcTest.writeToPostman(new PostmanID("d827e22e-3694-408d-b18b-d3eea108c001"));
+        }
+        catch(Exception e)
+        {
+            assertTrue("Exception: " + e.getMessage(), false);
+        }
+
+        
+    }
+
 }
