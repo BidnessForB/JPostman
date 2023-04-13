@@ -1524,17 +1524,26 @@ public void testProperty() {
     @Test
     public void testWriteToPostman() {
         Collection pmcTest = null;
+        Collection pmcTest2 = null;
 
         try {
           pmcTest  = Collection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
+          pmcTest2    = Collection.pmcFactory(new PostmanID("23889826-598a2a23-0a3b-454f-9309-ebd0004145d9"));
+          pmcTest2.setName("Auth renamed again");
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             assertTrue("IOException: " + e.getMessage(), false);
         }
 
         try {
-            pmcTest.writeToPostman(new PostmanID("d827e22e-3694-408d-b18b-d3eea108c001"));
+            //Create a new collection
+            pmcTest.upsertToPostman(new PostmanID("d827e22e-3694-408d-b18b-d3eea108c001"));
+            //update an existing collection
+            
+            pmcTest2.upsertToPostman(null);
+           // pmcTest2.setName("Auth Renamed Again");
+           /// pmcTest2.updateInPostman(null);
         }
         catch(Exception e)
         {

@@ -707,10 +707,11 @@ public class Collection extends ItemGroup {
      * @param outputFile The file into which to write the JSON
      * @throws IOException If there is an error attempting to create or write to the specified path
      */
-    public PostmanID writeToPostman(PostmanID workspaceID) throws IOException, InterruptedException {
+    public PostmanID upsertToPostman(PostmanID workspaceID) throws IOException, InterruptedException {
         String colData = this.toJson();
         colData = colData.substring(colData.indexOf("\"item\":"));
-        String apiURL = "https://api.getpostman.com/collections/?workspace=" + workspaceID;
+        String apiURL = "https://api.getpostman.com/collections";
+        
         var client = HttpClient.newHttpClient();
         String colHeaderJSON = "{\"collection\": { \"info\": {\"name\": \"" + this.getName() + "\", \"schema\": \"https://schema.getpostman.com/json/collection/v2.1.0/collection.json\"},";
         
@@ -721,14 +722,30 @@ public class Collection extends ItemGroup {
                 throw new IllegalArgumentException("No Postman API Key configured");
             }
 
-            // create a request
-            var request = HttpRequest.newBuilder(
+        HttpRequest request = null;    
+        if(workspaceID != null && workspaceID.getID().length() > 0) {
+            //In this case we are creating
+            apiURL = apiURL + "?workspace=" + workspaceID.getID();
+            request = HttpRequest.newBuilder(
                 URI.create(apiURL))
             .header("accept", "application/json")
             .header("x-api-key",apiToken)
             
             .POST(HttpRequest.BodyPublishers.ofString(bodyJSON))
             .build();
+        }
+        else if (workspaceID == null && this.getPostmanID() != null) {
+            apiURL = apiURL + "/" + this.getPostmanID();
+            request = HttpRequest.newBuilder(
+                URI.create(apiURL))
+            .header("accept", "application/json")
+            .header("x-api-key",apiToken)
+            
+            .PUT(HttpRequest.BodyPublishers.ofString(bodyJSON))
+            .build();
+        }    
+        
+        
         
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson customGson = gsonBuilder.create();
