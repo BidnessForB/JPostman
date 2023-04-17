@@ -702,7 +702,7 @@ public class Collection extends ItemGroup {
      * Convenience method to upsert a collection to Postman without specifying a workspace ID
      */
 
-     public PostmanID upsertToPostman() throws IOException, InterruptedException, CollectionNotFoundException, InvalidCollectionActionException {
+     public PostmanID upsertToPostman() throws IOException, InterruptedException, CollectionNotFoundException, InvalidCollectionActionException 
      {
         return upsertToPostman(null);
      }
