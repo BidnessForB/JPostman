@@ -118,7 +118,7 @@ JPostman allows you to generate JSON for your collections.  You can also write y
   pmcTest.addCollection(pmcSource);
   pmcTest.writeToFile("new-collection.json");
 
-  ### Create or update a collection in Postman
+### Create or update a collection in Postman
 
   You can upsert (create or update) a collection in Postman, optionally adding it to a workspace.
    - If a collection does not have a collection ID, it will be created on Postman, and given the UUID returned by Postman
