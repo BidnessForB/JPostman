@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
+
+import org.apache.commons.collections4.functors.FalsePredicate;
 import org.junit.Test;
 
 import com.networknt.schema.ValidationMessage;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Timestamp;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -1519,6 +1522,90 @@ public void testProperty() {
 
 
 
+    }
+
+    @Test
+    public void testWriteToPostman() {
+        Collection pmcTest = Collection.pmcFactory();
+        Collection pmcTest2 = null;
+        BodyElement body = null;
+        RequestBody req = null;
+        Response resp = null;
+        String colName = new java.sql.Timestamp(System.currentTimeMillis()).toString();
+        //Test creating a new collection
+        try {
+            
+            body = new BodyElement(enumRequestBodyMode.URLENCODED);
+            body.setFormdata("x-field-1", "value 1", "This is value 1");
+            body.setFormdata("x-field-2", "value 2", "This is value 2");
+            req = new RequestBody(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+            req.setBody(body);
+            resp = new Response("NORMAL Urlencoded", req, "OK", 200, "this is the expected response body");
+            pmcTest.addRequest(req, "URLEncoded body", resp);
+            pmcTest.setName("UPSERT test " + colName);
+        }
+        catch(Exception eee) {
+            eee.printStackTrace();
+            assertTrue("Exception creating test collection: " + eee.getMessage(), false);
+        }
+        
+        try {
+            assertNull("No postmanID before upsert: ", pmcTest.getPostmanID());
+            pmcTest.upsertToPostman(null);
+            assertNotNull("Postman ID successfully assigned: " , pmcTest.getPostmanID());
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            assertTrue("Exception upserting new collection to Postman: " + e.getMessage(), false);
+        }
+
+        //Upsert a collection to a workspace
+        try {
+            
+            body = new BodyElement(enumRequestBodyMode.URLENCODED);
+            body.setFormdata("x-field-1", "value 1", "This is value 1");
+            body.setFormdata("x-field-2", "value 2", "This is value 2");
+            req = new RequestBody(enumHTTPRequestMethod.POST, "https://postman-echo.com/post");
+            req.setBody(body);
+            resp = new Response("NORMAL Urlencoded", req, "OK", 200, "this is the expected response body");
+            pmcTest.addRequest(req, "URLEncoded body", resp);
+            pmcTest.setName("UPSERT test to Workspace" + colName);
+            pmcTest.upsertToPostman(new PostmanID("23889826-169dff8a-c684-4ccc-b8df-7ad436efda57"));
+        }
+        catch(Exception eee) {
+            eee.printStackTrace();
+            assertTrue("Exception creating test collection: " + eee.getMessage(), false);
+        }
+
+        //Fetch a known collection from Postman, change the name, then Upsert it
+       try {
+        
+        pmcTest    = Collection.pmcFactory(new PostmanID("23889826-169dff8a-c684-4ccc-b8df-7ad436efda57"));
+        String origName = pmcTest.getName();
+        pmcTest.setName(origName + "- UPSERTED");
+        pmcTest.upsertToPostman(null);
+        pmcTest    = Collection.pmcFactory(new PostmanID("23889826-169dff8a-c684-4ccc-b8df-7ad436efda57"));
+        assertTrue(pmcTest.getName().equals(origName + "- UPSERTED"));
+       }
+       catch(Exception ee) {
+        ee.printStackTrace();
+        assertTrue("Exception writing known collection: " + ee.getMessage(), false);
+       }
+
+
+        try {
+            //read in a collection with an ID
+            pmcTest  = Collection.pmcFactory(new File(filePath + resourcePath + "/auth.postman_collection.json"));
+            pmcTest.setName("Auth renamed again " + new java.sql.Timestamp(System.currentTimeMillis()));
+            pmcTest.upsertToPostman(null);
+        }
+        catch(Exception e)
+        {
+            assertTrue("IOException: " + e.getMessage(), false);
+        }
+
+        
+        
     }
 
 }
