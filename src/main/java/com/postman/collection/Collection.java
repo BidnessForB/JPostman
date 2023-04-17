@@ -707,7 +707,7 @@ public class Collection extends ItemGroup {
      * @param outputFile The file into which to write the JSON
      * @throws IOException If there is an error attempting to create or write to the specified path
      */
-    public PostmanID upsertToPostman(PostmanID workspaceID) throws IOException, InterruptedException {
+    public PostmanID upsertToPostman(PostmanID workspaceID) throws IOException, InterruptedException, CollectionNotFoundException, InvalidCollectionActionException {
         String colData = this.toJson();
         colData = colData.substring(colData.indexOf("\"item\":"));
         String apiURL = "https://api.getpostman.com/collections";
@@ -723,9 +723,11 @@ public class Collection extends ItemGroup {
             }
 
         HttpRequest request = null;    
-        if(workspaceID != null && workspaceID.getID().length() > 0) {
+        if(this.getPostmanID() == null) {
             //In this case we are creating
-            apiURL = apiURL + "?workspace=" + workspaceID.getID();
+            if(workspaceID != null && workspaceID.getID().length() > 0) 
+                apiURL = apiURL + "?workspace=" + workspaceID.getID();
+
             request = HttpRequest.newBuilder(
                 URI.create(apiURL))
             .header("accept", "application/json")
@@ -734,7 +736,7 @@ public class Collection extends ItemGroup {
             .POST(HttpRequest.BodyPublishers.ofString(bodyJSON))
             .build();
         }
-        else if (workspaceID == null && this.getPostmanID() != null) {
+        else if (this.getPostmanID() != null) {
             apiURL = apiURL + "/" + this.getPostmanID();
             request = HttpRequest.newBuilder(
                 URI.create(apiURL))
@@ -745,29 +747,33 @@ public class Collection extends ItemGroup {
             .build();
         }    
         
+            var response = client.send(request, BodyHandlers.ofString());
+            
         
-        
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson customGson = gsonBuilder.create();
+            if(response.statusCode() == 200) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson customGson = gsonBuilder.create();
             
 
             // use the client to send the request
-            var response = client.send(request, BodyHandlers.ofString());
+            
             Type hashType = new TypeToken<HashMap<String,HashMap<String, String>>>() {}.getType();  
-            HashMap<String, HashMap> respJSON = customGson.fromJson(response.body(), hashType);
-            /* 
-            if(response.statusCode() == 404) {
+            HashMap<String, HashMap<String, String>> respJSON = customGson.fromJson(response.body(), hashType);
+            this.setPostmanID(respJSON.get("collection").get("id").toString());
+            
+            }
+            else if(response.statusCode() == 404) {
                 throw new CollectionNotFoundException("Collection not found or invalid endopint");
             }
-            else if(response.statusCode() != 200)
+            else 
             {
                 throw new InvalidCollectionActionException("An error occurred retrieving the collection" + (response.body() == null ? "[no response info]" : response.body()));
             }
-            */
             
-            this.setPostmanID(respJSON.get("collection").get("id").toString());
+            return new PostmanID(this.getPostmanID());            
             
-            return new PostmanID(this.getPostmanID());
+            
+            
        
     }
 
