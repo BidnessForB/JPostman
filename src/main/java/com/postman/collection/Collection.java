@@ -49,7 +49,7 @@ import java.util.regex.Matcher;
  * <p>Ingest a collection from Postman</p>
  * 
  * <pre>
- *  PostmanID myID = new PostmanID("<your-collection-id"); 
+ *  PostmanID myID = new PostmanID("&#60your-collection-id&#62"); 
  *  Collection myCollection = Collection.pmcFactory(myID);
  * </pre>
  * 
