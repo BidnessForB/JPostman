@@ -696,16 +696,29 @@ public class Collection extends ItemGroup {
             throw(e);
         }
     }
-    public void updateInPostman(PostmanID workspaceID) {
+    
+    /*
+     * 
+     * Convenience method to upsert a collection to Postman without specifying a workspace ID
+     */
 
-    }
+     public PostmanID upsertToPostman() throws IOException, InterruptedException, CollectionNotFoundException, InvalidCollectionActionException {
+     {
+        return upsertToPostman(null);
+     }
+
     /** 
      * 
-     * Write this collections generated JSON to a file at the specified path.  Note that the order of elements in the resulting file is not guaranteed and may not match 
-     * a corresponding Postman generated file.  However, this does not affect the validity or functionality of the generated JSON.
+     * Create or update this collection in Postman.  
+     *  - If this collection has a Postman ID, it will be updated in Postman
+     *  - If this collection does not have a Postman ID, it will be created as a new collection, and the ID returned by Postman will be assigned to it. 
+     *  - You can optionally include a workspace ID for a workspace to link a newly created collection to.  
      * 
-     * @param outputFile The file into which to write the JSON
+     * @param WorkspaceID Optional workspace ID to which to link a newly created collection.
      * @throws IOException If there is an error attempting to create or write to the specified path
+     * @throws InterruptedException If the HTTP request is interrupted
+     * @throws CollectionNotFoundException if the collection ID is not found in Postman
+     * @throws InvalidCollectionActionException If an HTTP status code other than 200 or 404 is returned.  
      */
     public PostmanID upsertToPostman(PostmanID workspaceID) throws IOException, InterruptedException, CollectionNotFoundException, InvalidCollectionActionException {
         String colData = this.toJson();
