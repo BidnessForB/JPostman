@@ -1608,4 +1608,22 @@ public void testProperty() {
         
     }
 
-}
+    @Test
+    public void testValidateWithBodyComments() {
+
+        boolean valid = false;
+
+        
+        
+        try {
+            pmcTest = Collection.pmcFactory(new File(filePath + resourcePath + "/body-with-no-comments.postman_collection.json"));
+            valid = pmcTest.validate();    
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+
+
+
+}}
