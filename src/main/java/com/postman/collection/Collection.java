@@ -504,6 +504,8 @@ public class Collection extends ItemGroup {
         gsonBuilder.registerTypeAdapter(Item.class, new com.postman.collection.adapter.ItemDeserializer());
         gsonBuilder.registerTypeAdapter(ItemGroup.class, new com.postman.collection.adapter.ItemGroupDeserializer());
         pmcRetVal = gsonBuilder.create().fromJson(json, Collection.class);
+        //Added to hopefully allow JSON comments
+       //gsonBuilder.setLenient();
         pmcRetVal.init();
 
         return pmcRetVal;

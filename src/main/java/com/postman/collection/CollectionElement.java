@@ -145,9 +145,13 @@ public abstract class CollectionElement {
                 {
                     valMsg = vm.getMessage();
                     valPath = vm.getPath();
-
+                    //Ignore `default` keyword
                     ignoreValidationErrors = ignoreValidationErrors && valMsg.contains("$.variable[") && valMsg.contains(".type: does not have a value in the enumeration [string, boolean, any, number]");
+                    //Ignore "JSON comments"
                 }
+
+
+
         return ((this.validationMessages == null || this.validationMessages.size() == 0) || ignoreValidationErrors);
 
     }
